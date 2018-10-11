@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="?toolbarColor"
+        android:elevation="1dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="UnusedIds">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_vertical"
+            android:importantForAccessibility="no"
+            android:paddingStart="@dimen/horizontal_spacing"
+            android:paddingEnd="@dimen/horizontal_spacing"
+            android:src="@drawable/ic_search_white_24dp" />
+
+        <EditText
+            android:id="@+id/query"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null"
+            android:hint="Search"
+            android:imeOptions="actionGo|flagNoExtractUi"
+            android:inputType="textCapWords|textNoSuggestions"
+            android:privateImeOptions="nm"
+            android:selectAllOnFocus="true" />
+
+        <ImageView
+            android:id="@+id/clear_query"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_vertical"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="aaaaaaa"
+            android:paddingStart="@dimen/horizontal_spacing"
+            android:paddingEnd="@dimen/horizontal_spacing"
+            android:src="@drawable/ic_close_dark"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/md_indigo_A200"
+        app:layout_constraintBottom_toBottomOf="@+id/recycler"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/recycler" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <com.reddit.indicatorfastscroll.FastScrollerView
+        android:id="@+id/fastscroller"
+        android:layout_width="32dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/recycler" />
+
+    <com.reddit.indicatorfastscroll.FastScrollerThumbView
+        android:id="@+id/fastscroller_thumb"
+        android:layout_width="40dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/fastscroller"
+        app:layout_constraintTop_toTopOf="@+id/recycler" />
+
+</android.support.constraint.ConstraintLayout>

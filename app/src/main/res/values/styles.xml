@@ -1,0 +1,37 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+
+        <item name="colorPrimary">@color/primary_light</item>
+        <item name="colorPrimaryDark">@color/primary_dark_light</item>
+        <item name="colorAccent">@color/md_indigo_A200</item>
+
+        <item name="mainCardColor">@color/md_grey_50</item>
+        <item name="weakColor">#67687c</item>
+        <item name="weakerColor">@color/md_grey_500</item>
+        <item name="cardSeparatorColor">@color/md_grey_200</item>
+        <item name="lottieDivider">@color/md_grey_300</item>
+
+        <item name="toolbarColor">@color/white</item>
+        <item name="iconColored">@color/icon_dark</item>
+        <item name="strongColor">@color/FontStrong</item>
+        <item name="standardCardColor">@color/md_grey_100</item>
+
+        <item name="itemDeselected">@color/item_deselected_light</item>
+
+        <item name="windowBackground">@color/window_background_light</item>
+        <item name="settingsBackground">@color/white</item>
+        <item name="android:windowBackground">?windowBackground</item>
+
+        <item name="diff_text_color">@color/FontLessStrong</item>
+        <item name="code_addition">@color/code_addition_light</item>
+        <item name="code_addition_diff">@color/code_addition_diff_light</item>
+        <item name="code_deletion">@color/code_deletion_light</item>
+        <item name="code_deletion_diff">@color/code_deletion_diff_light</item>
+        <item name="num_addition">@color/num_addition_light</item>
+        <item name="num_deletion">@color/num_deletion_light</item>
+
+    </style>
+
+</resources>
