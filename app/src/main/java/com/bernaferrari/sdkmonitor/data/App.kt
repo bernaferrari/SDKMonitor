@@ -12,5 +12,6 @@ data class App(
     @PrimaryKey
     val packageName: String,
     val title: String,
-    val backgroundColor: Int
+    val backgroundColor: Int,
+    val firstInstallTime: Long
 )

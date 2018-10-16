@@ -32,6 +32,26 @@
         <item name="num_addition">@color/num_addition_light</item>
         <item name="num_deletion">@color/num_deletion_light</item>
 
+        <item name="indicatorFastScrollerStyle">@style/Widget.FastScrollSample.FastScroller</item>
+        <item name="indicatorFastScrollerThumbStyle">
+            @style/Widget.FastScrollSample.FastScrollerThumb
+        </item>
+    </style>
+
+    <style name="Widget.FastScrollSample.FastScroller" parent="Widget.IndicatorFastScroll.FastScroller">
+        <item name="iconColor">@color/pressed_selector</item>
+        <item name="android:textAppearance">@style/FastScrollerAppearance</item>
+        <item name="android:textColor">@color/pressed_selector</item>
+    </style>
+
+    <style name="FastScrollerAppearance" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Widget.FastScrollSample.FastScrollerThumb" parent="Widget.IndicatorFastScroll.FastScrollerThumb" />
+
+    <style name="Widget.FastScrollSample.FastScrollerThumb.Colorful">
+        <item name="thumbColor">?colorAccent</item>
     </style>
 
 </resources>

@@ -3,7 +3,6 @@ package com.bernaferrari.sdkmonitor
 import android.app.IntentService
 import android.content.Context
 import android.content.Intent
-import com.bernaferrari.sdkmonitor.data.App
 
 class PackageService : IntentService("PackageService") {
 
@@ -33,7 +32,7 @@ class PackageService : IntentService("PackageService") {
     private fun handleActionInsert(packageName: String) {
         val packageInfo = AppManager.getPackageInfo(packageName) ?: return
 
-        Injector.get().appsDao().insertApp(App(packageName, AppManager.getAppLabel(packageInfo), 0))
+//        Injector.get().appsDao().insertApp(App(packageName, AppManager.getAppLabel(packageInfo), 0, 0))
 //        Injector.get().versionsDao().insertVersion(
 //            Version(
 //                packageInfo

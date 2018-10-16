@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.LinearSmoothScroller
 import android.support.v7.widget.RecyclerView
 import android.view.*
 import android.view.inputmethod.EditorInfo
@@ -14,8 +15,9 @@ import android.widget.EditText
 import androidx.core.content.systemService
 import androidx.core.view.isVisible
 import com.bernaferrari.sdkmonitor.extensions.*
-import com.jakewharton.rxbinding2.widget.RxTextView
+import com.jakewharton.rxrelay2.BehaviorRelay
 import com.reddit.indicatorfastscroll.FastScrollItemIndicator
+import com.reddit.indicatorfastscroll.FastScrollerView
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.ViewHolder
@@ -24,14 +26,25 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.coroutines.experimental.*
 import java.util.concurrent.TimeUnit
+import kotlin.coroutines.experimental.CoroutineContext
 
+class MainFragment : Fragment(), CoroutineScope {
 
-class MainFragment : Fragment() {
+    override val coroutineContext: CoroutineContext = Dispatchers.Main + Job()
 
     private lateinit var model: TextViewModel
     private val disposable = CompositeDisposable()
     private val itemsList = mutableListOf<RowItem>()
+
+    private val inputMethodManager by lazy {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            activity?.systemService<InputMethodManager>()
+        } else {
+            activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        } ?: throw Exception("null activity. Can't bind inputMethodManager")
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,20 +55,27 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        query.requestFocus()
+        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+
         model = viewModelProvider(ViewModelFactory.getInstance())
 
         val allItems = mutableListOf<RowItem>()
         val section = Section(itemsList)
         val groupAdapter = GroupAdapter<ViewHolder>().apply { add(section) }
 
+        val linearLayoutManager = LinearLayoutManager(context).apply {
+            initialPrefetchItemCount = 8
+        }
+
         recycler.setHasFixedSize(true)
-        recycler.layoutManager = LinearLayoutManager(context).apply { initialPrefetchItemCount = 8 }
+        recycler.layoutManager = linearLayoutManager
         recycler.adapter = groupAdapter
-        fastscroller_thumb.setupWithFastScroller(fastscroller)
 
-        // val aaa = AppManager.getPackageInfo(list.first().packageName)
+        val relay = BehaviorRelay.create<String>()
+        var work: Job? = null
 
-        disposable += model.concertList
+        disposable += model.appsList
             .doOnNext { if (it.isEmpty()) model.updateAll() }
             .debounce { list ->
                 // debounce with a 200ms delay all items except the first one
@@ -74,13 +94,29 @@ class MainFragment : Fragment() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 progressBar.isVisible = allItems.isEmpty()
-                section.update(allItems)
+                println("work is: " + work?.isActive)
+                if (work?.isActive != true) {
+                    section.update(allItems)
+                }
                 itemsList.clear()
                 itemsList.addAll(allItems)
             }
 
-        disposable += RxTextView.textChanges(query)
-            .doOnNext { clear_query.isVisible = it.isNotEmpty() }
+        query.onTextChanged {
+            clear_query.isVisible = it.isNotEmpty()
+
+            work?.cancel()
+            work = launch {
+                // If the user types anything before data has loaded, this will
+                // delay and try again until it is available or the user types
+                // another thing.
+                // Without this, the input would be ignored while data is loading.
+                while (allItems.isEmpty()) delay(200)
+                relay.accept(it.toString())
+            }
+        }
+
+        disposable += relay
             .debounce(200, TimeUnit.MILLISECONDS)
             .map { input ->
                 allItems.takeIf { it.isNotEmpty() }
@@ -98,39 +134,63 @@ class MainFragment : Fragment() {
 
         clear_query.setOnClickListener { query.setText("") }
 
-        setupHideKeyboardWhenNecessary(requireActivity(), recycler, query)
+        setupHideKeyboardWhenNecessary(requireActivity(), inputMethodManager, recycler, query)
 
-        setupFastScroller()
+        setupFastScroller(linearLayoutManager)
+    }
+
+    override fun onStop() {
+        Runtime.getRuntime().exec("pm clear ${Injector.get().appContext().packageName}")
+        super.onStop()
     }
 
     override fun onDestroy() {
         disposable.clear()
+        coroutineContext.cancel()
         super.onDestroy()
     }
 
-    private fun setupFastScroller() {
-        fastscroller.setupWithRecyclerView(recycler, {
-            // or fetch the section at [position] from your database
-            FastScrollItemIndicator.Text(
-                // Grab the first letter and capitalize it
-                itemsList[it].snap.title.substring(0, 1).toUpperCase()
-            ) // Return a text indicator
-        }
+    private fun setupFastScroller(linearLayoutManager: LinearLayoutManager) {
+        fastscroller.setupWithRecyclerView(
+            recyclerView = recycler,
+            useDefaultScroller = false,
+            getItemIndicator = {
+                // or fetch the section at [position] from your database
+                FastScrollItemIndicator.Text(
+                    // Grab the first letter and capitalize it
+                    itemsList[it].snap.title.substring(0, 1).toUpperCase()
+                ) // Return a text indicator
+            }
         )
+
+        val smoothScroller: LinearSmoothScroller = object : LinearSmoothScroller(context) {
+            override fun getVerticalSnapPreference(): Int = SNAP_TO_START
+        }
+
+        fastscroller.itemIndicatorSelectedCallbacks += object :
+            FastScrollerView.ItemIndicatorSelectedCallback {
+            override fun onItemIndicatorSelected(
+                indicator: FastScrollItemIndicator,
+                indicatorCenterY: Int,
+                itemPosition: Int
+            ) {
+                recycler.stopScroll()
+                inputMethodManager.hideKeyboard(query)
+                smoothScroller.targetPosition = itemPosition
+                linearLayoutManager.startSmoothScroll(smoothScroller)
+            }
+        }
+
+        fastscroller_thumb.setupWithFastScroller(fastscroller)
     }
 
     companion object {
         private fun setupHideKeyboardWhenNecessary(
             activity: Activity,
+            inputMethodManager: InputMethodManager,
             recyclerView: RecyclerView,
             editText: EditText
         ) {
-            val inputMethodManager = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                activity.systemService<InputMethodManager>()
-            } else {
-                activity.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-            } ?: return
-
             // hide keyboard when user scrolls
             val touchSlop = ViewConfiguration.get(activity).scaledTouchSlop
             var totalDy = 0
@@ -170,5 +230,4 @@ class MainFragment : Fragment() {
             this.hideSoftInputFromWindow(editText.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
         }
     }
-
 }

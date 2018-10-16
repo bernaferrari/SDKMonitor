@@ -55,7 +55,7 @@ object AppManager {
     fun getIconFromId(packageName: String): Drawable? {
         return try {
             packageManager.getApplicationIcon(getPackageInfo(packageName)?.applicationInfo)
-        } catch (e: PackageManager.NameNotFoundException) {
+        } catch (e: Exception) {
             null
         }
     }

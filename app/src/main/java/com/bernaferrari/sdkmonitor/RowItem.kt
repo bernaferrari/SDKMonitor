@@ -7,7 +7,6 @@ import androidx.core.text.bold
 import com.bernaferrari.sdkmonitor.data.App
 import com.bernaferrari.sdkmonitor.extensions.darken
 import com.bernaferrari.sdkmonitor.extensions.setTextAsync
-import com.bumptech.glide.Glide
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.row_navigation_item.*
@@ -36,11 +35,7 @@ class RowItem(val snap: App) : Item(), CoroutineScope {
 
         viewHolder.label.setTextAsync(snap.title)
 
-        // Suppose id = 1111 and name = neil (just what you want).
         val s = SpannableStringBuilder()
-            .append("min ")
-            .bold { append("28") }
-            .append(" target ")
             .bold { append("28") }
 
         viewHolder.minSdk.setTextAsync(s)
@@ -49,14 +44,9 @@ class RowItem(val snap: App) : Item(), CoroutineScope {
         viewHolder.view.background = ColorDrawable(snap.backgroundColor.darken)
 
         job = Job()
-
-        if (drawable == null) {
-            launch {
-                updateDrawable()
-                loadGlideInto(viewHolder)
-            }
-        } else {
-            loadGlideInto(viewHolder)
+        launch {
+            updateDrawable()
+            viewHolder.icon?.setImageDrawable(drawable)
         }
     }
 
@@ -64,17 +54,5 @@ class RowItem(val snap: App) : Item(), CoroutineScope {
         if (drawable == null) {
             drawable = withContext(Dispatchers.IO) { AppManager.getIconFromId(snap.packageName) }
         }
-    }
-
-    private fun loadGlideInto(viewHolder: ViewHolder) {
-        // Using the application context avoids
-        // IllegalArgumentException: You cannot start a load for a destroyed activity
-        // which might happen when the user is scrolling and closes the app.
-        // I believe the cost of using AppContext here is possibly less than checking if the
-        // context is alive on every interaction.
-
-        Glide.with(Injector.get().appContext())
-            .load(drawable)
-            .into(viewHolder.icon)
     }
 }

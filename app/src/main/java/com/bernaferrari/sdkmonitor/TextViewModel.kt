@@ -5,40 +5,59 @@ import android.support.v7.graphics.Palette
 import androidx.core.graphics.drawable.toBitmap
 import com.bernaferrari.sdkmonitor.data.App
 import com.bernaferrari.sdkmonitor.data.source.local.AppsDao
+import com.bernaferrari.sdkmonitor.data.source.local.VersionsDao
 import com.bernaferrari.sdkmonitor.extensions.darken
 import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import kotlinx.coroutines.experimental.CoroutineScope
-import kotlinx.coroutines.experimental.Dispatchers
-import kotlinx.coroutines.experimental.Job
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.experimental.*
 import kotlin.coroutines.experimental.CoroutineContext
 
 /**
  * Exposes the data to be used in the site diff screen.
  */
-class TextViewModel(private val mSnapsDao: AppsDao) : ViewModel(), CoroutineScope {
+class TextViewModel(
+    private val mAppsDao: AppsDao,
+    private val mVersionsDao: VersionsDao
+) : ViewModel(), CoroutineScope {
 
-    private var job: Job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Default + job
+    override val coroutineContext: CoroutineContext = Dispatchers.IO + Job()
 
     override fun onCleared() {
-        job.cancel()
+        coroutineContext.cancel()
         super.onCleared()
     }
 
-    val concertList: Flowable<List<App>> = mSnapsDao.concertsByDate()
+    val appsList: Flowable<List<App>> = mAppsDao.concertsByDate()
 
     fun updateAll() = launch {
-        AppManager.getPlayStorePackages().forEach {
+        AppManager.getPlayStorePackages()
+            // this will only occur if person runs app on emulator.
+            .let { if (it.isEmpty()) AppManager.getPackages() else it }
+            .forEach {
 
-            val icon = AppManager.getAppIcon(it).toBitmap()
-            val backgroundColor = getPaletteColor(Palette.from(icon).generate(), 0)
+                // apps like Story Saver have a ' ' before the app name for no reason.
+                val icon = AppManager.getAppIcon(it).toBitmap()
+                val backgroundColor = getPaletteColor(Palette.from(icon).generate(), 0)
 
-            mSnapsDao.insertApp(App(it.packageName, AppManager.getAppLabel(it), backgroundColor))
-        }
+                val app = App(
+                    it.packageName,
+                    AppManager.getAppLabel(it).trim(),
+                    backgroundColor,
+                    it.firstInstallTime
+                )
+
+                mAppsDao.insertApp(app)
+
+//            try {
+//                println("rawrrr -> $it")
+////                it.longVersionCode
+//            } catch (e: Exception) {
+//                println(e.localizedMessage)
+//            }
+
+//            mVersionsDao.checkIfExists(it.longVersionCode)
+            }
     }
 
     private fun getPaletteColor(palette: Palette?, defaultColor: Int) = when {

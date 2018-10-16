@@ -10,7 +10,8 @@
     android:layout_marginRight="32dp"
     android:layout_marginBottom="8dp"
     android:foreground="?selectableItemBackground"
-    app:cardCornerRadius="8dp">
+    app:cardCornerRadius="8dp"
+    tools:cardBackgroundColor="@color/md_red_700">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -44,7 +45,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:fontFamily="sans-serif-light"
             android:lines="1"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="@+id/icon"
@@ -53,24 +53,60 @@
             app:layout_constraintTop_toTopOf="@+id/icon"
             tools:text="Changes" />
 
+        <ImageView
+            android:id="@+id/target"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/ic_target"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/view" />
+
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/minSdk"
             style="@style/TextAppearance.MaterialComponents.Caption"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="4dp"
             android:fontFamily="monospace"
             android:lines="1"
-            android:text="minSdk: 28 target:28"
             android:textColor="@color/white"
+            app:fontFamily="monospace"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/target"
             app:layout_constraintTop_toTopOf="@+id/view"
-            tools:text="min" />
+            tools:text="28" />
+
+        <ImageView
+            android:id="@+id/update"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/ic_update"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/minSdk"
+            app:layout_constraintTop_toTopOf="@+id/view" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/lastUpdate"
+            style="@style/TextAppearance.MaterialComponents.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:fontFamily="monospace"
+            android:lines="1"
+            android:textColor="@color/white"
+            app:fontFamily="monospace"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/update"
+            app:layout_constraintTop_toTopOf="@+id/view"
+            tools:text="28" />
 
     </android.support.constraint.ConstraintLayout>
 

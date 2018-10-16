@@ -21,6 +21,7 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import android.support.annotation.VisibleForTesting
 import com.bernaferrari.sdkmonitor.data.source.local.AppsDao
+import com.bernaferrari.sdkmonitor.data.source.local.VersionsDao
 
 /**
  * A creator is used to inject the product ID into the ViewModel
@@ -30,12 +31,14 @@ import com.bernaferrari.sdkmonitor.data.source.local.AppsDao
  * actually necessary in this case, as the product ID can be passed in a public method.
  */
 class ViewModelFactory private constructor(
-    private val mSnapsDao: AppsDao
+    private val mSnapsDao: AppsDao,
+    private val versionsDao: VersionsDao
 ) : ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
-            modelClass.isAssignableFrom(TextViewModel::class.java) -> TextViewModel(mSnapsDao) as T
+            modelClass.isAssignableFrom(TextViewModel::class.java) ->
+                TextViewModel(mSnapsDao, versionsDao) as T
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }
     }
@@ -49,7 +52,10 @@ class ViewModelFactory private constructor(
             if (INSTANCE == null) {
                 synchronized(ViewModelFactory::class.java) {
                     if (INSTANCE == null) {
-                        INSTANCE = ViewModelFactory(Injector.get().appsDao())
+                        INSTANCE = ViewModelFactory(
+                            Injector.get().appsDao(),
+                            Injector.get().versionsDao()
+                        )
                     }
                 }
             }

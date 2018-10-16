@@ -24,7 +24,7 @@ import android.arch.persistence.room.PrimaryKey
 )
 data class Version(
     @PrimaryKey
-    val version: String,
+    val version: Long,
     val packageName: String,
     val timestamp: Long,
     val appSize: String,
