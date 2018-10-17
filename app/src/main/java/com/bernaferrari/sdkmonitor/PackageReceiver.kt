@@ -3,7 +3,7 @@ package com.bernaferrari.sdkmonitor
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import timber.log.Timber
+import com.orhanobut.logger.Logger
 
 class PackageReceiver : BroadcastReceiver() {
 
@@ -14,17 +14,17 @@ class PackageReceiver : BroadcastReceiver() {
         when {
             intent.action == Intent.ACTION_PACKAGE_ADDED -> {
                 // Package installed
-                Timber.d("Package installed - %s", packageName)
+                Logger.d("Package installed - %s", packageName)
                 PackageService.startActionAddPackage(context, packageName)
             }
             intent.action == Intent.ACTION_PACKAGE_REPLACED -> {
                 // Package updated
-                Timber.d("Package updated - %s", packageName)
+                Logger.d("Package updated - %s", packageName)
                 PackageService.startActionFetchUpdate(context, packageName)
             }
             intent.action == Intent.ACTION_PACKAGE_FULLY_REMOVED -> {
                 // Package uninstalled
-                Timber.d("Package uninstalled - %s", packageName)
+                Logger.d("Package uninstalled - %s", packageName)
                 PackageService.startActionRemovePackage(context, packageName)
             }
         }

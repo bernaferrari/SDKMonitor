@@ -1,9 +1,9 @@
 package com.bernaferrari.sdkmonitor.extensions
 
-import android.support.v4.text.PrecomputedTextCompat
-import android.support.v4.widget.TextViewCompat
-import android.support.v7.widget.AppCompatTextView
 import android.text.SpannableStringBuilder
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.text.PrecomputedTextCompat
+import androidx.core.widget.TextViewCompat
 
 internal fun AppCompatTextView.setTextAsync(text: String) =
     this.setTextFuture(

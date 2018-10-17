@@ -1,7 +1,6 @@
 package com.bernaferrari.sdkmonitor
 
-import android.support.multidex.MultiDexApplication
-import timber.log.Timber
+import androidx.multidex.MultiDexApplication
 
 class MainApplication : MultiDexApplication() {
 
@@ -16,7 +15,6 @@ class MainApplication : MultiDexApplication() {
             .appModule(AppModule(this))
             .build()
 
-        Timber.plant(Timber.DebugTree())
         AppManager.init(this)
     }
 

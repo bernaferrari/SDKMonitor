@@ -1,9 +1,9 @@
 package com.bernaferrari.sdkmonitor
 
 import android.graphics.Rect
-import android.support.annotation.Dimension
-import android.support.v7.widget.RecyclerView
 import android.view.View
+import androidx.annotation.Dimension
+import androidx.recyclerview.widget.RecyclerView
 
 /**
  * An ItemDecoration which applies an even visual padding on the left and right edges of a grid and

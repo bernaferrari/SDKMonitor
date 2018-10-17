@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -22,7 +22,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@mipmap/ic_launcher" />
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/label"
         style="@style/TextAppearance.MaterialComponents.Headline6"
         android:layout_width="0dp"
@@ -74,7 +74,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/bottom_view" />
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/minSdk"
         style="@style/TextAppearance.MaterialComponents.Caption"
         android:layout_width="wrap_content"
@@ -98,7 +98,7 @@
         app:layout_constraintStart_toEndOf="@+id/minSdk"
         app:layout_constraintTop_toTopOf="@+id/bottom_view" />
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/lastUpdate"
         style="@style/TextAppearance.MaterialComponents.Caption"
         android:layout_width="wrap_content"
@@ -112,4 +112,4 @@
         app:layout_constraintTop_toTopOf="@+id/bottom_view"
         tools:text="2 months ago" />
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

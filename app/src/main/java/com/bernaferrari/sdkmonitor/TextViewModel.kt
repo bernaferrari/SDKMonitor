@@ -1,9 +1,9 @@
 package com.bernaferrari.sdkmonitor
 
-import android.arch.lifecycle.ViewModel
 import android.os.Build
-import android.support.v7.graphics.Palette
 import androidx.core.graphics.drawable.toBitmap
+import androidx.lifecycle.ViewModel
+import androidx.palette.graphics.Palette
 import com.bernaferrari.sdkmonitor.data.App
 import com.bernaferrari.sdkmonitor.data.Version
 import com.bernaferrari.sdkmonitor.data.source.local.AppsDao

@@ -2,12 +2,12 @@ package com.bernaferrari.sdkmonitor
 
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
-import android.support.v7.util.DiffUtil
-import android.support.v7.widget.RecyclerView
 import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.text.bold
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
 import com.bernaferrari.sdkmonitor.data.App
 import com.bernaferrari.sdkmonitor.extensions.darken
 import com.bernaferrari.sdkmonitor.extensions.setTextAsync

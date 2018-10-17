@@ -4,16 +4,16 @@ import android.app.Activity
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.LinearSmoothScroller
-import android.support.v7.widget.RecyclerView
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import androidx.core.content.systemService
+import androidx.core.content.getSystemService
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
+import androidx.recyclerview.widget.RecyclerView
 import com.bernaferrari.sdkmonitor.extensions.*
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.reddit.indicatorfastscroll.FastScrollItemIndicator
@@ -47,7 +47,7 @@ class MainFragment : Fragment(), CoroutineScope {
 
     private val inputMethodManager by lazy {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            activity?.systemService<InputMethodManager>()
+            activity?.getSystemService<InputMethodManager>()
         } else {
             activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
         } ?: throw Exception("null activity. Can't bind inputMethodManager")

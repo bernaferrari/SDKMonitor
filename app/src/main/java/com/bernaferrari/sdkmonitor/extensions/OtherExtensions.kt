@@ -1,27 +1,27 @@
 package com.bernaferrari.sdkmonitor.extensions
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
-import android.support.annotation.AttrRes
-import android.support.annotation.ColorInt
-import android.support.annotation.LayoutRes
-import android.support.annotation.StringRes
-import android.support.graphics.drawable.AnimatedVectorDrawableCompat
-import android.support.v4.app.Fragment
-import android.support.v4.graphics.ColorUtils
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.SimpleItemAnimator
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.annotation.AttrRes
+import androidx.annotation.ColorInt
+import androidx.annotation.LayoutRes
+import androidx.annotation.StringRes
+import androidx.core.graphics.ColorUtils
 import androidx.core.net.toUri
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
+import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.github.marlonlom.utilities.timeago.TimeAgo
 
 internal typealias ColorGroup = Pair<Int, Int>
