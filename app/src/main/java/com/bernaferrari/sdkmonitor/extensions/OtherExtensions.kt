@@ -64,6 +64,8 @@ internal fun Int.toDp(resources: Resources): Int {
     return (resources.displayMetrics.density * this).toInt()
 }
 
+internal fun Int.toDpF(resources: Resources): Float = resources.displayMetrics.density * this
+
 /**
  * For Fragments, allows declarations like
  * ```

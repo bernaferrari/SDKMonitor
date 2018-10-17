@@ -33,9 +33,14 @@ class TextViewModel(
     val appsList: Flowable<List<App>> = mAppsDao.getAppsList()
 
     fun getSdkDate(app: App): Pair<Int, Long> {
+
+        // since insertApp is called before insertVersion, mVersionsDao.getValue(...) will
+        // return null on app's first run. This will avoid the situation.
         val version = mVersionsDao.getValue(app.packageName)
+
         val sdkVersion =
             version?.targetSdk ?: AppManager.getApplicationInfo(app.packageName).targetSdkVersion
+
         val lastUpdate =
             version?.lastUpdateTime ?: AppManager.getPackageInfo(app.packageName).lastUpdateTime
 
@@ -57,7 +62,8 @@ class TextViewModel(
                     packageName = it.packageName,
                     title = label,
                     backgroundColor = backgroundColor,
-                    firstInstallTime = it.firstInstallTime
+                    firstInstallTime = it.firstInstallTime,
+                    isFromPlayStore = AppManager.isAppFromGooglePlay(it.packageName)
                 )
 
                 mAppsDao.insertApp(app)

@@ -48,8 +48,8 @@ class AppAdapter(var itemsList: List<App>) :
 
         holder.itemView.minSdk.setTextAsync(s)
 
-        holder.itemView.card.setCardBackgroundColor(snap.backgroundColor)
-        holder.itemView.view.background = ColorDrawable(snap.backgroundColor.darken)
+//        holder.itemView.card.setCardBackgroundColor(snap.backgroundColor)
+        holder.itemView.bottom_view.background = ColorDrawable(snap.backgroundColor.darken)
 
         job = Job()
         runBlocking {

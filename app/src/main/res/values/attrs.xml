@@ -19,6 +19,7 @@
     <attr name="weakColor" format="color" />
     <attr name="weakerColor" format="color" />
     <attr name="iconColored" format="color" />
+    <attr name="searchBoxColor" format="color" />
 
     <attr name="windowBackground" format="color" />
     <attr name="inputTheme" format="reference" />

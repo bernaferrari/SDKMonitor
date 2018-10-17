@@ -80,15 +80,23 @@ class MainFragment : Fragment(), CoroutineScope {
         recycler.adapter = groupAdapter
         recycler.addItemDecoration(itemDecorator)
 
+        filter.setOnClickListener {
+            //            MaterialDialog(requireContext())
+        }
+
+
         val relay = BehaviorRelay.create<String>()
         var work: Job? = null
+
+        groupAdapter.setOnItemClickListener { item, view ->
+
+        }
 
         disposable += model.appsList
             .doOnNext { if (it.isEmpty()) model.updateAll() }
             .debounce { list ->
                 // debounce with a 200ms delay all items except the first one
                 val flow = Flowable.just(list)
-
                 flow
                     .takeIf { allItems.isEmpty() && list.isEmpty() }
                     ?.let { it } ?: flow.delay(200, TimeUnit.MILLISECONDS)
@@ -97,7 +105,8 @@ class MainFragment : Fragment(), CoroutineScope {
                 list.also { allItems.clear() }
                     .mapTo(allItems) { app ->
                         val (sdkVersion, lastUpdate) = model.getSdkDate(app)
-                        RowItem(app, sdkVersion, lastUpdate)
+                        val cornerRadius = 8.toDpF(resources)
+                        RowItem(app, sdkVersion, lastUpdate, cornerRadius)
                     }
                     .sortBy { it.app.title.toLowerCase() }
             }
