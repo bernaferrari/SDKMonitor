@@ -54,4 +54,10 @@
         <item name="thumbColor">?colorAccent</item>
     </style>
 
+    <style name="ClickableImageView">
+        <item name="android:clickable">true</item>
+        <item name="android:background">?android:selectableItemBackgroundBorderless</item>
+    </style>
+
+
 </resources>

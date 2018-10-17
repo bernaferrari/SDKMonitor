@@ -2,9 +2,8 @@ package com.bernaferrari.sdkmonitor
 
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
-import android.text.SpannableStringBuilder
-import androidx.core.text.bold
 import com.bernaferrari.sdkmonitor.data.App
+import com.bernaferrari.sdkmonitor.extensions.convertTimestampToDate
 import com.bernaferrari.sdkmonitor.extensions.darken
 import com.bernaferrari.sdkmonitor.extensions.setTextAsync
 import com.xwray.groupie.kotlinandroidextensions.Item
@@ -14,7 +13,7 @@ import kotlinx.coroutines.experimental.*
 import kotlin.coroutines.experimental.CoroutineContext
 
 
-class RowItem(val snap: App) : Item(), CoroutineScope {
+class RowItem(val app: App, val sdkVersion: Int, val lastUpdate: Long) : Item(), CoroutineScope {
 
     private var job: Job = Job()
 
@@ -33,18 +32,17 @@ class RowItem(val snap: App) : Item(), CoroutineScope {
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
 
-        viewHolder.label.setTextAsync(snap.title)
+        viewHolder.label.setTextAsync(app.title)
 
-        val s = SpannableStringBuilder()
-            .bold { append("28") }
-
-        viewHolder.minSdk.setTextAsync(s)
-
-        viewHolder.card.setCardBackgroundColor(snap.backgroundColor)
-        viewHolder.view.background = ColorDrawable(snap.backgroundColor.darken)
+        viewHolder.card.setCardBackgroundColor(app.backgroundColor)
+        viewHolder.view.background = ColorDrawable(app.backgroundColor.darken)
 
         job = Job()
         launch {
+            viewHolder.minSdk.setTextAsync(sdkVersion.toString())
+            viewHolder.lastUpdate.setTextAsync(lastUpdate.convertTimestampToDate())
+
+            drawable = null
             updateDrawable()
             viewHolder.icon?.setImageDrawable(drawable)
         }
@@ -52,7 +50,7 @@ class RowItem(val snap: App) : Item(), CoroutineScope {
 
     private suspend inline fun updateDrawable() {
         if (drawable == null) {
-            drawable = withContext(Dispatchers.IO) { AppManager.getIconFromId(snap.packageName) }
+            drawable = withContext(Dispatchers.IO) { AppManager.getIconFromId(app.packageName) }
         }
     }
 }

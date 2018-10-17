@@ -1,9 +1,11 @@
 package com.bernaferrari.sdkmonitor
 
 import android.arch.lifecycle.ViewModel
+import android.os.Build
 import android.support.v7.graphics.Palette
 import androidx.core.graphics.drawable.toBitmap
 import com.bernaferrari.sdkmonitor.data.App
+import com.bernaferrari.sdkmonitor.data.Version
 import com.bernaferrari.sdkmonitor.data.source.local.AppsDao
 import com.bernaferrari.sdkmonitor.data.source.local.VersionsDao
 import com.bernaferrari.sdkmonitor.extensions.darken
@@ -28,7 +30,17 @@ class TextViewModel(
         super.onCleared()
     }
 
-    val appsList: Flowable<List<App>> = mAppsDao.concertsByDate()
+    val appsList: Flowable<List<App>> = mAppsDao.getAppsList()
+
+    fun getSdkDate(app: App): Pair<Int, Long> {
+        val version = mVersionsDao.getValue(app.packageName)
+        val sdkVersion =
+            version?.targetSdk ?: AppManager.getApplicationInfo(app.packageName).targetSdkVersion
+        val lastUpdate =
+            version?.lastUpdateTime ?: AppManager.getPackageInfo(app.packageName).lastUpdateTime
+
+        return Pair(sdkVersion, lastUpdate)
+    }
 
     fun updateAll() = launch {
         AppManager.getPlayStorePackages()
@@ -39,24 +51,37 @@ class TextViewModel(
                 // apps like Story Saver have a ' ' before the app name for no reason.
                 val icon = AppManager.getAppIcon(it).toBitmap()
                 val backgroundColor = getPaletteColor(Palette.from(icon).generate(), 0)
+                val label = AppManager.getAppLabel(it).trim()
 
                 val app = App(
-                    it.packageName,
-                    AppManager.getAppLabel(it).trim(),
-                    backgroundColor,
-                    it.firstInstallTime
+                    packageName = it.packageName,
+                    title = label,
+                    backgroundColor = backgroundColor,
+                    firstInstallTime = it.firstInstallTime
                 )
 
                 mAppsDao.insertApp(app)
 
-//            try {
-//                println("rawrrr -> $it")
-////                it.longVersionCode
-//            } catch (e: Exception) {
-//                println(e.localizedMessage)
-//            }
+                val versionCode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    it.longVersionCode
+                } else {
+                    it.versionCode.toLong()
+                }
 
-//            mVersionsDao.checkIfExists(it.longVersionCode)
+                println("checkIfExists ${label}: " + mVersionsDao.checkIfExists(versionCode))
+
+                mVersionsDao.insertVersion(
+                    Version(
+                        version = versionCode,
+                        packageName = it.packageName,
+                        versionName = it.versionName,
+                        lastUpdateTime = it.lastUpdateTime,
+                        targetSdk = it.applicationInfo.targetSdkVersion//,
+//                       className = it.applicationInfo.className ?: "",
+//                       sourceDir = it.applicationInfo.sourceDir ?: "",
+//                       dataDir = it.applicationInfo.dataDir ?: ""
+                    )
+                )
             }
     }
 

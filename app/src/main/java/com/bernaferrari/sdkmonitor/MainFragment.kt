@@ -37,6 +37,13 @@ class MainFragment : Fragment(), CoroutineScope {
     private lateinit var model: TextViewModel
     private val disposable = CompositeDisposable()
     private val itemsList = mutableListOf<RowItem>()
+    private val itemDecorator by lazy {
+        InsetDecoration(
+            resources.getDimensionPixelSize(R.dimen.right_padding_for_fast_scroller),
+            false,
+            true
+        )
+    }
 
     private val inputMethodManager by lazy {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -71,6 +78,7 @@ class MainFragment : Fragment(), CoroutineScope {
         recycler.setHasFixedSize(true)
         recycler.layoutManager = linearLayoutManager
         recycler.adapter = groupAdapter
+        recycler.addItemDecoration(itemDecorator)
 
         val relay = BehaviorRelay.create<String>()
         var work: Job? = null
@@ -87,24 +95,33 @@ class MainFragment : Fragment(), CoroutineScope {
             }
             .map { list ->
                 list.also { allItems.clear() }
-                    .mapTo(allItems) { snap -> RowItem(snap) }
-                    .sortBy { it.snap.title.toLowerCase() }
+                    .mapTo(allItems) { app ->
+                        val (sdkVersion, lastUpdate) = model.getSdkDate(app)
+                        RowItem(app, sdkVersion, lastUpdate)
+                    }
+                    .sortBy { it.app.title.toLowerCase() }
             }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
+
                 progressBar.isVisible = allItems.isEmpty()
-                println("work is: " + work?.isActive)
                 if (work?.isActive != true) {
                     section.update(allItems)
                 }
+
                 itemsList.clear()
                 itemsList.addAll(allItems)
+
+                if (allItems.isEmpty()) {
+                    query.hint = "Loading.."
+                } else {
+                    query.hint = "Search ${allItems.size} apps.."
+                }
             }
 
         query.onTextChanged {
             clear_query.isVisible = it.isNotEmpty()
-
             work?.cancel()
             work = launch {
                 // If the user types anything before data has loaded, this will
@@ -121,7 +138,7 @@ class MainFragment : Fragment(), CoroutineScope {
             .map { input ->
                 allItems.takeIf { it.isNotEmpty() }
                     ?.filter {
-                        it.snap.title.normalizeString().contains(input.toString().normalizeString())
+                        it.app.title.normalizeString().contains(input.toString().normalizeString())
                     } ?: allItems
             }
             .subscribeOn(Schedulers.io())
@@ -139,11 +156,6 @@ class MainFragment : Fragment(), CoroutineScope {
         setupFastScroller(linearLayoutManager)
     }
 
-    override fun onStop() {
-        Runtime.getRuntime().exec("pm clear ${Injector.get().appContext().packageName}")
-        super.onStop()
-    }
-
     override fun onDestroy() {
         disposable.clear()
         coroutineContext.cancel()
@@ -156,10 +168,10 @@ class MainFragment : Fragment(), CoroutineScope {
             useDefaultScroller = false,
             getItemIndicator = {
                 // or fetch the section at [position] from your database
-                FastScrollItemIndicator.Text(
-                    // Grab the first letter and capitalize it
-                    itemsList[it].snap.title.substring(0, 1).toUpperCase()
-                ) // Return a text indicator
+                val letter = itemsList[it].app.title.substring(0, 1)
+                val index = if (letter[0].isDigit()) "#" else letter.toUpperCase()
+
+                FastScrollItemIndicator.Text(index) // Return a text indicator
             }
         )
 
@@ -228,6 +240,12 @@ class MainFragment : Fragment(), CoroutineScope {
 
         private fun InputMethodManager.hideKeyboard(editText: EditText) {
             this.hideSoftInputFromWindow(editText.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+            if (editText.text.isEmpty()) {
+                // loose the focus when scrolling and the text is empty, this way the
+                // cursor will be hidden.
+                editText.isFocusable = false
+                editText.isFocusableInTouchMode = true
+            }
         }
     }
 }

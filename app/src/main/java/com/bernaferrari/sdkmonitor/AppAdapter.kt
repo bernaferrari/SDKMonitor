@@ -64,11 +64,11 @@ class AppAdapter(var itemsList: List<App>) :
 
 //        if (drawable == null) {
 //            runBlocking {
-//                updateDrawable(snap)
-//                loadGlideInto(holder, snap)
+//                updateDrawable(app)
+//                loadGlideInto(holder, app)
 //            }
 //        } else {
-//            loadGlideInto(holder, snap)
+//            loadGlideInto(holder, app)
 //        }
     }
 

@@ -16,14 +16,20 @@ interface VersionsDao {
 
     // The Int type parameter tells Room to use a PositionalDataSource
     // object, with position-based loading under the hood.
+    @Query("SELECT * FROM versions WHERE packageName=:packageName ORDER BY version DESC LIMIT 1")
+    fun getValue(packageName: String): Version?
+
+
+    // The Int type parameter tells Room to use a PositionalDataSource
+    // object, with position-based loading under the hood.
     @Query("SELECT EXISTS(SELECT 1 FROM versions WHERE version=:version)")
-    fun checkIfExists(version: Long): Boolean
+    fun checkIfExists(version: Long): Int
 
 
     /**
-     * Insert a snap in the database. If the snap already exists, replace it.
+     * Insert a app in the database. If the app already exists, replace it.
      *
-     * @param snap the snap to be inserted.
+     * @param app the app to be inserted.
      */
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertVersion(version: Version)

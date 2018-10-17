@@ -26,8 +26,10 @@ data class Version(
     @PrimaryKey
     val version: Long,
     val packageName: String,
-    val timestamp: Long,
-    val appSize: String,
-    val downloads: String,
-    val androidVersion: String
+    val versionName: String,
+    val lastUpdateTime: Long,
+    val targetSdk: Int//,
+//    val className: String,
+//    val sourceDir: String,
+//    val dataDir: String
 )

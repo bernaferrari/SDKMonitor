@@ -17,12 +17,12 @@ interface AppsDao {
     // The Int type parameter tells Room to use a PositionalDataSource
     // object, with position-based loading under the hood.
     @Query("SELECT * FROM apps ORDER BY title DESC")
-    fun concertsByDate(): Flowable<List<App>>
+    fun getAppsList(): Flowable<List<App>>
 
     /**
-     * Insert a snap in the database. If the snap already exists, replace it.
+     * Insert a app in the database. If the app already exists, replace it.
      *
-     * @param snap the snap to be inserted.
+     * @param app the app to be inserted.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertApp(app: App)
