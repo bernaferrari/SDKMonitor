@@ -73,7 +73,9 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="Widget.FastScrollSample.FastScrollerThumb" parent="Widget.IndicatorFastScroll.FastScrollerThumb" />
+    <style name="Widget.FastScrollSample.FastScrollerThumb" parent="Widget.IndicatorFastScroll.FastScrollerThumb">
+        <item name="android:textColor">@color/white</item>
+    </style>
 
     <style name="Widget.FastScrollSample.FastScrollerThumb.Colorful">
         <item name="thumbColor">?colorAccent</item>

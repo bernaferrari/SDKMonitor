@@ -8,6 +8,7 @@ import com.bernaferrari.sdkmonitor.data.App
 import com.bernaferrari.sdkmonitor.data.Version
 import com.bernaferrari.sdkmonitor.data.source.local.AppsDao
 import com.bernaferrari.sdkmonitor.data.source.local.VersionsDao
+import com.bernaferrari.sdkmonitor.extensions.convertTimestampToDate
 import com.bernaferrari.sdkmonitor.extensions.darken
 import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
@@ -23,6 +24,37 @@ class TextViewModel(
     private val mVersionsDao: VersionsDao
 ) : ViewModel(), CoroutineScope {
 
+//    public class MentionKeyedDataSource : ItemKeyedDataSource<Long, App>() {
+//        override fun loadInitial(
+//            params: LoadInitialParams<Long>,
+//            callback: LoadInitialCallback<App>
+//        ) {
+//
+//
+//
+//            Observable.just(cachedItems)
+//                .filter(() -> return cachedItems != null && !cachedItems.isEmpty())
+//            .switchIfEmpty(repository.getItems(params.requestedLoadSize))
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(response -> callback.onResult(response.data.list));
+//
+//
+//        }
+//
+//
+//        @Override
+//        public void loadInitial(@NonNull LoadInitialParams<Long> params, final @NonNull ItemKeyedDataSource.LoadInitialCallback<Mention> callback)
+//        {
+//            Observable.just(cachedItems)
+//                .filter(() -> return cachedItems != null && !cachedItems.isEmpty())
+//            .switchIfEmpty(repository.getItems(params.requestedLoadSize))
+//            .subscribeOn(Schedulers.io())
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribe(response -> callback.onResult(response.data.list));
+//        }
+//    }
+
     override val coroutineContext: CoroutineContext = Dispatchers.IO + Job()
 
     override fun onCleared() {
@@ -32,7 +64,15 @@ class TextViewModel(
 
     val appsList: Flowable<List<App>> = mAppsDao.getAppsList()
 
-    fun getSdkDate(app: App): Pair<Int, Long> {
+//    val pagedListLiveData : LiveData<PagedList<Person>> by lazy {
+//        val dataSourceFactory = mAppsDao.selectPaged()
+//        val config = PagedList.Config.Builder()
+//            .setPageSize(20)
+//            .build()
+//        LivePagedListBuilder(dataSourceFactory, config).build()
+//    }
+
+    fun getSdkDate(app: App): Pair<Int, String> {
 
         // since insertApp is called before insertVersion, mVersionsDao.getValue(...) will
         // return null on app's first run. This will avoid the situation.
@@ -44,7 +84,7 @@ class TextViewModel(
         val lastUpdate =
             version?.lastUpdateTime ?: AppManager.getPackageInfo(app.packageName).lastUpdateTime
 
-        return Pair(sdkVersion, lastUpdate)
+        return Pair(sdkVersion, lastUpdate.convertTimestampToDate())
     }
 
     fun updateAll() = launch {

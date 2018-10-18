@@ -1,18 +1,20 @@
 package com.bernaferrari.sdkmonitor
 
+import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
+import androidx.core.graphics.drawable.toBitmap
 import com.bernaferrari.sdkmonitor.data.App
-import com.bernaferrari.sdkmonitor.extensions.convertTimestampToDate
 import com.bernaferrari.sdkmonitor.extensions.darken
 import com.bernaferrari.sdkmonitor.extensions.setTextAsync
+import com.bumptech.glide.Glide
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.row_navigation_item.*
 import kotlinx.coroutines.experimental.*
 import kotlin.coroutines.experimental.CoroutineContext
 
-class RowItem(val app: App, val sdkVersion: Int, val lastUpdate: Long, val cornerRadius: Float) :
+class RowItem(val app: App, val sdkVersion: Int, val lastUpdate: String, val cornerRadius: Float) :
     Item(), CoroutineScope {
 
     private var job: Job = Job()
@@ -41,7 +43,7 @@ class RowItem(val app: App, val sdkVersion: Int, val lastUpdate: Long, val corne
 
     private val topShape = createShape(app.backgroundColor, false)
     private val bottomShape = createShape(app.backgroundColor.darken, true)
-    private var drawable: Drawable? = null
+    private var drawable: Bitmap? = null
 
     override fun getLayout() = R.layout.row_navigation_item
 
@@ -54,16 +56,21 @@ class RowItem(val app: App, val sdkVersion: Int, val lastUpdate: Long, val corne
         job = Job()
         launch {
             viewHolder.minSdk.setTextAsync(sdkVersion.toString())
-            viewHolder.lastUpdate.setTextAsync(lastUpdate.convertTimestampToDate())
+            viewHolder.lastUpdate.setTextAsync(lastUpdate)
 
             updateDrawable()
-            viewHolder.icon?.setImageDrawable(drawable)
+            Glide.with(Injector.get().appContext())
+                .load(drawable)
+                .into(viewHolder.icon)
+//            viewHolder.icon?.setImageBitmap(drawable)
         }
     }
 
     private suspend inline fun updateDrawable() {
         if (drawable == null) {
-            drawable = withContext(Dispatchers.IO) { AppManager.getIconFromId(app.packageName) }
+            drawable = withContext(Dispatchers.IO) {
+                AppManager.getIconFromId(app.packageName)?.toBitmap()
+            }
         }
     }
 }

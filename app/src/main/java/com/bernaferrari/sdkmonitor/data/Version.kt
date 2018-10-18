@@ -11,7 +11,7 @@ import androidx.room.PrimaryKey
  */
 @Entity(
     tableName = "versions",
-    indices = [(Index(value = ["version", "packageName"], unique = true))],
+    indices = [(Index(value = ["packageName"], unique = true))],
     foreignKeys = [(
             ForeignKey(
                 entity = App::class,

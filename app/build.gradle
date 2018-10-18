@@ -39,6 +39,9 @@ android {
             coroutines 'enable'
         }
     }
+    kapt {
+        correctErrorTypes = true
+    }
     android {
         lintOptions {
             abortOnError false
@@ -47,6 +50,9 @@ android {
     compileOptions {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
+    }
+    dataBinding {
+        enabled = true
     }
 }
 
@@ -74,6 +80,11 @@ dependencies {
     def lifecycle_version = '2.0.0'
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
 
+    def paging_version = "2.1.0-alpha01"
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
+    implementation "androidx.paging:paging-rxjava2-ktx:$paging_version"
+
+
     // Dagger
     def dagger = "2.17"
     implementation "com.google.dagger:dagger:$dagger"
@@ -84,6 +95,12 @@ dependencies {
     implementation "com.xwray:groupie:$groupie"
     implementation "com.xwray:groupie-kotlin-android-extensions:$groupie"
     implementation 'com.mikepenz:fastadapter:3.3.1'
+
+    def epoxy = "3.0.0-rc1"
+    implementation "com.airbnb.android:epoxy:$epoxy"
+    implementation "com.airbnb.android:epoxy-databinding:$epoxy"
+    kapt "com.airbnb.android:epoxy-processor:$epoxy"
+
 
     // Coroutines
     def coroutines_version = "0.30.2"

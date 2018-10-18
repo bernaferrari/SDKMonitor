@@ -14,13 +14,11 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
+import com.bernaferrari.sdkmonitor.data.App
 import com.bernaferrari.sdkmonitor.extensions.*
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.reddit.indicatorfastscroll.FastScrollItemIndicator
 import com.reddit.indicatorfastscroll.FastScrollerView
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.Section
-import com.xwray.groupie.ViewHolder
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -30,13 +28,20 @@ import kotlinx.coroutines.experimental.*
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.experimental.CoroutineContext
 
+class AppVersion(
+    val app: App,
+    val sdkVersion: Int,
+    val lastUpdateTime: String,
+    val cornerRadius: Float
+)
+
 class MainFragment : Fragment(), CoroutineScope {
 
     override val coroutineContext: CoroutineContext = Dispatchers.Main + Job()
 
     private lateinit var model: TextViewModel
     private val disposable = CompositeDisposable()
-    private val itemsList = mutableListOf<RowItem>()
+    private val itemsList = mutableListOf<AppVersion>()
     private val itemDecorator by lazy {
         InsetDecoration(
             resources.getDimensionPixelSize(R.dimen.right_padding_for_fast_scroller),
@@ -44,6 +49,8 @@ class MainFragment : Fragment(), CoroutineScope {
             true
         )
     }
+
+    private val controller = PhotoController()
 
     private val inputMethodManager by lazy {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -67,9 +74,7 @@ class MainFragment : Fragment(), CoroutineScope {
 
         model = viewModelProvider(ViewModelFactory.getInstance())
 
-        val allItems = mutableListOf<RowItem>()
-        val section = Section(itemsList)
-        val groupAdapter = GroupAdapter<ViewHolder>().apply { add(section) }
+        val allItems = mutableListOf<AppVersion>()
 
         val linearLayoutManager = LinearLayoutManager(context).apply {
             initialPrefetchItemCount = 8
@@ -77,20 +82,17 @@ class MainFragment : Fragment(), CoroutineScope {
 
         recycler.setHasFixedSize(true)
         recycler.layoutManager = linearLayoutManager
-        recycler.adapter = groupAdapter
+        recycler.adapter = controller.adapter
         recycler.addItemDecoration(itemDecorator)
 
         filter.setOnClickListener {
             //            MaterialDialog(requireContext())
         }
 
-
         val relay = BehaviorRelay.create<String>()
         var work: Job? = null
 
-        groupAdapter.setOnItemClickListener { item, view ->
-
-        }
+        val cornerRadius = 8.toDpF(resources)
 
         disposable += model.appsList
             .doOnNext { if (it.isEmpty()) model.updateAll() }
@@ -103,29 +105,29 @@ class MainFragment : Fragment(), CoroutineScope {
             }
             .map { list ->
                 list.also { allItems.clear() }
+                    .asSequence()
+                    .sortedBy { it.title.toLowerCase() }
                     .mapTo(allItems) { app ->
                         val (sdkVersion, lastUpdate) = model.getSdkDate(app)
-                        val cornerRadius = 8.toDpF(resources)
-                        RowItem(app, sdkVersion, lastUpdate, cornerRadius)
+                        AppVersion(app, sdkVersion, lastUpdate, cornerRadius)
                     }
-                    .sortBy { it.app.title.toLowerCase() }
+            }
+            .doOnNext {
+                itemsList.clear()
+                itemsList.addAll(allItems)
             }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
 
                 progressBar.isVisible = allItems.isEmpty()
+
+                if (allItems.isNotEmpty()) query.hint = "Search ${allItems.size} apps.."
+
+                // if work is active, it means user is searching for something, so the
+                // other disposable will be called.
                 if (work?.isActive != true) {
-                    section.update(allItems)
-                }
-
-                itemsList.clear()
-                itemsList.addAll(allItems)
-
-                if (allItems.isEmpty()) {
-                    query.hint = "Loading.."
-                } else {
-                    query.hint = "Search ${allItems.size} apps.."
+                    controller.setData(allItems)
                 }
             }
 
@@ -146,17 +148,16 @@ class MainFragment : Fragment(), CoroutineScope {
             .debounce(200, TimeUnit.MILLISECONDS)
             .map { input ->
                 allItems.takeIf { it.isNotEmpty() }
-                    ?.filter {
-                        it.app.title.normalizeString().contains(input.toString().normalizeString())
-                    } ?: allItems
+                    ?.filter { it.app.title.normalizeString().contains(input.normalizeString()) }
+                        ?: allItems
             }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                section.update(it)
+            .doOnNext {
                 itemsList.clear()
                 itemsList.addAll(it)
             }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { controller.setData(it) }
 
         clear_query.setOnClickListener { query.setText("") }
 

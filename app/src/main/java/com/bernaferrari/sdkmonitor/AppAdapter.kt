@@ -1,7 +1,7 @@
 package com.bernaferrari.sdkmonitor
 
-import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.GradientDrawable
 import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bernaferrari.sdkmonitor.data.App
 import com.bernaferrari.sdkmonitor.extensions.darken
 import com.bernaferrari.sdkmonitor.extensions.setTextAsync
-import com.bumptech.glide.Glide
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.row_navigation_item.view.*
 import kotlinx.coroutines.experimental.*
@@ -21,13 +20,14 @@ class AppAdapter(var itemsList: List<App>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>(), CoroutineScope {
 
     private var job: Job = Job()
+    val cornerRadius = 16f
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + job
 
     override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) {
         job.cancel()
-        holder.itemView.icon
+        holder.itemView.icon.setImageDrawable(null)
         super.onViewDetachedFromWindow(holder)
     }
 
@@ -39,8 +39,25 @@ class AppAdapter(var itemsList: List<App>) :
         return ViewHolder(view)
     }
 
+    private fun createShape(color: Int, isBottom: Boolean): Drawable {
+        val shape = GradientDrawable()
+        shape.shape = GradientDrawable.RECTANGLE
+        shape.cornerRadii = if (isBottom) {
+            floatArrayOf(0f, 0f, 0f, 0f, cornerRadius, cornerRadius, cornerRadius, cornerRadius)
+        } else {
+            floatArrayOf(cornerRadius, cornerRadius, cornerRadius, cornerRadius, 0f, 0f, 0f, 0f)
+        }
+        shape.setColor(color)
+        return shape
+    }
+
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val snap = itemsList[position]
+
+        val topShape = createShape(snap.backgroundColor, false)
+        val bottomShape = createShape(snap.backgroundColor.darken, true)
+
 
         holder.itemView.label.setTextAsync(snap.title)
 
@@ -49,17 +66,19 @@ class AppAdapter(var itemsList: List<App>) :
         holder.itemView.minSdk.setTextAsync(s)
 
 //        holder.itemView.card.setCardBackgroundColor(snap.backgroundColor)
-        holder.itemView.bottom_view.background = ColorDrawable(snap.backgroundColor.darken)
+        holder.itemView.top_view.background = topShape
+        holder.itemView.bottom_view.background = bottomShape
 
         job = Job()
-        runBlocking {
+        launch {
             val drawable =
                 withContext(Dispatchers.IO) { AppManager.getIconFromId(snap.packageName) }
 
+            holder.itemView.icon.setImageDrawable(drawable)
             // Glide performs a lot better than setImageDrawable
-            Glide.with(holder.itemView.context)
-                .load(drawable)
-                .into(holder.itemView.icon)
+//            Glide.with(holder.itemView.context)
+//                .load(drawable)
+//                .into(holder.itemView.icon)
         }
 
 //        if (drawable == null) {
@@ -88,9 +107,9 @@ class AppAdapter(var itemsList: List<App>) :
 //        Glide.with(Injector.get().appContext()).
         viewHolder.itemView.icon.setImageDrawable(AppManager.getIconFromId(snap.packageName))
 
-        Glide.with(viewHolder.itemView.context)
-            .load(drawable)
-            .into(viewHolder.itemView.icon)
+//        Glide.with(viewHolder.itemView.context)
+//            .load(drawable)
+//            .into(viewHolder.itemView.icon)
     }
 
     fun setDataSource(newList: List<App>) {

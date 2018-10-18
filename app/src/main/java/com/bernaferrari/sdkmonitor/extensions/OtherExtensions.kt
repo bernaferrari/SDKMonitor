@@ -22,6 +22,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
+import com.airbnb.epoxy.EpoxyController
+import com.airbnb.epoxy.EpoxyRecyclerView
 import com.github.marlonlom.utilities.timeago.TimeAgo
 
 internal typealias ColorGroup = Pair<Int, Int>
@@ -130,3 +132,12 @@ fun ViewGroup.inflate(@LayoutRes layout: Int, attachToRoot: Boolean = false): Vi
 inline val @receiver:ColorInt Int.darken
     @ColorInt
     get() = ColorUtils.blendARGB(this, Color.BLACK, 0.2f)
+
+fun EpoxyRecyclerView.withModels(buildModelsCallback: EpoxyController.() -> Unit) {
+    setControllerAndBuildModels(object : EpoxyController() {
+        override fun buildModels() {
+            buildModelsCallback()
+        }
+    })
+}
+
