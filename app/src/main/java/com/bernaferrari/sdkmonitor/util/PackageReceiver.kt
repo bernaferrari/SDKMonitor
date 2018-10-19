@@ -1,4 +1,4 @@
-package com.bernaferrari.sdkmonitor
+package com.bernaferrari.sdkmonitor.util
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -15,17 +15,26 @@ class PackageReceiver : BroadcastReceiver() {
             intent.action == Intent.ACTION_PACKAGE_ADDED -> {
                 // Package installed
                 Logger.d("Package installed - %s", packageName)
-                PackageService.startActionAddPackage(context, packageName)
+                PackageService.startActionAddPackage(
+                    context,
+                    packageName
+                )
             }
             intent.action == Intent.ACTION_PACKAGE_REPLACED -> {
                 // Package updated
                 Logger.d("Package updated - %s", packageName)
-                PackageService.startActionFetchUpdate(context, packageName)
+                PackageService.startActionFetchUpdate(
+                    context,
+                    packageName
+                )
             }
             intent.action == Intent.ACTION_PACKAGE_FULLY_REMOVED -> {
                 // Package uninstalled
                 Logger.d("Package uninstalled - %s", packageName)
-                PackageService.startActionRemovePackage(context, packageName)
+                PackageService.startActionRemovePackage(
+                    context,
+                    packageName
+                )
             }
         }
     }

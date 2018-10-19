@@ -7,7 +7,7 @@
 
         <variable
             name="appversion"
-            type="com.bernaferrari.sdkmonitor.AppVersion" />
+            type="com.bernaferrari.sdkmonitor.main.AppVersion" />
 
         <variable
             name="bottomShape"
@@ -41,6 +41,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:elevation="1dp"
+            android:tag="@{appversion.app.packageName}"
+            android:transitionName="@{appversion.app.packageName}"
             app:imageUrl="@{appversion.app.packageName}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

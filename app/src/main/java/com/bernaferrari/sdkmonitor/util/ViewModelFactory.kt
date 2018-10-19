@@ -14,14 +14,17 @@
  *  limitations under the License.
  */
 
-package com.bernaferrari.sdkmonitor
+package com.bernaferrari.sdkmonitor.util
 
 import android.annotation.SuppressLint
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.bernaferrari.sdkmonitor.Injector
 import com.bernaferrari.sdkmonitor.data.source.local.AppsDao
 import com.bernaferrari.sdkmonitor.data.source.local.VersionsDao
+import com.bernaferrari.sdkmonitor.details.DetailsViewModel
+import com.bernaferrari.sdkmonitor.main.MainViewModel
 
 /**
  * A creator is used to inject the product ID into the ViewModel
@@ -37,8 +40,10 @@ class ViewModelFactory private constructor(
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
-            modelClass.isAssignableFrom(TextViewModel::class.java) ->
-                TextViewModel(mSnapsDao, versionsDao) as T
+            modelClass.isAssignableFrom(MainViewModel::class.java) ->
+                MainViewModel(mSnapsDao, versionsDao) as T
+            modelClass.isAssignableFrom(DetailsViewModel::class.java) ->
+                DetailsViewModel(mSnapsDao, versionsDao) as T
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }
     }
@@ -52,10 +57,11 @@ class ViewModelFactory private constructor(
             if (INSTANCE == null) {
                 synchronized(ViewModelFactory::class.java) {
                     if (INSTANCE == null) {
-                        INSTANCE = ViewModelFactory(
-                            Injector.get().appsDao(),
-                            Injector.get().versionsDao()
-                        )
+                        INSTANCE =
+                                ViewModelFactory(
+                                    Injector.get().appsDao(),
+                                    Injector.get().versionsDao()
+                                )
                     }
                 }
             }

@@ -1,4 +1,4 @@
-package com.bernaferrari.sdkmonitor
+package com.bernaferrari.sdkmonitor.details
 
 import android.os.Build
 import androidx.core.graphics.drawable.toBitmap
@@ -10,6 +10,7 @@ import com.bernaferrari.sdkmonitor.data.source.local.AppsDao
 import com.bernaferrari.sdkmonitor.data.source.local.VersionsDao
 import com.bernaferrari.sdkmonitor.extensions.convertTimestampToDate
 import com.bernaferrari.sdkmonitor.extensions.darken
+import com.bernaferrari.sdkmonitor.util.AppManager
 import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -19,41 +20,10 @@ import kotlin.coroutines.experimental.CoroutineContext
 /**
  * Exposes the data to be used in the site diff screen.
  */
-class TextViewModel(
+class DetailsViewModel(
     private val mAppsDao: AppsDao,
     private val mVersionsDao: VersionsDao
 ) : ViewModel(), CoroutineScope {
-
-//    public class MentionKeyedDataSource : ItemKeyedDataSource<Long, App>() {
-//        override fun loadInitial(
-//            params: LoadInitialParams<Long>,
-//            callback: LoadInitialCallback<App>
-//        ) {
-//
-//
-//
-//            Observable.just(cachedItems)
-//                .filter(() -> return cachedItems != null && !cachedItems.isEmpty())
-//            .switchIfEmpty(repository.getItems(params.requestedLoadSize))
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(response -> callback.onResult(response.data.list));
-//
-//
-//        }
-//
-//
-//        @Override
-//        public void loadInitial(@NonNull LoadInitialParams<Long> params, final @NonNull ItemKeyedDataSource.LoadInitialCallback<Mention> callback)
-//        {
-//            Observable.just(cachedItems)
-//                .filter(() -> return cachedItems != null && !cachedItems.isEmpty())
-//            .switchIfEmpty(repository.getItems(params.requestedLoadSize))
-//            .subscribeOn(Schedulers.io())
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribe(response -> callback.onResult(response.data.list));
-//        }
-//    }
 
     override val coroutineContext: CoroutineContext = Dispatchers.IO + Job()
 
@@ -63,14 +33,6 @@ class TextViewModel(
     }
 
     val appsList: Flowable<List<App>> = mAppsDao.getAppsList()
-
-//    val pagedListLiveData : LiveData<PagedList<Person>> by lazy {
-//        val dataSourceFactory = mAppsDao.selectPaged()
-//        val config = PagedList.Config.Builder()
-//            .setPageSize(20)
-//            .build()
-//        LivePagedListBuilder(dataSourceFactory, config).build()
-//    }
 
     fun getSdkDate(app: App): Pair<Int, String> {
 

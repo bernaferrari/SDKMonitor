@@ -1,6 +1,7 @@
 package com.bernaferrari.sdkmonitor
 
 import androidx.multidex.MultiDexApplication
+import com.bernaferrari.sdkmonitor.util.AppManager
 
 class MainApplication : MultiDexApplication() {
 

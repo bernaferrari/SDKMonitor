@@ -1,7 +1,9 @@
 package com.bernaferrari.sdkmonitor.data.source.local
 
-import androidx.room.*
-import com.bernaferrari.sdkmonitor.UserAndAllPets
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.bernaferrari.sdkmonitor.data.App
 import io.reactivex.Flowable
 
@@ -12,9 +14,9 @@ import io.reactivex.Flowable
 @Dao
 interface AppsDao {
 
-    @Transaction
-    @Query("SELECT * FROM apps ORDER BY title")
-    fun getUsers(): Flowable<List<UserAndAllPets>>
+//    @Transaction
+//    @Query("SELECT * FROM apps ORDER BY title")
+//    fun getUsers(): Flowable<List<UserAndAllPets>>
 
     // The Int type parameter tells Room to use a PositionalDataSource
     // object, with position-based loading under the hood.

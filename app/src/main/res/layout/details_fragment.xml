@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.bernaferrari.sdkmonitor.ui.ElasticDragDismissFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/elastic"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?windowBackground"
+    android:elevation="@dimen/z_fab"
+    android:transitionName="shared"
+    app:dragDismissDistance="@dimen/drag_dismiss_distance">
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/title_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?toolbarColor"
+            android:baselineAligned="false"
+            android:minHeight="?android:actionBarSize"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/spacing_micro"
+            android:paddingBottom="@dimen/spacing_micro">
+
+            <ImageView
+                android:id="@+id/closecontent"
+                android:layout_width="@dimen/avatar_bounds"
+                android:layout_height="@dimen/avatar_bounds"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/avatar_margin"
+                android:layout_marginEnd="@dimen/avatar_margin"
+                android:background="?android:selectableItemBackgroundBorderless"
+                android:padding="@dimen/avatar_margin"
+                app:srcCompat="@drawable/ic_close_dark" />
+
+            <TextView
+                android:id="@+id/titlecontent"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center_vertical"
+                android:layout_marginRight="@dimen/avatar_margin"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:gravity="center_vertical|start"
+                android:paddingRight="@dimen/padding_normal"
+                android:singleLine="true"
+                android:textColor="?strongColor"
+                tools:text="Web Drivers" />
+
+        </LinearLayout>
+
+        <com.airbnb.epoxy.EpoxyRecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+</com.bernaferrari.sdkmonitor.ui.ElasticDragDismissFrameLayout>

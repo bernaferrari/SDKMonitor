@@ -1,8 +1,9 @@
-package com.bernaferrari.sdkmonitor
+package com.bernaferrari.sdkmonitor.util
 
 import android.app.IntentService
 import android.content.Context
 import android.content.Intent
+import com.bernaferrari.sdkmonitor.Injector
 
 class PackageService : IntentService("PackageService") {
 
@@ -24,13 +25,13 @@ class PackageService : IntentService("PackageService") {
     }
 
     private fun handleActionFetchUpdate(packageName: String) {
-        val packageInfo = AppManager.getPackageInfo(packageName) ?: return
+        val packageInfo = AppManager.getPackageInfo(packageName)
 
 //        Injector.get().versionsDao().insertVersion()
     }
 
     private fun handleActionInsert(packageName: String) {
-        val packageInfo = AppManager.getPackageInfo(packageName) ?: return
+        val packageInfo = AppManager.getPackageInfo(packageName)
 
 //        Injector.get().appsDao().insertApp(App(packageName, AppManager.getAppLabel(packageInfo), 0, 0))
 //        Injector.get().versionsDao().insertVersion(
@@ -50,21 +51,24 @@ class PackageService : IntentService("PackageService") {
 
         fun startActionRemovePackage(context: Context, packageName: String) {
             val intent = Intent(context, PackageService::class.java)
-            intent.action = ACTION_REMOVE_PACKAGE
+            intent.action =
+                    ACTION_REMOVE_PACKAGE
             intent.putExtra(EXTRA_PACKAGE_NAME, packageName)
             context.startService(intent)
         }
 
         fun startActionFetchUpdate(context: Context, packageName: String) {
             val intent = Intent(context, PackageService::class.java)
-            intent.action = ACTION_FETCH_UPDATE
+            intent.action =
+                    ACTION_FETCH_UPDATE
             intent.putExtra(EXTRA_PACKAGE_NAME, packageName)
             context.startService(intent)
         }
 
         fun startActionAddPackage(context: Context, packageName: String) {
             val intent = Intent(context, PackageService::class.java)
-            intent.action = ACTION_FETCH_INSERT
+            intent.action =
+                    ACTION_FETCH_INSERT
             intent.putExtra(EXTRA_PACKAGE_NAME, packageName)
             context.startService(intent)
         }

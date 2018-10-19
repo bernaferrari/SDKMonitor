@@ -1,4 +1,4 @@
-package com.bernaferrari.sdkmonitor
+package com.bernaferrari.sdkmonitor.ui
 
 import android.graphics.Rect
 import android.view.View

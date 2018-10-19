@@ -1,4 +1,4 @@
-package com.bernaferrari.sdkmonitor
+package com.bernaferrari.sdkmonitor.util
 
 import android.content.Context
 import android.content.pm.ApplicationInfo
@@ -50,7 +50,11 @@ object AppManager {
 
     fun getIconFromId(packageName: String): Drawable? {
         return try {
-            packageManager.getApplicationIcon(getApplicationInfo(packageName))
+            packageManager.getApplicationIcon(
+                getApplicationInfo(
+                    packageName
+                )
+            )
         } catch (e: Exception) {
             null
         }

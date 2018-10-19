@@ -3,9 +3,23 @@
 
     <dimen name="divider_height">1px</dimen>
     <dimen name="long_press_separator_margin">68dp</dimen> <!-- leftMargin + width + rightMargin -->
-
     <dimen name="horizontal_spacing">12dp</dimen>
 
     <dimen name="right_padding_for_fast_scroller">16dp</dimen>
+    <dimen name="item_selector_height">76dp</dimen>
 
+    <!--Lottie-->
+    <dimen name="control_bar_button_padding">8dp</dimen>
+
+    <!-- Nofication bar button -->
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="spacing_micro">4dp</dimen>
+
+    <dimen name="avatar_bounds">48dp</dimen>
+    <dimen name="avatar_margin">12dp</dimen> <!-- padding_normal - avatar_padding -->
+    <dimen name="drag_dismiss_distance">104dp</dimen> <!-- 5 * ?android:actionBarSize -->
+
+    <!-- Z-axis elevations -->
+    <dimen name="z_fab">6dp</dimen>
+    <dimen name="padding_normal">16dp</dimen>
 </resources>

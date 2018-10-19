@@ -40,7 +40,7 @@
                     android:src="@drawable/ic_search_white_24dp" />
 
                 <EditText
-                    android:id="@+id/query"
+                    android:id="@+id/queryInput"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -53,7 +53,7 @@
                     tools:hint="Search" />
 
                 <ImageView
-                    android:id="@+id/clear_query"
+                    android:id="@+id/queryClear"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_gravity="center_vertical"
@@ -96,7 +96,6 @@
         android:id="@+id/recycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        tools:listitem="@layout/row_navigation_item"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

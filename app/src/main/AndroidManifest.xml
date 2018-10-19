@@ -22,7 +22,7 @@
         </activity>
 
         <receiver
-            android:name=".PackageReceiver"
+            android:name=".util.PackageReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -35,7 +35,7 @@
         </receiver>
 
         <service
-            android:name=".PackageService"
+            android:name=".util.PackageService"
             android:exported="false" />
     </application>
 
