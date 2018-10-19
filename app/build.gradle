@@ -95,6 +95,7 @@ dependencies {
     implementation "com.airbnb.android:epoxy:$epoxy"
     implementation "com.airbnb.android:epoxy-databinding:$epoxy"
     kapt "com.airbnb.android:epoxy-processor:$epoxy"
+    implementation 'com.airbnb.android:mvrx:0.5.0'
 
     // Coroutines
     def coroutines_version = "0.30.2"

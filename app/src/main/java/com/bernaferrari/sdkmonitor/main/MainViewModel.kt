@@ -10,11 +10,16 @@ import com.bernaferrari.sdkmonitor.data.source.local.AppsDao
 import com.bernaferrari.sdkmonitor.data.source.local.VersionsDao
 import com.bernaferrari.sdkmonitor.extensions.convertTimestampToDate
 import com.bernaferrari.sdkmonitor.extensions.darken
+import com.bernaferrari.sdkmonitor.extensions.normalizeString
 import com.bernaferrari.sdkmonitor.util.AppManager
+import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.Flowable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.experimental.*
+import java.util.concurrent.TimeUnit
 import kotlin.coroutines.experimental.CoroutineContext
 
 /**
@@ -35,7 +40,48 @@ class MainViewModel(
         super.onCleared()
     }
 
-    val appsList: Flowable<List<App>> = mAppsDao.getAppsList()
+    fun getFlowableList(cornerRadius: Float): Flowable<MutableList<AppVersion>> =
+        mAppsDao.getAppsList()
+            .doOnNext { if (it.isEmpty()) updateAll() }
+            .debounce { list ->
+                // debounce with a 200ms delay all items except the first one
+                val flow = Flowable.just(list)
+
+                flow.takeIf { allItems.isEmpty() && list.isEmpty() }
+                    ?.let { it } ?: flow.delay(200, TimeUnit.MILLISECONDS)
+            }
+            .map { list ->
+                list.also { allItems.clear() }
+                    .asSequence()
+                    .sortedBy { it.title.toLowerCase() }
+                    .mapTo(allItems) { app ->
+                        val (sdkVersion, lastUpdate) = getSdkDate(app)
+                        AppVersion(app, sdkVersion, lastUpdate, cornerRadius)
+                    }
+            }
+            .doOnNext {
+                itemsList.clear()
+                itemsList.addAll(it)
+            }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    val relay = BehaviorRelay.create<String>()
+
+    fun getFilteredList() =
+        relay.debounce(100, TimeUnit.MILLISECONDS)
+            .map { input ->
+                allItems.toList()
+                    .takeIf { it.isNotEmpty() }
+                    ?.filter { it.app.title.normalizeString().contains(input.normalizeString()) }
+                        ?: allItems
+            }
+            .doOnNext {
+                itemsList.clear()
+                itemsList.addAll(it)
+            }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
 
     fun getSdkDate(app: App): Pair<Int, String> {
 
@@ -52,7 +98,7 @@ class MainViewModel(
         return Pair(sdkVersion, lastUpdate.convertTimestampToDate())
     }
 
-    fun updateAll() = launch {
+    private fun updateAll() = launch {
         AppManager.getPlayStorePackages()
             // this will only occur if person runs app on emulator.
             .let { if (it.isEmpty()) AppManager.getPackages() else it }
