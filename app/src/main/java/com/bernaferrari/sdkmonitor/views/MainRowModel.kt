@@ -18,19 +18,21 @@ import kotlinx.coroutines.experimental.*
 import kotlin.coroutines.experimental.CoroutineContext
 
 @EpoxyModelClass(layout = R.layout.row_item)
-abstract class ButtonModel : EpoxyModelWithHolder<ButtonModel.Holder>(), CoroutineScope {
+abstract class MainRowModel : EpoxyModelWithHolder<MainRowModel.Holder>(), CoroutineScope {
 
-    private val cornerRadius = 28f
     private var job: Job = Job()
 
     override val coroutineContext: CoroutineContext = Dispatchers.Main + job
 
     @EpoxyAttribute
     lateinit var topShape: Drawable
+
     @EpoxyAttribute
     lateinit var bottomShape: Drawable
+
     @EpoxyAttribute
     lateinit var app: AppVersion
+
     @EpoxyAttribute
     lateinit var version: Version
 
@@ -45,6 +47,7 @@ abstract class ButtonModel : EpoxyModelWithHolder<ButtonModel.Holder>(), Corouti
         holder.label.setTextAsync(app.app.title)
         holder.top_view.background = topShape
         holder.bottom_view.background = bottomShape
+        holder.container.setOnClickListener(clickListener)
 
         job = Job()
         launch {
@@ -80,6 +83,6 @@ abstract class ButtonModel : EpoxyModelWithHolder<ButtonModel.Holder>(), Corouti
 
         val top_view by bind<View>(R.id.top_view)
         val bottom_view by bind<View>(R.id.bottom_view)
-
+        val container by bind<View>(R.id.container)
     }
 }

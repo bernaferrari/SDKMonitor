@@ -14,15 +14,10 @@ object AsyncBindingAdapter {
 
     @JvmStatic
     @BindingAdapter("app:imageUrl")
-    fun setImageUrl(view: ImageView, url: String) {
-        GlobalScope.launch(Dispatchers.Main) {
-            val drawable =
-                withContext(Dispatchers.IO) {
-                    AppManager.getIconFromId(url)
-                }
+    fun setImageUrl(view: ImageView, url: String) = GlobalScope.launch(Dispatchers.Main) {
+        val drawable = withContext(Dispatchers.IO) { AppManager.getIconFromId(url) }
             view.setImageDrawable(drawable)
         }
-    }
 
     @JvmStatic
     @BindingAdapter("app:asyncText", "android:textSize", requireAll = false)

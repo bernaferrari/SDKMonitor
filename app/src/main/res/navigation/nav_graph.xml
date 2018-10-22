@@ -8,12 +8,6 @@
         android:id="@+id/mainFragment"
         android:name="com.bernaferrari.sdkmonitor.main.MainFragment"
         android:label="MainFragment">
-        <action
-            android:id="@+id/action_mainFragment_to_detailsFragment"
-            app:destination="@id/detailsFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/detailsFragment"
-        android:name="com.bernaferrari.sdkmonitor.details.DetailsFragment"
-        android:label="DetailsFragment" />
+
 </navigation>

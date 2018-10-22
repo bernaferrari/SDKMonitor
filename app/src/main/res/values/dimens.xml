@@ -17,7 +17,9 @@
 
     <dimen name="avatar_bounds">48dp</dimen>
     <dimen name="avatar_margin">12dp</dimen> <!-- padding_normal - avatar_padding -->
-    <dimen name="drag_dismiss_distance">104dp</dimen> <!-- 5 * ?android:actionBarSize -->
+
+    <dimen name="bottom_sheet_top_padding">8dp</dimen>
+    <dimen name="bottom_sheet_corner_radius">16dp</dimen>
 
     <!-- Z-axis elevations -->
     <dimen name="z_fab">6dp</dimen>
