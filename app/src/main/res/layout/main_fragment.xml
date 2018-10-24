@@ -38,7 +38,7 @@
                     android:importantForAccessibility="no"
                     android:paddingStart="@dimen/horizontal_spacing"
                     android:paddingEnd="@dimen/horizontal_spacing"
-                    android:src="@drawable/ic_search_white_24dp" />
+                    android:src="@drawable/ic_search" />
 
                 <EditText
                     android:id="@+id/queryInput"
@@ -69,7 +69,7 @@
         </com.google.android.material.card.MaterialCardView>
 
         <ImageView
-            android:id="@+id/filter"
+            android:id="@+id/settings"
             style="@style/ClickableImageView"
             android:layout_width="48dp"
             android:layout_height="48dp"
@@ -77,7 +77,7 @@
             android:layout_marginRight="8dp"
             android:paddingStart="@dimen/horizontal_spacing"
             android:paddingEnd="@dimen/horizontal_spacing"
-            android:src="@drawable/ic_filter" />
+            android:src="@drawable/ic_settings" />
 
     </LinearLayout>
 

@@ -16,18 +16,17 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import com.airbnb.epoxy.EpoxyRecyclerView
-import com.airbnb.mvrx.BaseMvRxFragment
-import com.airbnb.mvrx.MvRxState
-import com.airbnb.mvrx.fragmentViewModel
+import com.airbnb.mvrx.*
 import com.bernaferrari.sdkmonitor.R
 import com.bernaferrari.sdkmonitor.core.MvRxEpoxyController
 import com.bernaferrari.sdkmonitor.core.simpleController
 import com.bernaferrari.sdkmonitor.data.App
-import com.bernaferrari.sdkmonitor.detailsText
-import com.bernaferrari.sdkmonitor.emptySearch
-import com.bernaferrari.sdkmonitor.extensions.*
-import com.bernaferrari.sdkmonitor.textSeparator
-import com.bernaferrari.sdkmonitor.ui.InsetDecoration
+import com.bernaferrari.sdkmonitor.emptyContent
+import com.bernaferrari.sdkmonitor.extensions.darken
+import com.bernaferrari.sdkmonitor.extensions.inflate
+import com.bernaferrari.sdkmonitor.extensions.onTextChanged
+import com.bernaferrari.sdkmonitor.extensions.toDpF
+import com.bernaferrari.sdkmonitor.util.InsetDecoration
 import com.bernaferrari.sdkmonitor.util.hideKeyboard
 import com.bernaferrari.sdkmonitor.util.hideKeyboardWhenNecessary
 import com.bernaferrari.sdkmonitor.views.MainRowModel_
@@ -49,119 +48,15 @@ class AppVersion(
 
 data class AppDetails(val title: String, val subtitle: String)
 
-enum class State {
-    LOADING, SUCCESS, FAIL
-}
-
-data class MainState(
-    /** We use this request to store the list of all jokes */
-    val listOfItems: List<AppVersion> = emptyList(),
-    val state: State = State.LOADING
-) : MvRxState
+data class MainState(val listOfItems: Async<List<AppVersion>> = Loading()) : MvRxState
 
 class MainFragment : BaseMvRxFragment(), CoroutineScope {
 
     private val viewModel: MainRxViewModel by fragmentViewModel()
 
-    val epoxyController by lazy { epoxyController() }
-
-    fun epoxyController(): MvRxEpoxyController = simpleController(viewModel) { state ->
-
-        if (state.state == State.LOADING) {
-            loadingRow { id("loading") }
-        } else {
-            queryInput.hint = "Search ${viewModel.maxListSize} apps.."
-
-            if (state.listOfItems.isEmpty()) {
-                emptySearch {
-                    this.id("empty result")
-                    this.label(getString(R.string.empty_search))
-                }
-            }
-        }
-
-        val cornerRadius = 8.toDpF(resources)
-
-        state.listOfItems.forEach {
-            mainRow {
-                id(it.app.packageName)
-
-                this.app(it)
-
-                val topShape = createShape(it.app.backgroundColor, false, cornerRadius)
-                val bottomShape = createShape(it.app.backgroundColor.darken, true, cornerRadius)
-
-                this.bottomShape(bottomShape)
-                this.topShape(topShape)
-
-                this.clickListener { v ->
-                    val customView = parentLayout.inflate(R.layout.details_fragment)
-
-                    val bottomDialog = BottomSheetDialog(requireContext()).also { btn ->
-                        btn.setContentView(customView)
-                        btn.show()
-                    }
-
-                    customView.findViewById<ImageView>(R.id.closecontent).setOnClickListener { _ ->
-                        bottomDialog.dismiss()
-                    }
-
-                    customView.findViewById<TextView>(R.id.titlecontent).text = it.app.title
-
-                    customView.findViewById<EpoxyRecyclerView>(R.id.recycler).also { epx ->
-
-                        val data = viewModel.fetchData2(it.app.packageName)
-
-                        epx?.withModels {
-                            data.forEach { app ->
-                                detailsText {
-                                    id(app.title)
-                                    this.title(app.title)
-                                    this.subtitle(app.subtitle)
-                                }
-                            }
-
-                            textSeparator {
-                                id("separator")
-                                this.label(getString(R.string.target_history))
-                            }
-
-                        }
-                    }
-                }
-            }
-        }
-
-//        state.listOfItems.forEach {
-//            rowItemBinding {
-//                id(it.app.packageName)
-//
-//                this.appversion(it)
-//
-//                val topShape = createShape(it.app.backgroundColor, false, it.cornerRadius)
-//                val bottomShape = createShape(it.app.backgroundColor.darken, true, it.cornerRadius)
-//
-//                this.bottomShape(bottomShape)
-//                this.topShape(topShape)
-//            }
-//        }
-    }
-
-    private fun createShape(color: Int, isBottom: Boolean, cornerRadius: Float): Drawable {
-        val shape = GradientDrawable()
-        shape.shape = GradientDrawable.RECTANGLE
-        shape.cornerRadii = if (isBottom) {
-            floatArrayOf(0f, 0f, 0f, 0f, cornerRadius, cornerRadius, cornerRadius, cornerRadius)
-        } else {
-            floatArrayOf(cornerRadius, cornerRadius, cornerRadius, cornerRadius, 0f, 0f, 0f, 0f)
-        }
-        shape.setColor(color)
-        return shape
-    }
-
     override val coroutineContext: CoroutineContext = Dispatchers.Main + Job()
 
-    private val itemDecorator by lazy {
+    private val standardItemDecorator by lazy {
         InsetDecoration(
             resources.getDimensionPixelSize(R.dimen.right_padding_for_fast_scroller),
             false,
@@ -175,6 +70,90 @@ class MainFragment : BaseMvRxFragment(), CoroutineScope {
         } else {
             activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
         } ?: throw Exception("null activity. Can't bind inputMethodManager")
+    }
+
+    private val showDialog: ((App) -> (Unit)) = {
+        val customView = parentLayout.inflate(R.layout.details_fragment)
+
+        val bottomDialog = BottomSheetDialog(requireContext()).also { btn ->
+            btn.setContentView(customView)
+            btn.show()
+        }
+
+        customView.findViewById<ImageView>(R.id.closecontent).setOnClickListener { _ ->
+            bottomDialog.dismiss()
+        }
+
+        customView.findViewById<TextView>(R.id.titlecontent).text = it.title
+
+        customView.findViewById<EpoxyRecyclerView>(R.id.recycler).also { epoxyRecycler ->
+
+            val detailsController = DetailsController()
+            epoxyRecycler?.setController(detailsController)
+
+            runBlocking {
+                val packageName = it.packageName
+                val data = viewModel.fetchAppDetails(packageName)
+                val versions = viewModel.fetchAllVersions(packageName)
+                detailsController.setData(data, versions)
+            }
+        }
+    }
+
+    val epoxyController by lazy { epoxyController() }
+
+    fun epoxyController(): MvRxEpoxyController = simpleController(viewModel) { state ->
+
+        when (state.listOfItems) {
+            is Loading ->
+                loadingRow { id("loading") }
+            is Fail ->
+                emptyContent {
+                    this.id("error")
+                    this.label(state.listOfItems.error.localizedMessage)
+                }
+            is Success -> {
+                queryInput.hint = "Search ${viewModel.maxListSize} apps.."
+
+                if (state.listOfItems()?.isEmpty() == true) {
+                    emptyContent {
+                        this.id("empty result")
+                        this.label(getString(R.string.empty_search))
+                    }
+                }
+            }
+        }
+
+        val cornerRadius = 8.toDpF(resources)
+
+        state.listOfItems()?.forEach {
+            mainRow {
+                id(it.app.packageName)
+
+                this.app(it)
+
+                val topShape = createShape(it.app.backgroundColor, false, cornerRadius)
+                val bottomShape = createShape(it.app.backgroundColor.darken, true, cornerRadius)
+
+                this.bottomShape(bottomShape)
+                this.topShape(topShape)
+
+                this.clickListener { _ -> showDialog.invoke(it.app) }
+            }
+        }
+
+    }
+
+    private fun createShape(color: Int, isBottom: Boolean, cornerRadius: Float): Drawable {
+        val shape = GradientDrawable()
+        shape.shape = GradientDrawable.RECTANGLE
+        shape.cornerRadii = if (isBottom) {
+            floatArrayOf(0f, 0f, 0f, 0f, cornerRadius, cornerRadius, cornerRadius, cornerRadius)
+        } else {
+            floatArrayOf(cornerRadius, cornerRadius, cornerRadius, cornerRadius, 0f, 0f, 0f, 0f)
+        }
+        shape.setColor(color)
+        return shape
     }
 
     override fun onCreateView(
@@ -191,14 +170,12 @@ class MainFragment : BaseMvRxFragment(), CoroutineScope {
         }
 
         recycler.setController(epoxyController)
-        recycler.addItemDecoration(itemDecorator)
+        recycler.addItemDecoration(standardItemDecorator)
         setupFastScroller(recycler.layoutManager as? LinearLayoutManager)
 
-        filter.setOnClickListener {
-            //            MaterialDialog(requireContext())
-        }
-
         setupDataAndSearch()
+
+        viewModel.updateAll()
 
         hideKeyboardWhenNecessary(
             requireActivity(),

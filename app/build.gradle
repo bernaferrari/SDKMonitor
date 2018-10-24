@@ -109,6 +109,7 @@ dependencies {
     implementation 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
 
     // UI
+    implementation "io.karn:notify:1.1.0"
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     implementation 'com.reddit:indicator-fast-scroll:1.0.1'
     implementation 'com.afollestad.material-dialogs:core:2.0.0-beta4'

@@ -13,25 +13,16 @@ import com.bernaferrari.sdkmonitor.data.Version
 @Dao
 interface VersionsDao {
 
+    @Query("SELECT targetSdk FROM versions WHERE packageName=:packageName ORDER BY version DESC LIMIT 1")
+    fun getLastTargetSDK(packageName: String): Int?
 
-    // The Int type parameter tells Room to use a PositionalDataSource
-    // object, with position-based loading under the hood.
     @Query("SELECT * FROM versions WHERE packageName=:packageName ORDER BY version DESC LIMIT 1")
-    fun getValue(packageName: String): Version?
+    fun getLastValue(packageName: String): Version?
 
+    @Query("SELECT * FROM versions WHERE packageName=:packageName ORDER BY version, lastUpdateTime DESC")
+    fun getAllValues(packageName: String): List<Version>?
 
-    // The Int type parameter tells Room to use a PositionalDataSource
-    // object, with position-based loading under the hood.
-    @Query("SELECT EXISTS(SELECT 1 FROM versions WHERE version=:version)")
-    fun checkIfExists(version: Long): Int
-
-
-    /**
-     * Insert a app in the database. If the app already exists, replace it.
-     *
-     * @param app the app to be inserted.
-     */
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.FAIL)
     fun insertVersion(version: Version)
 
 }

@@ -13,6 +13,5 @@ data class App(
     val packageName: String,
     val title: String,
     val backgroundColor: Int,
-    val firstInstallTime: Long,
     val isFromPlayStore: Boolean
 )

@@ -10,10 +10,10 @@ import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import com.bernaferrari.sdkmonitor.R
+import com.bernaferrari.sdkmonitor.core.AppManager
 import com.bernaferrari.sdkmonitor.data.Version
 import com.bernaferrari.sdkmonitor.extensions.setTextAsync
 import com.bernaferrari.sdkmonitor.main.AppVersion
-import com.bernaferrari.sdkmonitor.util.AppManager
 import kotlinx.coroutines.experimental.*
 import kotlin.coroutines.experimental.CoroutineContext
 

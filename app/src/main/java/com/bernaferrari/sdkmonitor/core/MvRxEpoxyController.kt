@@ -63,19 +63,3 @@ fun <A : BaseMvRxViewModel<B>, B : MvRxState, C : BaseMvRxViewModel<D>, D : MvRx
         buildModels(state1, state2)
     }
 }
-
-/**
- * Create a [MvRxEpoxyController] that builds models with the given callback.
- * When models are built the current state of the viewmodels will be provided.
- */
-fun <A : BaseMvRxViewModel<B>, B : MvRxState, C : BaseMvRxViewModel<D>, D : MvRxState, E : BaseMvRxViewModel<F>, F : MvRxState> BaseFragment.simpleController(
-    viewModel1: A,
-    viewModel2: C,
-    viewModel3: E,
-    buildModels: EpoxyController.(state1: B, state2: D, state3: F) -> Unit
-) = MvRxEpoxyController {
-    if (view == null || isRemoving) return@MvRxEpoxyController
-    withState(viewModel1, viewModel2, viewModel3) { state1, state2, state3 ->
-        buildModels(state1, state2, state3)
-    }
-}

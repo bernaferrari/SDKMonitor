@@ -14,12 +14,6 @@ import io.reactivex.Flowable
 @Dao
 interface AppsDao {
 
-//    @Transaction
-//    @Query("SELECT * FROM apps ORDER BY title")
-//    fun getUsers(): Flowable<List<UserAndAllPets>>
-
-    // The Int type parameter tells Room to use a PositionalDataSource
-    // object, with position-based loading under the hood.
     @Query("SELECT * FROM apps ORDER BY title DESC")
     fun getAppsList(): Flowable<List<App>>
 
@@ -28,8 +22,11 @@ interface AppsDao {
      *
      * @param app the app to be inserted.
      */
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertApp(app: App)
+
+    @Query("SELECT packageName FROM apps WHERE packageName =:packageName LIMIT 1")
+    fun getApp(packageName: String): String?
 
     /**
      * Delete all snaps.

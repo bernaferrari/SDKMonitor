@@ -2,5 +2,5 @@
     <string name="app_name">SDK Monitor</string>
 
     <string name="empty_search">No results found</string>
-    <string name="target_history">Target history</string>
+    <string name="target_history">TargetSDK history</string>
 </resources>

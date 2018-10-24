@@ -4,15 +4,17 @@
 
     <application
         android:name=".MainApplication"
-        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:allowBackup="true"
+        android:fullBackupContent="true"
         android:theme="@style/AppThemeDark">
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,7 +24,7 @@
         </activity>
 
         <receiver
-            android:name=".util.PackageReceiver"
+            android:name=".core.PackageReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -35,7 +37,7 @@
         </receiver>
 
         <service
-            android:name=".util.PackageService"
+            android:name=".core.PackageService"
             android:exported="false" />
     </application>
 

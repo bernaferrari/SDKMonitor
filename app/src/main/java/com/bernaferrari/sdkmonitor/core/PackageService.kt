@@ -1,9 +1,10 @@
-package com.bernaferrari.sdkmonitor.util
+package com.bernaferrari.sdkmonitor.core
 
 import android.app.IntentService
 import android.content.Context
 import android.content.Intent
 import com.bernaferrari.sdkmonitor.Injector
+import kotlinx.coroutines.experimental.runBlocking
 
 class PackageService : IntentService("PackageService") {
 
@@ -24,22 +25,15 @@ class PackageService : IntentService("PackageService") {
         Injector.get().appsDao().deleteApp(packageName)
     }
 
-    private fun handleActionFetchUpdate(packageName: String) {
+    private fun handleActionFetchUpdate(packageName: String) = runBlocking {
         val packageInfo = AppManager.getPackageInfo(packageName)
-
-//        Injector.get().versionsDao().insertVersion()
+        AppManager.insertNewVersion(packageInfo)
     }
 
-    private fun handleActionInsert(packageName: String) {
+    private fun handleActionInsert(packageName: String) = runBlocking {
         val packageInfo = AppManager.getPackageInfo(packageName)
-
-//        Injector.get().appsDao().insertApp(App(packageName, AppManager.getAppLabel(packageInfo), 0, 0))
-//        Injector.get().versionsDao().insertVersion(
-//            Version(
-//                packageInfo
-//            )
-//        )
-
+        AppManager.insertNewApp(packageInfo)
+        AppManager.insertNewVersion(packageInfo)
     }
 
     companion object {

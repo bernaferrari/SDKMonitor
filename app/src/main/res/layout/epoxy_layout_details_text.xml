@@ -33,7 +33,7 @@
         android:onClick="@{onClick}">
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/label"
+            android:id="@+id/labelStr"
             style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
             android:paddingTop="8dp"
             android:text="@{title}"
             android:textColor="@color/white"
-            app:layout_constraintBottom_toTopOf="@+id/subtitle"
+            app:layout_constraintBottom_toTopOf="@+id/subtitleStr"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -66,7 +66,7 @@
             tools:background="@drawable/round_corners_top" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/subtitle"
+            android:id="@+id/subtitleStr"
             style="@style/TextAppearance.MaterialComponents.Caption"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/label"
+            app:layout_constraintTop_toBottomOf="@+id/labelStr"
             tools:text="2 months ago" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

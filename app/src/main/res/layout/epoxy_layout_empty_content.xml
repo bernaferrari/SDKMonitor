@@ -25,7 +25,7 @@
             app:cardCornerRadius="16dp">
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/label"
+                android:id="@+id/labelStr"
                 style="@style/TextAppearance.MaterialComponents.Body1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
