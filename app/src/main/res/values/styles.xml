@@ -86,5 +86,36 @@
         <item name="android:background">?android:selectableItemBackgroundBorderless</item>
     </style>
 
+    <style name="ItemTitle">
+        <item name="android:ellipsize">end</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:lines">1</item>
+        <item name="android:textColor">?strongColor</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="BottomSheetDialogThemeDark" parent="@style/Theme.MaterialComponents.BottomSheetDialog">
+        <item name="colorAccent">@color/md_blue_A400</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">?settingsBackground</item>
+
+        <item name="android:windowIsFloating">false</item>
+        <item name="bottomSheetStyle">@style/BottomSheet</item>
+
+    </style>
+
+    <style name="BottomSheetDialogThemeLight" parent="@style/Theme.MaterialComponents.Light.BottomSheetDialog">
+        <item name="colorAccent">@color/md_blue_A400</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">?settingsBackground</item>
+
+        <item name="android:windowIsFloating">false</item>
+        <item name="bottomSheetStyle">@style/BottomSheet</item>
+    </style>
+
+    <style name="BottomSheet" parent="@style/Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="android:background">@drawable/bg_bottom_sheet_dialog_fragment</item>
+    </style>
 
 </resources>

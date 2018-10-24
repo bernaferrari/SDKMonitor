@@ -22,7 +22,7 @@ interface VersionsDao {
     @Query("SELECT * FROM versions WHERE packageName=:packageName ORDER BY version, lastUpdateTime DESC")
     fun getAllValues(packageName: String): List<Version>?
 
-    @Insert(onConflict = OnConflictStrategy.FAIL)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertVersion(version: Version)
 
 }

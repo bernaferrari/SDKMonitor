@@ -3,4 +3,15 @@
 
     <string name="empty_search">No results found</string>
     <string name="target_history">TargetSDK history</string>
+    <string name="background_sync">Background Sync</string>
+    <string name="sync_interval">Sync Interval</string>
+    <string name="constraints">Constraints</string>
+    <string name="charging">Charging</string>
+    <string name="batter_not_low">Battery not low</string>
+
+    <string name="min">min</string>
+    <string name="hour">1 hour</string>
+    <string name="hours">hours</string>
+    <string name="days">days</string>
+
 </resources>

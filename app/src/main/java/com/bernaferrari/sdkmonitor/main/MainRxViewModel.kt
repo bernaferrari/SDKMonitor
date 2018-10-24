@@ -5,7 +5,6 @@ import com.bernaferrari.sdkmonitor.core.AppManager
 import com.bernaferrari.sdkmonitor.core.MvRxViewModel
 import com.bernaferrari.sdkmonitor.data.App
 import com.bernaferrari.sdkmonitor.data.Version
-import com.bernaferrari.sdkmonitor.extensions.consume
 import com.bernaferrari.sdkmonitor.extensions.convertTimestampToDate
 import com.bernaferrari.sdkmonitor.extensions.normalizeString
 import com.jakewharton.rxrelay2.BehaviorRelay
@@ -28,7 +27,8 @@ class MainRxViewModel(initialState: MainState) : MvRxViewModel<MainState>(initia
     val itemsList = mutableListOf<AppVersion>()
     var hasLoaded = false
     var maxListSize = 0
-    val relay: BehaviorRelay<String> = BehaviorRelay.create<String>()
+    val inputRelay: BehaviorRelay<String> = BehaviorRelay.create<String>()
+    val showProgressRelay: BehaviorRelay<Boolean> = BehaviorRelay.create<Boolean>()
 
     init {
         fetchData()
@@ -37,7 +37,7 @@ class MainRxViewModel(initialState: MainState) : MvRxViewModel<MainState>(initia
     private fun fetchData() = withState { _ ->
         Observables.combineLatest(
             getAppsListObservable(),
-            relay
+            inputRelay
         ) { list, filter ->
             list.takeIf { it.isNotEmpty() && filter.isNotBlank() }
                 ?.filter { it.app.title.normalizeString().contains(filter.normalizeString()) }
@@ -73,10 +73,11 @@ class MainRxViewModel(initialState: MainState) : MvRxViewModel<MainState>(initia
         }
     }
 
+    var firstRun = true
+
     private fun getAppsListObservable(): Observable<List<AppVersion>> =
 
         mAppsDao.getAppsList().toObservable()
-            .skipWhile { if (it.isEmpty()) consume { updateAll() } else false }
             .debounce { list ->
                 // debounce with a 200ms delay all items except the first one
                 val flow = Observable.just(list)
@@ -84,20 +85,20 @@ class MainRxViewModel(initialState: MainState) : MvRxViewModel<MainState>(initia
                 flow.takeIf { list.isEmpty() }
                     ?.let { it } ?: flow.delay(200, TimeUnit.MILLISECONDS)
             }
-//            .map { list ->
-//                list.filter { it.isFromPlayStore }.let { if (it.isNotEmpty()) it else list }
-//            }
+            .skipWhile {
+                if (it.isEmpty() || firstRun) {
+                    firstRun = false
+                    updateAll()
+                }
+                it.isEmpty()
+            }
             .map { list ->
                 val allItems = mutableListOf<AppVersion>()
                 list.asSequence()
                     .sortedBy { it.title.toLowerCase() }
                     .mapTo(allItems) { app ->
                         val (sdkVersion, lastUpdate) = getSdkDate(app)
-                        AppVersion(
-                            app,
-                            sdkVersion,
-                            lastUpdate
-                        )
+                        AppVersion(app, sdkVersion, lastUpdate)
                     }.toList()
             }.doOnNext { maxListSize = it.size }
 
@@ -118,13 +119,17 @@ class MainRxViewModel(initialState: MainState) : MvRxViewModel<MainState>(initia
         return Pair(sdkVersion, lastUpdate.convertTimestampToDate())
     }
 
-    fun updateAll() = GlobalScope.launch(Dispatchers.Default) {
+    fun updateAll() = GlobalScope.launch(Dispatchers.IO) {
+        showProgressRelay.accept(true)
+
         AppManager.getPlayStorePackages()
             // this condition will only happen when app is run on emulator.
             .let { if (it.isEmpty()) AppManager.getPackages() else it }
-            .forEach {
-                AppManager.insertNewApp(it)
-                AppManager.insertNewVersion(it)
+            .forEach { packageInfo ->
+                AppManager.insertNewApp(packageInfo)
+                AppManager.insertNewVersion(packageInfo)
             }
+
+        showProgressRelay.accept(false)
     }
 }

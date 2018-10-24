@@ -6,11 +6,10 @@ import com.bernaferrari.sdkmonitor.data.App
 import com.bernaferrari.sdkmonitor.data.Version
 
 /**
- * The Room Database that contains the Version table.
  * Inspired from Architecture Components MVVM sample app
  */
 @Database(entities = [App::class, Version::class], version = 1, exportSchema = false)
-abstract class ChangeDatabase : RoomDatabase() {
+abstract class AppDatabase : RoomDatabase() {
 
     abstract fun snapsDao(): AppsDao
 

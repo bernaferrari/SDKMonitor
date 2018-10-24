@@ -26,6 +26,7 @@ import com.bernaferrari.sdkmonitor.extensions.darken
 import com.bernaferrari.sdkmonitor.extensions.inflate
 import com.bernaferrari.sdkmonitor.extensions.onTextChanged
 import com.bernaferrari.sdkmonitor.extensions.toDpF
+import com.bernaferrari.sdkmonitor.settings.SettingsFragment
 import com.bernaferrari.sdkmonitor.util.InsetDecoration
 import com.bernaferrari.sdkmonitor.util.hideKeyboard
 import com.bernaferrari.sdkmonitor.util.hideKeyboardWhenNecessary
@@ -35,10 +36,13 @@ import com.bernaferrari.sdkmonitor.views.mainRow
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.reddit.indicatorfastscroll.FastScrollItemIndicator
 import com.reddit.indicatorfastscroll.FastScrollerView
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.main_fragment.*
-import kotlinx.coroutines.experimental.*
-import kotlin.coroutines.experimental.CoroutineContext
-
+import kotlinx.coroutines.experimental.Job
+import kotlinx.coroutines.experimental.delay
+import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.experimental.runBlocking
 
 class AppVersion(
     val app: App,
@@ -50,11 +54,9 @@ data class AppDetails(val title: String, val subtitle: String)
 
 data class MainState(val listOfItems: Async<List<AppVersion>> = Loading()) : MvRxState
 
-class MainFragment : BaseMvRxFragment(), CoroutineScope {
+class MainFragment : BaseMainFragment() {
 
     private val viewModel: MainRxViewModel by fragmentViewModel()
-
-    override val coroutineContext: CoroutineContext = Dispatchers.Main + Job()
 
     private val standardItemDecorator by lazy {
         InsetDecoration(
@@ -100,9 +102,7 @@ class MainFragment : BaseMvRxFragment(), CoroutineScope {
         }
     }
 
-    val epoxyController by lazy { epoxyController() }
-
-    fun epoxyController(): MvRxEpoxyController = simpleController(viewModel) { state ->
+    override fun epoxyController(): MvRxEpoxyController = simpleController(viewModel) { state ->
 
         when (state.listOfItems) {
             is Loading ->
@@ -169,13 +169,20 @@ class MainFragment : BaseMvRxFragment(), CoroutineScope {
             inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
         }
 
-        recycler.setController(epoxyController)
+        settings.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction()
+                .add(SettingsFragment(), "settings").commit()
+        }
+
         recycler.addItemDecoration(standardItemDecorator)
         setupFastScroller(recycler.layoutManager as? LinearLayoutManager)
 
         setupDataAndSearch()
 
-        viewModel.updateAll()
+        disposableManager += viewModel.showProgressRelay.observeOn(AndroidSchedulers.mainThread())
+            .subscribe { if (!it) swipeToRefresh.isRefreshing = false }
+
+        swipeToRefresh.setOnRefreshListener { viewModel.updateAll() }
 
         hideKeyboardWhenNecessary(
             requireActivity(),
@@ -185,30 +192,11 @@ class MainFragment : BaseMvRxFragment(), CoroutineScope {
         )
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        epoxyController.onRestoreInstanceState(savedInstanceState)
-    }
-
-    override fun invalidate() {
-        recycler.requestModelBuild()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        epoxyController.onSaveInstanceState(outState)
-    }
-
-    override fun onDestroyView() {
-        epoxyController.cancelPendingModelBuild()
-        super.onDestroyView()
-    }
-
     private fun setupDataAndSearch() {
 
         var work: Job? = null
 
-        viewModel.relay.accept(queryInput.text.toString())
+        viewModel.inputRelay.accept(queryInput.text.toString())
 
         queryClear.setOnClickListener { queryInput.setText("") }
 
@@ -221,14 +209,9 @@ class MainFragment : BaseMvRxFragment(), CoroutineScope {
                 // another thing.
                 // Without this, the input would be ignored while data is loading.
                 while (!viewModel.hasLoaded) delay(200)
-                viewModel.relay.accept(it.toString())
+                viewModel.inputRelay.accept(it.toString())
             }
         }
-    }
-
-    override fun onDestroy() {
-        coroutineContext.cancel()
-        super.onDestroy()
     }
 
     private fun setupFastScroller(llm: LinearLayoutManager?) {

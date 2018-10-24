@@ -3,8 +3,8 @@ package com.bernaferrari.sdkmonitor
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.room.Room
+import com.bernaferrari.sdkmonitor.data.source.local.AppDatabase
 import com.bernaferrari.sdkmonitor.data.source.local.AppsDao
-import com.bernaferrari.sdkmonitor.data.source.local.ChangeDatabase
 import com.bernaferrari.sdkmonitor.data.source.local.VersionsDao
 import dagger.Component
 import dagger.Module
@@ -33,11 +33,11 @@ class SnapsRepositoryModule {
 
     @Singleton
     @Provides
-    internal fun provideAppsDao(db: ChangeDatabase): AppsDao = db.snapsDao()
+    internal fun provideAppsDao(db: AppDatabase): AppsDao = db.snapsDao()
 
     @Singleton
     @Provides
-    internal fun provideVersionsDao(db: ChangeDatabase): VersionsDao = db.versionsDao()
+    internal fun provideVersionsDao(db: AppDatabase): VersionsDao = db.versionsDao()
 }
 
 @Module
@@ -45,11 +45,11 @@ class RepositoriesMutualDependenciesModule {
 
     @Singleton
     @Provides
-    internal fun provideDb(context: Context): ChangeDatabase {
+    internal fun provideDb(context: Context): AppDatabase {
         return Room.databaseBuilder(
             context.applicationContext,
-            ChangeDatabase::class.java,
-            "Changes.db"
+            AppDatabase::class.java,
+            "Apps.db"
         )
             .fallbackToDestructiveMigration()
             .build()

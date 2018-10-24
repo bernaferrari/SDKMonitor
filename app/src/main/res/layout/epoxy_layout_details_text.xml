@@ -13,24 +13,15 @@
             name="subtitle"
             type="String" />
 
-        <variable
-            name="shape"
-            type="android.graphics.drawable.Drawable" />
-
-        <variable
-            name="onClick"
-            type="android.view.View.OnClickListener" />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:onClick="@{onClick}">
+        android:paddingLeft="16dp"
+        android:paddingTop="8dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="8dp">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/labelStr"
@@ -38,12 +29,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
             android:layout_marginEnd="16dp"
-            android:elevation="1dp"
             android:includeFontPadding="false"
             android:lines="1"
-            android:paddingTop="8dp"
             android:text="@{title}"
             android:textColor="@color/white"
             app:layout_constraintBottom_toTopOf="@+id/subtitleStr"
@@ -53,18 +41,6 @@
             app:layout_constraintVertical_chainStyle="packed"
             tools:text="Changes" />
 
-        <View
-            android:id="@+id/top_view"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:background="@{shape}"
-            android:foreground="@drawable/photos_press"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:background="@drawable/round_corners_top" />
-
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/subtitleStr"
             style="@style/TextAppearance.MaterialComponents.Caption"
@@ -72,7 +48,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="4dp"
             android:lines="1"
             android:text="@{subtitle}"
             android:textColor="@color/white"
@@ -83,4 +58,5 @@
             tools:text="2 months ago" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

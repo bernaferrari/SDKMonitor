@@ -5,7 +5,6 @@ import com.bernaferrari.sdkmonitor.*
 import com.bernaferrari.sdkmonitor.data.Version
 import com.bernaferrari.sdkmonitor.extensions.convertTimestampToDate
 
-
 internal class DetailsController : Typed2EpoxyController<List<AppDetails>, List<Version>>() {
 
     override fun buildModels(apps: List<AppDetails>, versions: List<Version>) {
