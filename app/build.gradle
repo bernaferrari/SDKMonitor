@@ -28,8 +28,8 @@ android {
     buildTypes {
         release {
             debuggable false
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false // there is a bug on MvRx that will crash the app if minify is true
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
@@ -64,7 +64,6 @@ dependencies {
     implementation "androidx.appcompat:appcompat:1.0.0"
     implementation "androidx.palette:palette:1.0.0"
     implementation "androidx.core:core:1.0.0"
-
     implementation 'androidx.core:core-ktx:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
@@ -89,7 +88,7 @@ dependencies {
 
     
     // Dagger
-    def dagger = "2.17"
+    def dagger = "2.18"
     implementation "com.google.dagger:dagger:$dagger"
     kapt "com.google.dagger:dagger-compiler:$dagger"
 
@@ -98,7 +97,7 @@ dependencies {
     implementation "com.airbnb.android:epoxy:$epoxy"
     implementation "com.airbnb.android:epoxy-databinding:$epoxy"
     kapt "com.airbnb.android:epoxy-processor:$epoxy"
-    implementation 'com.airbnb.android:mvrx:0.5.0'
+    implementation 'com.airbnb.android:mvrx:0.6.0'
 
     // Groupie
     def groupie = "2.1.0"
