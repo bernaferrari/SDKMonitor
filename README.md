@@ -3,7 +3,7 @@
 SDK Monitor
 =================
 
-This app tracks changes on targetSDK from your apps. Google is [forcing all apps](https://developer.android.com/distribute/best-practices/develop/target-sdk) to update the targetSDK to one of the most recent. Example: Every app will need to be on target 26 (28 is the latest) as of November 1st 2018.
+This app tracks changes on targetSDK from your apps. Starting November 1st, 2018, Google is [requiring all app updates](https://developer.android.com/distribute/best-practices/develop/target-sdk) to target at least 26 (28 is the latest).
 
 The idea behind this project was to make it easy to see the apps which are "voluntarily" being updated regularly, and the ones that are resisting until the last second.
 I am personally a fan of [App Inspector](https://play.google.com/store/apps/details?id=bg.projectoria.appinspector), with 100K+ downloads, simple interface, and great information. I had, however, 3 issues with it:
