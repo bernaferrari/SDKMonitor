@@ -3,18 +3,21 @@
 SDK Monitor
 =================
 
-This app tracks changes on TargetSDK from your apps. Google is [forcing all apps](https://developer.android.com/distribute/best-practices/develop/target-sdk) to update the targetSDK to one of the most recent. Example: Every app will need to be on target 26 (28 is the latest) as of November 1st 2018.
+This app tracks changes on targetSDK from your apps. Google is [forcing all apps](https://developer.android.com/distribute/best-practices/develop/target-sdk) to update the targetSDK to one of the most recent. Example: Every app will need to be on target 26 (28 is the latest) as of November 1st 2018.
 
 The idea behind this project was to make it easy to see the apps which are "voluntarily" being updated regularly, and the ones that are resisting until the last second.
 I am personally a fan of [App Inspector](https://play.google.com/store/apps/details?id=bg.projectoria.appinspector), with 100K+ downloads, simple interface, and great information. I had, however, 3 issues with it:
 
-* Long time to load when you open the app
-* No search or way to find what you want
-* Not material design
+* Really long time to load when app is opened;
+* No search or way to find what you want;
+* No material design.
 
-Based on this, I made an improved app, with everything App Inspector has and more. SDK Monitor caches everything, so time to load is **REALLY** fast. It also makes use of Implicit Intents to automatically keep track of app installs, updates and deletions. Android Oreo removed these (except deletion), so the app has the option to use WorkManager to automatically fetch periodically in background for these changes. Every time the TargetSDK value changes, the app will show a notification.
+Based on this, I made an improved app, with everything App Inspector has and more. SDK Monitor caches everything using Room, so time to load is **REALLY** fast.
+It also makes use of Implicit Broadcasts (where available) to automatically keep track of app installs, updates and deletions.
+Android Oreo removed these (except deletion), so the app has the option to use WorkManager to automatically fetch periodically in background for these changes.
+Every time the targetSDK value for an app is changed, the app will show a push notification.
 
-This app also showcases the following Android Architecture Components working together: [Room](https://developer.android.com/topic/libraries/architecture/room.html), [ViewModel](https://developer.android.com/reference/android/arch/lifecycle/ViewModel.html), [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager) and [Navigation](https://developer.android.com/topic/libraries/architecture/navigation/).
+This app also showcases the following Jetpack libraries working together: [Room](https://developer.android.com/topic/libraries/architecture/room.html), [ViewModel](https://developer.android.com/reference/android/arch/lifecycle/ViewModel.html), [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager), [DataBinding](https://developer.android.com/topic/libraries/data-binding/) and [Navigation](https://developer.android.com/topic/libraries/architecture/navigation/).
 
 App is currently in beta, you can download the apk here:
 
@@ -58,6 +61,8 @@ The app also makes use of Kotlin's Coroutines to deal with some callbacks.
 #### How components were used
 
 * MvRx and Epoxy: used on the main screen to fetch and filter (if necessary) the list of apps. Since Epoxy wasn't made for items that are changing, the Settings view makes use of Groupie.
+
+* ViewModel: A *Observables.combineLatest* will merge the results from database (which will be fetched if empty) and search (which will be empty when app is first opened). Following this, the *execute* from MvRx will copy the state to the correct EpoxyController.
 
 * WorkManager: responsible for automatically syncing when the app is in background.
 There are two constraints: *battery not low* and *device charging*.
