@@ -26,14 +26,18 @@ class PackageService : IntentService("PackageService") {
     }
 
     private fun handleActionFetchUpdate(packageName: String) = runBlocking {
-        val packageInfo = AppManager.getPackageInfo(packageName)
-        AppManager.insertNewVersion(packageInfo)
+        if (AppManager.isAppFromGooglePlay(packageName)) {
+            val packageInfo = AppManager.getPackageInfo(packageName)
+            AppManager.insertNewVersion(packageInfo)
+        }
     }
 
     private fun handleActionInsert(packageName: String) = runBlocking {
-        val packageInfo = AppManager.getPackageInfo(packageName)
-        AppManager.insertNewApp(packageInfo)
-        AppManager.insertNewVersion(packageInfo)
+        if (AppManager.isAppFromGooglePlay(packageName)) {
+            val packageInfo = AppManager.getPackageInfo(packageName)
+            AppManager.insertNewApp(packageInfo)
+            AppManager.insertNewVersion(packageInfo)
+        }
     }
 
     companion object {

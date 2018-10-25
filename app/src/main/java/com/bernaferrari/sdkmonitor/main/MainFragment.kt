@@ -113,8 +113,6 @@ class MainFragment : BaseMainFragment() {
                     this.label(state.listOfItems.error.localizedMessage)
                 }
             is Success -> {
-                queryInput.hint = "Search ${viewModel.maxListSize} apps.."
-
                 if (state.listOfItems()?.isEmpty() == true) {
                     emptyContent {
                         this.id("empty result")
@@ -181,6 +179,9 @@ class MainFragment : BaseMainFragment() {
 
         disposableManager += viewModel.showProgressRelay.observeOn(AndroidSchedulers.mainThread())
             .subscribe { if (!it) swipeToRefresh.isRefreshing = false }
+
+        disposableManager += viewModel.maxListSize.observeOn(AndroidSchedulers.mainThread())
+            .subscribe { queryInput.hint = "Search $it apps.." }
 
         swipeToRefresh.setOnRefreshListener { viewModel.updateAll() }
 

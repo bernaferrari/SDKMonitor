@@ -26,7 +26,7 @@ class MainRxViewModel(initialState: MainState) : MvRxViewModel<MainState>(initia
 
     val itemsList = mutableListOf<AppVersion>()
     var hasLoaded = false
-    var maxListSize = 0
+    var maxListSize: BehaviorRelay<Int> = BehaviorRelay.create<Int>()
     val inputRelay: BehaviorRelay<String> = BehaviorRelay.create<String>()
     val showProgressRelay: BehaviorRelay<Boolean> = BehaviorRelay.create<Boolean>()
 
@@ -100,7 +100,7 @@ class MainRxViewModel(initialState: MainState) : MvRxViewModel<MainState>(initia
                         val (sdkVersion, lastUpdate) = getSdkDate(app)
                         AppVersion(app, sdkVersion, lastUpdate)
                     }.toList()
-            }.doOnNext { maxListSize = it.size }
+            }.doOnNext { maxListSize.accept(it.size) }
 
     fun getSdkDate(app: App): Pair<Int, String> {
 
