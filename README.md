@@ -18,7 +18,7 @@ This app also showcases the following Android Architecture Components working to
 
 App is currently in beta, you can download the apk here:
 
-[APK DOWNLOAD]("assets/sdkmonitor.apk")
+[APK DOWNLOAD](assets/sdkmonitor.apk)
 
 ## Screenshots
 
