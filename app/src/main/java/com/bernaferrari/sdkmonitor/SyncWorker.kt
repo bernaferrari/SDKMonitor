@@ -30,13 +30,10 @@ class SyncWorker(
 
         debugLog.setLength(0)
 
-        AppManager.getPlayStorePackages()
-            // this condition will only happen when app is run on emulator.
-            .let { if (it.isEmpty()) AppManager.getPackages() else it }
-            .forEach {
-                AppManager.insertNewApp(it)
-                AppManager.insertNewVersion(it)
-            }
+        AppManager.getPlayStorePackages().forEach {
+            AppManager.insertNewApp(it)
+            AppManager.insertNewVersion(it)
+        }
 
         if (isDebugEnabled) {
             Notify.with(context)

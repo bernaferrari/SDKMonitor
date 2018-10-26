@@ -22,12 +22,7 @@ object WorkerHelper {
     class ConstraintsRequired(
         val charging: Boolean,
         val batteryNotLow: Boolean
-    ) {
-        constructor(list: List<String>) : this(
-            list.getOrNull(0)?.toBoolean() ?: false,
-            list.getOrNull(1)?.toBoolean() ?: false
-        )
-    }
+    )
 
     fun updateWorkerWithConstraints(
         sharedPrefs: SharedPreferences,
@@ -58,7 +53,7 @@ object WorkerHelper {
 
         val syncWork = OneTimeWorkRequest.Builder(SyncWorker::class.java)
             .addTag(UNIQUEWORK)
-            .setInitialDelay(delay, TimeUnit.MINUTES)
+            .setInitialDelay(10, TimeUnit.SECONDS)
             .setConstraints(workerConstraints.build())
             .build()
 
