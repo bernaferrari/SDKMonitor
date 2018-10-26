@@ -21,7 +21,7 @@ This app also showcases the following Jetpack libraries working together: [Room]
 
 App is currently in beta, you can download the apk here:
 
-[APK DOWNLOAD](assets/sdkmonitor.apk)
+[APK DOWNLOAD](https://github.com/bernaferrari/SDKMonitor/raw/master/assets/sdkmonitor.apk)
 
 ## Screenshots
 

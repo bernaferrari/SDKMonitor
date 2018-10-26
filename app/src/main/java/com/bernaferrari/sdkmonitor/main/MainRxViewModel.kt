@@ -39,8 +39,12 @@ class MainRxViewModel(initialState: MainState) : MvRxViewModel<MainState>(initia
             getAppsListObservable(),
             inputRelay
         ) { list, filter ->
-            list.takeIf { it.isNotEmpty() && filter.isNotBlank() }
-                ?.filter { it.app.title.normalizeString().contains(filter.normalizeString()) }
+            // get the string without special characters and filter the list.
+            // If the filter is not blank, it will filter the list.
+            // If it is blank, it will return the original list.
+            val pattern = filter.normalizeString()
+            list.takeIf { filter.isNotBlank() }
+                ?.filter { pattern in it.app.title.normalizeString() }
                     ?: list
         }.doOnNext {
             itemsList.clear()

@@ -51,6 +51,7 @@
                     android:inputType="textCapWords|textNoSuggestions"
                     android:privateImeOptions="nm"
                     android:selectAllOnFocus="true"
+                    android:textAlignment="viewStart"
                     tools:hint="Search" />
 
                 <ImageView
@@ -74,7 +75,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginRight="8dp"
+            android:layout_marginEnd="8dp"
             android:paddingStart="@dimen/horizontal_spacing"
             android:paddingEnd="@dimen/horizontal_spacing"
             android:src="@drawable/ic_settings" />

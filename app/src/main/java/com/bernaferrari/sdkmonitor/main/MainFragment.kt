@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,6 +44,7 @@ import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.runBlocking
+import java.util.*
 
 class AppVersion(
     val app: App,
@@ -59,10 +61,14 @@ class MainFragment : BaseMainFragment() {
     private val viewModel: MainRxViewModel by fragmentViewModel()
 
     private val standardItemDecorator by lazy {
+        val isRightToLeft =
+            TextUtils.getLayoutDirectionFromLocale(Locale.getDefault()) == View.LAYOUT_DIRECTION_RTL
+
+        // the padding should be on right side, but because of RTL layouts, it can change.
         InsetDecoration(
             resources.getDimensionPixelSize(R.dimen.right_padding_for_fast_scroller),
-            false,
-            true
+            isRightToLeft,
+            !isRightToLeft
         )
     }
 
