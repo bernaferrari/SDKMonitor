@@ -34,11 +34,6 @@ android {
             signingConfig signingConfigs.release
         }
     }
-    kotlin {
-        experimental {
-            coroutines 'enable'
-        }
-    }
     kapt {
         correctErrorTypes = true
     }
@@ -105,7 +100,7 @@ dependencies {
     implementation "com.xwray:groupie-kotlin-android-extensions:$groupie"
 
     // Coroutines
-    def coroutines_version = "0.30.2"
+    def coroutines_version = "1.0.0"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 

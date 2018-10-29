@@ -10,10 +10,10 @@ import com.bernaferrari.sdkmonitor.extensions.normalizeString
 import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.Observables
-import kotlinx.coroutines.experimental.Dispatchers
-import kotlinx.coroutines.experimental.GlobalScope
-import kotlinx.coroutines.experimental.launch
-import kotlinx.coroutines.experimental.withContext
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
 
 /**
@@ -34,7 +34,7 @@ class MainRxViewModel(initialState: MainState) : MvRxViewModel<MainState>(initia
         fetchData()
     }
 
-    private fun fetchData() = withState { _ ->
+    private fun fetchData() = withState {
         Observables.combineLatest(
             getAppsListObservable(),
             inputRelay

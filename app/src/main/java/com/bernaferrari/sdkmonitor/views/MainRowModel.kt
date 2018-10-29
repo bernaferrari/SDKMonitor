@@ -13,8 +13,8 @@ import com.bernaferrari.sdkmonitor.R
 import com.bernaferrari.sdkmonitor.core.AppManager
 import com.bernaferrari.sdkmonitor.data.Version
 import com.bernaferrari.sdkmonitor.main.AppVersion
-import kotlinx.coroutines.experimental.*
-import kotlin.coroutines.experimental.CoroutineContext
+import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
 
 @EpoxyModelClass(layout = R.layout.row_item)
 abstract class MainRowModel : EpoxyModelWithHolder<MainRowModel.Holder>(), CoroutineScope {

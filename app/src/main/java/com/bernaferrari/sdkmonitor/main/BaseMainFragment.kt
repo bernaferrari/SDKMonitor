@@ -11,11 +11,11 @@ import com.bernaferrari.sdkmonitor.WorkerHelper
 import com.bernaferrari.sdkmonitor.core.MvRxEpoxyController
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.main_fragment.*
-import kotlinx.coroutines.experimental.CoroutineScope
-import kotlinx.coroutines.experimental.Dispatchers
-import kotlinx.coroutines.experimental.Job
-import kotlinx.coroutines.experimental.cancel
-import kotlin.coroutines.experimental.CoroutineContext
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import kotlin.coroutines.CoroutineContext
 
 abstract class BaseMainFragment : BaseMvRxFragment(), CoroutineScope {
 

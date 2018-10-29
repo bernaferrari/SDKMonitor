@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.work.*
 import com.bernaferrari.sdkmonitor.Injector
 import com.bernaferrari.sdkmonitor.WorkerHelper.SERVICEWORK
-import kotlinx.coroutines.experimental.runBlocking
+import kotlinx.coroutines.runBlocking
 
 class PackageService(
     val context: Context,

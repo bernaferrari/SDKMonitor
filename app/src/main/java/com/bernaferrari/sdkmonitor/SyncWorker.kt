@@ -8,8 +8,8 @@ import androidx.work.WorkerParameters
 import com.bernaferrari.sdkmonitor.core.AppManager
 import com.orhanobut.logger.Logger
 import io.karn.notify.Notify
-import kotlinx.coroutines.experimental.Dispatchers
-import kotlinx.coroutines.experimental.runBlocking
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 
 class SyncWorker(
     val context: Context,
