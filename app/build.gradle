@@ -21,8 +21,8 @@ android {
         applicationId "com.bernaferrari.sdkmonitor"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 2
-        versionName "0.2"
+        versionCode 3
+        versionName "0.3"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

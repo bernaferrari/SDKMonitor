@@ -36,9 +36,6 @@
             </intent-filter>
         </receiver>
 
-        <service
-            android:name=".core.PackageService"
-            android:exported="false" />
     </application>
 
 </manifest>

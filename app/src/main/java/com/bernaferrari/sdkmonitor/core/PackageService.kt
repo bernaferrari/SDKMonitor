@@ -1,24 +1,27 @@
 package com.bernaferrari.sdkmonitor.core
 
-import android.app.IntentService
 import android.content.Context
-import android.content.Intent
+import androidx.work.*
 import com.bernaferrari.sdkmonitor.Injector
+import com.bernaferrari.sdkmonitor.WorkerHelper.SERVICEWORK
 import kotlinx.coroutines.experimental.runBlocking
 
-class PackageService : IntentService("PackageService") {
+class PackageService(
+    val context: Context,
+    workerParameters: WorkerParameters
+) : Worker(context, workerParameters) {
 
-    override fun onHandleIntent(intent: Intent?) {
-        if (intent != null) {
-            val action = intent.action
-            val packageName = intent.getStringExtra(EXTRA_PACKAGE_NAME)
+    override fun doWork(): Result {
+        val action = inputData.getString("action")
+        val packageName = inputData.getString(EXTRA_PACKAGE_NAME) ?: ""
 
-            when (action) {
-                ACTION_FETCH_INSERT -> handleActionInsert(packageName)
-                ACTION_FETCH_UPDATE -> handleActionFetchUpdate(packageName)
-                ACTION_REMOVE_PACKAGE -> handleActionRemovePackage(packageName)
-            }
+        when (action) {
+            ACTION_FETCH_INSERT -> handleActionInsert(packageName)
+            ACTION_FETCH_UPDATE -> handleActionFetchUpdate(packageName)
+            ACTION_REMOVE_PACKAGE -> handleActionRemovePackage(packageName)
         }
+
+        return Result.SUCCESS
     }
 
     private fun handleActionRemovePackage(packageName: String) {
@@ -48,28 +51,29 @@ class PackageService : IntentService("PackageService") {
         private const val EXTRA_PACKAGE_NAME = "PACKAGE_NAME"
 
         fun startActionRemovePackage(context: Context, packageName: String) {
-            val intent = Intent(context, PackageService::class.java)
-            intent.action =
-                    ACTION_REMOVE_PACKAGE
-            intent.putExtra(EXTRA_PACKAGE_NAME, packageName)
-            context.startService(intent)
+            enqueueWork(ACTION_REMOVE_PACKAGE, packageName)
         }
 
-        fun startActionFetchUpdate(context: Context, packageName: String) {
-            val intent = Intent(context, PackageService::class.java)
-            intent.action =
-                    ACTION_FETCH_UPDATE
-            intent.putExtra(EXTRA_PACKAGE_NAME, packageName)
-            context.startService(intent)
+        fun startActionFetchUpdate(packageName: String) {
+            enqueueWork(ACTION_FETCH_UPDATE, packageName)
         }
 
-        fun startActionAddPackage(context: Context, packageName: String) {
-            val intent = Intent(context, PackageService::class.java)
-            intent.action =
-                    ACTION_FETCH_INSERT
-            intent.putExtra(EXTRA_PACKAGE_NAME, packageName)
-            context.startService(intent)
+        fun startActionAddPackage(packageName: String) {
+            enqueueWork(ACTION_FETCH_INSERT, packageName)
+        }
+
+        private fun enqueueWork(action: String, packageName: String) {
+            val inputData = Data.Builder()
+                .putString("action", action)
+                .putString(EXTRA_PACKAGE_NAME, packageName)
+                .build()
+
+            val work = OneTimeWorkRequest.Builder(PackageService::class.java)
+                .addTag(SERVICEWORK)
+                .setInputData(inputData)
+                .build()
+
+            WorkManager.getInstance().enqueue(work)
         }
     }
-
 }

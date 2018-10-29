@@ -16,26 +16,17 @@ class PackageReceiver : BroadcastReceiver() {
             intent.action == Intent.ACTION_PACKAGE_ADDED -> {
                 // Package installed
                 Logger.d("Package installed - $packageName")
-                PackageService.startActionAddPackage(
-                    context,
-                    packageName
-                )
+                PackageService.startActionAddPackage(packageName)
             }
             intent.action == Intent.ACTION_PACKAGE_REPLACED -> {
                 // Package updated
                 Logger.d("Package updated - $packageName")
-                PackageService.startActionFetchUpdate(
-                    context,
-                    packageName
-                )
+                PackageService.startActionFetchUpdate(packageName)
             }
             intent.action == Intent.ACTION_PACKAGE_FULLY_REMOVED -> {
                 // Package uninstalled
                 Logger.d("Package uninstalled - $packageName")
-                PackageService.startActionRemovePackage(
-                    context,
-                    packageName
-                )
+                PackageService.startActionRemovePackage(context, packageName)
             }
         }
     }

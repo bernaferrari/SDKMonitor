@@ -13,10 +13,9 @@ import java.util.concurrent.TimeUnit
 object WorkerHelper {
 
     const val UNIQUEWORK = "work"
-    const val WIFI = "wifi"
+    const val SERVICEWORK = "work"
     const val CHARGING = "charging"
     const val BATTERYNOTLOW = "batteryNotLow"
-    const val IDLE = "idle"
     const val DELAY = "delay"
 
     class ConstraintsRequired(
@@ -53,7 +52,7 @@ object WorkerHelper {
 
         val syncWork = OneTimeWorkRequest.Builder(SyncWorker::class.java)
             .addTag(UNIQUEWORK)
-            .setInitialDelay(10, TimeUnit.SECONDS)
+            .setInitialDelay(delay, TimeUnit.MINUTES)
             .setConstraints(workerConstraints.build())
             .build()
 
