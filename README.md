@@ -51,7 +51,7 @@ The View and ViewModel communicate using RxJava2 and general good principles.
 #### Data layer
 
 The database is created using Room and it has two entities: a `App` and a `Version` that generate corresponding SQLite tables at runtime.
-There is a one to many relationshiop between them. The packageName from `App` is a foreign key on `Version`.
+There is a one to many relationship between them. The packageName from `App` is a foreign key on `Version`.
 App contains the app label, package name and color (to be displayed on the app, based on the icon).
 Version contains the targetSDK version, versionName and versionCode. The app only adds a new version when the targetSDK changes.
 
