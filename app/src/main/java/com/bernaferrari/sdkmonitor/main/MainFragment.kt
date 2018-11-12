@@ -22,6 +22,7 @@ import com.bernaferrari.sdkmonitor.R
 import com.bernaferrari.sdkmonitor.core.MvRxEpoxyController
 import com.bernaferrari.sdkmonitor.core.simpleController
 import com.bernaferrari.sdkmonitor.data.App
+import com.bernaferrari.sdkmonitor.emptyContent
 import com.bernaferrari.sdkmonitor.extensions.darken
 import com.bernaferrari.sdkmonitor.extensions.inflate
 import com.bernaferrari.sdkmonitor.extensions.onTextChanged
@@ -30,6 +31,9 @@ import com.bernaferrari.sdkmonitor.settings.SettingsFragment
 import com.bernaferrari.sdkmonitor.util.InsetDecoration
 import com.bernaferrari.sdkmonitor.util.hideKeyboard
 import com.bernaferrari.sdkmonitor.util.hideKeyboardWhenNecessary
+import com.bernaferrari.sdkmonitor.views.MainRowModel_
+import com.bernaferrari.sdkmonitor.views.loadingRow
+import com.bernaferrari.sdkmonitor.views.mainRow
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.reddit.indicatorfastscroll.FastScrollItemIndicator
 import com.reddit.indicatorfastscroll.FastScrollerView
