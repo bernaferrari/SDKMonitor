@@ -45,10 +45,28 @@
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:gravity="center_vertical|start"
-                android:paddingEnd="@dimen/padding_normal"
                 android:singleLine="true"
                 android:textColor="?strongColor"
                 tools:text="Web Drivers" />
+
+            <ImageView
+                android:id="@+id/play_store"
+                android:layout_width="@dimen/avatar_bounds"
+                android:layout_height="@dimen/avatar_bounds"
+                android:layout_gravity="center"
+                android:background="?android:selectableItemBackgroundBorderless"
+                android:padding="@dimen/avatar_margin"
+                app:srcCompat="@drawable/ic_play_store" />
+
+            <ImageView
+                android:id="@+id/info"
+                android:layout_width="@dimen/avatar_bounds"
+                android:layout_height="@dimen/avatar_bounds"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/avatar_margin"
+                android:background="?android:selectableItemBackgroundBorderless"
+                android:padding="@dimen/avatar_margin"
+                app:srcCompat="@drawable/ic_info" />
 
         </LinearLayout>
 

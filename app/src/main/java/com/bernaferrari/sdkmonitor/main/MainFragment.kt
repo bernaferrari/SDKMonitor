@@ -1,9 +1,11 @@
 package com.bernaferrari.sdkmonitor.main
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
@@ -94,14 +96,32 @@ class MainFragment : BaseMainFragment() {
 
         val customView = dialog.getCustomView() ?: return
 
-        customView.findViewById<ImageView>(R.id.closecontent)
-            .setOnClickListener { dialog.dismiss() }
-
         customView.findViewById<TextView>(R.id.titlecontent)
             .text = app.title
 
         customView.findViewById<LinearLayout>(R.id.title_bar)
             .background = ColorDrawable(app.backgroundColor.darken.darken)
+
+        customView.findViewById<ImageView>(R.id.closecontent)
+            .setOnClickListener { dialog.dismiss() }
+
+        customView.findViewById<ImageView>(R.id.play_store).also {
+            it.isVisible = app.isFromPlayStore
+            it.setOnClickListener {
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("market://details?id=${app.packageName}")
+                )
+
+                startActivity(intent)
+            }
+        }
+
+        customView.findViewById<ImageView>(R.id.info).setOnClickListener {
+            val intent = Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            intent.data = Uri.parse("package:" + app.packageName)
+            startActivity(intent)
+        }
 
         customView.findViewById<EpoxyRecyclerView>(R.id.recycler)?.also { epoxyRecycler ->
 
