@@ -1,6 +1,7 @@
 package com.bernaferrari.sdkmonitor.main
 
 import android.content.Context
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
@@ -11,11 +12,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.getSystemService
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.customview.customView
+import com.afollestad.materialdialogs.customview.getCustomView
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.airbnb.mvrx.*
 import com.bernaferrari.sdkmonitor.R
@@ -24,7 +29,6 @@ import com.bernaferrari.sdkmonitor.core.simpleController
 import com.bernaferrari.sdkmonitor.data.App
 import com.bernaferrari.sdkmonitor.emptyContent
 import com.bernaferrari.sdkmonitor.extensions.darken
-import com.bernaferrari.sdkmonitor.extensions.inflate
 import com.bernaferrari.sdkmonitor.extensions.onTextChanged
 import com.bernaferrari.sdkmonitor.extensions.toDpF
 import com.bernaferrari.sdkmonitor.settings.SettingsFragment
@@ -34,7 +38,6 @@ import com.bernaferrari.sdkmonitor.util.hideKeyboardWhenNecessary
 import com.bernaferrari.sdkmonitor.views.MainRowModel_
 import com.bernaferrari.sdkmonitor.views.loadingRow
 import com.bernaferrari.sdkmonitor.views.mainRow
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.reddit.indicatorfastscroll.FastScrollItemIndicator
 import com.reddit.indicatorfastscroll.FastScrollerView
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -45,6 +48,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.util.*
+
 
 class AppVersion(
     val app: App,
@@ -80,27 +84,34 @@ class MainFragment : BaseMainFragment() {
         } ?: throw Exception("null activity. Can't bind inputMethodManager")
     }
 
-    private val showDialog: ((App) -> (Unit)) = {
-        val customView = parentLayout.inflate(R.layout.details_fragment)
+    private fun showDialog(app: App) {
 
-        val bottomDialog = BottomSheetDialog(requireContext()).also { btn ->
-            btn.setContentView(customView)
-            btn.show()
-        }
+        val dialog = MaterialDialog(requireContext()).customView(
+            R.layout.details_fragment,
+            noVerticalPadding = true
+        )
+        dialog.show()
 
-        customView.findViewById<ImageView>(R.id.closecontent).setOnClickListener { _ ->
-            bottomDialog.dismiss()
-        }
+        val customView = dialog.getCustomView() ?: return
 
-        customView.findViewById<TextView>(R.id.titlecontent).text = it.title
+        customView.findViewById<ImageView>(R.id.closecontent)
+            .setOnClickListener { dialog.dismiss() }
 
-        customView.findViewById<EpoxyRecyclerView>(R.id.recycler).also { epoxyRecycler ->
+        customView.findViewById<TextView>(R.id.titlecontent)
+            .text = app.title
+
+        customView.findViewById<LinearLayout>(R.id.title_bar)
+            .background = ColorDrawable(app.backgroundColor.darken.darken)
+
+        customView.findViewById<EpoxyRecyclerView>(R.id.recycler)?.also { epoxyRecycler ->
+
+            epoxyRecycler.background = ColorDrawable(app.backgroundColor.darken)
 
             val detailsController = DetailsController()
-            epoxyRecycler?.setController(detailsController)
+            epoxyRecycler.setController(detailsController)
 
             runBlocking {
-                val packageName = it.packageName
+                val packageName = app.packageName
                 val data = viewModel.fetchAppDetails(packageName)
                 val versions = viewModel.fetchAllVersions(packageName)
                 detailsController.setData(data, versions)
@@ -142,7 +153,7 @@ class MainFragment : BaseMainFragment() {
                 this.bottomShape(bottomShape)
                 this.topShape(topShape)
 
-                this.clickListener { _ -> showDialog.invoke(it.app) }
+                this.clickListener { _ -> showDialog(it.app) }
             }
         }
 

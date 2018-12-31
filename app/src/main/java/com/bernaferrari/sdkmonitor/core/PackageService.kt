@@ -21,7 +21,7 @@ class PackageService(
             ACTION_REMOVE_PACKAGE -> handleActionRemovePackage(packageName)
         }
 
-        return Result.SUCCESS
+        return Result.success()
     }
 
     private fun handleActionRemovePackage(packageName: String) {

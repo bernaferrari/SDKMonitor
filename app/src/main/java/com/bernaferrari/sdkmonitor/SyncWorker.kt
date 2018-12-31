@@ -22,7 +22,7 @@ class SyncWorker(
     override fun doWork(): Result {
         heavyWork()
         WorkerHelper.updateWorkerWithConstraints(Injector.get().sharedPrefs(), false)
-        return Result.SUCCESS
+        return Result.success()
     }
 
     private fun heavyWork() = runBlocking(Dispatchers.IO) {

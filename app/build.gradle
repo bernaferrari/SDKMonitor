@@ -62,7 +62,7 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.0.1'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
-    def nav_version = "1.0.0-alpha07"
+    def nav_version = "1.0.0-alpha09"
     implementation "android.arch.navigation:navigation-fragment-ktx:$nav_version"
     implementation "android.arch.navigation:navigation-ui-ktx:$nav_version"
 
@@ -74,28 +74,28 @@ dependencies {
     def lifecycle_version = '2.0.0'
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
 
-    def paging_version = "2.1.0-beta01"
+    def paging_version = "2.1.0-rc01"
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
     implementation "androidx.paging:paging-rxjava2-ktx:$paging_version"
 
-    def work_version = "1.0.0-alpha11"
+    def work_version = "1.0.0-beta01"
     implementation "android.arch.work:work-runtime-ktx:$work_version"
 
     
     // Dagger
-    def dagger = "2.18"
+    def dagger = "2.20"
     implementation "com.google.dagger:dagger:$dagger"
     kapt "com.google.dagger:dagger-compiler:$dagger"
 
     // Epoxy
-    def epoxy = "3.0.0-rc1"
+    def epoxy = "3.1.0"
     implementation "com.airbnb.android:epoxy:$epoxy"
     implementation "com.airbnb.android:epoxy-databinding:$epoxy"
     kapt "com.airbnb.android:epoxy-processor:$epoxy"
     implementation 'com.airbnb.android:mvrx:0.6.0'
 
     // Groupie
-    def groupie = "2.1.0"
+    def groupie = "2.3.0"
     implementation "com.xwray:groupie:$groupie"
     implementation "com.xwray:groupie-kotlin-android-extensions:$groupie"
 
@@ -105,7 +105,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
     // RxJava
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.3'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.5'
     implementation 'io.reactivex.rxjava2:rxkotlin:2.3.0'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
     implementation 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
@@ -118,14 +118,14 @@ dependencies {
     // UI
     implementation "io.karn:notify:1.1.0"
     implementation 'com.reddit:indicator-fast-scroll:1.0.1'
-    implementation 'com.afollestad.material-dialogs:core:2.0.0-beta5'
+    implementation 'com.afollestad.material-dialogs:core:2.0.0-rc5'
 
     // Time
     implementation 'com.github.marlonlom:timeago:4.0.1'
 
     // Internal
     implementation 'com.orhanobut:logger:2.2.0'
-    implementation 'androidx.multidex:multidex:2.0.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
     implementation"org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     // Debugging

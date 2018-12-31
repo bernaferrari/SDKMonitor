@@ -18,31 +18,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp">
+        android:padding="8dp">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/labelStr"
-            style="@style/TextAppearance.MaterialComponents.Body1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:includeFontPadding="false"
-            android:lines="1"
-            android:text="@{title}"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toTopOf="@+id/subtitleStr"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed"
-            tools:text="Changes" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/subtitleStr"
             style="@style/TextAppearance.MaterialComponents.Caption"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -51,11 +30,30 @@
             android:lines="1"
             android:text="@{subtitle}"
             android:textColor="@color/white"
+            app:fontFamily="sans-serif-medium"
+            app:layout_constraintBottom_toTopOf="@+id/subtitleStr"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="2 months ago" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/subtitleStr"
+            style="@style/TextAppearance.MaterialComponents.Caption"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:includeFontPadding="false"
+            android:lines="1"
+            android:text="@{title}"
+            android:textColor="@color/transparent_white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/labelStr"
-            tools:text="2 months ago" />
+            tools:text="Changes" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

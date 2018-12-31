@@ -2,14 +2,13 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/elastic"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?windowBackground"
-    android:elevation="@dimen/z_fab">
+    android:elevation="@dimen/z_fab"
+    tools:background="?windowBackground">
 
     <LinearLayout
-        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -18,12 +17,12 @@
             android:id="@+id/title_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?toolbarColor"
             android:baselineAligned="false"
             android:minHeight="?android:actionBarSize"
             android:orientation="horizontal"
             android:paddingTop="@dimen/spacing_micro"
-            android:paddingBottom="@dimen/spacing_micro">
+            android:paddingBottom="@dimen/spacing_micro"
+            tools:background="?toolbarColor">
 
             <ImageView
                 android:id="@+id/closecontent"

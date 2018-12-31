@@ -60,3 +60,7 @@ fun ViewGroup.inflate(@LayoutRes layout: Int, attachToRoot: Boolean = false): Vi
 inline val @receiver:ColorInt Int.darken
     @ColorInt
     get() = ColorUtils.blendARGB(this, Color.BLACK, 0.2f)
+
+inline val @receiver:ColorInt Int.lighten
+    @ColorInt
+    get() = ColorUtils.blendARGB(this, Color.WHITE, 0.2f)

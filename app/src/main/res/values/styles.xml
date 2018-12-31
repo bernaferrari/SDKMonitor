@@ -29,6 +29,8 @@
         <item name="indicatorFastScrollerThumbStyle">
             @style/Widget.FastScrollSample.FastScrollerThumb
         </item>
+
+        <item name="md_corner_radius">16dp</item>
     </style>
 
     <style name="AppThemeDark" parent="Theme.MaterialComponents.NoActionBar">
@@ -61,6 +63,8 @@
         <item name="indicatorFastScrollerThumbStyle">
             @style/Widget.FastScrollSample.FastScrollerThumb
         </item>
+
+        <item name="md_corner_radius">16dp</item>
     </style>
 
     <style name="Widget.FastScrollSample.FastScroller" parent="Widget.IndicatorFastScroll.FastScroller">
