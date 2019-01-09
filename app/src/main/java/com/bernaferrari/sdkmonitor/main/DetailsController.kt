@@ -40,6 +40,5 @@ internal class DetailsController : Typed2EpoxyController<List<AppDetails>, List<
             .id("carousel")
             .models(historyModels)
             .addTo(this)
-
     }
 }

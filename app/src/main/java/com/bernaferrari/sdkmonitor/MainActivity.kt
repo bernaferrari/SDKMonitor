@@ -1,9 +1,9 @@
 package com.bernaferrari.sdkmonitor
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import com.airbnb.mvrx.BaseMvRxActivity
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseMvRxActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

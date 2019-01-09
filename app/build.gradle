@@ -100,7 +100,7 @@ dependencies {
     implementation "com.xwray:groupie-kotlin-android-extensions:$groupie"
 
     // Coroutines
-    def coroutines_version = "1.0.0"
+    def coroutines_version = "1.1.0"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
@@ -118,7 +118,7 @@ dependencies {
     // UI
     implementation "io.karn:notify:1.1.0"
     implementation 'com.reddit:indicator-fast-scroll:1.0.1'
-    implementation 'com.afollestad.material-dialogs:core:2.0.0-rc5'
+    implementation 'com.afollestad.material-dialogs:core:2.0.0-rc7'
 
     // Time
     implementation 'com.github.marlonlom:timeago:4.0.1'

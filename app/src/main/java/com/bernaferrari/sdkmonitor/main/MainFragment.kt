@@ -1,29 +1,17 @@
 package com.bernaferrari.sdkmonitor.main
 
 import android.content.Context
-import android.content.Intent
-import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.core.content.getSystemService
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
-import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.customview.customView
-import com.afollestad.materialdialogs.customview.getCustomView
-import com.airbnb.epoxy.EpoxyRecyclerView
 import com.airbnb.mvrx.*
 import com.bernaferrari.sdkmonitor.R
 import com.bernaferrari.sdkmonitor.core.MvRxEpoxyController
@@ -48,7 +36,6 @@ import kotlinx.android.synthetic.main.main_fragment.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.util.*
 
 
@@ -64,7 +51,7 @@ data class MainState(val listOfItems: Async<List<AppVersion>> = Loading()) : MvR
 
 class MainFragment : BaseMainFragment() {
 
-    private val viewModel: MainRxViewModel by fragmentViewModel()
+    private val viewModel: MainRxViewModel by activityViewModel()
 
     private val standardItemDecorator by lazy {
         val isRightToLeft =
@@ -86,74 +73,22 @@ class MainFragment : BaseMainFragment() {
         } ?: throw Exception("null activity. Can't bind inputMethodManager")
     }
 
-    private fun showDialog(app: App) {
-
-        val dialog = MaterialDialog(requireContext()).customView(
-            R.layout.details_fragment,
-            noVerticalPadding = true
-        )
-        dialog.show()
-
-        val customView = dialog.getCustomView() ?: return
-
-        customView.findViewById<TextView>(R.id.titlecontent)
-            .text = app.title
-
-        customView.findViewById<LinearLayout>(R.id.title_bar)
-            .background = ColorDrawable(app.backgroundColor.darken.darken)
-
-        customView.findViewById<ImageView>(R.id.closecontent)
-            .setOnClickListener { dialog.dismiss() }
-
-        customView.findViewById<ImageView>(R.id.play_store).also {
-            it.isVisible = app.isFromPlayStore
-            it.setOnClickListener {
-                val intent = Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("market://details?id=${app.packageName}")
-                )
-
-                startActivity(intent)
-            }
-        }
-
-        customView.findViewById<ImageView>(R.id.info).setOnClickListener {
-            val intent = Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-            intent.data = Uri.parse("package:" + app.packageName)
-            startActivity(intent)
-        }
-
-        customView.findViewById<EpoxyRecyclerView>(R.id.recycler)?.also { epoxyRecycler ->
-
-            epoxyRecycler.background = ColorDrawable(app.backgroundColor.darken)
-
-            val detailsController = DetailsController()
-            epoxyRecycler.setController(detailsController)
-
-            runBlocking {
-                val packageName = app.packageName
-                val data = viewModel.fetchAppDetails(packageName)
-                val versions = viewModel.fetchAllVersions(packageName)
-                detailsController.setData(data, versions)
-            }
-        }
-    }
-
     override fun epoxyController(): MvRxEpoxyController = simpleController(viewModel) { state ->
 
         when (state.listOfItems) {
             is Loading ->
                 loadingRow { id("loading") }
-            is Fail ->
-                emptyContent {
-                    this.id("error")
-                    this.label(state.listOfItems.error.localizedMessage)
-                }
-            is Success -> {
+            else -> {
                 if (state.listOfItems()?.isEmpty() == true) {
+                    val label = if (state.listOfItems is Fail) {
+                        state.listOfItems.error.localizedMessage
+                    } else {
+                        getString(R.string.empty_search)
+                    }
+
                     emptyContent {
-                        this.id("empty result")
-                        this.label(getString(R.string.empty_search))
+                        this.id("empty")
+                        this.label(label)
                     }
                 }
             }
@@ -173,7 +108,11 @@ class MainFragment : BaseMainFragment() {
                 this.bottomShape(bottomShape)
                 this.topShape(topShape)
 
-                this.clickListener { _ -> showDialog(it.app) }
+                this.clickListener { _ ->
+                    DetailsDialog.show(requireActivity(), it.app)
+
+                } //showDialog(it.app) }
+
             }
         }
 
@@ -190,12 +129,6 @@ class MainFragment : BaseMainFragment() {
         shape.setColor(color)
         return shape
     }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.main_fragment, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
