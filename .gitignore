@@ -9,4 +9,4 @@
 build
 /captures
 .externalNativeBuild
-/gradle.properties
+/upload-keystore.properties
