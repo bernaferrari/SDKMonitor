@@ -10,7 +10,19 @@
     android:layout_marginEnd="16dp"
     android:layout_marginBottom="4dp"
     android:clickable="true"
-    android:focusable="true">
+    android:focusable="true"
+    android:foreground="@drawable/photos_press">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/bottom_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/label" />
 
     <ImageView
         android:id="@+id/icon"
@@ -18,7 +30,6 @@
         android:layout_height="48dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:elevation="1dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@mipmap/ic_launcher" />
@@ -42,27 +53,16 @@
         tools:text="Changes" />
 
     <View
-        android:id="@+id/top_view"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:foreground="@drawable/photos_press"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/label"
-        tools:background="@drawable/round_corners_top" />
-
-    <View
         android:id="@+id/bottom_view"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
-        android:foreground="@drawable/photos_press"
+        android:alpha="0.20"
+        android:background="@drawable/round_corners_bottom"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/icon"
-        tools:background="@drawable/round_corners_bottom" />
+        app:layout_constraintTop_toBottomOf="@+id/icon" />
 
     <ImageView
         android:id="@+id/target"

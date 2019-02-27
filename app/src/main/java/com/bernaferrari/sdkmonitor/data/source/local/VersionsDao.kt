@@ -1,5 +1,6 @@
 package com.bernaferrari.sdkmonitor.data.source.local
 
+import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -24,5 +25,17 @@ interface VersionsDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertVersion(version: Version)
+
+
+    //        @Query("SELECT * FROM versions ORDER BY lastUpdateTime DESC")
+
+    // this will only get versions where there is more than one version for the same package.
+    // So, if a package was recently added, there is no reason to be there.
+    @Query("SELECT t2.* FROM ( SELECT * FROM versions GROUP BY packageName HAVING COUNT(*) > 1 ) T1 JOIN versions T2 ON T1.packageName = T2.packageName ORDER BY lastUpdateTime DESC")
+    fun getVersionsPaged(): DataSource.Factory<Int, Version>
+
+
+    @Query("SELECT COUNT(*) FROM ( SELECT * FROM versions GROUP BY packageName HAVING COUNT(*) > 1 ) T1 JOIN versions T2 ON T1.packageName = T2.packageName")
+    fun countNumberOfChanges(): Int
 
 }

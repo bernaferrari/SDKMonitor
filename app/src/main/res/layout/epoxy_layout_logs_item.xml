@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="title"
+            type="String" />
+
+        <variable
+            name="packageName"
+            type="String" />
+
+        <variable
+            name="subtitle"
+            type="String" />
+
+        <variable
+            name="targetSDKVersion"
+            type="String" />
+
+        <variable
+            name="targetSDKDescription"
+            type="String" />
+
+        <variable
+            name="image"
+            type="android.graphics.drawable.Drawable" />
+
+        <variable
+            name="apiColor"
+            type="Integer" />
+
+        <variable
+            name="onClick"
+            type="android.view.View.OnClickListener" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{onClick}"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:src="@{image}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@mipmap/ic_launcher" />
+
+        <View
+            android:id="@+id/shadowView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/shape_pill"
+            android:backgroundTint="@{apiColor}"
+            app:layout_constraintBottom_toBottomOf="@id/targetSDK"
+            app:layout_constraintEnd_toEndOf="@+id/targetSDK"
+            app:layout_constraintStart_toStartOf="@+id/textView"
+            app:layout_constraintTop_toTopOf="@id/targetSDK"
+            tools:backgroundTint="@color/md_red_500" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:alpha="0.25"
+            android:background="@drawable/shape_half_pill"
+            app:layout_constraintBottom_toBottomOf="@id/targetSDK"
+            app:layout_constraintEnd_toEndOf="@+id/targetSDK"
+            app:layout_constraintStart_toStartOf="@+id/targetSDK"
+            app:layout_constraintTop_toTopOf="@id/targetSDK" />
+
+        <TextView
+            android:id="@+id/textView"
+            style="@style/TextAppearance.MaterialComponents.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines="1"
+            android:maxWidth="120dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:text="@{targetSDKDescription}"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/targetSDK"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Marshmallow" />
+
+        <TextView
+            android:id="@+id/targetSDK"
+            style="@style/TextAppearance.MaterialComponents.Headline6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:includeFontPadding="false"
+            android:padding="8dp"
+            android:text="@{targetSDKVersion}"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="28" />
+
+        <TextView
+            android:id="@+id/titleStr"
+            style="@style/TextAppearance.MaterialComponents.Body1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:lines="1"
+            android:text="@{title}"
+            android:textColor="?strongColor"
+            app:layout_constraintBottom_toTopOf="@+id/versionNameStr"
+            app:layout_constraintEnd_toStartOf="@+id/shadowView"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/icon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="WhatsApp" />
+
+        <TextView
+            android:id="@+id/versionNameStr"
+            style="@style/TextAppearance.MaterialComponents.Caption"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:lines="1"
+            android:text="@{subtitle}"
+            android:textColor="?weakColor"
+            app:fontFamily="monospace"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/shadowView"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/icon"
+            app:layout_constraintTop_toBottomOf="@+id/titleStr"
+            tools:text="3 weeks ago" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

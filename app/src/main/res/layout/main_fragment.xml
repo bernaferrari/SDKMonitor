@@ -23,7 +23,7 @@
             android:layout_margin="8dp"
             android:layout_weight="1"
             app:cardBackgroundColor="?searchBoxColor"
-            app:cardCornerRadius="4dp">
+            app:cardCornerRadius="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -69,17 +69,6 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <ImageView
-            android:id="@+id/settings"
-            style="@style/ClickableImageView"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="8dp"
-            android:paddingStart="@dimen/horizontal_spacing"
-            android:paddingEnd="@dimen/horizontal_spacing"
-            android:src="@drawable/ic_settings" />
-
     </LinearLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -94,7 +83,8 @@
         <com.airbnb.epoxy.EpoxyRecyclerView
             android:id="@+id/recycler"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            tools:listitem="@layout/main_row_item" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

@@ -1,10 +1,10 @@
 package com.bernaferrari.sdkmonitor.views
 
 import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.cardview.widget.CardView
 import androidx.core.graphics.drawable.toBitmap
 import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyModelClass
@@ -16,7 +16,7 @@ import com.bernaferrari.sdkmonitor.main.AppVersion
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
-@EpoxyModelClass(layout = R.layout.row_item)
+@EpoxyModelClass(layout = R.layout.main_row_item)
 abstract class MainRowModel : EpoxyModelWithHolder<MainRowModel.Holder>(), CoroutineScope {
 
     private var job: Job = Job()
@@ -24,10 +24,7 @@ abstract class MainRowModel : EpoxyModelWithHolder<MainRowModel.Holder>(), Corou
     override val coroutineContext: CoroutineContext = Dispatchers.Main + job
 
     @EpoxyAttribute
-    lateinit var topShape: Drawable
-
-    @EpoxyAttribute
-    lateinit var bottomShape: Drawable
+    var cardColor: Int = 0
 
     @EpoxyAttribute
     lateinit var app: AppVersion
@@ -44,8 +41,7 @@ abstract class MainRowModel : EpoxyModelWithHolder<MainRowModel.Holder>(), Corou
         super.bind(holder)
 
         holder.label.text = app.app.title
-        holder.top_view.background = topShape
-        holder.bottom_view.background = bottomShape
+        holder.cardView.setCardBackgroundColor(cardColor)
         holder.container.setOnClickListener(clickListener)
 
         job = Job()
@@ -69,8 +65,6 @@ abstract class MainRowModel : EpoxyModelWithHolder<MainRowModel.Holder>(), Corou
     override fun unbind(holder: Holder) {
         job.cancel()
         holder.icon.setImageDrawable(null)
-        holder.top_view.background = null
-        holder.bottom_view.background = null
         super.unbind(holder)
     }
 
@@ -79,9 +73,7 @@ abstract class MainRowModel : EpoxyModelWithHolder<MainRowModel.Holder>(), Corou
         val icon by bind<ImageView>(R.id.icon)
         val minSdk by bind<AppCompatTextView>(R.id.targetSdk)
         val lastUpdate by bind<AppCompatTextView>(R.id.lastUpdate)
-
-        val top_view by bind<View>(R.id.top_view)
-        val bottom_view by bind<View>(R.id.bottom_view)
+        val cardView by bind<CardView>(R.id.cardView)
         val container by bind<View>(R.id.container)
     }
 }

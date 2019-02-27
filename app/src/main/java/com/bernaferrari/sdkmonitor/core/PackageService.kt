@@ -29,15 +29,15 @@ class PackageService(
     }
 
     private fun handleActionFetchUpdate(packageName: String) = runBlocking {
-        if (AppManager.isAppFromGooglePlay(packageName)) {
-            val packageInfo = AppManager.getPackageInfo(packageName)
+        if (AppManager.doesAppHasOrigin(packageName)) {
+            val packageInfo = AppManager.getPackageInfo(packageName) ?: return@runBlocking
             AppManager.insertNewVersion(packageInfo)
         }
     }
 
     private fun handleActionInsert(packageName: String) = runBlocking {
-        if (AppManager.isAppFromGooglePlay(packageName)) {
-            val packageInfo = AppManager.getPackageInfo(packageName)
+        if (AppManager.doesAppHasOrigin(packageName)) {
+            val packageInfo = AppManager.getPackageInfo(packageName) ?: return@runBlocking
             AppManager.insertNewApp(packageInfo)
             AppManager.insertNewVersion(packageInfo)
         }

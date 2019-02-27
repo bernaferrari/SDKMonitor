@@ -1,8 +1,6 @@
 package com.bernaferrari.sdkmonitor.main
 
 import android.content.Context
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
@@ -13,15 +11,14 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import com.airbnb.mvrx.*
+import com.bernaferrari.sdkmonitor.Injector
 import com.bernaferrari.sdkmonitor.R
-import com.bernaferrari.sdkmonitor.core.MvRxEpoxyController
 import com.bernaferrari.sdkmonitor.core.simpleController
 import com.bernaferrari.sdkmonitor.data.App
+import com.bernaferrari.sdkmonitor.details.DetailsDialog
 import com.bernaferrari.sdkmonitor.emptyContent
-import com.bernaferrari.sdkmonitor.extensions.darken
+import com.bernaferrari.sdkmonitor.extensions.apiToColor
 import com.bernaferrari.sdkmonitor.extensions.onTextChanged
-import com.bernaferrari.sdkmonitor.extensions.toDpF
-import com.bernaferrari.sdkmonitor.settings.SettingsFragment
 import com.bernaferrari.sdkmonitor.util.InsetDecoration
 import com.bernaferrari.sdkmonitor.util.hideKeyboard
 import com.bernaferrari.sdkmonitor.util.hideKeyboardWhenNecessary
@@ -34,10 +31,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.main_fragment.*
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.*
-
 
 class AppVersion(
     val app: App,
@@ -73,7 +68,7 @@ class MainFragment : BaseMainFragment() {
         } ?: throw Exception("null activity. Can't bind inputMethodManager")
     }
 
-    override fun epoxyController(): MvRxEpoxyController = simpleController(viewModel) { state ->
+    override fun epoxyController() = simpleController(viewModel) { state ->
 
         when (state.listOfItems) {
             is Loading ->
@@ -94,53 +89,30 @@ class MainFragment : BaseMainFragment() {
             }
         }
 
-        val cornerRadius = 8.toDpF(resources)
+        val colorPrefs = Injector.get().sharedPrefs().getBoolean("colorBySdk", true)
 
         state.listOfItems()?.forEach {
             mainRow {
                 id(it.app.packageName)
-
                 this.app(it)
 
-                val topShape = createShape(it.app.backgroundColor, false, cornerRadius)
-                val bottomShape = createShape(it.app.backgroundColor.darken, true, cornerRadius)
+                val color = if (colorPrefs) {
+                    it.sdkVersion.apiToColor()
+                } else {
+                    it.app.backgroundColor
+                }
 
-                this.bottomShape(bottomShape)
-                this.topShape(topShape)
+                this.cardColor(color)
 
                 this.clickListener { _ ->
                     DetailsDialog.show(requireActivity(), it.app)
-
-                } //showDialog(it.app) }
-
+                }
             }
         }
-
-    }
-
-    private fun createShape(color: Int, isBottom: Boolean, cornerRadius: Float): Drawable {
-        val shape = GradientDrawable()
-        shape.shape = GradientDrawable.RECTANGLE
-        shape.cornerRadii = if (isBottom) {
-            floatArrayOf(0f, 0f, 0f, 0f, cornerRadius, cornerRadius, cornerRadius, cornerRadius)
-        } else {
-            floatArrayOf(cornerRadius, cornerRadius, cornerRadius, cornerRadius, 0f, 0f, 0f, 0f)
-        }
-        shape.setColor(color)
-        return shape
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        if (viewModel.itemsList.isEmpty()) {
-            inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
-        }
-
-        settings.setOnClickListener {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .add(SettingsFragment(), "settings").commit()
-        }
 
         recycler.addItemDecoration(standardItemDecorator)
         setupFastScroller(recycler.layoutManager as? LinearLayoutManager)
@@ -175,11 +147,6 @@ class MainFragment : BaseMainFragment() {
             queryClear.isVisible = it.isNotEmpty()
             work?.cancel()
             work = launch {
-                // If the user types anything before data has loaded, this will
-                // delay and try again until it is available or the user types
-                // another thing.
-                // Without this, the input would be ignored while data is loading.
-                while (!viewModel.hasLoaded) delay(200)
                 viewModel.inputRelay.accept(it.toString())
             }
         }

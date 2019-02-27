@@ -1,10 +1,11 @@
-package com.bernaferrari.sdkmonitor.main
+package com.bernaferrari.sdkmonitor.details
 
 import com.airbnb.epoxy.CarouselModel_
 import com.airbnb.epoxy.Typed2EpoxyController
 import com.bernaferrari.sdkmonitor.*
 import com.bernaferrari.sdkmonitor.data.Version
 import com.bernaferrari.sdkmonitor.extensions.convertTimestampToDate
+import com.bernaferrari.sdkmonitor.main.AppDetails
 
 internal class DetailsController : Typed2EpoxyController<List<AppDetails>, List<Version>>() {
 

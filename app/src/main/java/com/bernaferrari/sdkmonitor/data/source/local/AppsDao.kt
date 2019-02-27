@@ -15,7 +15,10 @@ import io.reactivex.Flowable
 interface AppsDao {
 
     @Query("SELECT * FROM apps ORDER BY title DESC")
-    fun getAppsList(): Flowable<List<App>>
+    fun getAppsListFlowable(): Flowable<List<App>>
+
+    @Query("SELECT * FROM apps")
+    fun getAppsList(): List<App>
 
     /**
      * Insert a app in the database. If the app already exists, replace it.

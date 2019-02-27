@@ -30,7 +30,7 @@ class SyncWorker(
 
         debugLog.setLength(0)
 
-        AppManager.getPlayStorePackages().forEach {
+        AppManager.getPackagesWithUserPrefs().forEach {
             AppManager.insertNewApp(it)
             AppManager.insertNewVersion(it)
         }

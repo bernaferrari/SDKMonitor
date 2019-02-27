@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="AppThemeLight" parent="Theme.MaterialComponents.Light.NoActionBar">
 
         <item name="colorPrimary">@color/primary_light</item>
         <item name="colorPrimaryDark">@color/primary_dark_light</item>
@@ -65,6 +65,20 @@
         </item>
 
         <item name="md_corner_radius">16dp</item>
+    </style>
+
+    <style name="BottomNavActive">
+        <item name="android:fontFamily">@font/lato_bold</item>
+    </style>
+
+    <style name="BottomNavInactive">
+        <item name="android:fontFamily">@font/lato_bold</item>
+    </style>
+
+    <style name="LightBody" parent="TextAppearance.MaterialComponents.Body1">
+        <!--<item name="fontFamily">sans-serif-light</item>-->
+        <!--<item name="android:textColor">?colorAccent</item>-->
+        <!--<item name="android:textColor">@color/md_indigo_A200</item>-->
     </style>
 
     <style name="Widget.FastScrollSample.FastScroller" parent="Widget.IndicatorFastScroll.FastScroller">

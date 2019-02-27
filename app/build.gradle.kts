@@ -77,7 +77,7 @@ dependencies {
     implementation("androidx.core:core-ktx:1.0.1")
     implementation("androidx.constraintlayout:constraintlayout:1.1.3")
 
-    val nav_version = "1.0.0-alpha11"
+    val nav_version = "1.0.0-rc01"
     implementation("android.arch.navigation:navigation-fragment-ktx:$nav_version")
     implementation("android.arch.navigation:navigation-ui-ktx:$nav_version")
 
@@ -93,11 +93,11 @@ dependencies {
     implementation("androidx.paging:paging-runtime-ktx:$paging_version")
     implementation("androidx.paging:paging-rxjava2-ktx:$paging_version")
 
-    val work_version = "1.0.0-beta01"
+    val work_version = "1.0.0-rc02"
     implementation("android.arch.work:work-runtime-ktx:$work_version")
 
     // Dagger
-    val dagger = "2.20"
+    val dagger = "2.21"
     implementation("com.google.dagger:dagger:$dagger")
     kapt("com.google.dagger:dagger-compiler:$dagger")
 
@@ -105,13 +105,9 @@ dependencies {
     val epoxy = "3.1.0"
     implementation("com.airbnb.android:epoxy:$epoxy")
     implementation("com.airbnb.android:epoxy-databinding:$epoxy")
+    implementation("com.airbnb.android:epoxy-paging:$epoxy")
     kapt("com.airbnb.android:epoxy-processor:$epoxy")
-    implementation("com.airbnb.android:mvrx:0.6.0")
-
-    // Groupie
-    val groupie = "2.3.0"
-    implementation("com.xwray:groupie:$groupie")
-    implementation("com.xwray:groupie-kotlin-android-extensions:$groupie")
+    implementation("com.airbnb.android:mvrx:0.7.2")
 
     // Coroutines
     val coroutines_version = "1.1.0"
@@ -119,10 +115,11 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version")
 
     // RxJava
-    implementation("io.reactivex.rxjava2:rxjava:2.2.5")
+    implementation("io.reactivex.rxjava2:rxjava:2.2.7")
     implementation("io.reactivex.rxjava2:rxkotlin:2.3.0")
-    implementation("io.reactivex.rxjava2:rxandroid:2.1.0")
-    implementation("com.jakewharton.rxrelay2:rxrelay:2.0.0")
+    implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
+    implementation("com.jakewharton.rxrelay2:rxrelay:2.1.0")
+    implementation("com.afollestad:rxkprefs:1.2.5")
 
     // Iconics
     implementation("com.mikepenz:iconics-core:3.1.0@aar")
@@ -132,7 +129,7 @@ dependencies {
     // UI
     implementation("io.karn:notify:1.1.0")
     implementation("com.reddit:indicator-fast-scroll:1.0.1")
-    implementation("com.afollestad.material-dialogs:core:2.0.0-rc7")
+    implementation("com.afollestad.material-dialogs:core:2.0.3")
 
     // Time
     implementation("com.github.marlonlom:timeago:4.0.1")

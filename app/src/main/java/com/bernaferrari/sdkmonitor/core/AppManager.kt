@@ -19,10 +19,12 @@ import com.bernaferrari.sdkmonitor.extensions.darken
 import io.karn.notify.Notify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.lang.reflect.InvocationTargetException
 
 object AppManager {
 
     private const val PACKAGE_ANDROID_VENDING = "com.android.vending"
+    private const val OUTSIDE_STORE = "com.google.android.packageinstaller"
     private const val PREF_DISABLED_PACKAGES = "disabled_packages"
 
     private lateinit var packageManager: PackageManager
@@ -31,9 +33,11 @@ object AppManager {
         packageManager = context.packageManager
     }
 
-    fun isAppFromGooglePlay(packageName: String): Boolean {
+    // verifies if app came from Play Store or was installed manually
+    fun doesAppHasOrigin(packageName: String): Boolean {
         return try {
-            packageManager.getInstallerPackageName(packageName) == PACKAGE_ANDROID_VENDING
+            val installerPackageName = packageManager.getInstallerPackageName(packageName)
+            installerPackageName == PACKAGE_ANDROID_VENDING || installerPackageName == OUTSIDE_STORE
         } catch (e: Throwable) {
             false
         }
@@ -105,7 +109,7 @@ object AppManager {
                 packageName = packageInfo.packageName,
                 title = label,
                 backgroundColor = backgroundColor,
-                isFromPlayStore = isAppFromGooglePlay(packageInfo.packageName)
+                isFromPlayStore = doesAppHasOrigin(packageInfo.packageName)
             )
         )
     }
@@ -120,26 +124,34 @@ object AppManager {
         else -> defaultColor
     }
 
-    fun getPlayStorePackages(): List<PackageInfo> {
+    fun getPackagesWithUserPrefs(): List<PackageInfo> {
+        return if (Injector.get().sharedPrefs().getBoolean("system apps", false)) {
+            AppManager.getPackages()
+        } else {
+            AppManager.getPackagesWithOrigin()
+        }
+    }
+
+    private fun getPackagesWithOrigin(): List<PackageInfo> {
         return packageManager.getInstalledPackages(0)
-            .filter { isAppFromGooglePlay(it.packageName) }
+            .filter { doesAppHasOrigin(it.packageName) }
     }
 
-    fun getPackageInfo(packageName: String): PackageInfo {
-        return packageManager.getPackageInfo(packageName, 0)
+    fun getPackageInfo(packageName: String): PackageInfo? {
+        return try {
+            packageManager.getPackageInfo(packageName, 0)
+        } catch (e: InvocationTargetException) {
+            null
+        }
     }
 
-    fun getApplicationInfo(packageName: String): ApplicationInfo {
-        return getPackageInfo(packageName).applicationInfo
+    fun getApplicationInfo(packageName: String): ApplicationInfo? {
+        return getPackageInfo(packageName)?.applicationInfo
     }
 
     fun getIconFromId(packageName: String): Drawable? {
         return try {
-            packageManager.getApplicationIcon(
-                getApplicationInfo(
-                    packageName
-                )
-            )
+            packageManager.getApplicationIcon(getApplicationInfo(packageName))
         } catch (e: Exception) {
             null
         }

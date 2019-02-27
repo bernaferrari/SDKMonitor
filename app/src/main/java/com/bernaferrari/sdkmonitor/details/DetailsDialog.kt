@@ -1,4 +1,4 @@
-package com.bernaferrari.sdkmonitor.main
+package com.bernaferrari.sdkmonitor.details
 
 import android.app.Dialog
 import android.content.Intent
@@ -7,21 +7,19 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import androidx.core.view.isVisible
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import com.afollestad.materialdialogs.customview.getCustomView
-import com.airbnb.mvrx.MvRxView
-import com.airbnb.mvrx.MvRxViewModelStore
 import com.airbnb.mvrx.activityViewModel
 import com.bernaferrari.sdkmonitor.R
 import com.bernaferrari.sdkmonitor.data.App
 import com.bernaferrari.sdkmonitor.extensions.darken
+import com.bernaferrari.sdkmonitor.main.MainRxViewModel
 import kotlinx.android.synthetic.main.details_fragment.view.*
 import kotlinx.coroutines.runBlocking
 
-class DetailsDialog : DialogFragment(), MvRxView {
+class DetailsDialog : BaseMvRxDialogFragment() {
 
     private val viewModel: MainRxViewModel by activityViewModel()
 
@@ -59,7 +57,7 @@ class DetailsDialog : DialogFragment(), MvRxView {
         )
         dialog.show()
 
-        val customView = dialog.getCustomView() ?: return dialog
+        val customView = dialog.getCustomView()
 
         customView.titlecontent.text = app.title
 
@@ -103,20 +101,8 @@ class DetailsDialog : DialogFragment(), MvRxView {
         return dialog
     }
 
-    override val mvrxViewModelStore by lazy { MvRxViewModelStore(viewModelStore) }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        mvrxViewModelStore.restoreViewModels(this, savedInstanceState)
-    }
-
     override fun invalidate() {
 
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        mvrxViewModelStore.saveViewModels(outState)
     }
 
     private fun <T> blowUp(): T {

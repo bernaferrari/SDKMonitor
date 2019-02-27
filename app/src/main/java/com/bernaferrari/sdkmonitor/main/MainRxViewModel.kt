@@ -59,7 +59,7 @@ class MainRxViewModel(initialState: MainState) : MvRxViewModel<MainState>(initia
 
     fun fetchAppDetails(packageName: String): MutableList<AppDetails> {
 
-        val packageInfo = AppManager.getPackageInfo(packageName)
+        val packageInfo = AppManager.getPackageInfo(packageName) ?: return mutableListOf()
 
         return mutableListOf<AppDetails>().apply {
 
@@ -81,7 +81,7 @@ class MainRxViewModel(initialState: MainState) : MvRxViewModel<MainState>(initia
 
     private fun getAppsListObservable(): Observable<List<AppVersion>> =
 
-        mAppsDao.getAppsList().toObservable()
+        mAppsDao.getAppsListFlowable().toObservable()
             .debounce { list ->
                 // debounce with a 200ms delay all items except the first one
                 val flow = Observable.just(list)
@@ -96,6 +96,9 @@ class MainRxViewModel(initialState: MainState) : MvRxViewModel<MainState>(initia
                 }
                 it.isEmpty()
             }
+            .also {
+                println("RAWRRR REFRESHING IT!!!")
+            }
             .map { list ->
                 val allItems = mutableListOf<AppVersion>()
                 list.asSequence()
@@ -106,19 +109,20 @@ class MainRxViewModel(initialState: MainState) : MvRxViewModel<MainState>(initia
                     }.toList()
             }.doOnNext { maxListSize.accept(it.size) }
 
-    fun getSdkDate(app: App): Pair<Int, String> {
+    private fun getSdkDate(app: App): Pair<Int, String> {
 
         // since insertApp is called before insertVersion, mVersionsDao.getValue(...) will
         // return null on app's first run. This will avoid the situation.
         val version = mVersionsDao.getLastValue(app.packageName)
 
         val sdkVersion =
-            version?.targetSdk ?: AppManager.getApplicationInfo(app.packageName).targetSdkVersion
+            version?.targetSdk ?: AppManager.getApplicationInfo(app.packageName)?.targetSdkVersion
+            ?: 0
 
         val lastUpdate =
             version?.lastUpdateTime ?: AppManager.getPackageInfo(
                 app.packageName
-            ).lastUpdateTime
+            )?.lastUpdateTime ?: 0
 
         return Pair(sdkVersion, lastUpdate.convertTimestampToDate())
     }
@@ -126,7 +130,7 @@ class MainRxViewModel(initialState: MainState) : MvRxViewModel<MainState>(initia
     fun updateAll() = GlobalScope.launch(Dispatchers.IO) {
         showProgressRelay.accept(true)
 
-        AppManager.getPlayStorePackages()
+        AppManager.getPackagesWithUserPrefs()
             // this condition will only happen when app is run on emulator.
             .let { if (it.isEmpty()) AppManager.getPackages() else it }
             .forEach { packageInfo ->

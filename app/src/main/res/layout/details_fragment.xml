@@ -33,6 +33,7 @@
                 android:layout_marginEnd="@dimen/avatar_margin"
                 android:background="?android:selectableItemBackgroundBorderless"
                 android:padding="@dimen/avatar_margin"
+                android:tint="@color/white"
                 app:srcCompat="@drawable/ic_close_dark" />
 
             <TextView
@@ -46,7 +47,7 @@
                 android:ellipsize="end"
                 android:gravity="center_vertical|start"
                 android:singleLine="true"
-                android:textColor="?strongColor"
+                android:textColor="@color/white"
                 tools:text="Web Drivers" />
 
             <ImageView
@@ -56,6 +57,7 @@
                 android:layout_gravity="center"
                 android:background="?android:selectableItemBackgroundBorderless"
                 android:padding="@dimen/avatar_margin"
+                android:tint="@color/white"
                 app:srcCompat="@drawable/ic_play_store" />
 
             <ImageView
@@ -66,6 +68,7 @@
                 android:layout_marginEnd="@dimen/avatar_margin"
                 android:background="?android:selectableItemBackgroundBorderless"
                 android:padding="@dimen/avatar_margin"
+                android:tint="@color/white"
                 app:srcCompat="@drawable/ic_info" />
 
         </LinearLayout>
