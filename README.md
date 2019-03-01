@@ -25,9 +25,9 @@ App is currently in beta, you can download the apk here:
 
 ## Screenshots
 
-| Fast Scroller | Search | Details | Settings |
+| Fast Scroller | Logs | Details | Settings |
 |:-:|:-:|:-:|:-:|
-| ![First](assets/scroller.jpg?raw=true) | ![Sec](assets/search.jpg?raw=true) | ![Third](assets/details.jpg?raw=true) | ![Fourth](assets/settings.jpg?raw=true) |
+| ![First](assets/main.png?raw=true) | ![Sec](assets/logs.png?raw=true) | ![Third](assets/details.jpg?raw=true) | ![Fourth](assets/settings.png?raw=true) |
 
 Introduction
 ------------

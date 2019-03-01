@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.airbnb.mvrx.BaseMvRxFragment
-import com.bernaferrari.sdkmonitor.Injector
 import com.bernaferrari.sdkmonitor.R
 import com.bernaferrari.sdkmonitor.WorkerHelper
 import com.bernaferrari.sdkmonitor.core.MvRxEpoxyController
@@ -30,7 +29,7 @@ abstract class BaseMainFragment : BaseMvRxFragment(), CoroutineScope {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         epoxyController.onRestoreInstanceState(savedInstanceState)
-        WorkerHelper.updateWorkerWithConstraints(Injector.get().sharedPrefs())
+        WorkerHelper.updateBackgroundWorker(false)
     }
 
     override fun onCreateView(

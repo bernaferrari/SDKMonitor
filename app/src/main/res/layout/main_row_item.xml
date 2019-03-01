@@ -22,7 +22,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/bottom_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/label" />
+        app:layout_constraintTop_toTopOf="@+id/label"
+        tools:cardBackgroundColor="@color/md_green_500" />
 
     <ImageView
         android:id="@+id/icon"

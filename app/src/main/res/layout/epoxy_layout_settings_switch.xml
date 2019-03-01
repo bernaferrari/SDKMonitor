@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="title"
             type="String" />
@@ -42,7 +44,6 @@
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
-            android:minHeight="?android:attr/listPreferredItemHeight"
             android:onClick="@{clickListener}"
             android:paddingStart="16dp"
             android:paddingTop="16dp"
@@ -87,6 +88,7 @@
                 android:alpha="0.75"
                 android:ellipsize="end"
                 android:text="@{subtitle}"
+                android:visibility='@{subtitle == null ? View.GONE : View.VISIBLE}'
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/item_switch"

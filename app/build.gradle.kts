@@ -38,8 +38,8 @@ android {
         applicationId = "com.bernaferrari.sdkmonitor"
         minSdkVersion(21)
         targetSdkVersion(28)
-        versionCode = 4
-        versionName = "0.4"
+        versionCode = 5
+        versionName = "0.9"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -69,7 +69,7 @@ android {
 dependencies {
 
     // Jetpack
-    implementation("com.google.android.material:material:1.0.0")
+    implementation("com.google.android.material:material:1.1.0-alpha04")
     implementation("androidx.recyclerview:recyclerview:1.0.0")
     implementation("androidx.appcompat:appcompat:1.0.2")
     implementation("androidx.palette:palette:1.0.0")
@@ -130,6 +130,7 @@ dependencies {
     implementation("io.karn:notify:1.1.0")
     implementation("com.reddit:indicator-fast-scroll:1.0.1")
     implementation("com.afollestad.material-dialogs:core:2.0.3")
+    implementation("com.shawnlin:number-picker:2.4.8")
 
     // Time
     implementation("com.github.marlonlom:timeago:4.0.1")

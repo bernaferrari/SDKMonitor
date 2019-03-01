@@ -13,6 +13,7 @@ import com.afollestad.materialdialogs.customview.customView
 import com.afollestad.materialdialogs.customview.getCustomView
 import com.airbnb.mvrx.activityViewModel
 import com.bernaferrari.sdkmonitor.R
+import com.bernaferrari.sdkmonitor.core.AppManager
 import com.bernaferrari.sdkmonitor.data.App
 import com.bernaferrari.sdkmonitor.extensions.darken
 import com.bernaferrari.sdkmonitor.main.MainRxViewModel
@@ -83,16 +84,18 @@ class DetailsDialog : BaseMvRxDialogFragment() {
             startActivity(intent)
         }
 
-        customView.recycler.also { epoxyRecycler ->
+        customView.recycler.background = ColorDrawable(app.backgroundColor.darken)
 
-            epoxyRecycler.background = ColorDrawable(app.backgroundColor.darken)
+        val detailsController = DetailsController()
+        customView.recycler.setController(detailsController)
 
-            val detailsController = DetailsController()
-            epoxyRecycler.setController(detailsController)
-
-            runBlocking {
-                val packageName = app.packageName
-                val data = viewModel.fetchAppDetails(packageName)
+        runBlocking {
+            val packageName = app.packageName
+            val data = viewModel.fetchAppDetails(packageName)
+            if (data.isEmpty()) {
+                AppManager.removePackageName(packageName)
+                this@DetailsDialog.dismiss()
+            } else {
                 val versions = viewModel.fetchAllVersions(packageName)
                 detailsController.setData(data, versions)
             }

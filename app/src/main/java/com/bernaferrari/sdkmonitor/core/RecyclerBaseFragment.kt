@@ -1,4 +1,4 @@
-package com.bernaferrari.sdkmonitor.logs
+package com.bernaferrari.sdkmonitor.core
 
 import android.os.Bundle
 import android.view.LayoutInflater

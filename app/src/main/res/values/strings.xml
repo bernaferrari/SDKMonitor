@@ -2,6 +2,7 @@
     <string name="app_name">SDK Monitor</string>
 
     <string name="empty_search">No results found</string>
+    <string name="empty_logs">No changes detected</string>
     <string name="target_history">TargetSDK history</string>
     <string name="background_sync">Background Sync</string>
     <string name="sync_interval">Sync Interval</string>
@@ -13,5 +14,38 @@
     <string name="hour">1 hour</string>
     <string name="hours">hours</string>
     <string name="days">days</string>
+
+    <string-array name="singularTime">
+        <item>minute</item>
+        <item>hour</item>
+        <item>day</item>
+    </string-array>
+
+    <string-array name="pluralTime">
+        <item>minutes</item>
+        <item>hours</item>
+        <item>days</item>
+    </string-array>
+
+    <string name="sync_every">Sync every %d %s</string>
+    <string name="sync_disabled">Sync is disabled</string>
+
+    <string name="dismiss">Dismiss</string>
+    <string name="contact">Contact</string>
+    <string name="about_title">SDK Monitor v%1$s</string>
+    <string name="about_body"><![CDATA[
+        Designed &amp; developed by <b>Bernardo Ferrari</b>.<br/>
+        <a href=\'https://github.com/bernaferrari\'>GitHub</a>&nbsp;&nbsp;
+        <a href=\'https://www.reddit.com/user/bernaferrari\'>Reddit</a>&nbsp;&nbsp;
+        <a href=\'https://www.linkedin.com/in/bernaferrari\'>LinkedIn</a><br/><br/>
+        This project is <a href=\'https://github.com/bernaferrari/CarouselGifViewer\'>open source</a>, and is
+        licensed under Apache 2.0.</a>
+  ]]></string>
+
+    <string name="background_sync_description">Periodically check if targetSDK changed, since apps are always being updated.</string>
+    <string name="home">Home</string>
+    <string name="logs">Logs</string>
+    <string name="settings">Settings</string>
+    <string name="loading">Loading..</string>
 
 </resources>

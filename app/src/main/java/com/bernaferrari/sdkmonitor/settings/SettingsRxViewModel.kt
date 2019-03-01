@@ -1,6 +1,5 @@
 package com.bernaferrari.sdkmonitor.settings
 
-import com.afollestad.rxkprefs.rxkPrefs
 import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.MvRxState
@@ -11,21 +10,14 @@ import io.reactivex.rxkotlin.Observables
 data class SettingsData(
     val lightMode: Boolean,
     val colorBySdk: Boolean,
-    val showSystemApps: Boolean
+    val showSystemApps: Boolean,
+    val backgroundSync: Boolean
 ) : MvRxState
 
 data class SettingsState(val data: Async<SettingsData> = Loading()) : MvRxState
 
 class SettingsRxViewModel(initialState: SettingsState) :
     MvRxViewModel<SettingsState>(initialState) {
-
-    private val myPrefs = rxkPrefs(Injector.get().sharedPrefs())
-
-    val lightMode = myPrefs.boolean("light mode", true)
-
-    val colorBySdk = myPrefs.boolean("colorBySdk", true)
-
-    val showSystemApps = myPrefs.boolean("system apps", false)
 
     init {
         fetchData()
@@ -34,14 +26,14 @@ class SettingsRxViewModel(initialState: SettingsState) :
     private fun fetchData() = withState {
 
         Observables.combineLatest(
-            lightMode.observe(),
-            colorBySdk.observe(),
-            showSystemApps.observe()
-        ) { dark, color, system ->
-            SettingsData(dark, color, system)
+            Injector.get().isLightTheme().observe(),
+            Injector.get().isColorBySdk().observe(),
+            Injector.get().observeShowSystemApps(),
+            Injector.get().backgroundSync().observe()
+        ) { dark, color, system, backgroundSync ->
+            SettingsData(dark, color, system, backgroundSync)
         }.execute {
             copy(data = it)
         }
     }
-
 }

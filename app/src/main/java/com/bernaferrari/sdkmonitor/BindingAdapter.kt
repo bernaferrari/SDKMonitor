@@ -1,4 +1,4 @@
-package com.bernaferrari.sdkmonitor.settings
+package com.bernaferrari.sdkmonitor
 
 import android.view.View
 import android.widget.ImageView

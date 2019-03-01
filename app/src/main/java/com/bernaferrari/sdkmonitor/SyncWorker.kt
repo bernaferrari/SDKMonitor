@@ -21,7 +21,7 @@ class SyncWorker(
 
     override fun doWork(): Result {
         heavyWork()
-        WorkerHelper.updateWorkerWithConstraints(Injector.get().sharedPrefs(), false)
+        WorkerHelper.updateBackgroundWorker(false)
         return Result.success()
     }
 

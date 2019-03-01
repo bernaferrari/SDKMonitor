@@ -11,34 +11,37 @@
 
     </data>
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp">
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:orientation="vertical">
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_gravity="center"
-            android:layout_margin="16dp"
-            android:padding="8dp"
-            app:cardBackgroundColor="@color/cardBackground"
-            app:cardCornerRadius="16dp">
+            android:background="@drawable/shape_circle"
+            android:backgroundTint="@color/white"
+            android:contentDescription="@null"
+            android:padding="10dp"
+            android:tint="@color/md_grey_600"
+            app:srcCompat="@drawable/ic_search" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/labelStr"
-                style="@style/TextAppearance.MaterialComponents.Body1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:includeFontPadding="false"
-                android:padding="16dp"
-                android:text="@{label}"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                tools:text="@string/empty_search" />
+        <TextView
+            android:id="@+id/labelStr"
+            style="@style/TextAppearance.MaterialComponents.Body1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:includeFontPadding="false"
+            android:lineSpacingExtra="8dp"
+            android:text="@{label}"
+            android:textAlignment="center"
+            android:textColor="?strongColor"
+            tools:text="No results found" />
 
-        </com.google.android.material.card.MaterialCardView>
-
-    </FrameLayout>
+    </LinearLayout>
 
 </layout>

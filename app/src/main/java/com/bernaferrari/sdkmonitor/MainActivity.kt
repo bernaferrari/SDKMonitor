@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : BaseMvRxActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (Injector.get().sharedPrefs().getBoolean("light mode", true)) {
+        if (Injector.get().isLightTheme().get()) {
             setTheme(R.style.AppThemeLight)
         } else {
             setTheme(R.style.AppThemeDark)

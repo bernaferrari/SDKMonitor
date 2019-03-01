@@ -36,7 +36,7 @@ class MainRxViewModel(initialState: MainState) : MvRxViewModel<MainState>(initia
 
     private fun fetchData() = withState {
         Observables.combineLatest(
-            getAppsListObservable(),
+            allApps(),
             inputRelay
         ) { list, filter ->
             // get the string without special characters and filter the list.
@@ -79,35 +79,39 @@ class MainRxViewModel(initialState: MainState) : MvRxViewModel<MainState>(initia
 
     var firstRun = true
 
-    private fun getAppsListObservable(): Observable<List<AppVersion>> =
+    private fun allApps() =
+        Injector.get().showSystemApps().observe().flatMap {
+            if (it) {
+                // return all apps
+                mAppsDao.getAppsListFlowable()
+            } else {
+                // return only the ones from Play Store or that were installed manually.
+                mAppsDao.getAppsListFlowableFiltered(hasKnownOrigin = true)
+            }.toObservable()
+                .getAppsListObservable()
+        }
 
-        mAppsDao.getAppsListFlowable().toObservable()
-            .debounce { list ->
-                // debounce with a 200ms delay all items except the first one
-                val flow = Observable.just(list)
-                hasLoaded = true
-                flow.takeIf { list.isEmpty() }
-                    ?.let { it } ?: flow.delay(200, TimeUnit.MILLISECONDS)
+    private fun Observable<List<App>>.getAppsListObservable(): Observable<List<AppVersion>> =
+        this.debounce { list ->
+            // debounce with a 200ms delay on all items except the first one
+            val flow = Observable.just(list)
+            hasLoaded = true
+            flow.takeIf { list.isEmpty() }
+                ?.let { it } ?: flow.delay(200, TimeUnit.MILLISECONDS)
+        }.skipWhile {
+            // force the refresh when app is first opened or no known apps are installed (emulator)
+            if (it.isEmpty() || firstRun) {
+                firstRun = false
+                updateAll()
             }
-            .skipWhile {
-                if (it.isEmpty() || firstRun) {
-                    firstRun = false
-                    updateAll()
-                }
-                it.isEmpty()
+            it.isEmpty()
+        }.map { list ->
+            // parse correctly the values
+            list.map { app ->
+                val (sdkVersion, lastUpdate) = getSdkDate(app)
+                AppVersion(app, sdkVersion, lastUpdate)
             }
-            .also {
-                println("RAWRRR REFRESHING IT!!!")
-            }
-            .map { list ->
-                val allItems = mutableListOf<AppVersion>()
-                list.asSequence()
-                    .sortedBy { it.title.toLowerCase() }
-                    .mapTo(allItems) { app ->
-                        val (sdkVersion, lastUpdate) = getSdkDate(app)
-                        AppVersion(app, sdkVersion, lastUpdate)
-                    }.toList()
-            }.doOnNext { maxListSize.accept(it.size) }
+        }.doOnNext { maxListSize.accept(it.size) }
 
     private fun getSdkDate(app: App): Pair<Int, String> {
 
@@ -131,8 +135,13 @@ class MainRxViewModel(initialState: MainState) : MvRxViewModel<MainState>(initia
         showProgressRelay.accept(true)
 
         AppManager.getPackagesWithUserPrefs()
-            // this condition will only happen when app is run on emulator.
-            .let { if (it.isEmpty()) AppManager.getPackages() else it }
+            // this condition will only happen when app there is no app installed
+            // which means PROBABLY the app is being ran on emulator.
+            .let {
+                if (it.isEmpty())
+                    Injector.get().showSystemApps().set(true)
+                AppManager.getPackages()
+            }
             .forEach { packageInfo ->
                 AppManager.insertNewApp(packageInfo)
                 AppManager.insertNewVersion(packageInfo)

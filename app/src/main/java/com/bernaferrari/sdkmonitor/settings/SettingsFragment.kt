@@ -5,12 +5,10 @@ import android.view.View
 import com.airbnb.epoxy.EpoxyController
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.activityViewModel
-import com.bernaferrari.sdkmonitor.R
-import com.bernaferrari.sdkmonitor.SettingsSwitchBindingModel_
+import com.bernaferrari.sdkmonitor.*
+import com.bernaferrari.sdkmonitor.core.AboutDialog
+import com.bernaferrari.sdkmonitor.core.RecyclerBaseFragment
 import com.bernaferrari.sdkmonitor.core.simpleController
-import com.bernaferrari.sdkmonitor.logs.RecyclerBaseFragment
-import com.bernaferrari.sdkmonitor.marquee
-import com.bernaferrari.sdkmonitor.views.loadingRow
 import kotlinx.android.synthetic.main.recyclerview.*
 
 class SettingsFragment : RecyclerBaseFragment() {
@@ -19,16 +17,18 @@ class SettingsFragment : RecyclerBaseFragment() {
 
     override fun epoxyController(): EpoxyController = simpleController(viewModel) { state ->
 
-        marquee {
-            id("header")
-            title("Settings")
-        }
-
+        println("state is: ${state.data}")
         if (state.data is Loading) {
             loadingRow { id("loading") }
         }
 
         if (state.data.complete) {
+
+            marquee {
+                id("header")
+                title("Settings")
+                subtitle("Version ${BuildConfig.VERSION_NAME}")
+            }
 
             val lightMode = state.data()?.lightMode ?: true
 
@@ -36,11 +36,11 @@ class SettingsFragment : RecyclerBaseFragment() {
                 .id("light mode")
                 .title("Light mode")
                 .icon(R.drawable.ic_sunny)
-                .subtitle("Change how the app looks")
+//                .subtitle("Change how the app looks")
                 .switchIsVisible(true)
                 .switchIsOn(lightMode)
                 .clickListener { v ->
-                    viewModel.lightMode.set(!lightMode)
+                    Injector.get().isLightTheme().set(!lightMode)
                     activity?.recreate()
                 }
                 .addTo(this)
@@ -55,7 +55,7 @@ class SettingsFragment : RecyclerBaseFragment() {
                 .switchIsVisible(true)
                 .switchIsOn(colorBySdk)
                 .clickListener { v ->
-                    viewModel.colorBySdk.set(!colorBySdk)
+                    Injector.get().isColorBySdk().set(!colorBySdk)
                 }
                 .addTo(this)
 
@@ -69,21 +69,31 @@ class SettingsFragment : RecyclerBaseFragment() {
                 .switchIsOn(showSystemApps)
                 .subtitle("Show all installed apps. This might increase loading time.")
                 .clickListener { v ->
-                    viewModel.showSystemApps.set(!showSystemApps)
+                    Injector.get().showSystemApps().set(!showSystemApps)
                 }
                 .addTo(this)
 
-//            SettingsSwitchBindingModel_()
-//                .id("background sync")
-//                .title("Background Sync")
-//                .icon(R.drawable.ic_sync)
-//                .subtitle("Disabled")
-//                .clickListener { v ->
-//                    viewModel.showSystemApps.set(!showSystemApps)
-//                }
-//                .addTo(this)
-        }
+            val backgroundSync = state.data()?.backgroundSync ?: false
 
+            SettingsSwitchBindingModel_()
+                .id("background sync")
+                .title("Background Sync")
+                .icon(R.drawable.ic_sync)
+                .subtitle(if (backgroundSync) "Enabled" else "Disabled")
+                .clickListener { v ->
+                    DialogBackgroundSync.show(requireActivity())
+                }
+                .addTo(this)
+
+            SettingsSwitchBindingModel_()
+                .id("about")
+                .title("About")
+                .icon(R.drawable.ic_info)
+                .clickListener { v ->
+                    AboutDialog.show(requireActivity())
+                }
+                .addTo(this)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -109,7 +119,7 @@ class SettingsFragment : RecyclerBaseFragment() {
 //
 //            if (it.isSwitchOn) {
 //                syncSection.update(syncSettings)
-//                WorkerHelper.updateWorkerWithConstraints(sharedPrefs)
+//                WorkerHelper.updateBackgroundWorker(sharedPrefs)
 //            } else {
 //                syncSection.update(mutableListOf())
 //                WorkerHelper.cancelWork()
@@ -121,7 +131,7 @@ class SettingsFragment : RecyclerBaseFragment() {
 //            sharedPrefs.getLong(WorkerHelper.DELAY, 1440).toInt()
 //        ) {
 //            sharedPrefs.edit { putLong(WorkerHelper.DELAY, it) }
-//            WorkerHelper.updateWorkerWithConstraints(sharedPrefs)
+//            WorkerHelper.updateBackgroundWorker(sharedPrefs)
 //            Logger.d("Reloaded! $it min")
 //        }
 //

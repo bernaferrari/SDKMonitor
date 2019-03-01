@@ -38,15 +38,17 @@
                     android:importantForAccessibility="no"
                     android:paddingStart="@dimen/horizontal_spacing"
                     android:paddingEnd="@dimen/horizontal_spacing"
+                    android:tint="?searchIconColor"
                     android:src="@drawable/ic_search" />
 
                 <EditText
                     android:id="@+id/queryInput"
+                    android:hint="@string/loading"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:hint="Loading.."
+                    android:textColor="?searchIconColor"
                     android:imeOptions="actionGo|flagNoExtractUi"
                     android:inputType="textCapWords|textNoSuggestions"
                     android:privateImeOptions="nm"
@@ -62,6 +64,7 @@
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:paddingStart="@dimen/horizontal_spacing"
                     android:paddingEnd="@dimen/horizontal_spacing"
+                    android:tint="?searchIconColor"
                     android:src="@drawable/ic_close_dark"
                     android:visibility="invisible" />
 

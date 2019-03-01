@@ -19,7 +19,6 @@ import com.bernaferrari.sdkmonitor.extensions.darken
 import io.karn.notify.Notify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.lang.reflect.InvocationTargetException
 
 object AppManager {
 
@@ -44,6 +43,10 @@ object AppManager {
     }
 
     fun getPackages(): List<PackageInfo> = packageManager.getInstalledPackages(0)
+
+    suspend fun removePackageName(packageName: String) = withContext(Dispatchers.IO) {
+        Injector.get().appsDao().deleteApp(packageName)
+    }
 
     suspend fun insertNewVersion(packageInfo: PackageInfo) = withContext(Dispatchers.IO) {
         val versionCode =
@@ -125,7 +128,7 @@ object AppManager {
     }
 
     fun getPackagesWithUserPrefs(): List<PackageInfo> {
-        return if (Injector.get().sharedPrefs().getBoolean("system apps", false)) {
+        return if (Injector.get().showSystemApps().get()) {
             AppManager.getPackages()
         } else {
             AppManager.getPackagesWithOrigin()
@@ -140,7 +143,7 @@ object AppManager {
     fun getPackageInfo(packageName: String): PackageInfo? {
         return try {
             packageManager.getPackageInfo(packageName, 0)
-        } catch (e: InvocationTargetException) {
+        } catch (e: PackageManager.NameNotFoundException) {
             null
         }
     }
