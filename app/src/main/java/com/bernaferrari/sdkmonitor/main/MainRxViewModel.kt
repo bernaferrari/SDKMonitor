@@ -11,8 +11,7 @@ import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.Observables
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
 
@@ -131,16 +130,14 @@ class MainRxViewModel(initialState: MainState) : MvRxViewModel<MainState>(initia
         return Pair(sdkVersion, lastUpdate.convertTimestampToDate())
     }
 
-    fun updateAll() = GlobalScope.launch(Dispatchers.IO) {
+    fun updateAll() = runBlocking {
         showProgressRelay.accept(true)
 
         AppManager.getPackagesWithUserPrefs()
             // this condition will only happen when app there is no app installed
             // which means PROBABLY the app is being ran on emulator.
-            .let {
-                if (it.isEmpty())
-                    Injector.get().showSystemApps().set(true)
-                AppManager.getPackages()
+            .also {
+                if (it.isEmpty()) Injector.get().showSystemApps().set(true)
             }
             .forEach { packageInfo ->
                 AppManager.insertNewApp(packageInfo)

@@ -82,9 +82,7 @@ object AppManager {
                             Intent(appContext, MainActivity::class.java), 0
                         )
                     }.content {
-                        title = "TargetSDK changed for ${getAppLabel(
-                            packageInfo
-                        )}!"
+                        title = "TargetSDK changed for ${getAppLabel(packageInfo)}!"
                         text = "Went from $lastVersion to $currentTargetSDK"
                     }
                     .show()

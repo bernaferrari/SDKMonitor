@@ -38,8 +38,8 @@ android {
         applicationId = "com.bernaferrari.sdkmonitor"
         minSdkVersion(21)
         targetSdkVersion(28)
-        versionCode = 5
-        versionName = "0.9"
+        versionCode = 6
+        versionName = "0.91"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

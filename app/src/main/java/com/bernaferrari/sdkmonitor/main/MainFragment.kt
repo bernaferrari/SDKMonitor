@@ -30,6 +30,7 @@ import com.reddit.indicatorfastscroll.FastScrollerView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.main_fragment.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.util.*
@@ -125,7 +126,11 @@ class MainFragment : BaseMainFragment() {
         disposableManager += viewModel.maxListSize.observeOn(AndroidSchedulers.mainThread())
             .subscribe { queryInput.hint = "Search $it apps.." }
 
-        swipeToRefresh.setOnRefreshListener { viewModel.updateAll() }
+        swipeToRefresh.setOnRefreshListener {
+            launch(Dispatchers.IO) {
+                viewModel.updateAll()
+            }
+        }
 
         hideKeyboardWhenNecessary(
             requireActivity(),
