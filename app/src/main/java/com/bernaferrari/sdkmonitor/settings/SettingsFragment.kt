@@ -36,7 +36,6 @@ class SettingsFragment : RecyclerBaseFragment() {
                 .id("light mode")
                 .title("Light mode")
                 .icon(R.drawable.ic_sunny)
-//                .subtitle("Change how the app looks")
                 .switchIsVisible(true)
                 .switchIsOn(lightMode)
                 .clickListener { v ->
@@ -101,61 +100,5 @@ class SettingsFragment : RecyclerBaseFragment() {
 
         val decoration = InsetDecoration(1, 0, 0x40FFFFFF)
         recycler.addItemDecoration(decoration)
-
-//        updating += DialogItemSwitch(
-//            "Debug mode",
-//            IconicsDrawable(context, CommunityMaterial.Icon.cmd_bug).color(color),
-//            sharedPrefs.getBoolean("debug", true)
-//        ) {
-//            sharedPrefs.edit { putBoolean("debug", it.isSwitchOn) }
-//        }
-//
-//        updating += com.bernaferrari.sdkmonitor.settings.DialogItemSwitch(
-//            getString(R.string.background_sync),
-//            IconicsDrawable(context, GoogleMaterial.Icon.gmd_sync).color(color),
-//            sharedPrefs.getBoolean("backgroundSync", false)
-//        ) {
-//            sharedPrefs.edit { putBoolean("backgroundSync", it.isSwitchOn) }
-//
-//            if (it.isSwitchOn) {
-//                syncSection.update(syncSettings)
-//                WorkerHelper.updateBackgroundWorker(sharedPrefs)
-//            } else {
-//                syncSection.update(mutableListOf())
-//                WorkerHelper.cancelWork()
-//            }
-//        }
-//
-//        syncSettings += com.bernaferrari.sdkmonitor.settings.DialogItemInterval(
-//            getString(R.string.sync_interval),
-//            sharedPrefs.getLong(WorkerHelper.DELAY, 1440).toInt()
-//        ) {
-//            sharedPrefs.edit { putLong(WorkerHelper.DELAY, it) }
-//            WorkerHelper.updateBackgroundWorker(sharedPrefs)
-//            Logger.d("Reloaded! $it min")
-//        }
-//
-//        syncSettings += com.bernaferrari.sdkmonitor.settings.DialogItemSeparator(getString(R.string.constraints))
-//
-//        syncSettings += com.bernaferrari.sdkmonitor.settings.DialogItemSwitch(
-//            getString(R.string.charging),
-//            IconicsDrawable(context, CommunityMaterial.Icon.cmd_battery_charging)
-//                .color(color),
-//            sharedPrefs.getBoolean(WorkerHelper.CHARGING, false)
-//        ) {
-//            updateSharedPreferences(WorkerHelper.CHARGING, it.isSwitchOn)
-//        }
-//
-//        syncSettings += com.bernaferrari.sdkmonitor.settings.DialogItemSwitch(
-//            getString(R.string.batter_not_low),
-//            IconicsDrawable(context, CommunityMaterial.Icon.cmd_battery_20).color(color),
-//            sharedPrefs.getBoolean(WorkerHelper.BATTERYNOTLOW, false)
-//        ) {
-//            updateSharedPreferences(WorkerHelper.BATTERYNOTLOW, it.isSwitchOn)
-//        }
-//
-//        if (sharedPrefs.getBoolean("backgroundSync", false)) {
-//            syncSection.update(syncSettings)
-//        }
     }
 }

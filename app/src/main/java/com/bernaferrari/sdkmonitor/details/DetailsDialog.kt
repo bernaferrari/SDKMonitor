@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
 import com.afollestad.materialdialogs.MaterialDialog
@@ -52,21 +53,20 @@ class DetailsDialog : BaseMvRxDialogFragment() {
         val args = arguments ?: blowUp()
         val app = args.getParcelable(KEY_APP) as? App ?: blowUp()
 
-        val dialog = MaterialDialog(context).customView(
-            R.layout.details_fragment,
-            noVerticalPadding = true
-        )
-        dialog.show()
+        return MaterialDialog(context)
+            .customView(R.layout.details_fragment, noVerticalPadding = true)
+            .also { it.getCustomView().setUpViews(app) }
+    }
 
-        val customView = dialog.getCustomView()
+    private fun View.setUpViews(app: App) {
 
-        customView.titlecontent.text = app.title
+        titlecontent.text = app.title
 
-        customView.title_bar.background = ColorDrawable(app.backgroundColor.darken.darken)
+        title_bar.background = ColorDrawable(app.backgroundColor.darken.darken)
 
-        customView.closecontent.setOnClickListener { dialog.dismiss() }
+        closecontent.setOnClickListener { dismiss() }
 
-        customView.play_store.also {
+        play_store.also {
             it.isVisible = app.isFromPlayStore
             it.setOnClickListener {
                 val intent = Intent(
@@ -78,16 +78,16 @@ class DetailsDialog : BaseMvRxDialogFragment() {
             }
         }
 
-        customView.info.setOnClickListener {
+        info.setOnClickListener {
             val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
             intent.data = Uri.parse("package:" + app.packageName)
             startActivity(intent)
         }
 
-        customView.recycler.background = ColorDrawable(app.backgroundColor.darken)
+        recycler.background = ColorDrawable(app.backgroundColor.darken)
 
         val detailsController = DetailsController()
-        customView.recycler.setController(detailsController)
+        recycler.setController(detailsController)
 
         runBlocking {
             val packageName = app.packageName
@@ -100,8 +100,6 @@ class DetailsDialog : BaseMvRxDialogFragment() {
                 detailsController.setData(data, versions)
             }
         }
-
-        return dialog
     }
 
     override fun invalidate() {

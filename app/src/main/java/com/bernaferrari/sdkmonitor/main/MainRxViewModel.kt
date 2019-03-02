@@ -96,7 +96,7 @@ class MainRxViewModel(initialState: MainState) : MvRxViewModel<MainState>(initia
             val flow = Observable.just(list)
             hasLoaded = true
             flow.takeIf { list.isEmpty() }
-                ?.let { it } ?: flow.delay(200, TimeUnit.MILLISECONDS)
+                ?.let { it } ?: flow.delay(250, TimeUnit.MILLISECONDS)
         }.skipWhile {
             // force the refresh when app is first opened or no known apps are installed (emulator)
             if (it.isEmpty() || firstRun) {

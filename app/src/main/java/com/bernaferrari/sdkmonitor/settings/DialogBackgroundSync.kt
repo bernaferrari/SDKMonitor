@@ -32,15 +32,9 @@ class DialogBackgroundSync : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val context = activity ?: throw IllegalStateException("Oh no!")
 
-        val dialog = MaterialDialog(context)
-            .customView(
-                R.layout.dialog_sync,
-                noVerticalPadding = true
-            )
-
-        dialog.getCustomView().setUpViews()
-
-        return dialog
+        return MaterialDialog(context)
+            .customView(R.layout.dialog_sync, noVerticalPadding = true)
+            .also { it.getCustomView().setUpViews() }
     }
 
     private val singular by lazy { resources.getStringArray(R.array.singularTime) }
