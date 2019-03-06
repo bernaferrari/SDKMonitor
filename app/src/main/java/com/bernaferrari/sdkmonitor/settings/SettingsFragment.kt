@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.recyclerview.*
 
 class SettingsFragment : RecyclerBaseFragment() {
 
-    private val viewModel: SettingsRxViewModel by activityViewModel()
+    private val viewModel: SettingsViewModel by activityViewModel()
 
     override fun epoxyController(): EpoxyController = simpleController(viewModel) { state ->
 
@@ -46,6 +46,20 @@ class SettingsFragment : RecyclerBaseFragment() {
 
             val colorBySdk = state.data()?.colorBySdk ?: true
 
+            val showSystemApps = state.data()?.showSystemApps ?: true
+
+            SettingsSwitchBindingModel_()
+                .id("system apps")
+                .title("Show system apps")
+                .icon(R.drawable.ic_android)
+                .switchIsVisible(true)
+                .switchIsOn(showSystemApps)
+                .subtitle("Show all installed apps. This might increase loading time.")
+                .clickListener { v ->
+                    Injector.get().showSystemApps().set(!showSystemApps)
+                }
+                .addTo(this)
+
             SettingsSwitchBindingModel_()
                 .id("color mode")
                 .title("Color by targetSDK")
@@ -58,17 +72,17 @@ class SettingsFragment : RecyclerBaseFragment() {
                 }
                 .addTo(this)
 
-            val showSystemApps = state.data()?.showSystemApps ?: true
+            val orderBySdk = state.data()?.orderBySdk ?: true
 
             SettingsSwitchBindingModel_()
-                .id("system apps")
-                .title("Show system apps")
-                .icon(R.drawable.ic_android)
+                .id("order by")
+                .title("Order by targetSDK")
+                .icon(R.drawable.ic_sort)
+                .subtitle("Change the order of items")
                 .switchIsVisible(true)
-                .switchIsOn(showSystemApps)
-                .subtitle("Show all installed apps. This might increase loading time.")
+                .switchIsOn(orderBySdk)
                 .clickListener { v ->
-                    Injector.get().showSystemApps().set(!showSystemApps)
+                    Injector.get().orderBySdk().set(!orderBySdk)
                 }
                 .addTo(this)
 

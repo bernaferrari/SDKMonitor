@@ -14,7 +14,7 @@ import io.reactivex.Flowable
 @Dao
 interface AppsDao {
 
-    @Query("SELECT * FROM apps WHERE isFromPlayStore =:hasKnownOrigin ORDER BY title COLLATE NOCASE ASC")
+    @Query("SELECT * FROM apps WHERE (isFromPlayStore = :hasKnownOrigin) ORDER BY title COLLATE NOCASE ASC")
     fun getAppsListFlowableFiltered(hasKnownOrigin: Boolean): Flowable<List<App>>
 
     @Query("SELECT * FROM apps ORDER BY title COLLATE NOCASE ASC")

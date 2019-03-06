@@ -47,7 +47,7 @@ data class MainState(val listOfItems: Async<List<AppVersion>> = Loading()) : MvR
 
 class MainFragment : BaseMainFragment() {
 
-    private val viewModel: MainRxViewModel by activityViewModel()
+    private val viewModel: MainViewModel by activityViewModel()
 
     private val standardItemDecorator by lazy {
         val isRightToLeft =
@@ -115,7 +115,6 @@ class MainFragment : BaseMainFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recycler.addItemDecoration(standardItemDecorator)
         setupFastScroller(recycler.layoutManager as? LinearLayoutManager)
 
         setupDataAndSearch()
@@ -125,6 +124,18 @@ class MainFragment : BaseMainFragment() {
 
         disposableManager += viewModel.maxListSize.observeOn(AndroidSchedulers.mainThread())
             .subscribe { queryInput.hint = "Search $it apps.." }
+
+        // observe when order changes
+        disposableManager += Injector.get().orderBySdk().observe()
+            .subscribe { orderBySdk ->
+                fastscroller.isVisible = !orderBySdk
+
+                if (orderBySdk) {
+                    recycler.removeItemDecoration(standardItemDecorator)
+                } else {
+                    recycler.addItemDecoration(standardItemDecorator)
+                }
+            }
 
         swipeToRefresh.setOnRefreshListener {
             launch(Dispatchers.IO) {

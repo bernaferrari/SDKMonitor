@@ -16,9 +16,10 @@ class MainActivity : BaseMvRxActivity() {
         }
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         NavigationUI.setupWithNavController(
-            bottom_nav_view,
-            my_nav_host_fragment.findNavController()
+            bottom_nav,
+            nav_host_fragment.findNavController()
         )
     }
 }

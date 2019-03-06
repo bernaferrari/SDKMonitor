@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit
 /**
  * initialState *must* be implemented as a constructor parameter.
  */
-class MainRxViewModel(initialState: MainState) : MvRxViewModel<MainState>(initialState) {
+class MainViewModel(initialState: MainState) : MvRxViewModel<MainState>(initialState) {
 
     private val mAppsDao = Injector.get().appsDao()
     private val mVersionsDao = Injector.get().versionsDao()
@@ -79,18 +79,23 @@ class MainRxViewModel(initialState: MainState) : MvRxViewModel<MainState>(initia
     var firstRun = true
 
     private fun allApps() =
-        Injector.get().showSystemApps().observe().flatMap {
-            if (it) {
+
+        Observables.combineLatest(
+            Injector.get().showSystemApps().observe(),
+            Injector.get().orderBySdk().observe()
+        ) { showSystemApps, orderBySdk ->
+
+            if (showSystemApps) {
                 // return all apps
                 mAppsDao.getAppsListFlowable()
             } else {
                 // return only the ones from Play Store or that were installed manually.
                 mAppsDao.getAppsListFlowableFiltered(hasKnownOrigin = true)
             }.toObservable()
-                .getAppsListObservable()
-        }
+                .getAppsListObservable(orderBySdk)
+        }.flatMap { it }
 
-    private fun Observable<List<App>>.getAppsListObservable(): Observable<List<AppVersion>> =
+    private fun Observable<List<App>>.getAppsListObservable(orderBySdk: Boolean): Observable<List<AppVersion>> =
         this.debounce { list ->
             // debounce with a 200ms delay on all items except the first one
             val flow = Observable.just(list)
@@ -110,6 +115,9 @@ class MainRxViewModel(initialState: MainState) : MvRxViewModel<MainState>(initia
                 val (sdkVersion, lastUpdate) = getSdkDate(app)
                 AppVersion(app, sdkVersion, lastUpdate)
             }
+        }.map { list ->
+            // list already comes sorted by name from db, it is faster and avoids sub-querying
+            if (orderBySdk) list.sortedBy { it.sdkVersion } else list
         }.doOnNext { maxListSize.accept(it.size) }
 
     private fun getSdkDate(app: App): Pair<Int, String> {

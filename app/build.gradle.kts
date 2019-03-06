@@ -38,8 +38,8 @@ android {
         applicationId = "com.bernaferrari.sdkmonitor"
         minSdkVersion(21)
         targetSdkVersion(28)
-        versionCode = 6
-        versionName = "0.91"
+        versionCode = 7
+        versionName = "0.92"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -107,10 +107,13 @@ dependencies {
     implementation("com.airbnb.android:epoxy-databinding:$epoxy")
     implementation("com.airbnb.android:epoxy-paging:$epoxy")
     kapt("com.airbnb.android:epoxy-processor:$epoxy")
-    implementation("com.airbnb.android:mvrx:0.7.2")
+
+    val mvRx = "0.7.2"
+    implementation("com.airbnb.android:mvrx:$mvRx")
+    testImplementation("com.airbnb.android:mvrx-testing:$mvRx")
 
     // Coroutines
-    val coroutines_version = "1.1.0"
+    val coroutines_version = "1.1.1"
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version")
 
@@ -142,4 +145,9 @@ dependencies {
 
     // Debugging
     implementation("com.facebook.stetho:stetho:1.5.0")
+
+    implementation("junit:junit:4.12")
+    testImplementation("org.mockito:mockito-core:2.24.5")
+    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0")
+    implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
 }

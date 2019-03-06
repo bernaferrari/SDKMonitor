@@ -12,7 +12,6 @@ import com.bernaferrari.sdkmonitor.data.source.local.VersionsDao
 import dagger.Component
 import dagger.Module
 import dagger.Provides
-import io.reactivex.Observable
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -44,45 +43,39 @@ class AppModule(private val appContext: Context) {
 class RxPrefsModule {
 
     @Provides
-    @Singleton
     @Named("lightMode")
     fun isLightTheme(rxPrefs: RxkPrefs): Pref<Boolean> {
         return rxPrefs.boolean("lightMode", true)
     }
 
     @Provides
-    @Singleton
     @Named("colorBySdk")
     fun isColorBySdk(rxPrefs: RxkPrefs): Pref<Boolean> {
         return rxPrefs.boolean("colorBySdk", true)
     }
 
     @Provides
-    @Singleton
     @Named("showSystemApps")
     fun showSystemApps(rxPrefs: RxkPrefs): Pref<Boolean> {
         return rxPrefs.boolean("showSystemApps", false)
     }
 
     @Provides
-    @Singleton
     @Named("backgroundSync")
     fun backgroundSync(rxPrefs: RxkPrefs): Pref<Boolean> {
         return rxPrefs.boolean("backgroundSync", false)
     }
 
     @Provides
-    @Singleton
     @Named("syncInterval")
     fun syncInterval(rxPrefs: RxkPrefs): Pref<String> {
         return rxPrefs.string("syncInterval", "301")
     }
 
     @Provides
-    @Singleton
-    @Named("observeShowSystemApps")
-    fun observeShowSystemApps(rxPrefs: RxkPrefs): Observable<Boolean> {
-        return showSystemApps(rxPrefs).observe().share()
+    @Named("orderBySdk")
+    fun orderBySdk(rxPrefs: RxkPrefs): Pref<Boolean> {
+        return rxPrefs.boolean("orderBySdk", false)
     }
 }
 
@@ -133,14 +126,14 @@ interface SingletonComponent {
     @Named("showSystemApps")
     fun showSystemApps(): Pref<Boolean>
 
-    @Named("observeShowSystemApps")
-    fun observeShowSystemApps(): Observable<Boolean>
-
     @Named("backgroundSync")
     fun backgroundSync(): Pref<Boolean>
 
     @Named("syncInterval")
     fun syncInterval(): Pref<String>
+
+    @Named("orderBySdk")
+    fun orderBySdk(): Pref<Boolean>
 }
 
 class Injector private constructor() {
