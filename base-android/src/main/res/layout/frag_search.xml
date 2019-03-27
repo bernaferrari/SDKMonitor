@@ -30,7 +30,7 @@
             android:layout_gravity="center"
             android:layout_marginStart="8dp"
             android:padding="12dp"
-            android:tint="@color/md_grey_600"
+            android:tint="?colorOnPrimary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -77,7 +77,7 @@
                     android:inputType="textCapWords|textNoSuggestions"
                     android:privateImeOptions="nm"
                     android:selectAllOnFocus="true"
-                    android:textColor="?searchIconColor"
+                    android:textColor="?colorOnPrimary"
                     tools:hint="Search for books, verses, etc" />
 
                 <ImageView
@@ -89,8 +89,7 @@
                     android:paddingStart="8dp"
                     android:paddingEnd="8dp"
                     android:src="@drawable/ic_search"
-                    android:tint="?searchIconColor" />
-
+                    android:tint="?colorOnPrimary" />
 
                 <ImageView
                     android:id="@+id/queryClear"
@@ -101,7 +100,7 @@
                     android:paddingStart="8dp"
                     android:paddingEnd="8dp"
                     android:src="@drawable/ic_close"
-                    android:tint="?searchIconColor"
+                    android:tint="?colorOnPrimary"
                     android:visibility="invisible" />
 
             </LinearLayout>

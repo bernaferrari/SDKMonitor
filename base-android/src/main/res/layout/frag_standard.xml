@@ -10,7 +10,7 @@
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@color/background_light"
+        android:background="?toolbarColor"
         android:baselineAligned="false"
         android:orientation="horizontal"
         android:paddingTop="4dp"
@@ -29,7 +29,7 @@
             android:layout_marginStart="8dp"
             android:padding="12dp"
             android:src="@drawable/ic_close"
-            android:tint="@color/FontStrong" />
+            android:tint="?colorOnPrimary" />
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbarMenu"

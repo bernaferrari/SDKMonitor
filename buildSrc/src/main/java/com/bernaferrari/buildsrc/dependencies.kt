@@ -19,13 +19,11 @@ object Libs {
 
     val mvRx = "com.airbnb.android:mvrx:0.7.2"
 
-    val threeTenBp = "org.threeten:threetenbp:1.3.8"
-    val threeTenBpNoTzdb = "$threeTenBp:no-tzdb"
-    val threeTenAbp = "com.jakewharton.threetenabp:threetenabp:1.1.2"
+    val threeTenAndroid = "com.jakewharton.threetenabp:threetenabp:1.2.0"
 
     val gravitySnapHelper = "com.github.rubensousa:gravitysnaphelper:2.0"
 
-    val materialDialogs = "com.afollestad.material-dialogs:core:2.4.0"
+    val materialDialogs = "com.afollestad.material-dialogs:core:2.6.0"
     val jsEvaluator = "com.github.evgenyneu:js-evaluator-for-android:5.0.0"
     val logger = "com.orhanobut:logger:2.2.0"
     val okHttp = "com.squareup.okhttp3:okhttp:3.14.0"
@@ -138,7 +136,7 @@ object Libs {
     }
 
     object RxJava {
-        val rxJava = "io.reactivex.rxjava2:rxjava:2.2.6"
+        val rxJava = "io.reactivex.rxjava2:rxjava:2.2.8"
         val rxKotlin = "io.reactivex.rxjava2:rxkotlin:2.3.0"
         val rxAndroid = "io.reactivex.rxjava2:rxandroid:2.1.1"
         val rxRelay = "com.jakewharton.rxrelay2:rxrelay:2.1.0"

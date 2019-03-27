@@ -31,7 +31,7 @@
 
         <TextView
             android:id="@+id/labelStr"
-            style="@style/TextAppearance.MaterialComponents.Body1"
+            style="@style/TextAppearance.MaterialComponents.Subtitle1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -39,7 +39,6 @@
             android:lineSpacingExtra="8dp"
             android:text="@{label}"
             android:textAlignment="center"
-            android:textColor="?strongColor"
             tools:text="No results found" />
 
     </LinearLayout>

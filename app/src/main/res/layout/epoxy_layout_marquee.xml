@@ -20,18 +20,18 @@
         android:orientation="vertical">
 
         <TextView
+            style="@style/TextAppearance.MaterialComponents.Headline6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="16dp"
             android:paddingTop="48dp"
             android:paddingRight="16dp"
             android:text="@{title}"
-            android:textColor="?strongColor"
             android:textSize="32sp"
-            android:textStyle="bold"
             tools:text="Marquee" />
 
         <TextView
+            style="@style/TextAppearance.MaterialComponents.Subtitle1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:alpha="0.75"
@@ -39,7 +39,6 @@
             android:paddingTop="4dp"
             android:paddingRight="16dp"
             android:text="@{subtitle}"
-            android:textColor="?strongColor"
             android:textSize="16sp"
             tools:text="Subtitle goes here" />
 

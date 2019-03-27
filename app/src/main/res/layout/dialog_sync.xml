@@ -39,7 +39,6 @@
             android:gravity="center_vertical|start"
             android:singleLine="true"
             android:text="@string/background_sync"
-            android:textColor="?strongColor"
             tools:text="Background Sync" />
 
         <Switch

@@ -28,8 +28,7 @@
             android:includeFontPadding="false"
             android:lineSpacingExtra="8dp"
             android:text="@string/empty_logs"
-            android:textAlignment="center"
-            android:textColor="?strongColor" />
+            android:textAlignment="center" />
 
     </LinearLayout>
 

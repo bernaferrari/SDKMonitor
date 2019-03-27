@@ -16,17 +16,8 @@
     <attr name="weakColor" format="color" />
     <attr name="weakerColor" format="color" />
     <attr name="searchBoxColor" format="color" />
-    <attr name="searchIconColor" format="color" />
 
     <attr name="windowBackground" format="color" />
     <attr name="inputTheme" format="reference" />
-
-    <attr name="diff_text_color" format="color" />
-    <attr name="code_addition" format="color" />
-    <attr name="code_addition_diff" format="color" />
-    <attr name="code_deletion" format="color" />
-    <attr name="code_deletion_diff" format="color" />
-    <attr name="num_addition" format="color" />
-    <attr name="num_deletion" format="color" />
 
 </resources>
