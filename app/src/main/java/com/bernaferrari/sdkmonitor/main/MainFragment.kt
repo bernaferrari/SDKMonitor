@@ -1,39 +1,26 @@
 package com.bernaferrari.sdkmonitor.main
 
-import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
-import android.view.inputmethod.InputMethodManager
-import androidx.core.content.getSystemService
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSmoothScroller
 import com.airbnb.mvrx.*
+import com.bernaferrari.base.mvrx.simpleController
 import com.bernaferrari.sdkmonitor.Injector
 import com.bernaferrari.sdkmonitor.R
-import com.bernaferrari.sdkmonitor.core.simpleController
 import com.bernaferrari.sdkmonitor.data.App
 import com.bernaferrari.sdkmonitor.details.DetailsDialog
 import com.bernaferrari.sdkmonitor.emptyContent
 import com.bernaferrari.sdkmonitor.extensions.apiToColor
-import com.bernaferrari.sdkmonitor.extensions.onTextChanged
 import com.bernaferrari.sdkmonitor.loadingRow
 import com.bernaferrari.sdkmonitor.util.InsetDecoration
-import com.bernaferrari.sdkmonitor.util.hideKeyboard
-import com.bernaferrari.sdkmonitor.util.hideKeyboardWhenNecessary
 import com.bernaferrari.sdkmonitor.views.MainRowModel_
 import com.bernaferrari.sdkmonitor.views.mainRow
-import com.reddit.indicatorfastscroll.FastScrollItemIndicator
-import com.reddit.indicatorfastscroll.FastScrollerView
+import com.bernaferrari.ui.search.BaseSearchFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
-import kotlinx.android.synthetic.main.main_fragment.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 import java.util.*
+import javax.inject.Inject
 
 class AppVersion(
     val app: App,
@@ -45,9 +32,17 @@ data class AppDetails(val title: String, val subtitle: String)
 
 data class MainState(val listOfItems: Async<List<AppVersion>> = Loading()) : MvRxState
 
-class MainFragment : BaseMainFragment() {
+class MainFragment : BaseSearchFragment() {
 
-    private val viewModel: MainViewModel by activityViewModel()
+    private val viewModel: MainViewModel by fragmentViewModel()
+    @Inject
+    lateinit var mainViewModelFactory: MainViewModel.Factory
+
+    override val showKeyboardWhenLoaded = false
+
+    override fun onTextChanged(searchText: String) {
+        viewModel.inputRelay.accept(searchText)
+    }
 
     private val standardItemDecorator by lazy {
         val isRightToLeft =
@@ -59,14 +54,6 @@ class MainFragment : BaseMainFragment() {
             isRightToLeft,
             !isRightToLeft
         )
-    }
-
-    private val inputMethodManager by lazy {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            activity?.getSystemService<InputMethodManager>()
-        } else {
-            activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-        } ?: throw Exception("null activity. Can't bind inputMethodManager")
     }
 
     override fun epoxyController() = simpleController(viewModel) { state ->
@@ -115,100 +102,32 @@ class MainFragment : BaseMainFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupFastScroller(recycler.layoutManager as? LinearLayoutManager)
+        viewModel.inputRelay.accept(getInputText())
 
-        setupDataAndSearch()
+        val fastScroller = container.inflateFastScroll()
 
-        disposableManager += viewModel.showProgressRelay.observeOn(AndroidSchedulers.mainThread())
-            .subscribe { if (!it) swipeToRefresh.isRefreshing = false }
+        fastScroller.setupFastScroller(recyclerView, activity) {
+            if (getModelAtPos(it) is MainRowModel_) viewModel.itemsList.getOrNull(it) else null
+        }
+
+        setInputHint("Loading...")
 
         disposableManager += viewModel.maxListSize.observeOn(AndroidSchedulers.mainThread())
-            .subscribe { queryInput.hint = "Search $it apps.." }
+            .subscribe { setInputHint("Search $it apps..") }
 
         // observe when order changes
         disposableManager += Injector.get().orderBySdk().observe()
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe { orderBySdk ->
-                fastscroller.isVisible = !orderBySdk
+                fastScroller.isVisible = !orderBySdk
 
                 if (orderBySdk) {
-                    recycler.removeItemDecoration(standardItemDecorator)
+                    recyclerView.removeItemDecoration(standardItemDecorator)
                 } else {
-                    recycler.addItemDecoration(standardItemDecorator)
+                    recyclerView.addItemDecoration(standardItemDecorator)
                 }
             }
-
-        swipeToRefresh.setOnRefreshListener {
-            launch(Dispatchers.IO) {
-                viewModel.updateAll()
-            }
-        }
-
-        hideKeyboardWhenNecessary(
-            requireActivity(),
-            inputMethodManager,
-            recycler,
-            queryInput
-        )
     }
 
-    private fun setupDataAndSearch() {
-
-        var work: Job? = null
-
-        viewModel.inputRelay.accept(queryInput.text.toString())
-
-        queryClear.setOnClickListener { queryInput.setText("") }
-
-        queryInput.onTextChanged {
-            queryClear.isVisible = it.isNotEmpty()
-            work?.cancel()
-            work = launch {
-                viewModel.inputRelay.accept(it.toString())
-            }
-        }
-    }
-
-    private fun setupFastScroller(llm: LinearLayoutManager?) {
-        val linearLayoutManager = llm ?: return
-
-        fastscroller.setupWithRecyclerView(
-            recyclerView = recycler,
-            useDefaultScroller = false,
-            getItemIndicator = {
-
-                if (epoxyController.adapter.getModelAtPosition(it) !is MainRowModel_) {
-                    return@setupWithRecyclerView null
-                }
-
-                // it might be null when model is updated really fast
-                val itemFromList = viewModel.itemsList.getOrNull(it)
-                        ?: return@setupWithRecyclerView null
-
-                val letter = itemFromList.app.title.substring(0, 1)
-                val index = if (letter[0].isDigit()) "#" else letter.toUpperCase()
-
-                FastScrollItemIndicator.Text(index) // Return a text indicator
-            }
-        )
-
-        val smoothScroller: LinearSmoothScroller = object : LinearSmoothScroller(context) {
-            override fun getVerticalSnapPreference(): Int = SNAP_TO_START
-        }
-
-        fastscroller.itemIndicatorSelectedCallbacks += object :
-            FastScrollerView.ItemIndicatorSelectedCallback {
-            override fun onItemIndicatorSelected(
-                indicator: FastScrollItemIndicator,
-                indicatorCenterY: Int,
-                itemPosition: Int
-            ) {
-                recycler.stopScroll()
-                inputMethodManager.hideKeyboard(queryInput)
-                smoothScroller.targetPosition = itemPosition
-                linearLayoutManager.startSmoothScroll(smoothScroller)
-            }
-        }
-
-        fastscroller_thumb.setupWithFastScroller(fastscroller)
-    }
+    override val closeIconRes: Int? = null
 }

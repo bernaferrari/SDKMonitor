@@ -9,32 +9,39 @@ import com.afollestad.rxkprefs.rxkPrefs
 import com.bernaferrari.sdkmonitor.data.source.local.AppDatabase
 import com.bernaferrari.sdkmonitor.data.source.local.AppsDao
 import com.bernaferrari.sdkmonitor.data.source.local.VersionsDao
+import com.bernaferrari.sdkmonitor.details.DetailsDialog
+import com.bernaferrari.sdkmonitor.logs.LogsFragment
+import com.bernaferrari.sdkmonitor.main.MainFragment
+import com.bernaferrari.sdkmonitor.settings.SettingsFragment
+import com.squareup.inject.assisted.dagger2.AssistedModule
+import dagger.BindsInstance
 import dagger.Component
 import dagger.Module
 import dagger.Provides
+import dagger.android.ContributesAndroidInjector
+import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Named
 import javax.inject.Singleton
 
-@Module
-class ContextModule(private val appContext: Context) {
-
-    @Provides
-    fun appContext(): Context = appContext
-}
+@AssistedModule
+@Module(includes = [AssistedInject_AppModule::class])
+abstract class AppModule
 
 @Module
-class AppModule(private val appContext: Context) {
+class AppContextModule {
 
     @Provides
-    @Singleton
-    fun sharedPrefs(): SharedPreferences {
-        return appContext.getSharedPreferences("workerPreferences", Context.MODE_PRIVATE)
+    fun provideContext(application: MainApplication): Context = application.applicationContext
+
+    @Provides
+    fun sharedPrefs(application: MainApplication): SharedPreferences {
+        return application.getSharedPreferences("workerPreferences", Context.MODE_PRIVATE)
     }
 
     @Provides
     @Singleton
-    fun rxPrefs(): RxkPrefs {
-        return rxkPrefs(sharedPrefs())
+    fun rxPrefs(application: MainApplication): RxkPrefs {
+        return rxkPrefs(sharedPrefs(application))
     }
 }
 
@@ -92,6 +99,7 @@ class SnapsRepositoryModule {
     internal fun provideVersionsDao(db: AppDatabase): VersionsDao = db.versionsDao()
 }
 
+
 @Module
 class RepositoriesMutualDependenciesModule {
 
@@ -109,9 +117,47 @@ class RepositoriesMutualDependenciesModule {
 }
 
 
-@Component(modules = [ContextModule::class, AppModule::class, RxPrefsModule::class, SnapsRepositoryModule::class, RepositoriesMutualDependenciesModule::class])
+@Module
+abstract class SdkInjectorsModule {
+
+    @ContributesAndroidInjector
+    abstract fun mainFragment(): MainFragment
+
+    @ContributesAndroidInjector
+    abstract fun detailsDialog(): DetailsDialog
+
+    @ContributesAndroidInjector
+    abstract fun logsFragment(): LogsFragment
+
+    @ContributesAndroidInjector
+    abstract fun settingsFragment(): SettingsFragment
+
+}
+
+
+@Component(
+    modules = [
+        AndroidSupportInjectionModule::class,
+        AppContextModule::class,
+        AppModule::class,
+        RxPrefsModule::class,
+        SnapsRepositoryModule::class,
+        RepositoriesMutualDependenciesModule::class,
+        SdkInjectorsModule::class]
+)
 @Singleton
 interface SingletonComponent {
+
+    @Component.Builder
+    interface Builder {
+        @BindsInstance
+        fun application(app: MainApplication): Builder
+
+        fun build(): SingletonComponent
+    }
+
+    fun inject(app: MainApplication)
+
     fun appContext(): Context
     fun sharedPrefs(): SharedPreferences
     fun appsDao(): AppsDao

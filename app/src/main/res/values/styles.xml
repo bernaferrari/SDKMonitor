@@ -64,6 +64,7 @@
 
         <item name="md_corner_radius">16dp</item>
         <item name="md_background_color">?windowBackground</item>
+
     </style>
 
     <style name="BottomNavActive">

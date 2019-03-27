@@ -5,26 +5,25 @@ import android.view.View
 import androidx.lifecycle.Observer
 import com.airbnb.epoxy.EpoxyModel
 import com.airbnb.epoxy.paging.PagedListEpoxyController
-import com.airbnb.mvrx.BuildConfig
-import com.airbnb.mvrx.activityViewModel
-import com.bernaferrari.sdkmonitor.LogsItemBindingModel_
-import com.bernaferrari.sdkmonitor.core.RecyclerBaseFragment
+import com.airbnb.mvrx.fragmentViewModel
+import com.bernaferrari.sdkmonitor.*
 import com.bernaferrari.sdkmonitor.data.App
 import com.bernaferrari.sdkmonitor.data.Version
 import com.bernaferrari.sdkmonitor.details.DetailsDialog
 import com.bernaferrari.sdkmonitor.extensions.apiToColor
 import com.bernaferrari.sdkmonitor.extensions.apiToVersion
 import com.bernaferrari.sdkmonitor.extensions.convertTimestampToDate
-import com.bernaferrari.sdkmonitor.loadingRow
-import com.bernaferrari.sdkmonitor.logsEmptyItem
-import com.bernaferrari.sdkmonitor.marquee
 import com.bernaferrari.sdkmonitor.views.LogsItemModel_
+import com.bernaferrari.ui.extras.BaseRecyclerFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LogsFragment : RecyclerBaseFragment() {
+class LogsFragment : BaseRecyclerFragment() {
 
-    private val viewModel: LogsRxViewModel by activityViewModel()
+    private val viewModel: LogsRxViewModel by fragmentViewModel()
+    @Inject
+    lateinit var logsViewModelFactory: LogsRxViewModel.Factory
 
     private val pagingController = TestController()
 
@@ -36,8 +35,6 @@ class LogsFragment : RecyclerBaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-//        recycler.addItemDecoration(standardItemDecorator)
 
         launch(Dispatchers.Main) {
             mapOfApps = viewModel.getAppList()

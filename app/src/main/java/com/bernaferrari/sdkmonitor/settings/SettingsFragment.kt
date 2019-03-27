@@ -4,16 +4,18 @@ import android.os.Bundle
 import android.view.View
 import com.airbnb.epoxy.EpoxyController
 import com.airbnb.mvrx.Loading
-import com.airbnb.mvrx.activityViewModel
+import com.airbnb.mvrx.fragmentViewModel
+import com.bernaferrari.base.mvrx.simpleController
 import com.bernaferrari.sdkmonitor.*
 import com.bernaferrari.sdkmonitor.core.AboutDialog
-import com.bernaferrari.sdkmonitor.core.RecyclerBaseFragment
-import com.bernaferrari.sdkmonitor.core.simpleController
-import kotlinx.android.synthetic.main.recyclerview.*
+import com.bernaferrari.ui.extras.BaseRecyclerFragment
+import javax.inject.Inject
 
-class SettingsFragment : RecyclerBaseFragment() {
+class SettingsFragment : BaseRecyclerFragment() {
 
-    private val viewModel: SettingsViewModel by activityViewModel()
+    private val viewModel: SettingsViewModel by fragmentViewModel()
+    @Inject
+    lateinit var settingsViewModelFactory: SettingsViewModel.Factory
 
     override fun epoxyController(): EpoxyController = simpleController(viewModel) { state ->
 
@@ -113,6 +115,6 @@ class SettingsFragment : RecyclerBaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val decoration = InsetDecoration(1, 0, 0x40FFFFFF)
-        recycler.addItemDecoration(decoration)
+        recyclerView.addItemDecoration(decoration)
     }
 }

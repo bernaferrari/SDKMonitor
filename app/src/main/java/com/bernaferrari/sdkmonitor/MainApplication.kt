@@ -1,12 +1,24 @@
 package com.bernaferrari.sdkmonitor
 
-import androidx.multidex.MultiDexApplication
+import android.app.Application
+import androidx.fragment.app.Fragment
 import com.bernaferrari.sdkmonitor.core.AppManager
 import com.facebook.stetho.Stetho
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.HasSupportFragmentInjector
+import javax.inject.Inject
 
-class MainApplication : MultiDexApplication() {
+class MainApplication : Application(), HasSupportFragmentInjector {
+
+    @Inject
+    lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
+
+    override fun supportFragmentInjector(): AndroidInjector<Fragment>? {
+        return fragmentDispatchingAndroidInjector
+    }
 
     lateinit var component: SingletonComponent
 
@@ -15,9 +27,9 @@ class MainApplication : MultiDexApplication() {
         INSTANCE = this
 
         component = DaggerSingletonComponent.builder()
-            .contextModule(ContextModule(this))
-            .appModule(AppModule(this))
+            .application(this)
             .build()
+            .also { it.inject(this) }
 
         Logger.addLogAdapter(object : AndroidLogAdapter() {
             override fun isLoggable(priority: Int, tag: String?): Boolean {

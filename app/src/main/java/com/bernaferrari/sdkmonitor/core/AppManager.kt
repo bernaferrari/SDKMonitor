@@ -27,6 +27,7 @@ object AppManager {
     private const val PREF_DISABLED_PACKAGES = "disabled_packages"
 
     private lateinit var packageManager: PackageManager
+    var firstRun = false
 
     fun init(context: Context) {
         packageManager = context.packageManager
@@ -36,7 +37,7 @@ object AppManager {
     fun doesAppHasOrigin(packageName: String): Boolean {
         return try {
             val installerPackageName = packageManager.getInstallerPackageName(packageName)
-            installerPackageName == PACKAGE_ANDROID_VENDING || installerPackageName == OUTSIDE_STORE
+            installerPackageName != null
         } catch (e: Throwable) {
             false
         }

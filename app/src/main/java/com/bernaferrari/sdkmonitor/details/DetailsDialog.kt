@@ -12,18 +12,21 @@ import androidx.fragment.app.FragmentActivity
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import com.afollestad.materialdialogs.customview.getCustomView
-import com.airbnb.mvrx.activityViewModel
+import com.airbnb.mvrx.fragmentViewModel
 import com.bernaferrari.sdkmonitor.R
 import com.bernaferrari.sdkmonitor.core.AppManager
 import com.bernaferrari.sdkmonitor.data.App
 import com.bernaferrari.sdkmonitor.extensions.darken
-import com.bernaferrari.sdkmonitor.main.MainViewModel
+import com.bernaferrari.ui.extras.BaseDaggerMvRxDialogFragment
 import kotlinx.android.synthetic.main.details_fragment.view.*
 import kotlinx.coroutines.runBlocking
+import javax.inject.Inject
 
-class DetailsDialog : BaseMvRxDialogFragment() {
+class DetailsDialog : BaseDaggerMvRxDialogFragment() {
 
-    private val viewModel: MainViewModel by activityViewModel()
+    private val viewModel: DetailsViewModel by fragmentViewModel()
+    @Inject
+    lateinit var detailsViewModelFactory: DetailsViewModel.Factory
 
     companion object {
         private const val TAG = "[DetailsDialog]"

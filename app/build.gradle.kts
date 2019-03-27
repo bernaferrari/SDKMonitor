@@ -1,4 +1,4 @@
-import org.jetbrains.kotlin.config.KotlinCompilerVersion
+import com.bernaferrari.buildsrc.Libs
 import java.io.FileInputStream
 import java.util.*
 
@@ -40,6 +40,7 @@ android {
         targetSdkVersion(28)
         versionCode = 7
         versionName = "0.92"
+        multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -68,61 +69,72 @@ android {
 
 dependencies {
 
-    // Jetpack
-    implementation("com.google.android.material:material:1.1.0-alpha04")
-    implementation("androidx.recyclerview:recyclerview:1.0.0")
-    implementation("androidx.appcompat:appcompat:1.0.2")
+    implementation(project(":base"))
+    implementation(project(":base-android"))
+
+    // Kotlin
+    implementation(Libs.Kotlin.stdlib)
+    implementation(Libs.Coroutines.core)
+    implementation(Libs.Coroutines.android)
+
+    // Google
+    implementation(Libs.Google.material)
+    implementation(Libs.AndroidX.coreKtx)
+    implementation(Libs.AndroidX.constraintlayout)
+    implementation(Libs.AndroidX.appcompat)
+    implementation(Libs.AndroidX.recyclerview)
+
     implementation("androidx.palette:palette:1.0.0")
-    implementation("androidx.core:core:1.0.1")
-    implementation("androidx.core:core-ktx:1.0.1")
-    implementation("androidx.constraintlayout:constraintlayout:1.1.3")
 
-    val nav_version = "1.0.0-rc01"
-    implementation("android.arch.navigation:navigation-fragment-ktx:$nav_version")
-    implementation("android.arch.navigation:navigation-ui-ktx:$nav_version")
+    // Navigation
+    implementation(Libs.AndroidX.Navigation.navigationUi)
+    implementation(Libs.AndroidX.Navigation.navigationFragment)
 
-    val room_version = "2.0.0"
-    implementation("androidx.room:room-runtime:$room_version")
-    kapt("androidx.room:room-compiler:$room_version")
-    implementation("androidx.room:room-rxjava2:$room_version")
+    // Room
+    kapt(Libs.AndroidX.Room.compiler)
+    implementation(Libs.AndroidX.Room.runtime)
+    implementation(Libs.AndroidX.Room.roomktx)
+    implementation(Libs.AndroidX.Room.rxjava2)
 
-    val lifecycle_version = "2.0.0"
-    implementation("androidx.lifecycle:lifecycle-extensions:$lifecycle_version")
+    // LiveData
+    implementation(Libs.AndroidX.Lifecycle.extensions)
 
-    val paging_version = "2.1.0"
-    implementation("androidx.paging:paging-runtime-ktx:$paging_version")
-    implementation("androidx.paging:paging-rxjava2-ktx:$paging_version")
+    // Paging
+    implementation(Libs.AndroidX.Paging.runtimeKtx)
 
-    val work_version = "1.0.0-rc02"
+    // Work
+    val work_version = "1.0.0"
     implementation("android.arch.work:work-runtime-ktx:$work_version")
 
     // Dagger
-    val dagger = "2.21"
-    implementation("com.google.dagger:dagger:$dagger")
-    kapt("com.google.dagger:dagger-compiler:$dagger")
+    implementation(Libs.Dagger.dagger)
+    kapt(Libs.Dagger.compiler)
+
+    implementation(Libs.Dagger.androidSupport)
+    kapt(Libs.Dagger.androidProcessor)
+
+    compileOnly(Libs.AssistedInject.annotationDagger2)
+    kapt(Libs.AssistedInject.processorDagger2)
 
     // Epoxy
-    val epoxy = "3.1.0"
-    implementation("com.airbnb.android:epoxy:$epoxy")
-    implementation("com.airbnb.android:epoxy-databinding:$epoxy")
-    implementation("com.airbnb.android:epoxy-paging:$epoxy")
-    kapt("com.airbnb.android:epoxy-processor:$epoxy")
+    implementation(Libs.Epoxy.epoxy)
+    implementation(Libs.Epoxy.dataBinding)
+    implementation(Libs.Epoxy.paging)
+    kapt(Libs.Epoxy.processor)
 
-    val mvRx = "0.7.2"
-    implementation("com.airbnb.android:mvrx:$mvRx")
-    testImplementation("com.airbnb.android:mvrx-testing:$mvRx")
-
-    // Coroutines
-    val coroutines_version = "1.1.1"
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version")
+    implementation(Libs.mvRx)
 
     // RxJava
-    implementation("io.reactivex.rxjava2:rxjava:2.2.7")
-    implementation("io.reactivex.rxjava2:rxkotlin:2.3.0")
-    implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
-    implementation("com.jakewharton.rxrelay2:rxrelay:2.1.0")
-    implementation("com.afollestad:rxkprefs:1.2.5")
+    implementation(Libs.RxJava.rxJava)
+    implementation(Libs.RxJava.rxAndroid)
+    implementation(Libs.RxJava.rxKotlin)
+    implementation(Libs.RxJava.rxRelay)
+    implementation(Libs.RxJava.rxkPrefs)
+
+    implementation(Libs.materialDialogs)
+    implementation(Libs.stetho)
+    implementation(Libs.logger)
+
 
     // Iconics
     implementation("com.mikepenz:iconics-core:3.1.0@aar")
@@ -132,20 +144,11 @@ dependencies {
     // UI
     implementation("io.karn:notify:1.1.0")
     implementation("com.reddit:indicator-fast-scroll:1.0.1")
-    implementation("com.afollestad.material-dialogs:core:2.0.3")
-    implementation("com.shawnlin:number-picker:2.4.8")
 
     // Time
     implementation("com.github.marlonlom:timeago:4.0.1")
 
-    // Internal
-    implementation("com.orhanobut:logger:2.2.0")
-    implementation("androidx.multidex:multidex:2.0.1")
-    implementation(kotlin("stdlib", KotlinCompilerVersion.VERSION))
-
     // Debugging
-    implementation("com.facebook.stetho:stetho:1.5.0")
-
     implementation("junit:junit:4.12")
     testImplementation("org.mockito:mockito-core:2.24.5")
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0")

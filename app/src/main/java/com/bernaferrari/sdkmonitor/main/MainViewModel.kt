@@ -1,27 +1,30 @@
 package com.bernaferrari.sdkmonitor.main
 
+import com.airbnb.mvrx.FragmentViewModelContext
+import com.airbnb.mvrx.MvRxViewModelFactory
+import com.airbnb.mvrx.ViewModelContext
+import com.bernaferrari.base.mvrx.MvRxViewModel
 import com.bernaferrari.sdkmonitor.Injector
 import com.bernaferrari.sdkmonitor.core.AppManager
-import com.bernaferrari.sdkmonitor.core.MvRxViewModel
 import com.bernaferrari.sdkmonitor.data.App
-import com.bernaferrari.sdkmonitor.data.Version
+import com.bernaferrari.sdkmonitor.data.source.local.AppsDao
+import com.bernaferrari.sdkmonitor.data.source.local.VersionsDao
 import com.bernaferrari.sdkmonitor.extensions.convertTimestampToDate
+import com.bernaferrari.sdkmonitor.extensions.doSwitchMap
 import com.bernaferrari.sdkmonitor.extensions.normalizeString
 import com.jakewharton.rxrelay2.BehaviorRelay
+import com.squareup.inject.assisted.Assisted
+import com.squareup.inject.assisted.AssistedInject
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.Observables
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
 
-/**
- * initialState *must* be implemented as a constructor parameter.
- */
-class MainViewModel(initialState: MainState) : MvRxViewModel<MainState>(initialState) {
-
-    private val mAppsDao = Injector.get().appsDao()
-    private val mVersionsDao = Injector.get().versionsDao()
+class MainViewModel @AssistedInject constructor(
+    @Assisted initialState: MainState,
+    private val mAppsDao: AppsDao,
+    private val mVersionsDao: VersionsDao
+) : MvRxViewModel<MainState>(initialState) {
 
     val itemsList = mutableListOf<AppVersion>()
     var hasLoaded = false
@@ -53,36 +56,9 @@ class MainViewModel(initialState: MainState) : MvRxViewModel<MainState>(initialS
         }
     }
 
-    suspend fun fetchAllVersions(packageName: String): List<Version>? =
-        withContext(Dispatchers.IO) { mVersionsDao.getAllValues(packageName) }
-
-    fun fetchAppDetails(packageName: String): MutableList<AppDetails> {
-
-        val packageInfo = AppManager.getPackageInfo(packageName) ?: return mutableListOf()
-
-        return mutableListOf<AppDetails>().apply {
-
-            packageInfo.applicationInfo.className?.also {
-                this += AppDetails("Class Name", it)
-            }
-
-            packageInfo.applicationInfo.sourceDir?.also {
-                this += AppDetails("Source Dir", it)
-            }
-
-            packageInfo.applicationInfo.dataDir?.also {
-                this += AppDetails("Data Dir", it)
-            }
-        }
-    }
-
-    var firstRun = true
-
-    private fun allApps() =
-
-        Observables.combineLatest(
-            Injector.get().showSystemApps().observe(),
-            Injector.get().orderBySdk().observe()
+    private fun allApps() = doSwitchMap(
+        { Injector.get().showSystemApps().observe() },
+        { Injector.get().orderBySdk().observe() }
         ) { showSystemApps, orderBySdk ->
 
             if (showSystemApps) {
@@ -93,7 +69,7 @@ class MainViewModel(initialState: MainState) : MvRxViewModel<MainState>(initialS
                 mAppsDao.getAppsListFlowableFiltered(hasKnownOrigin = true)
             }.toObservable()
                 .getAppsListObservable(orderBySdk)
-        }.flatMap { it }
+    }
 
     private fun Observable<List<App>>.getAppsListObservable(orderBySdk: Boolean): Observable<List<AppVersion>> =
         this.debounce { list ->
@@ -104,8 +80,8 @@ class MainViewModel(initialState: MainState) : MvRxViewModel<MainState>(initialS
                 ?.let { it } ?: flow.delay(250, TimeUnit.MILLISECONDS)
         }.skipWhile {
             // force the refresh when app is first opened or no known apps are installed (emulator)
-            if (it.isEmpty() || firstRun) {
-                firstRun = false
+            if (it.isEmpty() || AppManager.firstRun) {
+                AppManager.firstRun = false
                 updateAll()
             }
             it.isEmpty()
@@ -127,13 +103,14 @@ class MainViewModel(initialState: MainState) : MvRxViewModel<MainState>(initialS
         val version = mVersionsDao.getLastValue(app.packageName)
 
         val sdkVersion =
-            version?.targetSdk ?: AppManager.getApplicationInfo(app.packageName)?.targetSdkVersion
-            ?: 0
+            version?.targetSdk
+                    ?: AppManager.getApplicationInfo(app.packageName)?.targetSdkVersion
+                    ?: 0
 
         val lastUpdate =
-            version?.lastUpdateTime ?: AppManager.getPackageInfo(
-                app.packageName
-            )?.lastUpdateTime ?: 0
+            version?.lastUpdateTime
+                    ?: AppManager.getPackageInfo(app.packageName)?.lastUpdateTime
+                    ?: 0
 
         return Pair(sdkVersion, lastUpdate.convertTimestampToDate())
     }
@@ -153,5 +130,22 @@ class MainViewModel(initialState: MainState) : MvRxViewModel<MainState>(initialS
             }
 
         showProgressRelay.accept(false)
+    }
+
+
+    @AssistedInject.Factory
+    interface Factory {
+        fun create(initialState: MainState): MainViewModel
+    }
+
+    companion object : MvRxViewModelFactory<MainViewModel, MainState> {
+
+        override fun create(
+            viewModelContext: ViewModelContext,
+            state: MainState
+        ): MainViewModel? {
+            val fragment: MainFragment = (viewModelContext as FragmentViewModelContext).fragment()
+            return fragment.mainViewModelFactory.create(state)
+        }
     }
 }
