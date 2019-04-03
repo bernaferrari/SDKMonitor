@@ -1,7 +1,8 @@
-package com.bernaferrari.ui
+package com.bernaferrari.ui.base
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.epoxy.EpoxyController
@@ -9,9 +10,12 @@ import com.airbnb.epoxy.EpoxyModel
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.airbnb.mvrx.MvRxView
 import com.airbnb.mvrx.MvRxViewModelStore
-import dagger.android.support.DaggerFragment
 
-abstract class TiviMvRxFragment : DaggerFragment(), MvRxView {
+/**
+ * Really basic fragment, inspired from TiVi, with a lazy RecyclerView and most MvRx methods,
+ * to reduce overall boilerplate.
+ */
+abstract class TiviMvRxFragment : Fragment(), MvRxView {
 
     abstract val recyclerView: EpoxyRecyclerView
 
@@ -21,6 +25,7 @@ abstract class TiviMvRxFragment : DaggerFragment(), MvRxView {
 
     abstract fun epoxyController(): EpoxyController
 
+    /** Define the layoutManager to be used, by default Linear */
     open fun layoutManager(): RecyclerView.LayoutManager = LinearLayoutManager(context)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

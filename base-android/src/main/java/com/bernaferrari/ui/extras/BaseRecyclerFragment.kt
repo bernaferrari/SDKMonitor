@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.bernaferrari.ui.R
-import com.bernaferrari.ui.TiviMvRxFragment
+import com.bernaferrari.ui.base.TiviMvRxFragment
 import kotlinx.android.synthetic.main.recyclerview.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

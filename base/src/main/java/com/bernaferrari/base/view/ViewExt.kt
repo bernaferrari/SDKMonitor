@@ -1,5 +1,6 @@
 package com.bernaferrari.base.view
 
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -68,8 +69,10 @@ fun ViewGroup.inflate(@LayoutRes layout: Int, attachToRoot: Boolean = false): Vi
     return LayoutInflater.from(context).inflate(layout, this, attachToRoot)
 }
 
+/** Get text from a view, useful when fragment might not be available */
 fun View.getText(@StringRes res: Int) = this.resources.getText(res)
 
+/** Get onScroll callback */
 inline fun RecyclerView.onScroll(crossinline body: (dx: Int, dy: Int) -> Unit) {
     addOnScrollListener(object : RecyclerView.OnScrollListener() {
         override fun onScrolled(
@@ -82,8 +85,19 @@ inline fun RecyclerView.onScroll(crossinline body: (dx: Int, dy: Int) -> Unit) {
     })
 }
 
-// this will scroll to wanted index + or - one, giving a margin of one and allowing user to
-// keep tapping in the same place and RecyclerView keep scrolling.
+
+/**
+ * Detect when key is pressed.
+ */
+inline fun View.onKey(crossinline body: (KeyEvent) -> Boolean) {
+    setOnKeyListener { _, _, event -> body(event) }
+}
+
+
+/**
+ * this will scroll to wanted index + or - one, giving a margin of one and allowing user to
+ * keep tapping in the same place and RecyclerView keep scrolling.
+ */
 internal fun RecyclerView.scrollToIndexWithMargins(
     previousIndex: Int,
     index: Int,

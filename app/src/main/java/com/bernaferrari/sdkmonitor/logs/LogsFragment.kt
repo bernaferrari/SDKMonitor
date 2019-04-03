@@ -14,12 +14,12 @@ import com.bernaferrari.sdkmonitor.extensions.apiToColor
 import com.bernaferrari.sdkmonitor.extensions.apiToVersion
 import com.bernaferrari.sdkmonitor.extensions.convertTimestampToDate
 import com.bernaferrari.sdkmonitor.views.LogsItemModel_
-import com.bernaferrari.ui.extras.BaseRecyclerFragment
+import com.bernaferrari.ui.dagger.DaggerBaseRecyclerFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class LogsFragment : BaseRecyclerFragment() {
+class LogsFragment : DaggerBaseRecyclerFragment() {
 
     private val viewModel: LogsRxViewModel by fragmentViewModel()
     @Inject

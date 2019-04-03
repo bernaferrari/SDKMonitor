@@ -13,7 +13,7 @@ object Android {
 }
 
 object Libs {
-    val androidGradlePlugin = "com.android.tools.build:gradle:3.5.0-alpha06"
+    val androidGradlePlugin = "com.android.tools.build:gradle:3.5.0-alpha09"
     val dexcountGradlePlugin = "com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.6"
     val playPublisherPlugin = "com.github.triplet.gradle:play-publisher:2.1.0"
 
@@ -43,8 +43,10 @@ object Libs {
     val robolectric = "org.robolectric:robolectric:4.2"
     val mockitoKotlin = "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0"
 
+    val discreteScrollView = "com.yarolegovich:discrete-scrollview:1.4.9"
+
     object Google {
-        val material = "com.google.android.material:material:1.1.0-alpha04"
+        val material = "com.google.android.material:material:1.1.0-alpha05"
         val firebaseCore = "com.google.firebase:firebase-core:16.0.7"
         val crashlytics = "com.crashlytics.sdk.android:crashlytics:2.9.9"
         val firebaseFirestore = "com.google.firebase:firebase-firestore:17.1.5"
@@ -166,6 +168,12 @@ object Libs {
 
     object OkHttp {
         val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:3.13.1"
+    }
+
+    object MvRx {
+        private const val version = "0.7.2"
+        val main = "com.airbnb.android:mvrx:$version"
+        val testing = "com.airbnb.android:mvrx-testing:$version"
     }
 
     object Epoxy {

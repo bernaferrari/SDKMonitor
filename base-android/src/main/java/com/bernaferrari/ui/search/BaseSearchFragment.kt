@@ -8,42 +8,31 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.bernaferrari.base.misc.normalizeString
 import com.bernaferrari.base.misc.onTextChanged
 import com.bernaferrari.base.misc.showKeyboardOnView
 import com.bernaferrari.base.view.onScroll
 import com.bernaferrari.ui.R
-import com.bernaferrari.ui.TiviMvRxFragment
+import com.bernaferrari.ui.base.SharedBaseFrag
 import com.bernaferrari.ui.extensions.hideKeyboardWhenNecessary
-import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.frag_search.*
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
-import kotlin.coroutines.CoroutineContext
 
-abstract class BaseSearchFragment : TiviMvRxFragment(), CoroutineScope {
+/**
+ * Simple fragment with a search box, a toolbar and a recyclerview.
+ */
+abstract class BaseSearchFragment : SharedBaseFrag(), CoroutineScope {
 
     override val recyclerView: EpoxyRecyclerView by lazy { recycler }
 
-    override val coroutineContext: CoroutineContext = Dispatchers.Main + Job()
-
     val container: ConstraintLayout by lazy { baseContainer }
-
-    val disposableManager = CompositeDisposable()
-
-    open val closeIconRes: Int? = 0
 
     open val showKeyboardWhenLoaded = true
 
-    open val showMenu = false
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(showMenu)
-    }
+    open val sidePadding = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,6 +51,8 @@ abstract class BaseSearchFragment : TiviMvRxFragment(), CoroutineScope {
             val raiseTitleBar = dy > 0 || recycler.computeVerticalScrollOffset() != 0
             title_bar?.isActivated = raiseTitleBar // animated via a StateListAnimator
         }
+
+        recycler?.updatePadding(left = sidePadding, right = sidePadding)
 
         toolbarMenu.isVisible = showMenu
 
@@ -106,10 +97,6 @@ abstract class BaseSearchFragment : TiviMvRxFragment(), CoroutineScope {
     fun getInputText(): String = queryInput.text.toString()
 
     fun scrollToPosition(pos: Int) = recycler.scrollToPosition(pos)
-
-    open fun dismiss() {
-        activity?.onBackPressed()
-    }
 
     override fun onDestroy() {
         coroutineContext.cancel()

@@ -8,10 +8,10 @@ import com.airbnb.mvrx.fragmentViewModel
 import com.bernaferrari.base.mvrx.simpleController
 import com.bernaferrari.sdkmonitor.*
 import com.bernaferrari.sdkmonitor.core.AboutDialog
-import com.bernaferrari.ui.extras.BaseRecyclerFragment
+import com.bernaferrari.ui.dagger.DaggerBaseRecyclerFragment
 import javax.inject.Inject
 
-class SettingsFragment : BaseRecyclerFragment() {
+class SettingsFragment : DaggerBaseRecyclerFragment() {
 
     private val viewModel: SettingsViewModel by fragmentViewModel()
     @Inject

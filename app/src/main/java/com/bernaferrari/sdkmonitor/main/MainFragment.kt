@@ -16,7 +16,7 @@ import com.bernaferrari.sdkmonitor.loadingRow
 import com.bernaferrari.sdkmonitor.util.InsetDecoration
 import com.bernaferrari.sdkmonitor.views.MainRowModel_
 import com.bernaferrari.sdkmonitor.views.mainRow
-import com.bernaferrari.ui.search.BaseSearchFragment
+import com.bernaferrari.ui.dagger.DaggerBaseSearchFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import java.util.*
@@ -32,7 +32,7 @@ data class AppDetails(val title: String, val subtitle: String)
 
 data class MainState(val listOfItems: Async<List<AppVersion>> = Loading()) : MvRxState
 
-class MainFragment : BaseSearchFragment() {
+class MainFragment : DaggerBaseSearchFragment() {
 
     private val viewModel: MainViewModel by fragmentViewModel()
     @Inject

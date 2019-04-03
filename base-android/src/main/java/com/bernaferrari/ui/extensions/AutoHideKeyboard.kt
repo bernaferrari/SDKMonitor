@@ -10,9 +10,13 @@ import android.widget.EditText
 import androidx.core.content.getSystemService
 import androidx.recyclerview.widget.RecyclerView
 import com.bernaferrari.base.misc.onEditorAction
+import com.bernaferrari.base.view.onKey
 import com.bernaferrari.base.view.onScroll
 
-fun hideKeyboardWhenNecessary(recyclerView: RecyclerView, editText: EditText) {
+/**
+ * Automatically hide KeyBoard when app is being scrolled down.
+ */
+fun hideKeyboardWhenNecessary(recyclerView: RecyclerView?, editText: EditText) {
 
     val inputMethodManager by lazy {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -26,7 +30,7 @@ fun hideKeyboardWhenNecessary(recyclerView: RecyclerView, editText: EditText) {
     val touchSlop = ViewConfiguration.get(editText.context).scaledTouchSlop
     var totalDy = 0
 
-    recyclerView.onScroll { _, dy ->
+    recyclerView?.onScroll { _, dy ->
         if (dy > 0) {
             totalDy += dy
             if (totalDy >= touchSlop) {
@@ -59,6 +63,10 @@ fun hideKeyboardWhenNecessary(recyclerView: RecyclerView, editText: EditText) {
 
 private fun InputMethodManager.hideKeyboard(editText: EditText) {
     this.hideSoftInputFromWindow(editText.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+
+    editText.isFocusable = false
+    editText.isFocusableInTouchMode = true
+
     if (editText.text.isEmpty()) {
         // loose the focus when scrolling and the text is empty, this way the
         // cursor will be hidden.

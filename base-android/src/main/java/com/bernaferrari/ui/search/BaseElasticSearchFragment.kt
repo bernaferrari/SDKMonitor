@@ -9,6 +9,9 @@ import com.bernaferrari.ui.R
 import com.bernaferrari.ui.widgets.ElasticDragDismissFrameLayout
 import kotlinx.android.synthetic.main.frag_elastic_search.*
 
+/**
+ * SearchFragment with a Elastic behavior (user can scroll beyond top/bottom to dismiss it).
+ */
 abstract class BaseElasticSearchFragment : BaseSearchFragment() {
 
     override fun onCreateView(

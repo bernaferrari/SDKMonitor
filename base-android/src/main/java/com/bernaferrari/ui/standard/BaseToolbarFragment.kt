@@ -8,21 +8,17 @@ import androidx.appcompat.app.AppCompatActivity
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.bernaferrari.base.view.onScroll
 import com.bernaferrari.ui.R
-import com.bernaferrari.ui.TiviMvRxFragment
+import com.bernaferrari.ui.base.SharedBaseFrag
 import kotlinx.android.synthetic.main.frag_standard.*
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
-import kotlin.coroutines.CoroutineContext
 
-abstract class BaseStandardFragment : TiviMvRxFragment(), CoroutineScope {
+/**
+ * Simple fragment with a toolbar and a recyclerview.
+ */
+abstract class BaseToolbarFragment : SharedBaseFrag(), CoroutineScope {
 
     override val recyclerView: EpoxyRecyclerView by lazy { recycler }
-
-    override val coroutineContext: CoroutineContext = Dispatchers.Main + Job()
-
-    open val closeIconRes = 0
 
     abstract val menuTitle: String?
 
@@ -48,19 +44,21 @@ abstract class BaseStandardFragment : TiviMvRxFragment(), CoroutineScope {
 
         toolbarMenu.title = menuTitle
 
-        recycler.onScroll { _, dy ->
+        recycler?.onScroll { _, dy ->
             // this will take care of titleElevation
             // recycler might be null when back is pressed
             val raiseTitleBar = dy > 0 || recycler.computeVerticalScrollOffset() != 0
             title_bar?.isActivated = raiseTitleBar // animated via a StateListAnimator
         }
 
-        close.setImageResource(closeIconRes)
-
-        close.setOnClickListener { dismiss() }
+        if (closeIconRes == null) {
+            close.visibility = View.GONE
+        } else {
+            val closeIcon = closeIconRes ?: 0
+            close.setImageResource(closeIcon)
+            close.setOnClickListener { dismiss() }
+        }
     }
-
-    abstract fun dismiss()
 
     override fun onDestroy() {
         coroutineContext.cancel()
