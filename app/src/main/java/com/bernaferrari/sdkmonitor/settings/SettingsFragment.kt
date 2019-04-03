@@ -46,8 +46,6 @@ class SettingsFragment : DaggerBaseRecyclerFragment() {
                 }
                 .addTo(this)
 
-            val colorBySdk = state.data()?.colorBySdk ?: true
-
             val showSystemApps = state.data()?.showSystemApps ?: true
 
             SettingsSwitchBindingModel_()
@@ -61,6 +59,8 @@ class SettingsFragment : DaggerBaseRecyclerFragment() {
                     Injector.get().showSystemApps().set(!showSystemApps)
                 }
                 .addTo(this)
+
+            val colorBySdk = state.data()?.colorBySdk ?: true
 
             SettingsSwitchBindingModel_()
                 .id("color mode")

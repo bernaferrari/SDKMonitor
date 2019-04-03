@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.bernaferrari.sdkmonitor.data.App
-import io.reactivex.Flowable
+import io.reactivex.Observable
 
 /**
  * Data Access Object for the sites table.
@@ -15,10 +15,10 @@ import io.reactivex.Flowable
 interface AppsDao {
 
     @Query("SELECT * FROM apps WHERE (isFromPlayStore = :hasKnownOrigin) ORDER BY title COLLATE NOCASE ASC")
-    fun getAppsListFlowableFiltered(hasKnownOrigin: Boolean): Flowable<List<App>>
+    fun getAppsListFlowableFiltered(hasKnownOrigin: Boolean): Observable<List<App>>
 
     @Query("SELECT * FROM apps ORDER BY title COLLATE NOCASE ASC")
-    fun getAppsListFlowable(): Flowable<List<App>>
+    fun getAppsListFlowable(): Observable<List<App>>
 
     @Query("SELECT * FROM apps")
     fun getAppsList(): List<App>

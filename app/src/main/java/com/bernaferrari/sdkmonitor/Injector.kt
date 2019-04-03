@@ -11,6 +11,8 @@ import com.bernaferrari.sdkmonitor.data.source.local.AppsDao
 import com.bernaferrari.sdkmonitor.data.source.local.VersionsDao
 import com.bernaferrari.sdkmonitor.details.DetailsDialog
 import com.bernaferrari.sdkmonitor.logs.LogsFragment
+import com.bernaferrari.sdkmonitor.main.DatabaseDataSource
+import com.bernaferrari.sdkmonitor.main.MainDataSource
 import com.bernaferrari.sdkmonitor.main.MainFragment
 import com.bernaferrari.sdkmonitor.settings.SettingsFragment
 import com.squareup.inject.assisted.dagger2.AssistedModule
@@ -97,6 +99,14 @@ class SnapsRepositoryModule {
     @Singleton
     @Provides
     internal fun provideVersionsDao(db: AppDatabase): VersionsDao = db.versionsDao()
+
+    @Provides
+    fun provideDictRepository(
+        mVersionsDao: VersionsDao,
+        appsDao: AppsDao,
+        @Named(value = "orderBySdk") orderBySdk: Pref<Boolean>,
+        @Named(value = "showSystemApps") showSystemApps: Pref<Boolean>
+    ): MainDataSource = DatabaseDataSource(mVersionsDao, appsDao, orderBySdk, showSystemApps)
 }
 
 
@@ -180,6 +190,8 @@ interface SingletonComponent {
 
     @Named("orderBySdk")
     fun orderBySdk(): Pref<Boolean>
+
+    fun dictRepository(): MainDataSource
 }
 
 class Injector private constructor() {

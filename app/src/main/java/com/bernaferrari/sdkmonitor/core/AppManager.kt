@@ -20,6 +20,7 @@ import io.karn.notify.Notify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
+
 object AppManager {
 
     private const val PACKAGE_ANDROID_VENDING = "com.android.vending"

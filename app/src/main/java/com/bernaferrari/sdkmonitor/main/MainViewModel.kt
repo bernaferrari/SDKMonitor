@@ -4,13 +4,8 @@ import com.airbnb.mvrx.FragmentViewModelContext
 import com.airbnb.mvrx.MvRxViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.bernaferrari.base.mvrx.MvRxViewModel
-import com.bernaferrari.sdkmonitor.Injector
 import com.bernaferrari.sdkmonitor.core.AppManager
 import com.bernaferrari.sdkmonitor.data.App
-import com.bernaferrari.sdkmonitor.data.source.local.AppsDao
-import com.bernaferrari.sdkmonitor.data.source.local.VersionsDao
-import com.bernaferrari.sdkmonitor.extensions.convertTimestampToDate
-import com.bernaferrari.sdkmonitor.extensions.doSwitchMap
 import com.bernaferrari.sdkmonitor.extensions.normalizeString
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.squareup.inject.assisted.Assisted
@@ -22,8 +17,7 @@ import java.util.concurrent.TimeUnit
 
 class MainViewModel @AssistedInject constructor(
     @Assisted initialState: MainState,
-    private val mAppsDao: AppsDao,
-    private val mVersionsDao: VersionsDao
+    private val mainRepository: MainDataSource
 ) : MvRxViewModel<MainState>(initialState) {
 
     val itemsList = mutableListOf<AppVersion>()
@@ -44,9 +38,8 @@ class MainViewModel @AssistedInject constructor(
             // get the string without special characters and filter the list.
             // If the filter is not blank, it will filter the list.
             // If it is blank, it will return the original list.
-            val pattern = filter.normalizeString()
             list.takeIf { filter.isNotBlank() }
-                ?.filter { pattern in it.app.title.normalizeString() }
+                ?.filter { filter.normalizeString() in it.app.title.normalizeString() }
                     ?: list
         }.doOnNext {
             itemsList.clear()
@@ -56,19 +49,9 @@ class MainViewModel @AssistedInject constructor(
         }
     }
 
-    private fun allApps() = doSwitchMap(
-        { Injector.get().showSystemApps().observe() },
-        { Injector.get().orderBySdk().observe() }
-        ) { showSystemApps, orderBySdk ->
-
-            if (showSystemApps) {
-                // return all apps
-                mAppsDao.getAppsListFlowable()
-            } else {
-                // return only the ones from Play Store or that were installed manually.
-                mAppsDao.getAppsListFlowableFiltered(hasKnownOrigin = true)
-            }.toObservable()
-                .getAppsListObservable(orderBySdk)
+    private fun allApps() = mainRepository.shouldOrderBySdk().flatMap { orderBySdk ->
+        mainRepository.getAppsList()
+            .getAppsListObservable(orderBySdk)
     }
 
     private fun Observable<List<App>>.getAppsListObservable(orderBySdk: Boolean): Observable<List<AppVersion>> =
@@ -87,42 +70,20 @@ class MainViewModel @AssistedInject constructor(
             it.isEmpty()
         }.map { list ->
             // parse correctly the values
-            list.map { app ->
-                val (sdkVersion, lastUpdate) = getSdkDate(app)
-                AppVersion(app, sdkVersion, lastUpdate)
-            }
+            list.map { app -> mainRepository.mapSdkDate(app) }
         }.map { list ->
             // list already comes sorted by name from db, it is faster and avoids sub-querying
             if (orderBySdk) list.sortedBy { it.sdkVersion } else list
         }.doOnNext { maxListSize.accept(it.size) }
 
-    private fun getSdkDate(app: App): Pair<Int, String> {
-
-        // since insertApp is called before insertVersion, mVersionsDao.getValue(...) will
-        // return null on app's first run. This will avoid the situation.
-        val version = mVersionsDao.getLastValue(app.packageName)
-
-        val sdkVersion =
-            version?.targetSdk
-                    ?: AppManager.getApplicationInfo(app.packageName)?.targetSdkVersion
-                    ?: 0
-
-        val lastUpdate =
-            version?.lastUpdateTime
-                    ?: AppManager.getPackageInfo(app.packageName)?.lastUpdateTime
-                    ?: 0
-
-        return Pair(sdkVersion, lastUpdate.convertTimestampToDate())
-    }
-
-    fun updateAll() = runBlocking {
+    private fun updateAll() = runBlocking {
         showProgressRelay.accept(true)
 
         AppManager.getPackagesWithUserPrefs()
             // this condition will only happen when app there is no app installed
             // which means PROBABLY the app is being ran on emulator.
             .also {
-                if (it.isEmpty()) Injector.get().showSystemApps().set(true)
+                if (it.isEmpty()) mainRepository.setShouldShowSystemApps(true)
             }
             .forEach { packageInfo ->
                 AppManager.insertNewApp(packageInfo)
