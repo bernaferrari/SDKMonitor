@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import com.airbnb.epoxy.EpoxyRecyclerView
 import com.bernaferrari.base.view.onScroll
 import com.bernaferrari.ui.R
 import com.bernaferrari.ui.base.SharedBaseFrag
@@ -17,8 +16,6 @@ import kotlinx.coroutines.cancel
  * Simple fragment with a toolbar and a recyclerview.
  */
 abstract class BaseToolbarFragment : SharedBaseFrag(), CoroutineScope {
-
-    override val recyclerView: EpoxyRecyclerView by lazy { recycler }
 
     abstract val menuTitle: String?
 
@@ -33,7 +30,9 @@ abstract class BaseToolbarFragment : SharedBaseFrag(), CoroutineScope {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.frag_standard, container, false)
+    ): View = inflater.inflate(R.layout.frag_standard, container, false).apply {
+        recyclerView = findViewById(R.id.recycler)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -44,10 +43,10 @@ abstract class BaseToolbarFragment : SharedBaseFrag(), CoroutineScope {
 
         toolbarMenu.title = menuTitle
 
-        recycler?.onScroll { _, dy ->
+        recyclerView.onScroll { _, dy ->
             // this will take care of titleElevation
             // recycler might be null when back is pressed
-            val raiseTitleBar = dy > 0 || recycler.computeVerticalScrollOffset() != 0
+            val raiseTitleBar = dy > 0 || recyclerView.computeVerticalScrollOffset() != 0
             title_bar?.isActivated = raiseTitleBar // animated via a StateListAnimator
         }
 

@@ -30,7 +30,7 @@ dependencies {
     implementation Libs.Epoxy.dataBinding
 
     // MvRx
-    implementation Libs.mvRx
+    implementation Libs.MvRx.main
 
     // Glide
     implementation Libs.Glide.glide

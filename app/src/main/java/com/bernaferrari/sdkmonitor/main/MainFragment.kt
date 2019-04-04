@@ -38,6 +38,8 @@ class MainFragment : DaggerBaseSearchFragment() {
     @Inject
     lateinit var mainViewModelFactory: MainViewModel.Factory
 
+    lateinit var fastScroller: View
+
     override val showKeyboardWhenLoaded = false
 
     override fun onTextChanged(searchText: String) {
@@ -104,7 +106,7 @@ class MainFragment : DaggerBaseSearchFragment() {
 
         viewModel.inputRelay.accept(getInputText())
 
-        val fastScroller = container.inflateFastScroll()
+        fastScroller = viewContainer.inflateFastScroll()
 
         fastScroller.setupFastScroller(recyclerView, activity) {
             if (getModelAtPos(it) is MainRowModel_) viewModel.itemsList.getOrNull(it) else null
@@ -128,6 +130,7 @@ class MainFragment : DaggerBaseSearchFragment() {
                 }
             }
     }
+
 
     override val closeIconRes: Int? = null
 }

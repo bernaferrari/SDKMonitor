@@ -83,6 +83,7 @@ dependencies {
     implementation(Libs.AndroidX.constraintlayout)
     implementation(Libs.AndroidX.appcompat)
     implementation(Libs.AndroidX.recyclerview)
+    implementation(Libs.AndroidX.Fragment.fragmentKtx)
 
     implementation("androidx.palette:palette:1.0.0")
 
@@ -136,6 +137,9 @@ dependencies {
     implementation(Libs.stetho)
     implementation(Libs.logger)
 
+    debugImplementation(Libs.LeakCanary.main)
+    debugImplementation(Libs.LeakCanary.support)
+    releaseImplementation(Libs.LeakCanary.no_op)
 
     // Iconics
     implementation("com.mikepenz:iconics-core:3.1.0@aar")

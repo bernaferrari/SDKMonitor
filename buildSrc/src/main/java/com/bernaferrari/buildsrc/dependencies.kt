@@ -17,8 +17,6 @@ object Libs {
     val dexcountGradlePlugin = "com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.6"
     val playPublisherPlugin = "com.github.triplet.gradle:play-publisher:2.1.0"
 
-    val mvRx = "com.airbnb.android:mvrx:0.7.2"
-
     val threeTenAndroid = "com.jakewharton.threetenabp:threetenabp:1.2.0"
 
     val gravitySnapHelper = "com.github.rubensousa:gravitysnaphelper:2.0"
@@ -80,13 +78,13 @@ object Libs {
         val dynamicAnimation = "androidx.dynamicanimation:dynamicanimation:1.0.0"
 
         object Navigation {
-            private const val version = "2.0.0"
+            private const val version = "2.1.0-alpha02"
             val navigationUi = "androidx.navigation:navigation-ui-ktx:$version"
             val navigationFragment = "androidx.navigation:navigation-fragment-ktx:$version"
         }
 
         object Fragment {
-            private const val version = "1.0.0"
+            private const val version = "1.1.0-alpha06"
             val fragment = "androidx.fragment:fragment:$version"
             val fragmentKtx = "androidx.fragment:fragment-ktx:$version"
         }
@@ -123,7 +121,7 @@ object Libs {
         }
 
         object Room {
-            private const val version = "2.1.0-alpha05"
+            private const val version = "2.1.0-alpha06"
             val common = "androidx.room:room-common:$version"
             val runtime = "androidx.room:room-runtime:$version"
             val roomktx = "androidx.room:room-ktx:$version"
@@ -166,12 +164,19 @@ object Libs {
         val gsonConverter = "com.squareup.retrofit2:converter-gson:$version"
     }
 
+    object LeakCanary {
+        private const val version = "1.6.3"
+        val main = "com.squareup.leakcanary:leakcanary-android:$version"
+        val no_op = "com.squareup.leakcanary:leakcanary-android-no-op:$version"
+        val support = "com.squareup.leakcanary:leakcanary-support-fragment:$version"
+    }
+
     object OkHttp {
         val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:3.13.1"
     }
 
     object MvRx {
-        private const val version = "0.7.2"
+        private const val version = "1.0.0"
         val main = "com.airbnb.android:mvrx:$version"
         val testing = "com.airbnb.android:mvrx-testing:$version"
     }

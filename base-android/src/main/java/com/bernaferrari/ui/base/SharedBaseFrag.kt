@@ -1,7 +1,6 @@
 package com.bernaferrari.ui.base
 
 import android.os.Bundle
-import com.airbnb.mvrx.MvRxView
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -13,7 +12,7 @@ import kotlin.coroutines.CoroutineContext
  * Fragment base that contains CoroutineScope, disposableManager and optionsMenu,
  * so that you can reduce boilerplate.
  */
-abstract class SharedBaseFrag : TiviMvRxFragment(), MvRxView, CoroutineScope {
+abstract class SharedBaseFrag : TiviMvRxFragment(), CoroutineScope {
 
     override val coroutineContext: CoroutineContext = Dispatchers.Main + Job()
 

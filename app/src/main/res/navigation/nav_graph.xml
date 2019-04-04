@@ -13,11 +13,11 @@
     <fragment
         android:id="@+id/logsFragment"
         android:name="com.bernaferrari.sdkmonitor.logs.LogsFragment"
-        android:label="LogsFragment"></fragment>
+        android:label="LogsFragment" />
 
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.bernaferrari.sdkmonitor.settings.SettingsFragment"
-        android:label="SettingsFragment"></fragment>
+        android:label="SettingsFragment" />
 
 </navigation>

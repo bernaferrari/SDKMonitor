@@ -9,7 +9,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
-import com.airbnb.epoxy.EpoxyRecyclerView
 import com.bernaferrari.base.misc.normalizeString
 import com.bernaferrari.base.misc.onTextChanged
 import com.bernaferrari.base.misc.showKeyboardOnView
@@ -26,9 +25,7 @@ import kotlinx.coroutines.cancel
  */
 abstract class BaseSearchFragment : SharedBaseFrag(), CoroutineScope {
 
-    override val recyclerView: EpoxyRecyclerView by lazy { recycler }
-
-    val container: ConstraintLayout by lazy { baseContainer }
+    lateinit var viewContainer: ConstraintLayout
 
     open val showKeyboardWhenLoaded = true
 
@@ -38,21 +35,24 @@ abstract class BaseSearchFragment : SharedBaseFrag(), CoroutineScope {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.frag_search, container, false)
+    ): View = inflater.inflate(R.layout.frag_search, container, false).apply {
+        recyclerView = findViewById(R.id.recycler)
+        viewContainer = findViewById(R.id.baseContainer)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         // app might crash if user is scrolling fast and quickly switching screens,
         // so the nullable seems necessary.
-        recycler?.onScroll { _, dy ->
+        recyclerView.onScroll { _, dy ->
             // this will take care of titleElevation
             // recycler might be null when back is pressed
-            val raiseTitleBar = dy > 0 || recycler.computeVerticalScrollOffset() != 0
+            val raiseTitleBar = dy > 0 || recyclerView.computeVerticalScrollOffset() != 0
             title_bar?.isActivated = raiseTitleBar // animated via a StateListAnimator
         }
 
-        recycler?.updatePadding(left = sidePadding, right = sidePadding)
+        recyclerView.updatePadding(left = sidePadding, right = sidePadding)
 
         toolbarMenu.isVisible = showMenu
 
@@ -63,7 +63,7 @@ abstract class BaseSearchFragment : SharedBaseFrag(), CoroutineScope {
 
         queryInput.onTextChanged { search ->
             queryClear.isInvisible = search.isEmpty()
-            recycler.smoothScrollToPosition(0)
+            recyclerView.smoothScrollToPosition(0)
             onTextChanged(search.toString().normalizeString())
         }
 
@@ -75,7 +75,7 @@ abstract class BaseSearchFragment : SharedBaseFrag(), CoroutineScope {
             queryInput.showKeyboardOnView()
         }
 
-        hideKeyboardWhenNecessary(recycler, queryInput)
+        hideKeyboardWhenNecessary(recyclerView, queryInput)
 
         queryClear.setOnClickListener { queryInput.setText("") }
 
@@ -96,7 +96,7 @@ abstract class BaseSearchFragment : SharedBaseFrag(), CoroutineScope {
 
     fun getInputText(): String = queryInput.text.toString()
 
-    fun scrollToPosition(pos: Int) = recycler.scrollToPosition(pos)
+    fun scrollToPosition(pos: Int) = recyclerView.scrollToPosition(pos)
 
     override fun onDestroy() {
         coroutineContext.cancel()
