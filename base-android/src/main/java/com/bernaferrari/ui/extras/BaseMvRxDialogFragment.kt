@@ -23,8 +23,8 @@ abstract class BaseMvRxDialogFragment : DialogFragment(), MvRxView {
     override fun onCreate(savedInstanceState: Bundle?) {
         mvrxViewModelStore.restoreViewModels(this, savedInstanceState)
         mvrxPersistedViewId =
-            savedInstanceState?.getString(PERSISTED_VIEW_ID_KEY) ?: this::class.java.simpleName
-                    + "_" + UUID.randomUUID().toString()
+            savedInstanceState?.getString(PERSISTED_VIEW_ID_KEY)
+                    ?: "${this::class.java.simpleName}_${UUID.randomUUID()}"
         super.onCreate(savedInstanceState)
     }
 

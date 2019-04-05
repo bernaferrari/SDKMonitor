@@ -18,7 +18,9 @@ abstract class BaseElasticSearchFragment : BaseSearchFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.frag_elastic_search, container, false)
+    ): View = inflater.inflate(R.layout.frag_elastic_search, container, false).apply {
+        recyclerView = findViewById(R.id.recycler)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

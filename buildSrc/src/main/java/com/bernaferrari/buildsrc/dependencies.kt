@@ -33,10 +33,6 @@ object Libs {
 
     val stetho = "com.facebook.stetho:stetho:1.5.0"
 
-    val tmdbJava = "com.uwetrottmann.tmdb2:tmdb-java:2.0.1"
-
-    val appauth = "net.openid:appauth:0.7.1"
-
     val junit = "junit:junit:4.12"
     val robolectric = "org.robolectric:robolectric:4.2"
     val mockitoKotlin = "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0"
@@ -144,7 +140,7 @@ object Libs {
     }
 
     object Dagger {
-        private const val version = "2.21"
+        private const val version = "2.22"
         val dagger = "com.google.dagger:dagger:$version"
         val androidSupport = "com.google.dagger:dagger-android-support:$version"
         val compiler = "com.google.dagger:dagger-compiler:$version"

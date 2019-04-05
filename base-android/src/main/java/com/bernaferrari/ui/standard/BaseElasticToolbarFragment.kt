@@ -18,7 +18,9 @@ abstract class BaseElasticToolbarFragment : BaseToolbarFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.frag_elastic_standard, container, false)
+    ): View = inflater.inflate(R.layout.frag_elastic_standard, container, false).apply {
+        recyclerView = findViewById(R.id.recycler)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
