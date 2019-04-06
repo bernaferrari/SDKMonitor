@@ -8,6 +8,7 @@ import com.airbnb.mvrx.fragmentViewModel
 import com.bernaferrari.base.mvrx.simpleController
 import com.bernaferrari.sdkmonitor.*
 import com.bernaferrari.sdkmonitor.core.AboutDialog
+import com.bernaferrari.sdkmonitor.core.AppManager
 import com.bernaferrari.ui.dagger.DaggerBaseRecyclerFragment
 import javax.inject.Inject
 
@@ -57,6 +58,7 @@ class SettingsFragment : DaggerBaseRecyclerFragment() {
                 .subtitle("Show all installed apps. This might increase loading time.")
                 .clickListener { v ->
                     Injector.get().showSystemApps().set(!showSystemApps)
+                    AppManager.forceRefresh = true
                 }
                 .addTo(this)
 

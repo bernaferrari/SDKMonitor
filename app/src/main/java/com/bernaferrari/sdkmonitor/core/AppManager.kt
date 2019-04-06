@@ -28,7 +28,7 @@ object AppManager {
     private const val PREF_DISABLED_PACKAGES = "disabled_packages"
 
     private lateinit var packageManager: PackageManager
-    var firstRun = true
+    var forceRefresh = true
 
     fun init(context: Context) {
         packageManager = context.packageManager

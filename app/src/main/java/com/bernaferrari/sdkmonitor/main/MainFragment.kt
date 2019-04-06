@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import com.airbnb.mvrx.*
+import com.bernaferrari.base.misc.toDp
 import com.bernaferrari.base.mvrx.simpleController
 import com.bernaferrari.sdkmonitor.Injector
 import com.bernaferrari.sdkmonitor.R
@@ -103,6 +105,8 @@ class MainFragment : DaggerBaseSearchFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        recyclerView.updatePadding(bottom = 16.toDp(resources))
 
         viewModel.inputRelay.accept(getInputText())
 

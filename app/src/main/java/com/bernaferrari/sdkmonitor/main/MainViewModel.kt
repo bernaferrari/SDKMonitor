@@ -61,8 +61,8 @@ class MainViewModel @AssistedInject constructor(
             if (list.isEmpty()) flow else flow.delay(250, TimeUnit.MILLISECONDS)
         }.skipWhile {
             // force the refresh when app is first opened or no known apps are installed (emulator)
-            if (it.isEmpty() || AppManager.firstRun) {
-                AppManager.firstRun = false
+            if (it.isEmpty() || AppManager.forceRefresh) {
+                AppManager.forceRefresh = false
                 refreshAll()
             }
             it.isEmpty()
