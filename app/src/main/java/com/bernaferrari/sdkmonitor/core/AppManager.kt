@@ -44,7 +44,8 @@ object AppManager {
         }
     }
 
-    fun getPackages(): List<PackageInfo> = packageManager.getInstalledPackages(0)
+    fun getPackages(): List<PackageInfo> =
+        packageManager.getInstalledPackages(PackageManager.GET_META_DATA)
 
     suspend fun removePackageName(packageName: String) = withContext(Dispatchers.IO) {
         Injector.get().appsDao().deleteApp(packageName)
@@ -67,7 +68,7 @@ object AppManager {
             val version = Version(
                 version = versionCode,
                 packageName = packageInfo.packageName,
-                versionName = packageInfo.versionName,
+                versionName = packageInfo.versionName ?: "",
                 lastUpdateTime = packageInfo.lastUpdateTime,
                 targetSdk = currentTargetSDK
             )
@@ -133,7 +134,7 @@ object AppManager {
     }
 
     private fun getPackagesWithOrigin(): List<PackageInfo> {
-        return packageManager.getInstalledPackages(0)
+        return packageManager.getInstalledPackages(PackageManager.GET_META_DATA)
             .filter { doesAppHasOrigin(it.packageName) }
     }
 

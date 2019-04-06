@@ -27,6 +27,11 @@
         <item>days</item>
     </string-array>
 
+    <plurals name="searchApps">
+        <item quantity="one">Search %d app</item>
+        <item quantity="other">Search %d apps</item>
+    </plurals>
+
     <string name="sync_every">Sync every %d %s</string>
     <string name="sync_disabled">Sync is disabled</string>
 

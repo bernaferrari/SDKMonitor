@@ -35,8 +35,7 @@ class DatabaseDataSource @Inject constructor(
                 mAppsDao.getAppsListFlowable()
             } else {
                 // return only the ones from Play Store or that were installed manually.
-                mAppsDao.getAppsListFlowableFiltered(hasKnownOrigin = true).doOnNext {
-                }
+                mAppsDao.getAppsListFlowableFiltered(hasKnownOrigin = true)
             }
         }
     }

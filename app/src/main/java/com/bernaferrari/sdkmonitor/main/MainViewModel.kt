@@ -33,6 +33,7 @@ class MainViewModel @AssistedInject constructor(
             allApps(),
             inputRelay
         ) { list, filter ->
+
             // get the string without special characters and filter the list.
             // If the filter is not blank, it will filter the list.
             // If it is blank, it will return the original list.

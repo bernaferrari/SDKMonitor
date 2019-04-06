@@ -115,7 +115,7 @@ class MainFragment : DaggerBaseSearchFragment() {
         setInputHint("Loading...")
 
         disposableManager += viewModel.maxListSize.observeOn(AndroidSchedulers.mainThread())
-            .subscribe { setInputHint("Search $it apps..") }
+            .subscribe { setInputHint(resources.getQuantityString(R.plurals.searchApps, it, it)) }
 
         // observe when order changes
         disposableManager += Injector.get().orderBySdk().observe()
