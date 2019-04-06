@@ -23,20 +23,20 @@ class DatabaseDataSource @Inject constructor(
         showSystemApps.set(value)
     }
 
-    override fun shouldShowSystemApps(): Observable<Boolean> = showSystemApps.observe()
-
     override fun shouldOrderBySdk(): Observable<Boolean> = orderBySdk.observe()
 
     override fun getLastItem(packageName: String): Version? = mVersionsDao.getLastValue(packageName)
 
     override fun getAppsList(): Observable<List<App>> {
-        return showSystemApps.observe().flatMap {
-            if (it) {
+
+        return showSystemApps.observe().switchMap { systemApps ->
+            if (systemApps) {
                 // return all apps
                 mAppsDao.getAppsListFlowable()
             } else {
                 // return only the ones from Play Store or that were installed manually.
-                mAppsDao.getAppsListFlowableFiltered(hasKnownOrigin = true)
+                mAppsDao.getAppsListFlowableFiltered(hasKnownOrigin = true).doOnNext {
+                }
             }
         }
     }

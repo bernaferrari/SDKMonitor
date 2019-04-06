@@ -38,8 +38,8 @@ android {
         applicationId = "com.bernaferrari.sdkmonitor"
         minSdkVersion(21)
         targetSdkVersion(28)
-        versionCode = 7
-        versionName = "0.92"
+        versionCode = 8
+        versionName = "0.95"
         multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -104,8 +104,7 @@ dependencies {
     implementation(Libs.AndroidX.Paging.runtimeKtx)
 
     // Work
-    val work_version = "1.0.0"
-    implementation("android.arch.work:work-runtime-ktx:$work_version")
+    implementation(Libs.AndroidX.Work.runtimeKtx)
 
     // Dagger
     implementation(Libs.Dagger.dagger)

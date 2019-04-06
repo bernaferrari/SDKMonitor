@@ -28,7 +28,7 @@ object AppManager {
     private const val PREF_DISABLED_PACKAGES = "disabled_packages"
 
     private lateinit var packageManager: PackageManager
-    var firstRun = false
+    var firstRun = true
 
     fun init(context: Context) {
         packageManager = context.packageManager
@@ -50,7 +50,7 @@ object AppManager {
         Injector.get().appsDao().deleteApp(packageName)
     }
 
-    suspend fun insertNewVersion(packageInfo: PackageInfo) = withContext(Dispatchers.IO) {
+    fun insertNewVersion(packageInfo: PackageInfo) {
         val versionCode =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 packageInfo.longVersionCode
@@ -96,15 +96,12 @@ object AppManager {
     private fun getAppLabel(packageInfo: PackageInfo) =
         packageManager.getApplicationLabel(packageInfo.applicationInfo).toString().trim()
 
-    suspend fun insertNewApp(packageInfo: PackageInfo) = withContext(Dispatchers.IO) {
+    fun insertNewApp(packageInfo: PackageInfo) {
 
-        if (Injector.get().appsDao().getApp(packageInfo.packageName) != null) return@withContext
+        if (Injector.get().appsDao().getAppString(packageInfo.packageName) != null) return
 
         val icon = packageManager.getApplicationIcon(packageInfo.applicationInfo).toBitmap()
-        val backgroundColor = getPaletteColor(
-            Palette.from(icon).generate(),
-            0
-        )
+        val backgroundColor = getPaletteColor(Palette.from(icon).generate())
         val label = getAppLabel(packageInfo)
 
         Injector.get().appsDao().insertApp(
@@ -117,7 +114,7 @@ object AppManager {
         )
     }
 
-    private fun getPaletteColor(palette: Palette?, defaultColor: Int) = when {
+    private fun getPaletteColor(palette: Palette?, defaultColor: Int = 0) = when {
         palette?.darkVibrantSwatch != null -> palette.getDarkVibrantColor(defaultColor)
         palette?.vibrantSwatch != null -> palette.getVibrantColor(defaultColor)
         palette?.mutedSwatch != null -> palette.getMutedColor(defaultColor)

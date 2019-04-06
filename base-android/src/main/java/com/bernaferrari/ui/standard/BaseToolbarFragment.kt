@@ -50,7 +50,7 @@ abstract class BaseToolbarFragment : SharedBaseFrag(), CoroutineScope {
             title_bar?.isActivated = raiseTitleBar // animated via a StateListAnimator
         }
 
-        if (closeIconRes == null) {
+        if (closeIconRes == null || closeIconRes == 0) {
             close.visibility = View.GONE
         } else {
             val closeIcon = closeIconRes ?: 0

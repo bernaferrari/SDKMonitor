@@ -12,7 +12,6 @@ import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.Observables
-import kotlinx.coroutines.runBlocking
 import java.util.concurrent.TimeUnit
 
 class MainViewModel @AssistedInject constructor(
@@ -24,7 +23,6 @@ class MainViewModel @AssistedInject constructor(
     var hasLoaded = false
     var maxListSize: BehaviorRelay<Int> = BehaviorRelay.create<Int>()
     val inputRelay: BehaviorRelay<String> = BehaviorRelay.create<String>()
-    val showProgressRelay: BehaviorRelay<Boolean> = BehaviorRelay.create<Boolean>()
 
     init {
         fetchData()
@@ -49,7 +47,7 @@ class MainViewModel @AssistedInject constructor(
         }
     }
 
-    private fun allApps() = mainRepository.shouldOrderBySdk().flatMap { orderBySdk ->
+    private fun allApps() = mainRepository.shouldOrderBySdk().switchMap { orderBySdk ->
         mainRepository.getAppsList()
             .getAppsListObservable(orderBySdk)
     }
@@ -59,13 +57,12 @@ class MainViewModel @AssistedInject constructor(
             // debounce with a 200ms delay on all items except the first one
             val flow = Observable.just(list)
             hasLoaded = true
-            flow.takeIf { list.isEmpty() }
-                ?.let { it } ?: flow.delay(250, TimeUnit.MILLISECONDS)
+            if (list.isEmpty()) flow else flow.delay(250, TimeUnit.MILLISECONDS)
         }.skipWhile {
             // force the refresh when app is first opened or no known apps are installed (emulator)
             if (it.isEmpty() || AppManager.firstRun) {
                 AppManager.firstRun = false
-                updateAll()
+                refreshAll()
             }
             it.isEmpty()
         }.map { list ->
@@ -76,9 +73,7 @@ class MainViewModel @AssistedInject constructor(
             if (orderBySdk) list.sortedBy { it.sdkVersion } else list
         }.doOnNext { maxListSize.accept(it.size) }
 
-    private fun updateAll() = runBlocking {
-        showProgressRelay.accept(true)
-
+    private fun refreshAll() {
         AppManager.getPackagesWithUserPrefs()
             // this condition will only happen when app there is no app installed
             // which means PROBABLY the app is being ran on emulator.
@@ -89,8 +84,6 @@ class MainViewModel @AssistedInject constructor(
                 AppManager.insertNewApp(packageInfo)
                 AppManager.insertNewVersion(packageInfo)
             }
-
-        showProgressRelay.accept(false)
     }
 
 

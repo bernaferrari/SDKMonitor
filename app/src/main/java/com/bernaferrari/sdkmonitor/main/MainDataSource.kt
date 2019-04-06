@@ -9,8 +9,6 @@ interface MainDataSource {
 
     fun setShouldShowSystemApps(value: Boolean)
 
-    fun shouldShowSystemApps(): Observable<Boolean>
-
     fun shouldOrderBySdk(): Observable<Boolean>
 
     fun getAppsList(): Observable<List<App>>

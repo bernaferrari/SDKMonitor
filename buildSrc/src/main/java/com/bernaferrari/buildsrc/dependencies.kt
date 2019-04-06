@@ -105,7 +105,7 @@ object Libs {
 
         val preference = "androidx.preference:preference:1.1.0-alpha04"
 
-        val constraintlayout = "androidx.constraintlayout:constraintlayout:2.0.0-alpha3"
+        val constraintlayout = "androidx.constraintlayout:constraintlayout:2.0.0-alpha4"
 
         val coreKtx = "androidx.core:core-ktx:1.0.1"
 
@@ -128,6 +128,8 @@ object Libs {
         object Work {
             private const val version = "2.0.0"
             val runtimeKtx = "androidx.work:work-runtime-ktx:$version"
+            val rxJava = "androidx.work:work-rxjava2:$version"
+            val testing = "androidx.work:work-testing:$version"
         }
     }
 
@@ -186,7 +188,7 @@ object Libs {
     }
 
     object AssistedInject {
-        private const val version = "0.3.2"
+        private const val version = "0.4.0"
         val annotationDagger2 = "com.squareup.inject:assisted-inject-annotations-dagger2:$version"
         val processorDagger2 = "com.squareup.inject:assisted-inject-processor-dagger2:$version"
     }

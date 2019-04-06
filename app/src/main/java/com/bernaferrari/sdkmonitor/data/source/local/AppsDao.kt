@@ -32,7 +32,10 @@ interface AppsDao {
     fun insertApp(app: App)
 
     @Query("SELECT packageName FROM apps WHERE packageName =:packageName LIMIT 1")
-    fun getApp(packageName: String): String?
+    fun getAppString(packageName: String): String?
+
+    @Query("SELECT * FROM apps WHERE packageName =:packageName LIMIT 1")
+    fun getApp(packageName: String): App?
 
     /**
      * Delete all snaps.
