@@ -6,6 +6,7 @@ import android.util.TypedValue
 import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
 import androidx.annotation.AttrRes
+import androidx.core.content.ContextCompat
 
 var toast: Toast? = null
 
@@ -48,3 +49,5 @@ fun Context.openInBrowser(url: String?) {
         this.startActivity(Intent(Intent.ACTION_VIEW, url.toUri()))
     }
 }
+
+fun Context.getColorCompat(color: Int): Int = ContextCompat.getColor(this, color)

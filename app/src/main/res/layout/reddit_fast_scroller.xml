@@ -9,7 +9,6 @@
         android:id="@+id/fastscroller_thumb"
         android:layout_width="40dp"
         android:layout_height="0dp"
-        android:layout_marginTop="56dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/fastscroller"
         app:layout_constraintTop_toTopOf="parent" />
@@ -18,7 +17,6 @@
         android:id="@+id/fastscroller"
         android:layout_width="32dp"
         android:layout_height="0dp"
-        android:layout_marginTop="56dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

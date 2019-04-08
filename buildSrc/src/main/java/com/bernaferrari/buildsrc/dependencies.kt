@@ -26,8 +26,11 @@ object Libs {
     val logger = "com.orhanobut:logger:2.2.0"
     val okHttp = "com.squareup.okhttp3:okhttp:3.14.0"
 
+    val notify = "io.karn:notify:1.2.1"
+    val alerter = "com.tapadoo.android:alerter:4.0.2"
     val rxLint = "nl.littlerobots.rxlint:rxlint:1.7.3"
     val jsoup = "org.jsoup:jsoup:1.11.3"
+    val timeAgo = "com.github.marlonlom:timeago:4.0.1"
 
     val timber = "com.jakewharton.timber:timber:4.7.1"
 
@@ -139,6 +142,12 @@ object Libs {
         val rxAndroid = "io.reactivex.rxjava2:rxandroid:2.1.1"
         val rxRelay = "com.jakewharton.rxrelay2:rxrelay:2.1.0"
         val rxkPrefs = "com.afollestad:rxkprefs:1.2.5"
+    }
+
+    object Komprehensions {
+        private const val version = "1.3.0"
+        val stdLib = "com.github.pakoito.Komprehensions:komprehensions:$version"
+        val rxJava = "com.github.pakoito.Komprehensions:komprehensions-rx2:$version"
     }
 
     object Dagger {

@@ -38,8 +38,8 @@ android {
         applicationId = "com.bernaferrari.sdkmonitor"
         minSdkVersion(21)
         targetSdkVersion(28)
-        versionCode = 9
-        versionName = "0.96"
+        versionCode = 10
+        versionName = "0.97"
         multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -55,6 +55,9 @@ android {
                 )
             )
             signingConfig = signingConfigs.getByName("release")
+        }
+        named("debug") {
+            applicationIdSuffix = ".debug"
         }
     }
     kapt.correctErrorTypes = true
@@ -136,8 +139,10 @@ dependencies {
     implementation(Libs.stetho)
     implementation(Libs.logger)
 
-    debugImplementation(Libs.LeakCanary.main)
-    debugImplementation(Libs.LeakCanary.support)
+    implementation(Libs.notify)
+
+    debugImplementation(Libs.LeakCanary.no_op)
+//    debugImplementation(Libs.LeakCanary.support)
     releaseImplementation(Libs.LeakCanary.no_op)
 
     // Iconics
@@ -146,15 +151,13 @@ dependencies {
     implementation("com.mikepenz:google-material-typeface:3.0.1.2.original@aar")
 
     // UI
-    implementation("io.karn:notify:1.1.0")
     implementation("com.reddit:indicator-fast-scroll:1.0.1")
 
     // Time
-    implementation("com.github.marlonlom:timeago:4.0.1")
+    implementation(Libs.timeAgo)
 
     // Debugging
-    implementation("junit:junit:4.12")
+    implementation(Libs.junit)
     testImplementation("org.mockito:mockito-core:2.24.5")
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0")
-    implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
 }

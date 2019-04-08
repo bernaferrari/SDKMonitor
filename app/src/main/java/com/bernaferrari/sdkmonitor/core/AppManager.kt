@@ -20,7 +20,6 @@ import io.karn.notify.Notify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-
 object AppManager {
 
     private const val PACKAGE_ANDROID_VENDING = "com.android.vending"
@@ -34,14 +33,16 @@ object AppManager {
         packageManager = context.packageManager
     }
 
+    private fun isUserApp(ai: ApplicationInfo?): Boolean {
+        // https://stackoverflow.com/a/14665381/4418073
+        if (ai == null) return false
+        val mask = ApplicationInfo.FLAG_SYSTEM or ApplicationInfo.FLAG_UPDATED_SYSTEM_APP
+        return ai.flags and mask == 0
+    }
+
     // verifies if app came from Play Store or was installed manually
     fun doesAppHasOrigin(packageName: String): Boolean {
-        return try {
-            val installerPackageName = packageManager.getInstallerPackageName(packageName)
-            installerPackageName != null
-        } catch (e: Throwable) {
-            false
-        }
+        return isUserApp(AppManager.getApplicationInfo(packageName))
     }
 
     fun getPackages(): List<PackageInfo> =
@@ -52,6 +53,7 @@ object AppManager {
     }
 
     fun insertNewVersion(packageInfo: PackageInfo) {
+
         val versionCode =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 packageInfo.longVersionCode
@@ -110,7 +112,7 @@ object AppManager {
                 packageName = packageInfo.packageName,
                 title = label,
                 backgroundColor = backgroundColor,
-                isFromPlayStore = doesAppHasOrigin(packageInfo.packageName)
+                isFromPlayStore = isUserApp(packageInfo.applicationInfo)
             )
         )
     }
@@ -135,7 +137,7 @@ object AppManager {
 
     private fun getPackagesWithOrigin(): List<PackageInfo> {
         return packageManager.getInstalledPackages(PackageManager.GET_META_DATA)
-            .filter { doesAppHasOrigin(it.packageName) }
+            .filter { isUserApp(it.applicationInfo) }
     }
 
     fun getPackageInfo(packageName: String): PackageInfo? {

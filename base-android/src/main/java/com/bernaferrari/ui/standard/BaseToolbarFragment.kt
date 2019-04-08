@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.bernaferrari.base.view.onScroll
 import com.bernaferrari.ui.R
@@ -19,6 +20,8 @@ abstract class BaseToolbarFragment : SharedBaseFrag(), CoroutineScope {
 
     abstract val menuTitle: String?
 
+    lateinit var viewContainer: FrameLayout
+
     open val isMenuEnabled = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +35,7 @@ abstract class BaseToolbarFragment : SharedBaseFrag(), CoroutineScope {
         savedInstanceState: Bundle?
     ): View = inflater.inflate(R.layout.frag_standard, container, false).apply {
         recyclerView = findViewById(R.id.recycler)
+        viewContainer = findViewById(R.id.baseContainer)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
