@@ -52,7 +52,7 @@ object Libs {
     }
 
     object Kotlin {
-        private const val version = "1.3.21"
+        private const val version = "1.3.30"
         val stdlib = "org.jetbrains.kotlin:kotlin-stdlib:$version"
         val reflect = "org.jetbrains.kotlin:kotlin-reflect:$version"
         val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
@@ -80,6 +80,7 @@ object Libs {
             private const val version = "2.1.0-alpha02"
             val navigationUi = "androidx.navigation:navigation-ui-ktx:$version"
             val navigationFragment = "androidx.navigation:navigation-fragment-ktx:$version"
+            val safeArgs = "androidx.navigation:navigation-safe-args-gradle-plugin:$version"
         }
 
         object Fragment {
@@ -129,7 +130,7 @@ object Libs {
         }
 
         object Work {
-            private const val version = "2.0.0"
+            private const val version = "2.0.1"
             val runtimeKtx = "androidx.work:work-runtime-ktx:$version"
             val rxJava = "androidx.work:work-rxjava2:$version"
             val testing = "androidx.work:work-testing:$version"
