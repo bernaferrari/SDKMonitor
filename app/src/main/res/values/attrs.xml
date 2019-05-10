@@ -5,10 +5,7 @@
         <attr name="text" format="string" />
     </declare-styleable>
 
-    <attr name="standardCardColor" format="color" />
     <attr name="settingsBackground" format="color" />
-
-    <attr name="mainCardColor" format="color" />
     <attr name="cardSeparatorColor" format="color" />
 
     <attr name="toolbarColor" format="color" />

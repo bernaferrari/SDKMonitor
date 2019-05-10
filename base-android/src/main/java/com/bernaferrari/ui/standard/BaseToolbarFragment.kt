@@ -24,6 +24,7 @@ abstract class BaseToolbarFragment : SharedBaseFrag(), CoroutineScope {
 
     lateinit var viewContainer: FrameLayout
     lateinit var toolbar: Toolbar
+    lateinit var titleBar: ViewGroup
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,6 +34,7 @@ abstract class BaseToolbarFragment : SharedBaseFrag(), CoroutineScope {
         recyclerView = findViewById(R.id.recycler)
         viewContainer = findViewById(R.id.baseContainer)
         toolbar = findViewById(R.id.toolbarMenu)
+        titleBar = findViewById(R.id.title_bar)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

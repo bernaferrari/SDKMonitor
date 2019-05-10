@@ -56,9 +56,9 @@ android {
             )
             signingConfig = signingConfigs.getByName("release")
         }
-        named("debug") {
-            applicationIdSuffix = ".debug"
-        }
+//        named("debug") {
+//            applicationIdSuffix = ".debug"
+//        }
     }
     kapt.correctErrorTypes = true
     lintOptions.isAbortOnError = false

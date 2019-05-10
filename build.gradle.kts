@@ -6,9 +6,9 @@ buildscript {
         maven("https://jitpack.io")
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:3.5.0-alpha11")
-        classpath(kotlin("gradle-plugin", version = "1.3.30"))
-        classpath("com.squareup.sqldelight:gradle-plugin:1.0.3")
+        classpath("com.android.tools.build:gradle:3.5.0-beta01")
+        classpath(kotlin("gradle-plugin", version = "1.3.31"))
+        classpath("com.squareup.sqldelight:gradle-plugin:1.1.3")
     }
 }
 

@@ -7,7 +7,7 @@
         <item name="colorPrimaryDark">@color/primary_dark_light</item>
         <item name="colorAccent">@color/md_indigo_A200</item>
 
-        <item name="mainCardColor">@color/md_grey_50</item>
+        <item name="colorSurface">@color/white</item>
         <item name="colorOnPrimary">@color/md_grey_600</item>
 
         <item name="strongColor">@color/FontStrong</item>
@@ -15,8 +15,6 @@
 
         <item name="toolbarColor">@color/white</item>
         <item name="searchBoxColor">@color/md_grey_100</item>
-
-        <item name="standardCardColor">@color/md_grey_100</item>
 
         <item name="indicatorFastScrollerStyle">@style/Widget.FastScrollSample.FastScroller</item>
         <item name="indicatorFastScrollerThumbStyle">
@@ -30,11 +28,11 @@
 
     <style name="AppThemeDark" parent="Theme.MaterialComponents.NoActionBar">
 
-        <item name="colorPrimary">@color/primary_dark</item>
+        <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryDark">@color/primary_dark_dark</item>
         <item name="colorAccent">@color/md_indigo_A200</item>
 
-        <item name="mainCardColor">@color/primary_dark</item>
+        <item name="colorSurface">@color/primary_dark</item>
         <item name="colorOnPrimary">@color/white</item>
 
         <item name="strongColor">@color/white</item>
@@ -42,8 +40,6 @@
 
         <item name="toolbarColor">@color/primary_dark</item>
         <item name="searchBoxColor">@color/primary_dark_dark</item>
-
-        <item name="standardCardColor">@color/primary_dark</item>
 
         <item name="android:windowBackground">@color/window_background_dark</item>
 
@@ -55,7 +51,6 @@
         <item name="md_color_button_text">@color/white</item>
         <item name="md_corner_radius">16dp</item>
         <item name="md_background_color">?android:windowBackground</item>
-
     </style>
 
     <style name="BottomNavActive">

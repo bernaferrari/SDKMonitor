@@ -13,7 +13,7 @@ object Android {
 }
 
 object Libs {
-    val androidGradlePlugin = "com.android.tools.build:gradle:3.5.0-alpha09"
+    val androidGradlePlugin = "com.android.tools.build:gradle:3.5.0-beta01"
     val dexcountGradlePlugin = "com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.6"
     val playPublisherPlugin = "com.github.triplet.gradle:play-publisher:2.1.0"
 
@@ -21,7 +21,7 @@ object Libs {
 
     val gravitySnapHelper = "com.github.rubensousa:gravitysnaphelper:2.0"
 
-    val materialDialogs = "com.afollestad.material-dialogs:core:2.6.0"
+    val materialDialogs = "com.afollestad.material-dialogs:core:3.0.0-alpha1"
     val jsEvaluator = "com.github.evgenyneu:js-evaluator-for-android:5.0.0"
     val logger = "com.orhanobut:logger:2.2.0"
     val okHttp = "com.squareup.okhttp3:okhttp:3.14.0"
@@ -43,7 +43,7 @@ object Libs {
     val discreteScrollView = "com.yarolegovich:discrete-scrollview:1.4.9"
 
     object Google {
-        val material = "com.google.android.material:material:1.1.0-alpha05"
+        val material = "com.google.android.material:material:1.1.0-alpha06"
         val firebaseCore = "com.google.firebase:firebase-core:16.0.7"
         val crashlytics = "com.crashlytics.sdk.android:crashlytics:2.9.9"
         val firebaseFirestore = "com.google.firebase:firebase-firestore:17.1.5"
@@ -52,7 +52,7 @@ object Libs {
     }
 
     object Kotlin {
-        private const val version = "1.3.30"
+        private const val version = "1.3.31"
         val stdlib = "org.jetbrains.kotlin:kotlin-stdlib:$version"
         val reflect = "org.jetbrains.kotlin:kotlin-reflect:$version"
         val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
@@ -67,7 +67,7 @@ object Libs {
     }
 
     object AndroidX {
-        val appcompat = "androidx.appcompat:appcompat:1.0.2"
+        val appcompat = "androidx.appcompat:appcompat:1.1.0-alpha05"
         val browser = "androidx.browser:browser:1.0.0"
         val webkit = "androidx.webkit:webkit:1.0.0"
         val palette = "androidx.palette:palette:1.0.0"
@@ -77,15 +77,17 @@ object Libs {
         val dynamicAnimation = "androidx.dynamicanimation:dynamicanimation:1.0.0"
 
         object Navigation {
-            private const val version = "2.1.0-alpha02"
+            private const val version = "2.1.0-alpha03"
             val navigationUi = "androidx.navigation:navigation-ui-ktx:$version"
             val navigationFragment = "androidx.navigation:navigation-fragment-ktx:$version"
             val safeArgs = "androidx.navigation:navigation-safe-args-gradle-plugin:$version"
         }
 
+        val activityKtx = "androidx.activity:activity-ktx:1.0.0-alpha08"
+        val fragmentKtx = "androidx.fragment:fragment-ktx:1.1.0-alpha08"
+
         object Fragment {
-            private const val version = "1.1.0-alpha06"
-            val fragment = "androidx.fragment:fragment:$version"
+            private const val version = "1.1.0-alpha08"
             val fragmentKtx = "androidx.fragment:fragment-ktx:$version"
         }
 
@@ -121,7 +123,7 @@ object Libs {
         }
 
         object Room {
-            private const val version = "2.1.0-alpha06"
+            private const val version = "2.1.0-alpha07"
             val common = "androidx.room:room-common:$version"
             val runtime = "androidx.room:room-runtime:$version"
             val roomktx = "androidx.room:room-ktx:$version"
@@ -146,7 +148,7 @@ object Libs {
     }
 
     object Komprehensions {
-        private const val version = "1.3.0"
+        private const val version = "1.3.1"
         val stdLib = "com.github.pakoito.Komprehensions:komprehensions:$version"
         val rxJava = "com.github.pakoito.Komprehensions:komprehensions-rx2:$version"
     }
@@ -184,13 +186,13 @@ object Libs {
     }
 
     object MvRx {
-        private const val version = "1.0.0"
+        private const val version = "1.0.1"
         val main = "com.airbnb.android:mvrx:$version"
         val testing = "com.airbnb.android:mvrx-testing:$version"
     }
 
     object Epoxy {
-        private const val version = "3.3.0"
+        private const val version = "3.4.2"
         val epoxy = "com.airbnb.android:epoxy:$version"
         val paging = "com.airbnb.android:epoxy-paging:$version"
         val dataBinding = "com.airbnb.android:epoxy-databinding:$version"

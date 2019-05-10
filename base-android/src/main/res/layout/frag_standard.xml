@@ -6,13 +6,12 @@
     android:clickable="true"
     android:focusable="true">
 
-    <LinearLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?toolbarColor"
         android:stateListAnimator="@animator/active_raise"
-        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -22,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="56dp" />
 
-    </LinearLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <com.airbnb.epoxy.EpoxyRecyclerView
         android:id="@+id/recycler"
@@ -43,4 +42,3 @@
         app:layout_constraintTop_toBottomOf="@+id/title_bar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-

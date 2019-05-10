@@ -1,5 +1,6 @@
 package com.bernaferrari.sdkmonitor
 
+import com.airbnb.mvrx.test.MvRxTestRule
 import com.airbnb.mvrx.withState
 import com.bernaferrari.sdkmonitor.settings.SettingsData
 import com.bernaferrari.sdkmonitor.settings.SettingsState
