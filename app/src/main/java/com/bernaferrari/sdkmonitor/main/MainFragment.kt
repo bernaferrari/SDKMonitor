@@ -14,10 +14,10 @@ import com.bernaferrari.sdkmonitor.data.App
 import com.bernaferrari.sdkmonitor.details.DetailsDialog
 import com.bernaferrari.sdkmonitor.emptyContent
 import com.bernaferrari.sdkmonitor.extensions.apiToColor
+import com.bernaferrari.sdkmonitor.extensions.apiToVersion
 import com.bernaferrari.sdkmonitor.loadingRow
 import com.bernaferrari.sdkmonitor.util.InsetDecoration
-import com.bernaferrari.sdkmonitor.views.MainRowModel_
-import com.bernaferrari.sdkmonitor.views.mainRow
+import com.bernaferrari.sdkmonitor.views.LogsItemModel_
 import com.bernaferrari.ui.dagger.DaggerBaseSearchFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
@@ -81,39 +81,38 @@ class MainFragment : DaggerBaseSearchFragment() {
             }
         }
 
-        val colorPrefs = Injector.get().sharedPrefs().getBoolean("colorBySdk", true)
-
         state.listOfItems()?.forEach {
-            mainRow {
-                id(it.app.packageName)
-                this.app(it)
+            val item = it.app
 
-                val color = if (colorPrefs) {
-                    it.sdkVersion.apiToColor()
-                } else {
-                    it.app.backgroundColor
-                }
-
-                this.cardColor(color)
-
-                this.clickListener { _ ->
-                    DetailsDialog.show(requireActivity(), it.app)
-                }
-            }
+            LogsItemModel_()
+                .id(item.packageName)
+                .title(item.title)
+                .targetSDKVersion(it.sdkVersion.toString())
+                .targetSDKDescription(it.sdkVersion.apiToVersion())
+                .apiColor(it.sdkVersion.apiToColor()) // 0xFF9812FF
+                .packageName(item.packageName)
+                .subtitle(it.lastUpdateTime)
+                .onClick { v -> DetailsDialog.show(requireActivity(), it.app) }
+                .addTo(this)
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView.updatePadding(bottom = 16.toDp(resources))
+        recyclerView.updatePadding(
+            left = 8.toDp(resources),
+            bottom = 8.toDp(resources),
+            right = 8.toDp(resources),
+            top = 8.toDp(resources)
+        )
 
         viewModel.inputRelay.accept(getInputText())
 
         fastScroller = viewContainer.inflateFastScroll()
 
         fastScroller.setupFastScroller(recyclerView, activity) {
-            if (getModelAtPos(it) is MainRowModel_) viewModel.itemsList.getOrNull(it) else null
+            if (getModelAtPos(it) is LogsItemModel_) viewModel.itemsList.getOrNull(it) else null
         }
 
         setInputHint("Loading...")
@@ -134,7 +133,6 @@ class MainFragment : DaggerBaseSearchFragment() {
                 }
             }
     }
-
 
     override val closeIconRes: Int? = null
 }

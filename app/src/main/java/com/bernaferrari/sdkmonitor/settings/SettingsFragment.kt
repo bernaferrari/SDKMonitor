@@ -62,20 +62,6 @@ class SettingsFragment : DaggerBaseRecyclerFragment() {
                 }
                 .addTo(this)
 
-            val colorBySdk = state.data()?.colorBySdk ?: true
-
-            SettingsSwitchBindingModel_()
-                .id("color mode")
-                .title("Color by targetSDK")
-                .icon(R.drawable.ic_color)
-                .subtitle(if (colorBySdk) "Color will range from green (recent sdk) to red (old)." else "Color will match the icon's palette.")
-                .switchIsVisible(true)
-                .switchIsOn(colorBySdk)
-                .clickListener { v ->
-                    Injector.get().isColorBySdk().set(!colorBySdk)
-                }
-                .addTo(this)
-
             val orderBySdk = state.data()?.orderBySdk ?: true
 
             SettingsSwitchBindingModel_()

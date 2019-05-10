@@ -10,7 +10,6 @@ import io.reactivex.rxkotlin.Observables
 
 data class SettingsData(
     val lightMode: Boolean,
-    val colorBySdk: Boolean,
     val showSystemApps: Boolean,
     val backgroundSync: Boolean,
     val orderBySdk: Boolean
@@ -50,12 +49,11 @@ class SettingsViewModel @AssistedInject constructor(
 
             val source = Observables.combineLatest(
                 Injector.get().isLightTheme().observe(),
-                Injector.get().isColorBySdk().observe(),
                 Injector.get().showSystemApps().observe(),
                 Injector.get().backgroundSync().observe(),
                 Injector.get().orderBySdk().observe()
-            ) { dark, color, system, backgroundSync, orderBySdk ->
-                SettingsData(dark, color, system, backgroundSync, orderBySdk)
+            ) { dark, system, backgroundSync, orderBySdk ->
+                SettingsData(dark, system, backgroundSync, orderBySdk)
             }
 
             val fragment: SettingsFragment =

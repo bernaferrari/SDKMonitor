@@ -58,12 +58,6 @@ class RxPrefsModule {
     }
 
     @Provides
-    @Named("colorBySdk")
-    fun isColorBySdk(rxPrefs: RxkPrefs): Pref<Boolean> {
-        return rxPrefs.boolean("colorBySdk", true)
-    }
-
-    @Provides
     @Named("showSystemApps")
     fun showSystemApps(rxPrefs: RxkPrefs): Pref<Boolean> {
         return rxPrefs.boolean("showSystemApps", false)
@@ -175,9 +169,6 @@ interface SingletonComponent {
 
     @Named("lightMode")
     fun isLightTheme(): Pref<Boolean>
-
-    @Named("colorBySdk")
-    fun isColorBySdk(): Pref<Boolean>
 
     @Named("showSystemApps")
     fun showSystemApps(): Pref<Boolean>
