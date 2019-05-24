@@ -17,6 +17,7 @@
             android:contentDescription="@null"
             android:padding="20dp"
             android:tint="@color/md_grey_600"
+            android:elevation="2dp"
             app:srcCompat="@drawable/ic_search" />
 
         <TextView

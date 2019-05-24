@@ -11,15 +11,13 @@
         <item name="colorOnPrimary">@color/md_grey_600</item>
 
         <item name="strongColor">@color/FontStrong</item>
-        <item name="cardSeparatorColor">@color/md_grey_200</item>
 
-        <item name="toolbarColor">@color/white</item>
-        <item name="searchBoxColor">@color/md_grey_100</item>
+        <item name="searchBoxColor">@color/md_grey_200</item>
+
+        <item name="android:windowBackground">@color/md_grey_50</item>
+        <item name="toolbarColor">?android:windowBackground</item>
 
         <item name="indicatorFastScrollerStyle">@style/Widget.FastScrollSample.FastScroller</item>
-        <item name="indicatorFastScrollerThumbStyle">
-            @style/Widget.FastScrollSample.FastScrollerThumb
-        </item>
 
         <item name="md_color_button_text">?colorAccent</item>
         <item name="md_corner_radius">16dp</item>
@@ -32,11 +30,10 @@
         <item name="colorPrimaryDark">@color/primary_dark_dark</item>
         <item name="colorAccent">@color/md_indigo_A200</item>
 
-        <item name="colorSurface">@color/primary_dark</item>
+        <item name="colorSurface">@color/primary_dark_dark</item>
         <item name="colorOnPrimary">@color/white</item>
 
         <item name="strongColor">@color/white</item>
-        <item name="cardSeparatorColor">#161F2B</item>
 
         <item name="toolbarColor">@color/primary_dark</item>
         <item name="searchBoxColor">@color/primary_dark_dark</item>
@@ -44,9 +41,6 @@
         <item name="android:windowBackground">@color/window_background_dark</item>
 
         <item name="indicatorFastScrollerStyle">@style/Widget.FastScrollSample.FastScroller</item>
-        <item name="indicatorFastScrollerThumbStyle">
-            @style/Widget.FastScrollSample.FastScrollerThumb
-        </item>
 
         <item name="md_color_button_text">@color/white</item>
         <item name="md_corner_radius">16dp</item>
@@ -69,14 +63,6 @@
 
     <style name="FastScrollerAppearance" parent="TextAppearance.MaterialComponents.Caption">
         <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="Widget.FastScrollSample.FastScrollerThumb" parent="Widget.IndicatorFastScroll.FastScrollerThumb">
-        <item name="android:textColor">@color/white</item>
-    </style>
-
-    <style name="Widget.FastScrollSample.FastScrollerThumb.Colorful">
-        <item name="thumbColor">?colorAccent</item>
     </style>
 
     <style name="ClickableImageView">

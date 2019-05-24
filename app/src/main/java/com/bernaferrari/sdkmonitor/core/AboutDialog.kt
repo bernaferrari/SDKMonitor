@@ -30,11 +30,10 @@ class AboutDialog : DialogFragment() {
         val context = activity ?: throw IllegalStateException("Oh no!")
         return MaterialDialog(context)
             .title(text = getString(R.string.about_title, VERSION_NAME))
-            .message(
-                res = R.string.about_body,
-                html = true,
-                lineHeightMultiplier = 1.4f
-            )
+            .message(res = R.string.about_body) {
+                html()
+                lineSpacing(1.4f)
+            }
             .positiveButton(R.string.contact) {
                 val email = "bernaferrari2+sdk@gmail.com"
                 val emailIntent = Intent("android.intent.action.SENDTO", Uri.parse("mailto:$email"))

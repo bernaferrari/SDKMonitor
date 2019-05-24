@@ -1,7 +1,5 @@
 package com.bernaferrari.sdkmonitor.settings
 
-import android.os.Bundle
-import android.view.View
 import com.airbnb.epoxy.EpoxyController
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.fragmentViewModel
@@ -97,12 +95,5 @@ class SettingsFragment : DaggerBaseRecyclerFragment() {
                 }
                 .addTo(this)
         }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val decoration = InsetDecoration(1, 0, 0x40FFFFFF)
-        recyclerView.addItemDecoration(decoration)
     }
 }

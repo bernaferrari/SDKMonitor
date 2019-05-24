@@ -21,20 +21,21 @@ object Libs {
 
     val gravitySnapHelper = "com.github.rubensousa:gravitysnaphelper:2.0"
 
-    val materialDialogs = "com.afollestad.material-dialogs:core:3.0.0-alpha1"
+    val materialDialogs = "com.afollestad.material-dialogs:core:3.0.0-beta2"
+
     val jsEvaluator = "com.github.evgenyneu:js-evaluator-for-android:5.0.0"
     val logger = "com.orhanobut:logger:2.2.0"
     val okHttp = "com.squareup.okhttp3:okhttp:3.14.0"
 
     val notify = "io.karn:notify:1.2.1"
-    val alerter = "com.tapadoo.android:alerter:4.0.2"
+    val alerter = "com.tapadoo.android:alerter:4.0.3"
     val rxLint = "nl.littlerobots.rxlint:rxlint:1.7.3"
-    val jsoup = "org.jsoup:jsoup:1.11.3"
+    val jsoup = "org.jsoup:jsoup:1.12.1"
     val timeAgo = "com.github.marlonlom:timeago:4.0.1"
 
     val timber = "com.jakewharton.timber:timber:4.7.1"
 
-    val stetho = "com.facebook.stetho:stetho:1.5.0"
+    val stetho = "com.facebook.stetho:stetho:1.5.1"
 
     val junit = "junit:junit:4.12"
     val robolectric = "org.robolectric:robolectric:4.2"
@@ -59,8 +60,14 @@ object Libs {
         val extensions = "org.jetbrains.kotlin:kotlin-android-extensions:$version"
     }
 
+    object MaterialDialogs {
+        private const val version = "3.0.0-beta2"
+        val core = "com.afollestad.material-dialogs:core:$version"
+        val bottomsheets = "com.afollestad.material-dialogs:bottomsheets:$version"
+    }
+
     object Coroutines {
-        private const val version = "1.1.1"
+        private const val version = "1.2.1"
         val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
         val rx2 = "org.jetbrains.kotlinx:kotlinx-coroutines-rx2:$version"
         val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
@@ -77,7 +84,7 @@ object Libs {
         val dynamicAnimation = "androidx.dynamicanimation:dynamicanimation:1.0.0"
 
         object Navigation {
-            private const val version = "2.1.0-alpha03"
+            private const val version = "2.1.0-alpha04"
             val navigationUi = "androidx.navigation:navigation-ui-ktx:$version"
             val navigationFragment = "androidx.navigation:navigation-fragment-ktx:$version"
             val safeArgs = "androidx.navigation:navigation-safe-args-gradle-plugin:$version"
@@ -111,7 +118,7 @@ object Libs {
 
         val preference = "androidx.preference:preference:1.1.0-alpha04"
 
-        val constraintlayout = "androidx.constraintlayout:constraintlayout:2.0.0-alpha4"
+        val constraintlayout = "androidx.constraintlayout:constraintlayout:2.0.0-beta1"
 
         val coreKtx = "androidx.core:core-ktx:1.0.1"
 
@@ -123,7 +130,7 @@ object Libs {
         }
 
         object Room {
-            private const val version = "2.1.0-alpha07"
+            private const val version = "2.1.0-beta01"
             val common = "androidx.room:room-common:$version"
             val runtime = "androidx.room:room-runtime:$version"
             val roomktx = "androidx.room:room-ktx:$version"
@@ -148,13 +155,13 @@ object Libs {
     }
 
     object Komprehensions {
-        private const val version = "1.3.1"
+        private const val version = "1.3.2"
         val stdLib = "com.github.pakoito.Komprehensions:komprehensions:$version"
         val rxJava = "com.github.pakoito.Komprehensions:komprehensions-rx2:$version"
     }
 
     object Dagger {
-        private const val version = "2.22"
+        private const val version = "2.22.1"
         val dagger = "com.google.dagger:dagger:$version"
         val androidSupport = "com.google.dagger:dagger-android-support:$version"
         val compiler = "com.google.dagger:dagger-compiler:$version"
@@ -192,7 +199,7 @@ object Libs {
     }
 
     object Epoxy {
-        private const val version = "3.4.2"
+        private const val version = "3.5.1"
         val epoxy = "com.airbnb.android:epoxy:$version"
         val paging = "com.airbnb.android:epoxy-paging:$version"
         val dataBinding = "com.airbnb.android:epoxy-databinding:$version"
