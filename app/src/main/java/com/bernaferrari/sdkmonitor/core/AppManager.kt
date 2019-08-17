@@ -129,9 +129,9 @@ object AppManager {
 
     fun getPackagesWithUserPrefs(): List<PackageInfo> {
         return if (Injector.get().showSystemApps().get()) {
-            AppManager.getPackages()
+            getPackages()
         } else {
-            AppManager.getPackagesWithOrigin()
+            getPackagesWithOrigin()
         }
     }
 

@@ -1,7 +1,6 @@
 package com.bernaferrari.sdkmonitor
 
 import android.app.Application
-import androidx.fragment.app.Fragment
 import com.bernaferrari.sdkmonitor.core.AppManager
 import com.facebook.stetho.Stetho
 import com.orhanobut.logger.AndroidLogAdapter
@@ -9,15 +8,15 @@ import com.orhanobut.logger.Logger
 import com.squareup.leakcanary.LeakCanary
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.HasSupportFragmentInjector
+import dagger.android.HasAndroidInjector
 import javax.inject.Inject
 
-class MainApplication : Application(), HasSupportFragmentInjector {
+class MainApplication : Application(), HasAndroidInjector {
 
     @Inject
-    lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
+    lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Any>
 
-    override fun supportFragmentInjector(): AndroidInjector<Fragment>? {
+    override fun androidInjector(): AndroidInjector<Any>? {
         return fragmentDispatchingAndroidInjector
     }
 
