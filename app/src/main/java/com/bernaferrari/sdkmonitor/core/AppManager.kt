@@ -154,7 +154,7 @@ object AppManager {
 
     fun getIconFromId(packageName: String): Drawable? {
         return try {
-            packageManager.getApplicationIcon(getApplicationInfo(packageName))
+            packageManager.getApplicationIcon(getApplicationInfo(packageName)!!)
         } catch (e: Exception) {
             null
         }

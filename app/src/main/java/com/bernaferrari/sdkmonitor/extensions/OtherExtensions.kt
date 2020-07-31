@@ -21,15 +21,14 @@ inline val @receiver:ColorInt Int.lighten
 
 // colors inspired from https://www.vanschneider.com/colors
 fun Int.apiToColor(): Int = when (this) {
-    in 0..20 -> 0xFFD31B33.toInt() // red
-    in 21..23 -> 0xFFE54B4B.toInt() // red-orange
-    in 24..25 -> 0xFFE37A46.toInt() // orange
-    in 26..27 -> 0XFF178E96.toInt() // blue-green
+    in 0..22 -> 0xFFD31B33.toInt() // red
+    in 23..25 -> 0xFFE54B4B.toInt() // red-orange
+    in 26..27 -> 0xFFE37A46.toInt() // orange
+    in 28..29 -> 0XFF178E96.toInt() // blue-green
     else -> 0xFF14B572.toInt() // green
 }
 
 fun Int.apiToVersion() = when (this) {
-    2 -> "Petit Four"
     3 -> "Cupcake"
     4 -> "Donut"
     5, 6, 7 -> "Eclair"
@@ -44,7 +43,7 @@ fun Int.apiToVersion() = when (this) {
     24, 25 -> "Nougat"
     26, 27 -> "Oreo"
     28 -> "Pie"
-    else -> ""
+    else -> "Android ${this - 18}"
 }
 
 /**
@@ -53,14 +52,14 @@ fun Int.apiToVersion() = when (this) {
  * @return composed Observable
  */
 fun <A, B, R> doSwitchMap(
-    zero: () -> Observable<A>,
-    one: (A) -> Observable<B>,
-    two: (A, B) -> Observable<R>
+        zero: () -> Observable<A>,
+        one: (A) -> Observable<B>,
+        two: (A, B) -> Observable<R>
 ): Observable<R> =
-    zero.invoke()
-        .switchMap { a ->
-            one.invoke(a)
-                .switchMap { b ->
-                    two.invoke(a, b)
+        zero.invoke()
+                .switchMap { a ->
+                    one.invoke(a)
+                            .switchMap { b ->
+                                two.invoke(a, b)
+                            }
                 }
-        }

@@ -33,13 +33,13 @@ android {
             storePassword = keystoreProperties["storePassword"] as String
         }
     }
-    compileSdkVersion(28)
+    compileSdkVersion(30)
     defaultConfig {
         applicationId = "com.bernaferrari.sdkmonitor"
         minSdkVersion(21)
-        targetSdkVersion(28)
-        versionCode = 10
-        versionName = "0.97"
+        targetSdkVersion(30)
+        versionCode = 11
+        versionName = "0.98"
         multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -49,10 +49,10 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             setProguardFiles(
-                listOf(
-                    getDefaultProguardFile("proguard-android-optimize.txt"),
-                    "proguard-rules.pro"
-                )
+                    listOf(
+                            getDefaultProguardFile("proguard-android-optimize.txt"),
+                            "proguard-rules.pro"
+                    )
             )
             signingConfig = signingConfigs.getByName("release")
         }
@@ -62,11 +62,15 @@ android {
     }
     kapt.correctErrorTypes = true
     lintOptions.isAbortOnError = false
-    dataBinding.isEnabled = true
-
+    buildFeatures {
+        dataBinding = true
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 }
 
@@ -88,7 +92,7 @@ dependencies {
     implementation(Libs.AndroidX.recyclerview)
     implementation(Libs.AndroidX.Fragment.fragmentKtx)
 
-    implementation("androidx.palette:palette:1.0.0")
+    implementation("androidx.palette:palette-ktx:1.0.0")
 
     // Navigation
     implementation(Libs.AndroidX.Navigation.navigationUi)
@@ -145,19 +149,14 @@ dependencies {
 //    debugImplementation(Libs.LeakCanary.support)
     releaseImplementation(Libs.LeakCanary.no_op)
 
-    // Iconics
-    implementation("com.mikepenz:iconics-core:3.1.0@aar")
-    implementation("com.mikepenz:community-material-typeface:2.0.46.1@aar")
-    implementation("com.mikepenz:google-material-typeface:3.0.1.2.original@aar")
-
     // UI
-    implementation("com.reddit:indicator-fast-scroll:1.0.1")
+    implementation("com.reddit:indicator-fast-scroll:1.3.0")
 
     // Time
     implementation(Libs.timeAgo)
 
     // Debugging
     implementation(Libs.junit)
-    testImplementation("org.mockito:mockito-core:2.24.5")
-    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0")
+    testImplementation("org.mockito:mockito-core:3.4.6")
+    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
 }
