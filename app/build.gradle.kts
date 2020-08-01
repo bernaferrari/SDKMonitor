@@ -38,7 +38,7 @@ android {
         applicationId = "com.bernaferrari.sdkmonitor"
         minSdkVersion(21)
         targetSdkVersion(30)
-        versionCode = 11
+        versionCode = 12
         versionName = "0.98"
         multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

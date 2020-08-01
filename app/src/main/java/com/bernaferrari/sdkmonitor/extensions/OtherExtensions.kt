@@ -43,7 +43,7 @@ fun Int.apiToVersion() = when (this) {
     24, 25 -> "Nougat"
     26, 27 -> "Oreo"
     28 -> "Pie"
-    else -> "Android ${this - 18}"
+    else -> "Android ${this - 19}"
 }
 
 /**
