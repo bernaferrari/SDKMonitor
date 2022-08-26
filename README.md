@@ -18,9 +18,13 @@ Every time the targetSDK value for an app is changed, the app will show a push n
 
 This app also showcases the following Jetpack libraries working together: [Room](https://developer.android.com/topic/libraries/architecture/room.html), [ViewModel](https://developer.android.com/reference/android/arch/lifecycle/ViewModel.html), [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager), [DataBinding](https://developer.android.com/topic/libraries/data-binding/) and [Navigation](https://developer.android.com/topic/libraries/architecture/navigation/).
 
-App is currently in beta, you can download the apk here:
+## Download
 
-[APK DOWNLOAD](https://github.com/bernaferrari/SDKMonitor/releases/download/0.98/sdkmonitor.apk)
+[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+     alt="Get it on F-Droid"
+     height="80">](https://f-droid.org/packages/com.bernaferrari.sdkmonitor/)
+
+Or get the APK from the [Releases section](https://github.com/bernaferrari/SDKMonitor/releases/latest).
 
 ## Screenshots
 
