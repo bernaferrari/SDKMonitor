@@ -1,19 +1,6 @@
 package com.bernaferrari.buildsrc
 
-object Versions {
-    val ktlint = "0.29.0"
-}
-
-object Android {
-    val minSdk = 21
-    val targetSdk = 28
-    val compileSdk = 28
-    val versionCode = 1
-    val versionName = "0.1"
-}
-
-object Libs {
-    val androidGradlePlugin = "com.android.tools.build:gradle:3.5.0-beta05"
+object Libs2 {
     val dexcountGradlePlugin = "com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.6"
     val playPublisherPlugin = "com.github.triplet.gradle:play-publisher:2.1.0"
 
@@ -55,7 +42,7 @@ object Libs {
     }
 
     object Kotlin {
-        private const val version = "1.3.72"
+        private const val version = "1.7.20"
         val stdlib = "org.jetbrains.kotlin:kotlin-stdlib:$version"
         val reflect = "org.jetbrains.kotlin:kotlin-reflect:$version"
         val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
@@ -126,9 +113,9 @@ object Libs {
         val coreKtx = "androidx.core:core-ktx:1.3.1"
 
         object Lifecycle {
-            private const val version = "2.2.0"
-            val extensions = "androidx.lifecycle:lifecycle-extensions:$version"
+            private const val version = "2.4.0"
             val liveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:$version"
+            val viewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
             val reactive = "androidx.lifecycle:lifecycle-reactivestreams:$version"
             val compiler = "androidx.lifecycle:lifecycle-compiler:$version"
         }

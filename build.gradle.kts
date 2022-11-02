@@ -1,22 +1,18 @@
 buildscript {
-
     repositories {
         google()
-        jcenter()
+        mavenCentral()
         maven("https://jitpack.io")
+        jcenter()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:4.2.0-alpha07")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.72")
+        classpath("com.android.tools.build:gradle:7.3.1")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.20")
     }
 }
 
-allprojects {
-    repositories {
-        google()
-        jcenter()
-        maven("https://jitpack.io")
-    }
+plugins {
+    id("com.github.ben-manes.versions") version "0.43.0"
 }
 
 tasks.register<Delete>("clean").configure {
