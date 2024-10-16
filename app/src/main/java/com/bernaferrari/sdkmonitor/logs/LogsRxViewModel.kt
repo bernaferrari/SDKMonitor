@@ -3,17 +3,18 @@ package com.bernaferrari.sdkmonitor.logs
 import androidx.lifecycle.LiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import com.airbnb.mvrx.BaseMvRxViewModel
 import com.airbnb.mvrx.FragmentViewModelContext
-import com.airbnb.mvrx.MvRxViewModelFactory
+import com.airbnb.mvrx.MavericksViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
-import com.bernaferrari.base.mvrx.MvRxViewModel
 import com.bernaferrari.sdkmonitor.data.App
 import com.bernaferrari.sdkmonitor.data.Version
 import com.bernaferrari.sdkmonitor.data.source.local.AppsDao
 import com.bernaferrari.sdkmonitor.data.source.local.VersionsDao
 import com.bernaferrari.sdkmonitor.main.MainState
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -24,7 +25,7 @@ class LogsRxViewModel @AssistedInject constructor(
     @Assisted initialState: MainState,
     private val mVersionsDao: VersionsDao,
     private val mAppsDao: AppsDao
-) : MvRxViewModel<MainState>(initialState) {
+) : BaseMvRxViewModel<MainState>(initialState) {
 
     suspend fun getAppList(): Map<String, App> = withContext(Dispatchers.IO) {
         mutableMapOf<String, App>().apply {
@@ -52,12 +53,12 @@ class LogsRxViewModel @AssistedInject constructor(
         ).build()
     }
 
-    @AssistedInject.Factory
+    @AssistedFactory
     interface Factory {
         fun create(initialState: MainState): LogsRxViewModel
     }
 
-    companion object : MvRxViewModelFactory<LogsRxViewModel, MainState> {
+    companion object : MavericksViewModelFactory<LogsRxViewModel, MainState> {
 
         override fun create(
             viewModelContext: ViewModelContext,

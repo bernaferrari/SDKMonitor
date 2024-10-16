@@ -14,26 +14,26 @@ import com.bernaferrari.base.misc.onTextChanged
 import com.bernaferrari.sdkmonitor.Injector
 import com.bernaferrari.sdkmonitor.R
 import com.bernaferrari.sdkmonitor.WorkerHelper
-import kotlinx.android.synthetic.main.dialog_sync.view.*
+import com.bernaferrari.sdkmonitor.databinding.DialogSyncBinding
 
 // inspired from mnml
 class DialogBackgroundSync : DialogFragment() {
+    private var _binding: DialogSyncBinding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
-    companion object {
-        private const val TAG = "[ABOUT_DIALOG]"
-
-        /** Shows the about dialog inside of [activity]. */
-        fun show(activity: FragmentActivity) {
-            val dialog = DialogBackgroundSync()
-            dialog.show(activity.supportFragmentManager, TAG)
-        }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val context = activity ?: throw IllegalStateException("Oh no!")
+        _binding = DialogSyncBinding.inflate(layoutInflater)
 
         return MaterialDialog(context)
-            .customView(R.layout.dialog_sync, noVerticalPadding = true)
+            .customView(null, view = binding.root, noVerticalPadding = true)
             .also { it.getCustomView().setUpViews() }
     }
 
@@ -44,17 +44,17 @@ class DialogBackgroundSync : DialogFragment() {
 
     private fun View.setUpViews() {
 
-        item_switch.isChecked = Injector.get().backgroundSync().get()
+        binding.itemSwitch.isChecked = Injector.get().backgroundSync().get()
 
         Injector.get().syncInterval().get().also { prefs ->
 
             when (prefs.substring(0, 1).toInt()) {
-                0 -> minutes.isChecked = true
-                1 -> hours.isChecked = true
-                2 -> days.isChecked = true
+                0 -> binding.minutes.isChecked = true
+                1 -> binding.hours.isChecked = true
+                2 -> binding.days.isChecked = true
             }
 
-            input.text = prefs.substring(1, 3).toEditText()
+            binding.input.text = prefs.substring(1, 3).toEditText()
         }
 
         // update all descriptions and visibilities.
@@ -63,36 +63,36 @@ class DialogBackgroundSync : DialogFragment() {
         updatePickerVisibility()
 
         // add listeners
-        input.onTextChanged {
+        binding.input.onTextChanged {
             fixSingularPlural()
             updateDescription()
             updateSyncInterval()
         }
 
-        title_bar.setOnClickListener {
-            item_switch.toggle()
+        binding.titleBar.setOnClickListener {
+            binding.itemSwitch.toggle()
             updatePickerVisibility()
             // set shared value for backgroundSync
-            Injector.get().backgroundSync().set(item_switch.isChecked)
+            Injector.get().backgroundSync().set(binding.itemSwitch.isChecked)
         }
     }
 
     private fun View.updatePickerVisibility() {
-        intervalGroup.isVisible = item_switch.isChecked
-        input.isVisible = item_switch.isChecked
+        binding.intervalGroup.isVisible = binding.itemSwitch.isChecked
+        binding.input.isVisible = binding.itemSwitch.isChecked
     }
 
     private fun View.fixSingularPlural() {
-        val newVal = input.text.toString().let { if (it.isEmpty()) "0" else it }.toInt()
+        val newVal = binding.input.text.toString().let { it.ifEmpty { "0" } }.toInt()
 
         if (newVal == 1) {
-            minutes.text = singular[0]
-            hours.text = singular[1]
-            days.text = singular[2]
+            binding.minutes.text = singular[0]
+            binding.hours.text = singular[1]
+            binding.days.text = singular[2]
         } else {
-            minutes.text = plural[0]
-            hours.text = plural[1]
-            days.text = plural[2]
+            binding.minutes.text = plural[0]
+            binding.hours.text = plural[1]
+            binding.days.text = plural[2]
         }
     }
 
@@ -110,24 +110,34 @@ class DialogBackgroundSync : DialogFragment() {
 
     private fun View.whichOneIsSelected(): String {
         return when {
-            minutes.isChecked -> getString(R.string.min)
-            hours.isChecked -> getString(R.string.hours)
-            days.isChecked -> getString(R.string.days)
+            binding.minutes.isChecked -> getString(R.string.min)
+            binding.hours.isChecked -> getString(R.string.hours)
+            binding.days.isChecked -> getString(R.string.days)
             else -> ""
         }
     }
 
     private fun View.updateDescription() {
         // update text string
-        if (!item_switch.isChecked) {
-            nextSync.text = getString(R.string.sync_disabled)
+        if (!binding.itemSwitch.isChecked) {
+            binding.nextSync.text = getString(R.string.sync_disabled)
         } else {
-            val parseInput = input.text.toString()
-                .let { if (it.isEmpty()) "0" else it }.toInt()
+            val parseInput = binding.input.text.toString()
+                .let { it.ifEmpty { "0" } }.toInt()
                 .let { if (it < 15) 15 else it }
 
             // retrieve correct word pronunciation before writing on screen
-            nextSync.text = getString(R.string.sync_every, parseInput, whichOneIsSelected())
+            binding.nextSync.text = getString(R.string.sync_every, parseInput, whichOneIsSelected())
+        }
+    }
+
+    companion object {
+        private const val TAG = "[ABOUT_DIALOG]"
+
+        /** Shows the about dialog inside of [activity]. */
+        fun show(activity: FragmentActivity) {
+            val dialog = DialogBackgroundSync()
+            dialog.show(activity.supportFragmentManager, TAG)
         }
     }
 }

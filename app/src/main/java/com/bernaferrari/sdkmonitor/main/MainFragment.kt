@@ -5,7 +5,11 @@ import android.text.TextUtils
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
-import com.airbnb.mvrx.*
+import com.airbnb.mvrx.Async
+import com.airbnb.mvrx.Fail
+import com.airbnb.mvrx.Loading
+import com.airbnb.mvrx.MvRxState
+import com.airbnb.mvrx.fragmentViewModel
 import com.bernaferrari.base.misc.toDp
 import com.bernaferrari.base.mvrx.simpleController
 import com.bernaferrari.sdkmonitor.Injector
@@ -115,7 +119,7 @@ class MainFragment : DaggerBaseSearchFragment() {
             if (getModelAtPos(it) is LogsItemModel_) viewModel.itemsList.getOrNull(it) else null
         }
 
-        setInputHint("Loading...")
+        setInputHint("Loading…")
 
         disposableManager += viewModel.maxListSize.observeOn(AndroidSchedulers.mainThread())
             .subscribe { setInputHint(resources.getQuantityString(R.plurals.searchApps, it, it)) }

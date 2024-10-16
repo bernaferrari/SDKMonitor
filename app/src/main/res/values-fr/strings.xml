@@ -1,0 +1,56 @@
+<resources>
+    <string name="app_name">SDK Monitor</string>
+
+    <string name="empty_search">Aucun résultat trouvé</string>
+    <string name="empty_logs">Aucun changement détecté</string>
+    <string name="target_history">Historique des SDK cibles</string>
+    <string name="background_sync">Synchronisation en arrière-plan</string>
+    <string name="sync_interval">Intervalle de synchronisation</string>
+    <string name="constraints">Contraintes</string>
+    <string name="charging">En charge</string>
+    <string name="batter_not_low">Batterie non faible</string>
+
+    <string name="min">min</string>
+    <string name="hour">1 heure</string>
+    <string name="hours">heures</string>
+    <string name="days">jours</string>
+
+    <string-array name="singularTime">
+        <item>minute</item>
+        <item>heure</item>
+        <item>jour</item>
+    </string-array>
+
+    <string-array name="pluralTime">
+        <item>minutes</item>
+        <item>heures</item>
+        <item>jours</item>
+    </string-array>
+
+    <plurals name="searchApps">
+        <item quantity="one">Rechercher parmi %d appli</item>
+        <item quantity="other">Rechercher parmi %d applis</item>
+    </plurals>
+
+    <string name="sync_every">Synchroniser tou(te)s les %d %s</string>
+    <string name="sync_disabled">La synchronisation est désactivée</string>
+
+    <string name="dismiss">Fermer</string>
+    <string name="contact">Contact</string>
+    <string name="about_title">SDK Monitor v%1$s</string>
+    <string name="about_body"><![CDATA[
+        Conçu &amp; développé par <b>Bernardo Ferrari</b>.<br/>
+        <a href=\'https://github.com/bernaferrari\'>GitHub</a>&nbsp;&nbsp;
+        <a href=\'https://www.reddit.com/user/bernaferrari\'>Reddit</a>&nbsp;&nbsp;
+        <a href=\'https://www.linkedin.com/in/bernaferrari\'>LinkedIn</a><br/><br/>
+        Ce projet est <a href=\'https://github.com/bernaferrari/SDKMonitor\'>open source</a>, et est
+        sous licence Apache 2.0.</a>
+  ]]></string>
+
+    <string name="background_sync_description">Vérifie de façon périodique si des SDK cibles ont changé, compte tenu des mises à jour d’applications.</string>
+    <string name="home">Accueil</string>
+    <string name="logs">Journal</string>
+    <string name="settings">Paramètres</string>
+    <string name="loading">Chargement…</string>
+
+</resources>

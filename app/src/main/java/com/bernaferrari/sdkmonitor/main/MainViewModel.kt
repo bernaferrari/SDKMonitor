@@ -1,15 +1,16 @@
 package com.bernaferrari.sdkmonitor.main
 
+import com.airbnb.mvrx.BaseMvRxViewModel
 import com.airbnb.mvrx.FragmentViewModelContext
-import com.airbnb.mvrx.MvRxViewModelFactory
+import com.airbnb.mvrx.MavericksViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
-import com.bernaferrari.base.mvrx.MvRxViewModel
 import com.bernaferrari.sdkmonitor.core.AppManager
 import com.bernaferrari.sdkmonitor.data.App
 import com.bernaferrari.sdkmonitor.extensions.normalizeString
 import com.jakewharton.rxrelay2.BehaviorRelay
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.Observables
 import java.util.concurrent.TimeUnit
@@ -17,7 +18,7 @@ import java.util.concurrent.TimeUnit
 class MainViewModel @AssistedInject constructor(
     @Assisted initialState: MainState,
     private val mainRepository: MainDataSource
-) : MvRxViewModel<MainState>(initialState) {
+) : BaseMvRxViewModel<MainState>(initialState) {
 
     val itemsList = mutableListOf<AppVersion>()
     var hasLoaded = false
@@ -88,12 +89,12 @@ class MainViewModel @AssistedInject constructor(
     }
 
 
-    @AssistedInject.Factory
+    @AssistedFactory
     interface Factory {
         fun create(initialState: MainState): MainViewModel
     }
 
-    companion object : MvRxViewModelFactory<MainViewModel, MainState> {
+    companion object : MavericksViewModelFactory<MainViewModel, MainState> {
 
         override fun create(
             viewModelContext: ViewModelContext,

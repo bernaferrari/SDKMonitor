@@ -2,7 +2,7 @@
 
 # SDK Monitor
 
-This app tracks changes on targetSDK from your apps. Starting November 1st, 2018, Google is [requiring all app updates](https://developer.android.com/distribute/best-practices/develop/target-sdk) to target at least 26 (28 is the latest).
+This app tracks changes on targetSDK from your apps. Starting August 31, 2024, Google is [requiring all app updates](https://developer.android.com/distribute/best-practices/develop/target-sdk) to target at least 34 (35 is the latest).
 
 The idea behind this project was to make it easy to see the apps which are "voluntarily" being updated regularly, and the ones that are resisting until the last second.
 I am personally a fan of [App Inspector](https://play.google.com/store/apps/details?id=bg.projectoria.appinspector), with 100K+ downloads, simple interface, and great information. I had, however, 3 issues with it:
@@ -43,7 +43,7 @@ This app contains the following screens:
 This app is a Single-Activity app, with the following components:
 
 - A main activity that handles navigation.
-- A fragment to display the list of apps currently tracked. This fragment makes use of [MvRx](https://github.com/airbnb/MvRx) architecture, and it was a delight integrating search with database on the viewmodel.
+- A fragment to display the list of apps currently tracked. This fragment makes use of [Mavericks](https://github.com/airbnb/mavericks) architecture, and it was a delight integrating search with database on the viewmodel.
 
 The app uses a Model-View-ViewModel (MVVM) architecture for the presentation layer. Each of the fragments corresponds to a MVVM View.
 The View and ViewModel communicate using RxJava2 and general good principles.
@@ -60,9 +60,9 @@ The app also makes use of Kotlin's Coroutines to deal with some callbacks.
 
 #### How components were used
 
-- MvRx and Epoxy: used on the main screen to fetch and filter (if necessary) the list of apps. Since Epoxy wasn't made for items that are changing, the Settings view makes use of Groupie.
+- Mavericks and Epoxy: used on the main screen to fetch and filter (if necessary) the list of apps. Since Epoxy wasn't made for items that are changing, the Settings view makes use of Groupie.
 
-- ViewModel: A _Observables.combineLatest_ will merge the results from database (which will be fetched if empty) and search (which will be empty when app is first opened). Following this, the _execute_ from MvRx will copy the state to the correct EpoxyController.
+- ViewModel: A _Observables.combineLatest_ will merge the results from database (which will be fetched if empty) and search (which will be empty when app is first opened). Following this, the _execute_ from Mavericks will copy the state to the correct EpoxyController.
 
 - WorkManager: responsible for automatically syncing when the app is in background.
   There are two constraints: _battery not low_ and _device charging_.
@@ -78,10 +78,10 @@ The app also makes use of Kotlin's Coroutines to deal with some callbacks.
 - [material-about-library][7] \[eventually\]create an about page without suffering.
 - [Material Dialogs][8] show dialogs in a simple and easy way.
 - [Notify][9] create notifications without effort.
-- [MvRx][10] on the main fragment.
+- [Mavericks][10] on the main fragment.
 - [Stetho][11] debug the database easily.
 - [timeago][12] makes it easy display relative dates (i.e. 1 day ago).
-- [RxJava][13] deals with MvRx and coordinates most of the work on the app.
+- [RxJava][13] deals with Mavericks and coordinates most of the work on the app.
 - [Dagger 2][14] dependency injection for sharedPreferences with application Context, provides singleton database instances.
 
 #### Special thanks
@@ -97,7 +97,7 @@ A lot of the structure and ideas from this app came from [Changes](https://play.
 [7]: https://github.com/daniel-stoneuk/material-about-library
 [8]: https://github.com/afollestad/material-dialogs
 [9]: https://github.com/Karn/notify
-[10]: https://github.com/airbnb/MvRx
+[10]: https://github.com/airbnb/mavericks
 [11]: http://facebook.github.io/stetho/
 [12]: https://github.com/marlonlom/timeago
 [13]: https://github.com/ReactiveX/RxJava

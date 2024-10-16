@@ -5,12 +5,8 @@ import java.util.*
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    id("kotlin-android-extensions")
     id("kotlin-kapt")
-}
-
-androidExtensions {
-    isExperimental = true
+    id("kotlin-parcelize")
 }
 
 android {
@@ -61,9 +57,10 @@ android {
 //        }
     }
     kapt.correctErrorTypes = true
-    lintOptions.isAbortOnError = false
     buildFeatures {
+        buildConfig = true
         dataBinding = true
+        viewBinding = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -71,6 +68,10 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+    namespace = "com.bernaferrari.sdkmonitor"
+    lint {
+        abortOnError = false
     }
 }
 
@@ -90,9 +91,9 @@ dependencies {
     implementation(Libs2.AndroidX.constraintlayout)
     implementation(Libs2.AndroidX.appcompat)
     implementation(Libs2.AndroidX.recyclerview)
-    implementation(Libs2.AndroidX.Fragment.fragmentKtx)
+    implementation(Libs2.AndroidX.fragmentKtx)
 
-    implementation("androidx.palette:palette-ktx:1.0.0")
+    implementation(Libs2.AndroidX.paletteKtx)
 
     // Navigation
     implementation(Libs2.AndroidX.Navigation.navigationUi)
@@ -121,17 +122,15 @@ dependencies {
     implementation(Libs2.Dagger.androidSupport)
     kapt(Libs2.Dagger.androidProcessor)
 
-    compileOnly(Libs2.AssistedInject.annotationDagger2)
-    kapt(Libs2.AssistedInject.processorDagger2)
-
     // Epoxy
     implementation(Libs2.Epoxy.epoxy)
     implementation(Libs2.Epoxy.dataBinding)
     implementation(Libs2.Epoxy.paging)
     kapt(Libs2.Epoxy.processor)
 
-    implementation(Libs2.MvRx.main)
-    testImplementation(Libs2.MvRx.testing)
+    implementation(Libs2.Mavericks.main)
+    implementation(Libs2.Mavericks.rxjava2)
+    testImplementation(Libs2.Mavericks.testing)
 
     // RxJava
     implementation(Libs2.RxJava.rxJava)
@@ -151,13 +150,13 @@ dependencies {
     releaseImplementation(Libs2.LeakCanary.no_op)
 
     // UI
-    implementation("com.reddit:indicator-fast-scroll:1.3.0")
+    implementation(Libs2.indicatorFastScroll)
 
     // Time
     implementation(Libs2.timeAgo)
 
     // Debugging
     implementation(Libs2.junit)
-    testImplementation("org.mockito:mockito-core:3.4.6")
-    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
+    testImplementation(Libs2.mockitoCore)
+    testImplementation(Libs2.mockitoKotlin)
 }

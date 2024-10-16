@@ -7,7 +7,7 @@
 
 
 #
-# Keep rules that are used because MvRx uses Kotlin, Kotlin reflection and RxJava. These are not defined in the
+# Keep rules that are used because Mavericks uses Kotlin, Kotlin reflection and RxJava. These are not defined in the
 # lib as they are not specific to the lib itself but need to be most likely present in any project that uses
 # Kotlin, Kotlin reflection and RxJava.
 #
@@ -55,22 +55,6 @@
 
 # Top-level functions that can only be used by Kotlin.
 -dontwarn retrofit2.-KotlinExtensions
-
-#
-# From https://github.com/square/okhttp/blob/master/okhttp/src/main/resources/META-INF/proguard/okhttp3.pro
-#
-
-# JSR 305 annotations are for embedding nullability information.
--dontwarn javax.annotation.**
-
-# A resource is loaded with a relative path so the package of this class must be preserved.
--keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
-
-# Animal Sniffer compileOnly dependency to ensure APIs are compatible with older versions of Java.
--dontwarn org.codehaus.mojo.animal_sniffer.*
-
-# OkHttp platform used only on JVM and when Conscrypt dependency is available.
--dontwarn okhttp3.internal.platform.ConscryptPlatform
 
 #
 # From: https://github.com/square/moshi/blob/master/kotlin/reflect/src/main/resources/META-INF/proguard/moshi-kotlin.pro

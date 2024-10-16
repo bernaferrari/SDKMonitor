@@ -6,20 +6,30 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import com.bernaferrari.ui.R
+import com.bernaferrari.ui.databinding.FragElasticSearchBinding
 import com.bernaferrari.ui.widgets.ElasticDragDismissFrameLayout
-import kotlinx.android.synthetic.main.frag_elastic_search.*
 
 /**
  * SearchFragment with a Elastic behavior (user can scroll beyond top/bottom to dismiss it).
  */
 abstract class BaseElasticSearchFragment : BaseSearchFragment() {
 
+    private var _binding: FragElasticSearchBinding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.frag_elastic_search, container, false).apply {
-        recyclerView = findViewById(R.id.recycler)
+    ): View? {
+        _binding = FragElasticSearchBinding.inflate(inflater, container, false)
+        val view = binding.root
+        binding.apply {
+            recyclerView = view.findViewById(R.id.recycler)
+        }
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -27,6 +37,11 @@ abstract class BaseElasticSearchFragment : BaseSearchFragment() {
 
         val chromeFader =
             ElasticDragDismissFrameLayout.SystemChromeFader(activity as AppCompatActivity)
-        elastic_container.addListener(chromeFader)
+        binding.elasticContainer.addListener(chromeFader)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

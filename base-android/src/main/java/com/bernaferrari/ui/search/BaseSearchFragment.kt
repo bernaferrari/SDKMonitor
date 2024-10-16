@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
@@ -13,10 +15,9 @@ import com.bernaferrari.base.misc.normalizeString
 import com.bernaferrari.base.misc.onTextChanged
 import com.bernaferrari.base.misc.showKeyboardOnView
 import com.bernaferrari.base.view.onScroll
-import com.bernaferrari.ui.R
 import com.bernaferrari.ui.base.SharedBaseFrag
+import com.bernaferrari.ui.databinding.FragSearchBinding
 import com.bernaferrari.ui.extensions.hideKeyboardWhenNecessary
-import kotlinx.android.synthetic.main.frag_search.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 
@@ -31,13 +32,36 @@ abstract class BaseSearchFragment : SharedBaseFrag(), CoroutineScope {
 
     open val sidePadding = 0
 
+    private var _binding: FragSearchBinding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.frag_search, container, false).apply {
-        recyclerView = findViewById(R.id.recycler)
-        viewContainer = findViewById(R.id.baseContainer)
+    ): View? {
+        _binding = FragSearchBinding.inflate(inflater, container, false)
+        val view = binding.root
+        _binding.apply {
+            recyclerView = binding.recycler
+            viewContainer = binding.baseContainer
+        }
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
+            val bars = insets.getInsets(
+                WindowInsetsCompat.Type.systemBars()
+                        or WindowInsetsCompat.Type.displayCutout()
+            )
+            v.updatePadding(
+                left = bars.left,
+                top = bars.top,
+                right = bars.right,
+                //bottom = bars.bottom,
+            )
+            WindowInsetsCompat.CONSUMED
+        }
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,52 +73,56 @@ abstract class BaseSearchFragment : SharedBaseFrag(), CoroutineScope {
             // this will take care of titleElevation
             // recycler might be null when back is pressed
             val raiseTitleBar = dy > 0 || recyclerView.computeVerticalScrollOffset() != 0
-            title_bar?.isActivated = raiseTitleBar // animated via a StateListAnimator
+            binding.titleBar.isActivated = raiseTitleBar // animated via a StateListAnimator
         }
 
         recyclerView.updatePadding(left = sidePadding, right = sidePadding)
 
-        toolbarMenu.isVisible = showMenu
+        binding.toolbarMenu.isVisible = showMenu
 
         if (showMenu) {
-            (activity as? AppCompatActivity)?.setSupportActionBar(toolbarMenu)
-            toolbarMenu.title = null
+            (activity as? AppCompatActivity)?.setSupportActionBar(
+                binding.toolbarMenu
+            )
+            binding.toolbarMenu.title = null
         }
 
-        queryInput.onTextChanged { search ->
-            queryClear.isInvisible = search.isEmpty()
+        binding.queryInput.onTextChanged { search ->
+            binding.queryClear.isInvisible = search.isEmpty()
             recyclerView.smoothScrollToPosition(0)
             onTextChanged(search.toString().normalizeString())
         }
 
-        searchIcon.setOnClickListener {
-            queryInput.showKeyboardOnView()
+        binding.searchIcon.setOnClickListener {
+            binding.queryInput.showKeyboardOnView()
         }
 
         if (showKeyboardWhenLoaded) {
-            queryInput.showKeyboardOnView()
+            binding.queryInput.showKeyboardOnView()
         }
 
-        hideKeyboardWhenNecessary(recyclerView, queryInput)
+        hideKeyboardWhenNecessary(recyclerView, binding.queryInput)
 
-        queryClear.setOnClickListener { queryInput.setText("") }
+        binding.queryClear.setOnClickListener {
+            binding.queryInput.setText("")
+        }
 
         if (closeIconRes == null) {
-            close.visibility = View.GONE
+            binding.close.visibility = View.GONE
         } else {
             val closeIcon = closeIconRes ?: 0
-            close.setImageResource(closeIcon)
-            close.setOnClickListener { dismiss() }
+            binding.close.setImageResource(closeIcon)
+            binding.close.setOnClickListener { dismiss() }
         }
     }
 
     abstract fun onTextChanged(searchText: String)
 
     fun setInputHint(hint: String) {
-        queryInput?.hint = hint
+        binding.queryInput.hint = hint
     }
 
-    fun getInputText(): String = queryInput.text.toString()
+    fun getInputText(): String = binding.queryInput.text.toString()
 
     fun scrollToPosition(pos: Int) = recyclerView.scrollToPosition(pos)
 
@@ -102,5 +130,10 @@ abstract class BaseSearchFragment : SharedBaseFrag(), CoroutineScope {
         coroutineContext.cancel()
         disposableManager.clear()
         super.onDestroy()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
