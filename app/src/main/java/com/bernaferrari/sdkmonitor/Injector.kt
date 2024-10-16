@@ -15,7 +15,6 @@ import com.bernaferrari.sdkmonitor.main.DatabaseDataSource
 import com.bernaferrari.sdkmonitor.main.MainDataSource
 import com.bernaferrari.sdkmonitor.main.MainFragment
 import com.bernaferrari.sdkmonitor.settings.SettingsFragment
-import com.squareup.inject.assisted.dagger2.AssistedModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.Module
@@ -25,8 +24,7 @@ import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Named
 import javax.inject.Singleton
 
-@AssistedModule
-@Module(includes = [AssistedInject_AppModule::class])
+@Module
 abstract class AppModule
 
 @Module

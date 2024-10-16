@@ -95,7 +95,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:lines="1"
-                android:maxWidth="120dp"
+                android:maxWidth="125dp"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
                 android:text="@{targetSDKDescription}"

@@ -1,6 +1,6 @@
 package com.bernaferrari.sdkmonitor
 
-import com.airbnb.mvrx.test.MvRxTestRule
+import com.airbnb.mvrx.test.MavericksTestRule
 import com.airbnb.mvrx.withState
 import com.bernaferrari.sdkmonitor.settings.SettingsData
 import com.bernaferrari.sdkmonitor.settings.SettingsState
@@ -80,14 +80,13 @@ class SettingsViewModelTest {
             settings,
             Observable.just(true),
             Observable.just(true),
-            Observable.just(true),
             Observable.just(true)
-        ) { dark, color, system, backgroundSync, orderBySdl ->
-            SettingsData(dark, color, system, backgroundSync, orderBySdl)
+        ) { dark, system, backgroundSync, orderBySdk ->
+            SettingsData(dark, system, backgroundSync, orderBySdk)
         }
 
         @JvmField
         @ClassRule
-        val mvrxTestRule = MvRxTestRule()
+        val mavericksTestRule = MavericksTestRule()
     }
 }

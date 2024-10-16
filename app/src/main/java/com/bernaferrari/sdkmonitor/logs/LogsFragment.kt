@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import com.airbnb.epoxy.EpoxyModel
-import com.airbnb.epoxy.paging.PagedListEpoxyController
+import com.airbnb.epoxy.paging3.PagedListEpoxyController
 import com.airbnb.mvrx.fragmentViewModel
 import com.bernaferrari.sdkmonitor.*
 import com.bernaferrari.sdkmonitor.data.App

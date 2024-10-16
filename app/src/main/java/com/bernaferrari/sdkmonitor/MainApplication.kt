@@ -1,6 +1,8 @@
 package com.bernaferrari.sdkmonitor
 
 import android.app.Application
+import com.airbnb.mvrx.Mavericks
+import com.airbnb.mvrx.MavericksViewModelConfigFactory
 import com.bernaferrari.sdkmonitor.core.AppManager
 import com.facebook.stetho.Stetho
 import com.orhanobut.logger.AndroidLogAdapter
@@ -47,6 +49,10 @@ class MainApplication : Application(), HasAndroidInjector {
         if (BuildConfig.DEBUG) {
             Stetho.initializeWithDefaults(this)
         }
+
+        val viewModelConfigFactory = MavericksViewModelConfigFactory(BuildConfig.DEBUG)
+
+        Mavericks.initialize(this, viewModelConfigFactory)
 
         AppManager.init(this)
     }

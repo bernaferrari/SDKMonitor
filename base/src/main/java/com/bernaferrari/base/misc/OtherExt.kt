@@ -4,7 +4,6 @@ import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 
 
@@ -23,7 +22,7 @@ internal fun ImageView.setAndStartAnimation(res: Int) {
  */
 inline fun <reified VM : ViewModel> Fragment.viewModelProvider(
     provider: ViewModelProvider.Factory
-) = ViewModelProviders.of(this, provider).get(VM::class.java)
+) = ViewModelProvider(this, provider)[VM::class.java]
 
 internal fun Fragment.getStringFromArguments(
     key: String,

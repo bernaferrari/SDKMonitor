@@ -56,7 +56,7 @@
     </style>
 
     <style name="Widget.FastScrollSample.FastScroller" parent="Widget.IndicatorFastScroll.FastScroller">
-        <item name="iconColor">@color/pressed_selector</item>
+        <item name="fastScrollerIconColor">@color/pressed_selector</item>
         <item name="android:textAppearance">@style/FastScrollerAppearance</item>
         <item name="android:textColor">@color/pressed_selector</item>
     </style>

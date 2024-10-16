@@ -1,10 +1,16 @@
 package com.bernaferrari.sdkmonitor.settings
 
-import com.airbnb.mvrx.*
-import com.bernaferrari.base.mvrx.MvRxViewModel
+import com.airbnb.mvrx.Async
+import com.airbnb.mvrx.BaseMvRxViewModel
+import com.airbnb.mvrx.FragmentViewModelContext
+import com.airbnb.mvrx.Loading
+import com.airbnb.mvrx.MavericksViewModelFactory
+import com.airbnb.mvrx.MvRxState
+import com.airbnb.mvrx.ViewModelContext
 import com.bernaferrari.sdkmonitor.Injector
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.Observables
 
@@ -22,7 +28,7 @@ data class SettingsState(
 class SettingsViewModel @AssistedInject constructor(
     @Assisted initialState: SettingsState,
     @Assisted private val sources: Observable<SettingsData>
-) : MvRxViewModel<SettingsState>(initialState) {
+) : BaseMvRxViewModel<SettingsState>(initialState) {
 
     init {
         fetchData()
@@ -32,7 +38,7 @@ class SettingsViewModel @AssistedInject constructor(
         sources.execute { copy(data = it) }
     }
 
-    @AssistedInject.Factory
+    @AssistedFactory
     interface Factory {
         fun create(
             initialState: SettingsState,
@@ -40,12 +46,12 @@ class SettingsViewModel @AssistedInject constructor(
         ): SettingsViewModel
     }
 
-    companion object : MvRxViewModelFactory<SettingsViewModel, SettingsState> {
+    companion object : MavericksViewModelFactory<SettingsViewModel, SettingsState> {
 
         override fun create(
             viewModelContext: ViewModelContext,
             state: SettingsState
-        ): SettingsViewModel? {
+        ): SettingsViewModel {
 
             val source = Observables.combineLatest(
                 Injector.get().isLightTheme().observe(),

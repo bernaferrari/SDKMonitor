@@ -9,8 +9,8 @@ import com.bernaferrari.base.misc.hideKeyboard
 import com.bernaferrari.base.view.inflate
 import com.bernaferrari.sdkmonitor.R
 import com.reddit.indicatorfastscroll.FastScrollItemIndicator
+import com.reddit.indicatorfastscroll.FastScrollerThumbView
 import com.reddit.indicatorfastscroll.FastScrollerView
-import kotlinx.android.synthetic.main.reddit_fast_scroller.view.*
 
 private fun getItemIndicator(itemFromList: AppVersion?): FastScrollItemIndicator? {
     // it might be null when model is updated really fast
@@ -29,7 +29,7 @@ internal fun View.setupFastScroller(
 ) {
     val linearLayoutManager = recyclerView.layoutManager ?: return
 
-    fastscroller.setupWithRecyclerView(
+    findViewById<FastScrollerView>(R.id.fastscroller).setupWithRecyclerView(
         recyclerView = recyclerView,
         useDefaultScroller = false,
         getItemIndicator = { pos -> getItemIndicator(items(pos)) }
@@ -39,7 +39,7 @@ internal fun View.setupFastScroller(
         override fun getVerticalSnapPreference(): Int = SNAP_TO_START
     }
 
-    fastscroller.itemIndicatorSelectedCallbacks += object :
+    findViewById<FastScrollerView>(R.id.fastscroller).itemIndicatorSelectedCallbacks += object :
         FastScrollerView.ItemIndicatorSelectedCallback {
         override fun onItemIndicatorSelected(
             indicator: FastScrollItemIndicator,
@@ -53,7 +53,9 @@ internal fun View.setupFastScroller(
         }
     }
 
-    fastscroller_thumb.setupWithFastScroller(fastscroller)
+    findViewById<FastScrollerThumbView>(R.id.fastscroller_thumb).setupWithFastScroller(
+        findViewById(R.id.fastscroller)
+    )
 }
 
 fun FrameLayout.inflateFastScroll(): View {

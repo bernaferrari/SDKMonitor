@@ -3,25 +3,21 @@ package com.bernaferrari.ui.extras
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import com.airbnb.mvrx.MvRxView
-import com.airbnb.mvrx.MvRxViewModelStore
 import com.bernaferrari.ui.base.PERSISTED_VIEW_ID_KEY
 import java.util.*
 
 /**
- * Make your base Fragment class extend this to get MvRx functionality.
+ * Make your base Fragment class extend this to get Mavericks functionality.
  *
  * This is necessary for the view model delegates and persistence to work correctly.
  */
 abstract class BaseMvRxDialogFragment : DialogFragment(), MvRxView {
-
-    override val mvrxViewModelStore by lazy { MvRxViewModelStore(viewModelStore) }
 
     final override val mvrxViewId: String by lazy { mvrxPersistedViewId }
 
     private lateinit var mvrxPersistedViewId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        mvrxViewModelStore.restoreViewModels(this, savedInstanceState)
         mvrxPersistedViewId =
             savedInstanceState?.getString(PERSISTED_VIEW_ID_KEY)
                     ?: "${this::class.java.simpleName}_${UUID.randomUUID()}"
@@ -30,7 +26,6 @@ abstract class BaseMvRxDialogFragment : DialogFragment(), MvRxView {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        mvrxViewModelStore.saveViewModels(outState)
         outState.putString(PERSISTED_VIEW_ID_KEY, mvrxViewId)
     }
 

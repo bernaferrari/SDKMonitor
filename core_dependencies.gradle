@@ -2,18 +2,19 @@ import com.bernaferrari.buildsrc.Libs2
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-parcelize'
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion 35
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 33
+        targetSdkVersion 35
     }
 
     compileOptions {
-        targetCompatibility 1.8
-        sourceCompatibility 1.8
+        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -28,8 +29,9 @@ dependencies {
     implementation Libs2.Epoxy.epoxy
     implementation Libs2.Epoxy.dataBinding
 
-    // MvRx
-    implementation Libs2.MvRx.main
+    // Mavericks
+    implementation Libs2.Mavericks.main
+    implementation Libs2.Mavericks.rxjava2
 
     // Glide
     implementation Libs2.Glide.glide

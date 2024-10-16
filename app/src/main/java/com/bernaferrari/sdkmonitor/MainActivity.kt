@@ -1,12 +1,14 @@
 package com.bernaferrari.sdkmonitor
 
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
-import com.airbnb.mvrx.BaseMvRxActivity
-import kotlinx.android.synthetic.main.activity_main.*
+import com.bernaferrari.sdkmonitor.databinding.ActivityMainBinding
 
-class MainActivity : BaseMvRxActivity() {
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (Injector.get().isLightTheme().get()) {
@@ -15,11 +17,15 @@ class MainActivity : BaseMvRxActivity() {
             setTheme(R.style.AppThemeDark)
         }
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
-        NavigationUI.setupWithNavController(
-            bottom_nav,
-            nav_host_fragment.findNavController()
-        )
+        supportFragmentManager.findFragmentById(R.id.nav_host_fragment)?.let { fragment ->
+            NavigationUI.setupWithNavController(
+                binding.bottomNav,
+                fragment.findNavController()
+            )
+        }
     }
 }

@@ -21,10 +21,10 @@ inline val @receiver:ColorInt Int.lighten
 
 // colors inspired from https://www.vanschneider.com/colors
 fun Int.apiToColor(): Int = when (this) {
-    in 0..22 -> 0xFFD31B33.toInt() // red
-    in 23..25 -> 0xFFE54B4B.toInt() // red-orange
-    in 26..27 -> 0xFFE37A46.toInt() // orange
-    in 28..29 -> 0XFF178E96.toInt() // blue-green
+    in 0..31 -> 0xFFD31B33.toInt() // red
+    32 -> 0xFFE54B4B.toInt() // red-orange
+    33 -> 0xFFE37A46.toInt() // orange
+    34 -> 0XFF178E96.toInt() // blue-green
     else -> 0xFF14B572.toInt() // green
 }
 
@@ -43,7 +43,9 @@ fun Int.apiToVersion() = when (this) {
     24, 25 -> "Nougat"
     26, 27 -> "Oreo"
     28 -> "Pie"
-    else -> "Android ${this - 19}"
+    29, 30, 31 -> "Android ${this - 19}"
+    32 -> "Android 12L"
+    else -> "Android ${this - 20}"
 }
 
 /**

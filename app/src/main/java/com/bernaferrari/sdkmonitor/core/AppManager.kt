@@ -54,6 +54,8 @@ object AppManager {
 
     fun insertNewVersion(packageInfo: PackageInfo) {
 
+        if (packageInfo.applicationInfo == null) return
+
         val versionCode =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 packageInfo.longVersionCode
@@ -61,7 +63,7 @@ object AppManager {
                 packageInfo.versionCode.toLong()
             }
 
-        val currentTargetSDK = packageInfo.applicationInfo.targetSdkVersion
+        val currentTargetSDK = packageInfo.applicationInfo!!.targetSdkVersion
 
         val lastVersion = Injector.get().versionsDao().getLastTargetSDK(packageInfo.packageName)
 
@@ -97,13 +99,15 @@ object AppManager {
 
     // there are apps with extra space on the name
     private fun getAppLabel(packageInfo: PackageInfo) =
-        packageManager.getApplicationLabel(packageInfo.applicationInfo).toString().trim()
+        packageManager.getApplicationLabel(packageInfo.applicationInfo!!).toString().trim()
 
     fun insertNewApp(packageInfo: PackageInfo) {
 
         if (Injector.get().appsDao().getAppString(packageInfo.packageName) != null) return
 
-        val icon = packageManager.getApplicationIcon(packageInfo.applicationInfo).toBitmap()
+        if (packageInfo.applicationInfo == null) return
+
+        val icon = packageManager.getApplicationIcon(packageInfo.applicationInfo!!).toBitmap()
         val backgroundColor = getPaletteColor(Palette.from(icon).generate())
         val label = getAppLabel(packageInfo)
 

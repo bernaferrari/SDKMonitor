@@ -7,9 +7,8 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.appcompat.widget.Toolbar
 import com.bernaferrari.base.view.onScroll
-import com.bernaferrari.ui.R
 import com.bernaferrari.ui.base.SharedBaseFrag
-import kotlinx.android.synthetic.main.frag_standard.*
+import com.bernaferrari.ui.databinding.FragStandardBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 
@@ -18,23 +17,31 @@ import kotlinx.coroutines.cancel
  */
 abstract class BaseToolbarFragment : SharedBaseFrag(), CoroutineScope {
 
-    open val inflateRes = R.layout.frag_standard
-
     abstract val menuTitle: String?
 
     lateinit var viewContainer: FrameLayout
     lateinit var toolbar: Toolbar
     lateinit var titleBar: ViewGroup
 
+    private var _binding: FragStandardBinding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(inflateRes, container, false).apply {
-        recyclerView = findViewById(R.id.recycler)
-        viewContainer = findViewById(R.id.baseContainer)
-        toolbar = findViewById(R.id.toolbarMenu)
-        titleBar = findViewById(R.id.title_bar)
+    ): View? {
+        _binding = FragStandardBinding.inflate(inflater, container, false)
+        val view = binding.root
+        _binding.apply {
+            recyclerView = binding.recycler
+            viewContainer = binding.baseContainer
+            toolbar = binding.toolbarMenu
+            titleBar = binding.titleBar
+        }
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -51,12 +58,17 @@ abstract class BaseToolbarFragment : SharedBaseFrag(), CoroutineScope {
             // this will take care of titleElevation
             // recycler might be null when back is pressed
             val raiseTitleBar = dy > 0 || recyclerView.computeVerticalScrollOffset() != 0
-            title_bar?.isActivated = raiseTitleBar // animated via a StateListAnimator
+            binding.titleBar.isActivated = raiseTitleBar // animated via a StateListAnimator
         }
     }
 
     override fun onDestroy() {
         coroutineContext.cancel()
         super.onDestroy()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

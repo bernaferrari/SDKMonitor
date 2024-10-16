@@ -3,7 +3,6 @@ import com.bernaferrari.buildsrc.Libs2
 plugins {
     id("com.android.library")
     id("kotlin-android")
-    id("kotlin-android-extensions")
     id("kotlin-kapt")
 }
 apply {
@@ -21,6 +20,13 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    buildFeatures {
+        buildConfig = true
+        viewBinding = true
+    }
+
+    namespace = "com.bernaferrari.ui"
 }
 
 dependencies {
