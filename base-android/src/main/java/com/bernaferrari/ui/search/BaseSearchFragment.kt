@@ -119,7 +119,7 @@ abstract class BaseSearchFragment : SharedBaseFrag(), CoroutineScope {
     abstract fun onTextChanged(searchText: String)
 
     fun setInputHint(hint: String) {
-        binding.queryInput.hint = hint
+        _binding?.queryInput?.hint = hint
     }
 
     fun getInputText(): String = binding.queryInput.text.toString()
