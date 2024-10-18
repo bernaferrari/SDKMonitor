@@ -7,7 +7,6 @@ import com.bernaferrari.sdkmonitor.core.AppManager
 import com.facebook.stetho.Stetho
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
-import com.squareup.leakcanary.LeakCanary
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
@@ -38,13 +37,6 @@ class MainApplication : Application(), HasAndroidInjector {
                 return BuildConfig.DEBUG
             }
         })
-
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
-            return
-        }
-        LeakCanary.install(this)
 
         if (BuildConfig.DEBUG) {
             Stetho.initializeWithDefaults(this)
