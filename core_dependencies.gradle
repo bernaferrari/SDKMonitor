@@ -1,47 +1,30 @@
-import com.bernaferrari.buildsrc.Libs2
-
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-parcelize'
 
-android {
-    compileSdkVersion 35
-
-    defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 35
-    }
-
-    compileOptions {
-        targetCompatibility JavaVersion.VERSION_1_8
-        sourceCompatibility JavaVersion.VERSION_1_8
-    }
-}
-
 dependencies {
-
     // Kotlin
-    implementation Libs2.Kotlin.stdlib
-    implementation Libs2.Coroutines.core
-    implementation Libs2.Coroutines.android
+    implementation libs.kotlin.stdlib
+    implementation libs.kotlinx.coroutines.core
+    implementation libs.kotlinx.coroutines.android
 
     // Epoxy
-    implementation Libs2.Epoxy.epoxy
-    implementation Libs2.Epoxy.dataBinding
+    implementation libs.epoxy
+    implementation libs.epoxy.databinding
 
     // Mavericks
-    implementation Libs2.Mavericks.main
-    implementation Libs2.Mavericks.rxjava2
+    implementation libs.mavericks
+    implementation libs.mavericks.rxjava2
 
     // Glide
-    implementation Libs2.Glide.glide
+    implementation libs.glide
 
     // Dagger
-    implementation Libs2.Dagger.dagger
-    implementation Libs2.Dagger.androidSupport
+    implementation libs.dagger
+    implementation libs.dagger.androidSupport
 
     // AndroidX
-    implementation Libs2.Google.material
-    implementation Libs2.AndroidX.coreKtx
-    implementation Libs2.AndroidX.constraintlayout
+    implementation libs.material
+    implementation libs.androidx.core.ktx
+    implementation libs.androidx.constraintlayout
 }
