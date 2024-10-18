@@ -17,7 +17,7 @@ private fun getItemIndicator(itemFromList: AppVersion?): FastScrollItemIndicator
     if (itemFromList == null) return null
 
     val letter = itemFromList.app.title.substring(0, 1)
-    val index = if (!letter[0].isLetter()) "#" else letter.toUpperCase()
+    val index = if (!letter[0].isLetter()) "#" else letter.uppercase()
 
     return FastScrollItemIndicator.Text(index) // Return a text indicator
 }

@@ -1,5 +1,3 @@
-import com.bernaferrari.buildsrc.Libs2
-
 plugins {
     id("com.android.library")
     id("kotlin-android")
@@ -10,17 +8,6 @@ apply {
 }
 
 android {
-    compileSdk = libs.versions.compileSdk.get().toInt()
-
-    defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInt()
-        targetSdk = libs.versions.targetSdk.get().toInt()
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-
     buildFeatures {
         buildConfig = true
         viewBinding = true
@@ -32,9 +19,8 @@ android {
 dependencies {
     implementation(project(":base"))
 
-    // Google
-    implementation(Libs2.AndroidX.Lifecycle.liveDataKtx)
-    implementation(Libs2.AndroidX.Lifecycle.viewModel)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
-    implementation(Libs2.RxJava.rxRelay)
+    implementation(libs.rxrelay)
 }

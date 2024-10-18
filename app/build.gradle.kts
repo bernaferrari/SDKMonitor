@@ -1,4 +1,3 @@
-import com.bernaferrari.buildsrc.Libs2
 import java.io.FileInputStream
 import java.util.*
 
@@ -29,16 +28,15 @@ android {
             storePassword = keystoreProperties["storePassword"] as String
         }
     }
-    compileSdk = libs.versions.compileSdk.get().toInt()
+
     defaultConfig {
         applicationId = "com.bernaferrari.sdkmonitor"
-        minSdk = libs.versions.minSdk.get().toInt()
-        targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = 13
         versionName = "0.99"
         multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         named("release") {
             isDebuggable = false
@@ -56,18 +54,12 @@ android {
 //            applicationIdSuffix = ".debug"
 //        }
     }
+
     kapt.correctErrorTypes = true
     buildFeatures {
         buildConfig = true
         dataBinding = true
         viewBinding = true
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
     }
     namespace = "com.bernaferrari.sdkmonitor"
     lint {
@@ -81,82 +73,81 @@ dependencies {
     implementation(project(":base-android"))
 
     // Kotlin
-    implementation(Libs2.Kotlin.stdlib)
-    implementation(Libs2.Coroutines.core)
-    implementation(Libs2.Coroutines.android)
+    implementation(libs.kotlin.stdlib)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
 
     // Google
-    implementation(Libs2.Google.material)
-    implementation(Libs2.AndroidX.coreKtx)
-    implementation(Libs2.AndroidX.constraintlayout)
-    implementation(Libs2.AndroidX.appcompat)
-    implementation(Libs2.AndroidX.recyclerview)
-    implementation(Libs2.AndroidX.fragmentKtx)
+    implementation(libs.material)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.fragment.ktx)
 
-    implementation(Libs2.AndroidX.paletteKtx)
+    implementation(libs.androidx.palette.ktx)
 
     // Navigation
-    implementation(Libs2.AndroidX.Navigation.navigationUi)
-    implementation(Libs2.AndroidX.Navigation.navigationFragment)
+    implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.navigation.fragment.ktx)
 
     // Room
-    kapt(Libs2.AndroidX.Room.compiler)
-    implementation(Libs2.AndroidX.Room.runtime)
-    implementation(Libs2.AndroidX.Room.roomktx)
-    implementation(Libs2.AndroidX.Room.rxjava2)
+    kapt(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.room.rxjava2)
 
     // LiveData
-    implementation(Libs2.AndroidX.Lifecycle.liveDataKtx)
-    implementation(Libs2.AndroidX.Lifecycle.viewModel)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
     // Paging
-    implementation(Libs2.AndroidX.Paging.runtimeKtx)
+    implementation(libs.androidx.paging.runtime.ktx)
 
     // Work
-    implementation(Libs2.AndroidX.Work.runtimeKtx)
+    implementation(libs.androidx.work.runtime.ktx)
 
     // Dagger
-    implementation(Libs2.Dagger.dagger)
-    kapt(Libs2.Dagger.compiler)
+    implementation(libs.dagger)
+    kapt(libs.dagger.compiler)
 
-    implementation(Libs2.Dagger.androidSupport)
-    kapt(Libs2.Dagger.androidProcessor)
+    implementation(libs.dagger.androidSupport)
+    kapt(libs.dagger.androidProcessor)
 
     // Epoxy
-    implementation(Libs2.Epoxy.epoxy)
-    implementation(Libs2.Epoxy.dataBinding)
-    implementation(Libs2.Epoxy.paging)
-    kapt(Libs2.Epoxy.processor)
+    implementation(libs.epoxy)
+    implementation(libs.epoxy.databinding)
+    implementation(libs.epoxy.paging3)
+    kapt(libs.epoxy.processor)
 
-    implementation(Libs2.Mavericks.main)
-    implementation(Libs2.Mavericks.rxjava2)
-    testImplementation(Libs2.Mavericks.testing)
+    implementation(libs.mavericks)
+    implementation(libs.mavericks.rxjava2)
+    testImplementation(libs.mavericks.testing)
 
     // RxJava
-    implementation(Libs2.RxJava.rxJava)
-    implementation(Libs2.RxJava.rxAndroid)
-    implementation(Libs2.RxJava.rxKotlin)
-    implementation(Libs2.RxJava.rxRelay)
-    implementation(Libs2.RxJava.rxkPrefs)
+    implementation(libs.rxjava2.rxjava)
+    implementation(libs.rxjava2.rxandroid)
+    implementation(libs.rxjava2.rxkotlin)
+    implementation(libs.rxrelay)
+    implementation(libs.rxkprefs)
 
-    implementation(Libs2.materialDialogs)
-    implementation(Libs2.stetho)
-    implementation(Libs2.logger)
+    implementation(libs.material.dialogs)
+    implementation(libs.stetho)
+    implementation(libs.logger)
 
-    implementation(Libs2.notify)
+    implementation(libs.notify)
 
-    debugImplementation(Libs2.LeakCanary.no_op)
-//    debugImplementation(Libs2.LeakCanary.support)
-    releaseImplementation(Libs2.LeakCanary.no_op)
+    debugImplementation(libs.leakcanary)
+//    debugImplementation(libs.leakcanary.support)
 
     // UI
-    implementation(Libs2.indicatorFastScroll)
+    implementation(libs.indicatorfastscroll)
 
     // Time
-    implementation(Libs2.timeAgo)
+    implementation(libs.timeago)
 
     // Debugging
-    implementation(Libs2.junit)
-    testImplementation(Libs2.mockitoCore)
-    testImplementation(Libs2.mockitoKotlin)
+    implementation(libs.junit)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.kotlin)
 }
