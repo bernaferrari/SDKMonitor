@@ -86,7 +86,8 @@ object AppManager {
                     .meta {
                         this.clickIntent = PendingIntent.getActivity(
                             appContext, 0,
-                            Intent(appContext, MainActivity::class.java), 0
+                            Intent(appContext, MainActivity::class.java),
+                            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
                         )
                     }.content {
                         title = "TargetSDK changed for ${getAppLabel(packageInfo)}!"
