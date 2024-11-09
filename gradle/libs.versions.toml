@@ -1,6 +1,6 @@
 [versions]
 activityCompose = "1.9.3"
-androidGradlePlugin = "8.7.1"
+androidGradlePlugin = "8.7.2"
 appcompat = "1.7.0"
 compose = "1.7.4"
 constraintLayoutCompose = "1.0.1"
