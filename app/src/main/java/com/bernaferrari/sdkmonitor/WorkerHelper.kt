@@ -44,7 +44,7 @@ object WorkerHelper {
             if (constraints.charging) this.setRequiresCharging(true)
         }
 
-        val realDelay = delay.substring(1, 3).toLong()
+        val realDelay = delay.substring(1).toLong()
 
         val timeUnit = when (delay.substring(0, 1).toInt()) {
             1 -> TimeUnit.MINUTES
