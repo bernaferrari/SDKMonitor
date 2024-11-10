@@ -54,7 +54,7 @@ class DialogBackgroundSync : DialogFragment() {
                 2 -> binding.days.isChecked = true
             }
 
-            binding.input.text = prefs.substring(1, 3).toEditText()
+            binding.input.text = prefs.substring(1).toEditText()
         }
 
         // update all descriptions and visibilities.
@@ -69,11 +69,28 @@ class DialogBackgroundSync : DialogFragment() {
             updateSyncInterval()
         }
 
+        binding.minutes.setOnCheckedChangeListener { _, _ ->
+            updateDescription()
+            updateSyncInterval()
+        }
+
+        binding.hours.setOnCheckedChangeListener { _, _ ->
+            updateDescription()
+            updateSyncInterval()
+        }
+
+        binding.days.setOnCheckedChangeListener { _, _ ->
+            updateDescription()
+            updateSyncInterval()
+        }
+
         binding.titleBar.setOnClickListener {
             binding.itemSwitch.toggle()
             updatePickerVisibility()
+            updateDescription()
             // set shared value for backgroundSync
             Injector.get().backgroundSync().set(binding.itemSwitch.isChecked)
+            updateSyncInterval()
         }
     }
 
@@ -98,11 +115,19 @@ class DialogBackgroundSync : DialogFragment() {
 
     //
     private fun View.updateSyncInterval() {
-        // set shared value for syncInterval
-        val prefs = Injector.get().syncInterval()
-//        val firstDigit = kindPicker.value
-//        val secondThirdDigits = "%02d".format(numberPicker.value)
-//        prefs.set("$firstDigit$secondThirdDigits")
+        if (binding.itemSwitch.isChecked) {
+            // set shared value for syncInterval
+            val prefs = Injector.get().syncInterval()
+            val firstDigit = when {
+                binding.hours.isChecked -> 1
+                binding.days.isChecked -> 2
+                else -> 0
+            }
+            val secondThirdDigits = binding.input.text.toString()
+                .let { it.ifEmpty { "0" } }.toInt()
+                .let { if (firstDigit == 0 && it < 15) 15 else it }
+            prefs.set("$firstDigit$secondThirdDigits")
+        }
 
         // update workManager
         WorkerHelper.updateBackgroundWorker(true)
@@ -124,7 +149,7 @@ class DialogBackgroundSync : DialogFragment() {
         } else {
             val parseInput = binding.input.text.toString()
                 .let { it.ifEmpty { "0" } }.toInt()
-                .let { if (it < 15) 15 else it }
+                .let { if (binding.minutes.isChecked && it < 15) 15 else it }
 
             // retrieve correct word pronunciation before writing on screen
             binding.nextSync.text = getString(R.string.sync_every, parseInput, whichOneIsSelected())

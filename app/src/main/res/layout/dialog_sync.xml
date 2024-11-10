@@ -40,7 +40,7 @@
             android:text="@string/background_sync"
             tools:text="Background Sync" />
 
-        <Switch
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/item_switch"
             android:layout_width="@dimen/avatar_bounds"
             android:layout_height="@dimen/avatar_bounds"
