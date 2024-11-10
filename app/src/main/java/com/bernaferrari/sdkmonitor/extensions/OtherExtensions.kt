@@ -1,5 +1,7 @@
 package com.bernaferrari.sdkmonitor.extensions
 
+import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Color
 import androidx.annotation.ColorInt
 import androidx.core.graphics.ColorUtils
@@ -65,3 +67,7 @@ fun <A, B, R> doSwitchMap(
                                 two.invoke(a, b)
                             }
                 }
+
+val Context.isDarkMode: Boolean
+    get() = (this.resources.configuration.uiMode
+            and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
