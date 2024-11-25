@@ -5,6 +5,9 @@ import androidx.annotation.ColorInt
 import androidx.core.graphics.ColorUtils
 import com.github.marlonlom.utilities.timeago.TimeAgo
 import io.reactivex.Observable
+import java.util.Date
+import java.util.GregorianCalendar
+import kotlin.time.Duration.Companion.days
 
 internal fun Long.convertTimestampToDate(): String = TimeAgo.using(this)
 
@@ -18,14 +21,26 @@ inline val @receiver:ColorInt Int.lighten
     @ColorInt
     get() = ColorUtils.blendARGB(this, Color.WHITE, 0.2f)
 
-
-// colors inspired from https://www.vanschneider.com/colors
-fun Int.apiToColor(): Int = when (this) {
-    in 0..31 -> 0xFFD31B33.toInt() // red
-    32 -> 0xFFE54B4B.toInt() // red-orange
-    33 -> 0xFFE37A46.toInt() // orange
-    34 -> 0XFF178E96.toInt() // blue-green
-    else -> 0xFF14B572.toInt() // green
+/**
+ * Colors inspired from https://www.vanschneider.com/colors
+ *
+ * | Final release date | Color      |
+ * |--------------------|------------|
+ * | < 1 year           | Green      |
+ * | < 2 years          | Blue-green |
+ * | < 3 years          | Orange     |
+ * | < 4 years          | Red-orange |
+ * | > 4 years          | Red        |
+ */
+fun Int.apiToColor(): Int = with (this) {
+    when {
+        this < 30 -> 0xFFD31B33.toInt() // Lower Android versions -> red
+        this.apiToReleaseDate() == null -> 0xFF14B572.toInt() // Not yet released -> green
+        this.apiToReleaseDate()!!.time.time < Date().time - 3.times(365).days.inWholeMilliseconds -> 0xFFE54B4B.toInt() // red-orange
+        this.apiToReleaseDate()!!.time.time < Date().time - 2.times(365).days.inWholeMilliseconds -> 0xFFE37A46.toInt() // orange
+        this.apiToReleaseDate()!!.time.time < Date().time - 1.times(365).days.inWholeMilliseconds -> 0XFF178E96.toInt() // blue-green
+        else -> 0xFF14B572.toInt() // less than a year -> green
+    }
 }
 
 fun Int.apiToVersion() = when (this) {
@@ -46,6 +61,17 @@ fun Int.apiToVersion() = when (this) {
     29, 30, 31 -> "Android ${this - 19}"
     32 -> "Android 12L"
     else -> "Android ${this - 20}"
+}
+
+fun Int.apiToReleaseDate() = when (this) {
+    30 -> GregorianCalendar(2020, 7, 8)
+    31 -> GregorianCalendar(2021, 8, 11)
+    32 -> GregorianCalendar(2022, 3, 7)
+    33 -> GregorianCalendar(2022, 6, 8)
+    34 -> GregorianCalendar(2023, 6, 7)
+    35 -> GregorianCalendar(2024, 6, 18)
+    36 -> GregorianCalendar(2025, 6, 30) // Planned Q2 2025
+    else -> null
 }
 
 /**
