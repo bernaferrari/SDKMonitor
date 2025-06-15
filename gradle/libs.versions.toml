@@ -1,7 +1,6 @@
 [versions]
 activityCompose = "1.10.1"
 androidGradlePlugin = "8.10.1"
-compose = "1.8.2"
 composeBom = "2025.06.00"
 coroutines = "1.10.2"
 datastore = "1.1.7"
