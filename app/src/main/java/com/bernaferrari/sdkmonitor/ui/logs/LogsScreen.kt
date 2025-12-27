@@ -51,7 +51,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bernaferrari.sdkmonitor.R
 import com.bernaferrari.sdkmonitor.domain.model.AppFilter
@@ -269,70 +269,71 @@ private fun EmptyLogsContent(modifier: Modifier = Modifier) {
         modifier = modifier,
         contentAlignment = Alignment.Center,
     ) {
-        Surface(
-            modifier = Modifier.padding(32.dp),
-            shape = RoundedCornerShape(32.dp),
-            color = MaterialTheme.colorScheme.surfaceContainer,
+        Column(
+            modifier = Modifier
+                .padding(48.dp)
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
+            // Large animated icon with gradient background
             Box(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .background(
-                            brush =
-                                Brush.linearGradient(
-                                    colors =
-                                        listOf(
-                                            MaterialTheme.colorScheme.primary.copy(alpha = 0.02f),
-                                            MaterialTheme.colorScheme.secondary.copy(alpha = 0.02f),
-                                            MaterialTheme.colorScheme.tertiary.copy(alpha = 0.02f),
-                                        ),
-                                ),
+                modifier = Modifier
+                    .size(120.dp)
+                    .background(
+                        brush = Brush.radialGradient(
+                            colors = listOf(
+                                MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
+                                MaterialTheme.colorScheme.primary.copy(alpha = 0.05f),
+                                Color.Transparent,
+                            ),
                         ),
+                        shape = RoundedCornerShape(32.dp),
+                    ),
+                contentAlignment = Alignment.Center,
             ) {
-                Column(
-                    modifier = Modifier.padding(48.dp),
-                    horizontalAlignment = Alignment.Start,
-                    verticalArrangement = Arrangement.spacedBy(24.dp),
+                Surface(
+                    modifier = Modifier.size(80.dp),
+                    shape = RoundedCornerShape(24.dp),
+                    color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f),
                 ) {
-                    Surface(
-                        modifier = Modifier.size(96.dp),
-                        shape = RoundedCornerShape(16.dp),
-                        color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center,
                     ) {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            Icon(
-                                modifier =
-                                    Modifier
-                                        .size(48.dp),
-                                imageVector = Icons.Default.History,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary,
-                            )
-                        }
+                        Icon(
+                            modifier = Modifier.size(40.dp),
+                            imageVector = Icons.Default.History,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                        )
                     }
-
-                    Text(
-                        text = stringResource(R.string.no_changes_yet),
-                        style =
-                            MaterialTheme.typography.headlineMedium.copy(
-                                fontWeight = FontWeight.ExtraBold,
-                            ),
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-
-                    Text(
-                        text = stringResource(R.string.when_apps_update_description),
-                        style =
-                            MaterialTheme.typography.bodyLarge.copy(
-                                lineHeight = 24.sp,
-                            ),
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
                 }
+            }
+
+            // Text content - centered
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                Text(
+                    text = stringResource(R.string.no_changes_yet),
+                    style = MaterialTheme.typography.headlineMedium.copy(
+                        fontWeight = FontWeight.Bold,
+                    ),
+                    color = MaterialTheme.colorScheme.onSurface,
+                    textAlign = TextAlign.Center,
+                )
+
+                Text(
+                    text = stringResource(R.string.when_apps_update_description),
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        lineHeight = 22.sp,
+                    ),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                )
             }
         }
     }

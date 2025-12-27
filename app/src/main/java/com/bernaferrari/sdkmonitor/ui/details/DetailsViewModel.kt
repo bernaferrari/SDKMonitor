@@ -20,7 +20,7 @@ class DetailsViewModel
     constructor(
         private val appsRepository: AppsRepository,
         private val appManager: AppManager,
-        @ApplicationContext private val context: Context,
+        @param:ApplicationContext private val context: Context,
     ) : ViewModel() {
         private val _uiState = MutableStateFlow<DetailsUiState>(DetailsUiState.Loading)
         val uiState: StateFlow<DetailsUiState> = _uiState.asStateFlow()

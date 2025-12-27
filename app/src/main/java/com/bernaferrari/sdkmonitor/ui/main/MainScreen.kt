@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -59,7 +61,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bernaferrari.sdkmonitor.R
 import com.bernaferrari.sdkmonitor.domain.model.AppFilter
@@ -117,7 +119,7 @@ fun MainScreen(
         modifier =
             Modifier
                 .fillMaxSize()
-                .windowInsetsPadding(WindowInsets.systemBars),
+                .windowInsetsPadding(WindowInsets.statusBars),
     ) {
         // Compact header card with title, search, and dropdowns
         Card(
@@ -753,8 +755,7 @@ fun MainScreen(
                                                     focusManager.clearFocus()
                                                 },
                                             ) { _, _ -> }
-                                        }.windowInsetsPadding(WindowInsets.systemBars)
-                                        .padding(end = if (showFastScroller) 32.dp else 0.dp),
+                                        }.padding(end = if (showFastScroller) 32.dp else 0.dp),
                             ) {
                                 when {
                                     groupedApps.isNotEmpty() -> {
@@ -885,7 +886,7 @@ fun MainScreen(
                                     modifier =
                                         Modifier
                                             .align(Alignment.CenterEnd)
-                                            .windowInsetsPadding(WindowInsets.systemBars),
+                                            .windowInsetsPadding(WindowInsets.navigationBars),
                                     apps = state.filteredApps,
                                     listState = listState,
                                     appFilter = appFilter,

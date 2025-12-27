@@ -16,7 +16,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
-import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.layout.AnimatedPane
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
 import androidx.compose.material3.adaptive.navigation.NavigableListDetailPaneScaffold
@@ -34,14 +33,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
-import androidx.window.core.layout.WindowWidthSizeClass
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberNavBackStack
+import androidx.navigation3.ui.NavDisplay
 import com.bernaferrari.sdkmonitor.R
 import com.bernaferrari.sdkmonitor.ui.details.DetailsScreen
 import com.bernaferrari.sdkmonitor.ui.logs.LogsScreen
@@ -55,20 +50,26 @@ fun AppNavigation(
     modifier: Modifier = Modifier,
     initialPackageName: String? = null,
 ) {
-    val navController = rememberNavController()
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navBackStackEntry?.destination
+    // Navigation 3 back stack
+    val backStack = rememberNavBackStack(MainTab)
 
-    val bottomNavItems =
-        listOf(
-            BottomNavItem.Main,
-            BottomNavItem.Logs,
-            BottomNavItem.Settings,
-        )
+    // Track current tab for bottom navigation highlighting
+    val currentTab = backStack.lastOrNull { it is MainTab || it is LogsTab || it is SettingsTab } ?: MainTab
+
+    val bottomNavItems = listOf(
+        BottomNavItem.Main,
+        BottomNavItem.Logs,
+        BottomNavItem.Settings,
+    )
 
     NavigationSuiteScaffold(
         navigationSuiteItems = {
             bottomNavItems.forEach { item ->
+                val isSelected = when (item) {
+                    BottomNavItem.Main -> currentTab is MainTab
+                    BottomNavItem.Logs -> currentTab is LogsTab
+                    BottomNavItem.Settings -> currentTab is SettingsTab
+                }
                 item(
                     icon = {
                         Icon(
@@ -77,14 +78,17 @@ fun AppNavigation(
                         )
                     },
                     label = { Text(stringResource(item.label)) },
-                    selected = currentDestination?.hierarchy?.any { it.route == item.route } == true,
+                    selected = isSelected,
                     onClick = {
-                        navController.navigate(item.route) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
+                        // Clear back stack and navigate to new tab
+                        val targetTab: NavKey = when (item) {
+                            BottomNavItem.Main -> MainTab
+                            BottomNavItem.Logs -> LogsTab
+                            BottomNavItem.Settings -> SettingsTab
+                        }
+                        if (currentTab != targetTab) {
+                            backStack.clear()
+                            backStack.add(targetTab)
                         }
                     },
                 )
@@ -92,70 +96,82 @@ fun AppNavigation(
         },
         modifier = modifier,
     ) {
-        NavHost(
-            navController = navController,
-            startDestination = Screen.Main.route,
-            modifier =
-                Modifier
-                    .fillMaxSize(),
-        ) {
-            composable(Screen.Main.route) {
-                MainScreenWithListDetail(
-                    navController = navController,
-                    appStartupPackageName = initialPackageName,
-                    screenRoute = Screen.Main.route,
-                )
-            }
-
-            composable(Screen.Settings.route) {
-                SettingsScreenWithListDetail()
-            }
-
-            composable(Screen.Logs.route) {
-                LogsScreenWithListDetail()
-            }
-        }
+        NavDisplay(
+            backStack = backStack,
+            onBack = { backStack.removeLastOrNull() },
+            modifier = Modifier.fillMaxSize(),
+            entryProvider = entryProvider {
+                entry<MainTab> {
+                    MainScreenWithListDetail(
+                        appStartupPackageName = initialPackageName,
+                        onNavigateToDetails = { packageName ->
+                            backStack.add(AppDetails(packageName))
+                        },
+                    )
+                }
+                entry<LogsTab> {
+                    LogsScreenWithListDetail(
+                        onNavigateToDetails = { packageName ->
+                            backStack.add(AppDetails(packageName))
+                        },
+                    )
+                }
+                entry<SettingsTab> {
+                    SettingsScreenWithListDetail(
+                        onNavigateToDetails = { packageName ->
+                            backStack.add(AppDetails(packageName))
+                        },
+                        onNavigateToAbout = {
+                            backStack.add(About)
+                        },
+                    )
+                }
+                entry<AppDetails> { key ->
+                    DetailsScreen(
+                        packageName = key.packageName,
+                        onNavigateBack = {
+                            backStack.removeLastOrNull()
+                        },
+                        isTabletSize = isTablet(),
+                    )
+                }
+                entry<About> {
+                    AboutScreen(
+                        onNavigateBack = {
+                            backStack.removeLastOrNull()
+                        },
+                        isTabletSize = isTablet(),
+                    )
+                }
+            },
+        )
     }
 }
 
 @Composable
 private fun MainScreenWithListDetail(
     modifier: Modifier = Modifier,
-    navController: NavHostController,
     appStartupPackageName: String?,
-    screenRoute: String,
+    onNavigateToDetails: (String) -> Unit,
 ) {
     val listDetailNavigator = rememberListDetailPaneScaffoldNavigator<String>()
     val scope = rememberCoroutineScope()
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
     var startupDeepLinkApplied by remember { mutableStateOf(false) }
 
-    LaunchedEffect(listDetailNavigator, appStartupPackageName, navBackStackEntry) {
-        val isActive = navBackStackEntry?.destination?.route == screenRoute
-        if (isActive) {
-            // Only apply the startup deep link if appStartupPackageName is present
-            // and it hasn't been applied for the current active state of this screen.
-            if (!appStartupPackageName.isNullOrEmpty() && !startupDeepLinkApplied) {
-                val currentDestination = listDetailNavigator.currentDestination
-                // Navigate only if not already on the correct detail item and pane.
-                if (currentDestination?.contentKey != appStartupPackageName ||
-                    currentDestination.pane != ListDetailPaneScaffoldRole.Detail
-                ) {
-                    listDetailNavigator.navigateTo(
-                        ListDetailPaneScaffoldRole.Detail,
-                        appStartupPackageName,
-                    )
-                }
-                startupDeepLinkApplied = true
+    LaunchedEffect(listDetailNavigator, appStartupPackageName) {
+        // Only apply the startup deep link if appStartupPackageName is present
+        // and it hasn't been applied for the current active state of this screen.
+        if (!appStartupPackageName.isNullOrEmpty() && !startupDeepLinkApplied) {
+            val currentDestination = listDetailNavigator.currentDestination
+            // Navigate only if not already on the correct detail item and pane.
+            if (currentDestination?.contentKey != appStartupPackageName ||
+                currentDestination.pane != ListDetailPaneScaffoldRole.Detail
+            ) {
+                listDetailNavigator.navigateTo(
+                    ListDetailPaneScaffoldRole.Detail,
+                    appStartupPackageName,
+                )
             }
-            // Removed the 'else' block that previously navigated to ListDetailPaneScaffoldRole.List.
-            // The NavHost's saveState/restoreState mechanism will handle preserving
-            // the listDetailNavigator's state (e.g., if a detail item was already selected).
-        } else {
-            // Reset startupDeepLinkApplied when the screen is no longer active.
-            // This allows the deep link to be re-processed if the user navigates away
-            // and then returns to this screen, and appStartupPackageName is still relevant.
-            startupDeepLinkApplied = false
         }
     }
 
@@ -196,7 +212,10 @@ private fun MainScreenWithListDetail(
 }
 
 @Composable
-private fun LogsScreenWithListDetail(modifier: Modifier = Modifier) {
+private fun LogsScreenWithListDetail(
+    modifier: Modifier = Modifier,
+    onNavigateToDetails: (String) -> Unit,
+) {
     val listDetailNavigator = rememberListDetailPaneScaffoldNavigator<String>()
     val scope = rememberCoroutineScope()
 
@@ -237,7 +256,11 @@ private fun LogsScreenWithListDetail(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun SettingsScreenWithListDetail(modifier: Modifier = Modifier) {
+private fun SettingsScreenWithListDetail(
+    modifier: Modifier = Modifier,
+    onNavigateToDetails: (String) -> Unit,
+    onNavigateToAbout: () -> Unit,
+) {
     val listDetailNavigator = rememberListDetailPaneScaffoldNavigator<String>()
     val scope = rememberCoroutineScope()
 
@@ -326,22 +349,19 @@ private fun EmptyDetailState() {
 
 @Composable
 fun isTablet(): Boolean {
-    val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
-    return when (windowSizeClass.windowWidthSizeClass) {
-        WindowWidthSizeClass.MEDIUM, WindowWidthSizeClass.EXPANDED -> true
-        else -> false
-    }
+    val windowInfo = androidx.compose.ui.platform.LocalWindowInfo.current
+    val density = androidx.compose.ui.platform.LocalDensity.current
+    val widthDp = with(density) { windowInfo.containerSize.width.toDp() }
+    return widthDp >= 600.dp
 }
 
 private sealed class BottomNavItem(
-    val route: String,
     val icon: androidx.compose.ui.graphics.vector.ImageVector,
     val label: Int,
 ) {
-    data object Main : BottomNavItem(Screen.Main.route, Icons.Default.Apps, R.string.main_title)
+    data object Main : BottomNavItem(Icons.Default.Apps, R.string.main_title)
 
-    data object Logs : BottomNavItem(Screen.Logs.route, Icons.Default.History, R.string.logs_title)
+    data object Logs : BottomNavItem(Icons.Default.History, R.string.logs_title)
 
-    data object Settings :
-        BottomNavItem(Screen.Settings.route, Icons.Default.Settings, R.string.settings_title)
+    data object Settings : BottomNavItem(Icons.Default.Settings, R.string.settings_title)
 }

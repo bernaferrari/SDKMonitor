@@ -1,6 +1,5 @@
 package com.bernaferrari.sdkmonitor.ui.logs.components
 
-import android.content.pm.PackageManager
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -19,7 +18,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,6 +35,7 @@ import com.bernaferrari.sdkmonitor.R
 import com.bernaferrari.sdkmonitor.domain.model.LogEntry
 import com.bernaferrari.sdkmonitor.extensions.apiToColor
 import com.bernaferrari.sdkmonitor.extensions.apiToVersion
+import com.bernaferrari.sdkmonitor.ui.components.rememberCachedAppIcon
 import com.bernaferrari.sdkmonitor.ui.logs.formatLogTime
 import com.bernaferrari.sdkmonitor.ui.theme.SDKMonitorTheme
 
@@ -81,19 +80,15 @@ fun LogsCard(
                             .clip(RoundedCornerShape(16.dp)),
                     contentAlignment = Alignment.Center,
                 ) {
+                    // Use centralized cached icon
+                    val iconData = rememberCachedAppIcon(log.packageName)
+                    
                     AsyncImage(
                         model =
                             ImageRequest
                                 .Builder(context)
-                                .data(
-                                    remember(log.packageName) {
-                                        try {
-                                            context.packageManager.getApplicationIcon(log.packageName)
-                                        } catch (e: PackageManager.NameNotFoundException) {
-                                            R.drawable.ic_android
-                                        }
-                                    },
-                                ).crossfade(true)
+                                .data(iconData ?: R.drawable.ic_android)
+                                .crossfade(true)
                                 .build(),
                         contentDescription = "App icon",
                         modifier = Modifier.size(56.dp),

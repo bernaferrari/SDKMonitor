@@ -110,7 +110,7 @@
     <string name="analyzing_app_ecosystem">Analyzing your app ecosystem…</string>
     <string name="oops_something_went_wrong">Oops! Something went wrong</string>
     <string name="no_changes_yet">No Changes Yet</string>
-    <string name="when_apps_update_description">When apps update their target SDK versions, you\'ll see a beautiful timeline of changes here</string>
+    <string name="when_apps_update_description">When apps update their target SDK versions, you\'ll see a timeline of changes here.</string>
     <string name="sdk_monitor_watching">✨ SDK Monitor is watching</string>
     <string name="change_timeline">Change Timeline</string>
     <string name="showing">Showing</string>

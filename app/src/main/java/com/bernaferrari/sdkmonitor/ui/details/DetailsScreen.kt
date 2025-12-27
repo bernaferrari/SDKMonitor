@@ -9,13 +9,19 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -25,15 +31,13 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -49,7 +53,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bernaferrari.sdkmonitor.R
 import com.bernaferrari.sdkmonitor.domain.model.AppVersion
@@ -60,7 +64,6 @@ import kotlinx.coroutines.delay
 /**
  * App Details Screen with Material Design 3 and animations
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailsScreen(
     packageName: String,
@@ -121,42 +124,14 @@ fun DetailsScreen(
         }
     }
 
-    Scaffold(
-        containerColor = MaterialTheme.colorScheme.surface,
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text =
-                            when (val state = uiState) {
-                                is DetailsUiState.Success -> state.appDetails.title
-                                else -> ""
-                            },
-                        fontWeight = FontWeight.ExtraBold,
-                        style = MaterialTheme.typography.headlineSmall,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                },
-                navigationIcon = {
-                    if (!isTabletSize) {
-                        IconButton(onClick = onNavigateBack) {
-                            Icon(
-                                Icons.AutoMirrored.Default.ArrowBack,
-                                contentDescription = stringResource(R.string.back),
-                                tint = MaterialTheme.colorScheme.primary,
-                            )
-                        }
-                    }
-                },
-            )
-        },
-    ) { paddingValues ->
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .windowInsetsPadding(WindowInsets.statusBars),
+    ) {
+        // Main content
         Box(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
+            modifier = Modifier.fillMaxSize(),
         ) {
             // Handle empty package name case (for tablet mode) - don't try to load anything
             if (packageName.isBlank()) {
@@ -193,8 +168,29 @@ fun DetailsScreen(
                         state = state,
                         onAppInfoClick = handleAppInfoClick,
                         onPlayStoreClick = handlePlayStoreClick,
+                        isTabletSize = isTabletSize,
                     )
                 }
+            }
+        }
+
+        // Floating back button
+        if (!isTabletSize) {
+            FilledIconButton(
+                onClick = onNavigateBack,
+                modifier = Modifier
+                    .padding(8.dp)
+                    .size(48.dp),
+                shape = CircleShape,
+                colors = IconButtonDefaults.filledIconButtonColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+                    contentColor = MaterialTheme.colorScheme.primary,
+                ),
+            ) {
+                Icon(
+                    Icons.AutoMirrored.Default.ArrowBack,
+                    contentDescription = stringResource(R.string.back),
+                )
             }
         }
     }
@@ -294,11 +290,19 @@ private fun DetailsContent(
     state: DetailsUiState.Success,
     onAppInfoClick: () -> Unit,
     onPlayStoreClick: () -> Unit,
+    isTabletSize: Boolean = false,
     modifier: Modifier = Modifier,
 ) {
+    val navigationBarPadding = WindowInsets.navigationBars.asPaddingValues()
+
     LazyColumn(
         modifier = modifier.fillMaxSize(),
-        contentPadding = PaddingValues(20.dp),
+        contentPadding = PaddingValues(
+            start = 20.dp,
+            end = 20.dp,
+            top = if (isTabletSize) 0.dp else 64.dp, // No top padding on tablet, leave room for back button on phone
+            bottom = 20.dp + navigationBarPadding.calculateBottomPadding(),
+        ),
         verticalArrangement = Arrangement.spacedBy(20.dp),
     ) {
         item {
@@ -315,10 +319,6 @@ private fun DetailsContent(
                 versions = state.versions,
                 modifier = Modifier.fillMaxWidth(),
             )
-        }
-
-        item {
-            Spacer(modifier = Modifier.height(20.dp))
         }
     }
 }

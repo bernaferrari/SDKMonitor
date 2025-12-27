@@ -109,7 +109,7 @@
     <string name="analyzing_app_ecosystem">Analysiere dein App-Ökosystem…</string>
     <string name="oops_something_went_wrong">Ups! Etwas ist schief gelaufen</string>
     <string name="no_changes_yet">Noch Keine Änderungen</string>
-    <string name="when_apps_update_description">Wenn Apps ihre Ziel-SDK-Versionen aktualisieren, siehst du hier eine schöne Zeitleiste der Änderungen</string>
+    <string name="when_apps_update_description">Wenn Apps ihre Ziel-SDK-Versionen aktualisieren, siehst du hier eine Zeitleiste der Änderungen.</string>
     <string name="sdk_monitor_watching">✨ SDK Monitor beobachtet</string>
     <string name="change_timeline">Änderungs-Zeitleiste</string>
     <string name="showing">Zeige</string>
@@ -206,7 +206,7 @@
     <string name="versions_lowercase">Versionen</string>
     <string name="api_format">API %d</string>
     <string name="target_sdk_format">Ziel-SDK %d</string>
-    <string name="apps_count_format">%d %s</string>
+    <string name="apps_count_format">%1$d %2$s</string>
     <string name="app_singular">App</string>
     <string name="apps_plural">Apps</string>
     <string name="no_apps_found_sdk">Keine Apps mit dieser SDK-Version gefunden</string>

@@ -114,7 +114,7 @@
     <string name="analyzing_app_ecosystem">Analyse de votre écosystème d\'applications…</string>
     <string name="oops_something_went_wrong">Oups ! Quelque chose s\'est mal passé</string>
     <string name="no_changes_yet">Aucune modification pour l\'instant</string>
-    <string name="when_apps_update_description">Quand les apps mettent à jour leurs versions SDK cible, vous verrez une belle chronologie des changements ici</string>
+    <string name="when_apps_update_description">Quand les apps mettent à jour leurs versions SDK cible, vous verrez une chronologie des changements ici.</string>
     <string name="sdk_monitor_watching">✨ SDK Monitor surveille</string>
     <string name="change_timeline">Chronologie des modifications</string>
     <string name="showing">Affichage</string>

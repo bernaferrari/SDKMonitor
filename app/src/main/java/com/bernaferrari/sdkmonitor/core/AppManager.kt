@@ -30,12 +30,15 @@ import javax.inject.Singleton
 class AppManager
     @Inject
     constructor(
-        @ApplicationContext private val context: Context,
+        @param:ApplicationContext private val context: Context,
         private val appsRepository: AppsRepository,
         private val preferencesRepository: PreferencesRepository,
         private val notificationManager: NotificationManager,
     ) {
         private val packageManager: PackageManager = context.packageManager
+
+        // In-memory icon cache to avoid repeated OS calls
+        private val iconCache = java.util.concurrent.ConcurrentHashMap<String, android.graphics.drawable.Drawable>()
 
         // Track first sync progress
         private val _isFirstSync = MutableStateFlow(false)
@@ -219,15 +222,45 @@ class AppManager
         }
 
         /**
-         * Get app icon as bitmap for display in Compose
+         * Get app icon from cache or load from OS if not cached.
+         * This is the primary method for getting app icons - use this everywhere.
+         */
+        fun getAppIconCached(packageName: String): android.graphics.drawable.Drawable? {
+            // Return from cache if available
+            iconCache[packageName]?.let { return it }
+
+            // Load from OS and cache
+            return try {
+                val drawable = packageManager.getApplicationIcon(packageName)
+                iconCache[packageName] = drawable
+                drawable
+            } catch (e: PackageManager.NameNotFoundException) {
+                null
+            }
+        }
+
+        /**
+         * Clear the icon cache (e.g., when app is uninstalled)
+         */
+        fun clearIconCache(packageName: String? = null) {
+            if (packageName != null) {
+                iconCache.remove(packageName)
+            } else {
+                iconCache.clear()
+            }
+        }
+
+        /**
+         * Get app icon as bitmap for notifications
          */
         private suspend fun getAppIcon(appInfo: ApplicationInfo?): Bitmap? =
             withContext(Dispatchers.IO) {
                 if (appInfo == null) return@withContext null
 
                 try {
-                    val drawable = packageManager.getApplicationIcon(appInfo)
-                    drawable.toBitmap()
+                    // Use cached version
+                    val drawable = getAppIconCached(appInfo.packageName)
+                    drawable?.toBitmap()
                 } catch (e: Exception) {
                     null
                 }

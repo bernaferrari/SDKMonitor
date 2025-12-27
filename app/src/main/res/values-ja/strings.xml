@@ -106,7 +106,7 @@
     <string name="analyzing_app_ecosystem">アプリエコシステムを分析中…</string>
     <string name="oops_something_went_wrong">おっと！問題が発生しました</string>
     <string name="no_changes_yet">まだ変更はありません</string>
-    <string name="when_apps_update_description">アプリがターゲットSDKバージョンを更新すると、ここに美しいタイムラインが表示されます</string>
+    <string name="when_apps_update_description">アプリがターゲットSDKバージョンを更新すると、ここにタイムラインが表示されます。</string>
     <string name="sdk_monitor_watching">✨ SDKモニターが監視中</string>
     <string name="change_timeline">変更履歴</string>
     <string name="showing">表示中</string>

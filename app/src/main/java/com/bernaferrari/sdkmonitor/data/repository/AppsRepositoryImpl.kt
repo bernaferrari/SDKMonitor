@@ -26,7 +26,7 @@ class AppsRepositoryImpl
     constructor(
         private val appsDao: AppsDao,
         private val versionsDao: VersionsDao,
-        @ApplicationContext private val context: Context,
+        @param:ApplicationContext private val context: Context,
     ) : AppsRepository {
         override fun getAppsFlow(): Flow<List<App>> = appsDao.getAppsListFlow()
 

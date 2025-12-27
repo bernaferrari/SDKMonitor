@@ -1,6 +1,5 @@
 package com.bernaferrari.sdkmonitor.ui.main.components
 
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -21,7 +20,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,6 +42,7 @@ import com.bernaferrari.sdkmonitor.domain.model.AppVersion
 import com.bernaferrari.sdkmonitor.extensions.apiToColor
 import com.bernaferrari.sdkmonitor.extensions.apiToVersion
 import com.bernaferrari.sdkmonitor.extensions.normalizeString
+import com.bernaferrari.sdkmonitor.ui.components.rememberCachedAppIcon
 import com.bernaferrari.sdkmonitor.ui.isTablet
 import com.bernaferrari.sdkmonitor.ui.theme.SDKMonitorTheme
 
@@ -162,15 +161,8 @@ fun MainAppCard(
                         tint = MaterialTheme.colorScheme.primary,
                     )
                 } else {
-                    // Try to get app icon, fall back to placeholder if app is uninstalled
-                    val iconData =
-                        remember(appVersion.packageName) {
-                            try {
-                                context.packageManager.getApplicationIcon(appVersion.packageName)
-                            } catch (e: PackageManager.NameNotFoundException) {
-                                null // App is uninstalled, use null instead of ImageVector
-                            }
-                        }
+                    // Use centralized cached icon
+                    val iconData = rememberCachedAppIcon(appVersion.packageName)
 
                     if (iconData != null) {
                         AsyncImage(
