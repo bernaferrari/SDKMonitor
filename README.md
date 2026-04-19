@@ -16,6 +16,8 @@
 
 [Download from GitHub](https://github.com/bernaferrari/SDKMonitor/releases/latest)
 
+> SHA-256 fingerprint certificate: `1E:73:1C:AB:EF:FE:75:52:44:BC:64:98:BE:BE:22:3B:4B:82:0F:E3:C4:0D:16:DF:4C:7B:1C:01:98:06:C5:95`
+
 ## 📸 Screenshots
 
 |       Home Screen        |             Logs              |          App Details           |             Settings             |
