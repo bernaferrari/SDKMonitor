@@ -3,6 +3,7 @@ package com.bernaferrari.sdkmonitor.ui.settings.components
 import android.graphics.Color
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -68,7 +69,7 @@ fun ThemeModeToggle(
                         },
                 ),
             border =
-                androidx.compose.foundation.BorderStroke(
+                BorderStroke(
                     width = borderWidth,
                     color =
                         if (isSelected) {
