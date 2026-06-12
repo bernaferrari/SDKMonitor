@@ -56,8 +56,6 @@ fun AppDetailsCard(
     onAppInfoClick: () -> Unit = {},
     onPlayStoreClick: () -> Unit = {},
 ) {
-
-
     // Use centralized cached icon
     val appIcon = rememberCachedAppIcon(appDetails.packageName)
 
@@ -118,21 +116,25 @@ private fun HeroHeaderSection(
     ) {
         // Large App Icon
         Box(
-            modifier = Modifier
-                .size(80.dp)
-                .clip(RoundedCornerShape(20.dp)),
+            modifier =
+                Modifier
+                    .size(80.dp)
+                    .clip(RoundedCornerShape(20.dp)),
             contentAlignment = Alignment.Center,
         ) {
             if (appIcon != null) {
                 AsyncImage(
-                    model = ImageRequest.Builder(context)
-                        .data(appIcon)
-                        .crossfade(true)
-                        .build(),
+                    model =
+                        ImageRequest
+                            .Builder(context)
+                            .data(appIcon)
+                            .crossfade(true)
+                            .build(),
                     contentDescription = "App icon for ${appDetails.title}",
-                    modifier = Modifier
-                        .size(80.dp)
-                        .clip(RoundedCornerShape(20.dp)),
+                    modifier =
+                        Modifier
+                            .size(80.dp)
+                            .clip(RoundedCornerShape(20.dp)),
                 )
             } else {
                 // Fallback for uninstalled apps
@@ -160,9 +162,10 @@ private fun HeroHeaderSection(
         ) {
             Text(
                 text = appDetails.title,
-                style = MaterialTheme.typography.headlineMedium.copy(
-                    fontWeight = FontWeight.Bold,
-                ),
+                style =
+                    MaterialTheme.typography.headlineMedium.copy(
+                        fontWeight = FontWeight.Bold,
+                    ),
                 color = MaterialTheme.colorScheme.onSurface,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
@@ -360,9 +363,10 @@ private fun InfoRow(
             Icon(
                 imageVector = icon,
                 contentDescription = label,
-                modifier = Modifier
-                    .padding(8.dp)
-                    .size(16.dp),
+                modifier =
+                    Modifier
+                        .padding(8.dp)
+                        .size(16.dp),
                 tint = MaterialTheme.colorScheme.primary,
             )
         }
@@ -377,9 +381,10 @@ private fun InfoRow(
             )
             Text(
                 text = value,
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    fontWeight = FontWeight.Medium,
-                ),
+                style =
+                    MaterialTheme.typography.bodyMedium.copy(
+                        fontWeight = FontWeight.Medium,
+                    ),
                 color = MaterialTheme.colorScheme.onSurface,
             )
         }

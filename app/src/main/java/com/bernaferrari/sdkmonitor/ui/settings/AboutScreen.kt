@@ -718,9 +718,10 @@ private fun PrivacyDialog(onDismiss: () -> Unit) {
         },
         shape = RoundedCornerShape(24.dp),
         containerColor = MaterialTheme.colorScheme.surface,
-        modifier = Modifier
-            .widthIn(max = 500.dp)
-            .scale(dialogAnimation),
+        modifier =
+            Modifier
+                .widthIn(max = 500.dp)
+                .scale(dialogAnimation),
     )
 }
 

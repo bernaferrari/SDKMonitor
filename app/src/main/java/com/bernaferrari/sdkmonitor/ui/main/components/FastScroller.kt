@@ -87,7 +87,9 @@ fun FastScroller(
                     }
                 }
 
-                SortOption.SDK -> app.sdkVersion.toString()
+                SortOption.SDK -> {
+                    app.sdkVersion.toString()
+                }
             }
         },
         letterToIndexMap = letterToIndexMap,

@@ -82,7 +82,7 @@ fun LogsCard(
                 ) {
                     // Use centralized cached icon
                     val iconData = rememberCachedAppIcon(log.packageName)
-                    
+
                     AsyncImage(
                         model =
                             ImageRequest

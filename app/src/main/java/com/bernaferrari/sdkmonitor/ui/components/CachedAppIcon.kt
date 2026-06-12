@@ -25,23 +25,26 @@ interface AppManagerEntryPoint {
 /**
  * Composable function to get a cached app icon.
  * Uses AppManager's centralized cache to avoid duplicate OS calls.
- * 
+ *
  * @param packageName The package name to get the icon for
  * @return The cached drawable, or null if not found/loading
  */
 @Composable
 fun rememberCachedAppIcon(packageName: String): Drawable? {
     val context = LocalContext.current
-    
+
     val icon by produceState<Drawable?>(initialValue = null, packageName) {
-        value = withContext(Dispatchers.IO) {
-            val appManager = EntryPoints.get(
-                context.applicationContext,
-                AppManagerEntryPoint::class.java
-            ).appManager()
-            appManager.getAppIconCached(packageName)
-        }
+        value =
+            withContext(Dispatchers.IO) {
+                val appManager =
+                    EntryPoints
+                        .get(
+                            context.applicationContext,
+                            AppManagerEntryPoint::class.java,
+                        ).appManager()
+                appManager.getAppIconCached(packageName)
+            }
     }
-    
+
     return icon
 }

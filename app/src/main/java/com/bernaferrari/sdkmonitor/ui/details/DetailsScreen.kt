@@ -125,9 +125,10 @@ fun DetailsScreen(
     }
 
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .windowInsetsPadding(WindowInsets.statusBars),
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .windowInsetsPadding(WindowInsets.statusBars),
     ) {
         // Main content
         Box(
@@ -178,14 +179,16 @@ fun DetailsScreen(
         if (!isTabletSize) {
             FilledIconButton(
                 onClick = onNavigateBack,
-                modifier = Modifier
-                    .padding(8.dp)
-                    .size(48.dp),
+                modifier =
+                    Modifier
+                        .padding(8.dp)
+                        .size(48.dp),
                 shape = CircleShape,
-                colors = IconButtonDefaults.filledIconButtonColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
-                    contentColor = MaterialTheme.colorScheme.primary,
-                ),
+                colors =
+                    IconButtonDefaults.filledIconButtonColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+                        contentColor = MaterialTheme.colorScheme.primary,
+                    ),
             ) {
                 Icon(
                     Icons.AutoMirrored.Default.ArrowBack,
@@ -297,12 +300,13 @@ private fun DetailsContent(
 
     LazyColumn(
         modifier = modifier.fillMaxSize(),
-        contentPadding = PaddingValues(
-            start = 20.dp,
-            end = 20.dp,
-            top = if (isTabletSize) 0.dp else 64.dp, // No top padding on tablet, leave room for back button on phone
-            bottom = 20.dp + navigationBarPadding.calculateBottomPadding(),
-        ),
+        contentPadding =
+            PaddingValues(
+                start = 20.dp,
+                end = 20.dp,
+                top = if (isTabletSize) 0.dp else 64.dp, // No top padding on tablet, leave room for back button on phone
+                bottom = 20.dp + navigationBarPadding.calculateBottomPadding(),
+            ),
         verticalArrangement = Arrangement.spacedBy(20.dp),
     ) {
         item {

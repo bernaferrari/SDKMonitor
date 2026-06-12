@@ -81,7 +81,7 @@ class SyncScheduler
         suspend fun cancelPeriodicSync(): Boolean =
             withContext(Dispatchers.IO) {
                 try {
-                    workManager.cancelAllWork()
+                    workManager.cancelUniqueWork(SYNC_WORK_NAME)
                     Napier.d("🛑 Cancelled background sync")
                     true
                 } catch (e: Exception) {
@@ -147,6 +147,7 @@ class SyncScheduler
                     interval.endsWith("d") -> {
                         interval.dropLast(1).toLong() * 24 * 60
                     }
+
                     // Handle legacy numeric format (assume hours)
                     interval.toIntOrNull() != null -> {
                         interval.toLong() * 60

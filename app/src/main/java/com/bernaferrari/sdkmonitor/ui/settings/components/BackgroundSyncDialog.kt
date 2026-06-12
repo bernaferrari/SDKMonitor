@@ -272,18 +272,25 @@ fun BackgroundSyncDialog(
                         CardDefaults.cardColors(
                             containerColor =
                                 when {
-                                    !notificationsEnabled && enabled ->
+                                    !notificationsEnabled && enabled -> {
                                         MaterialTheme.colorScheme.errorContainer.copy(
                                             alpha = 0.4f,
                                         )
+                                    }
 
-                                    !notificationsEnabled ->
+                                    !notificationsEnabled -> {
                                         MaterialTheme.colorScheme.errorContainer.copy(
                                             alpha = 0.2f,
                                         )
+                                    }
 
-                                    enabled -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
-                                    else -> MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+                                    enabled -> {
+                                        MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
+                                    }
+
+                                    else -> {
+                                        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+                                    }
                                 },
                         ),
                     shape = RoundedCornerShape(16.dp),
@@ -325,14 +332,23 @@ fun BackgroundSyncDialog(
                             Text(
                                 text =
                                     when {
-                                        !notificationsEnabled && enabled ->
+                                        !notificationsEnabled && enabled -> {
                                             stringResource(
                                                 R.string.notifications_required_for_background_sync,
                                             )
+                                        }
 
-                                        !notificationsEnabled -> stringResource(R.string.notifications_required_for_background_sync)
-                                        enabled -> stringResource(R.string.apps_will_update_automatically)
-                                        else -> stringResource(R.string.tap_to_enable_automatic_updates)
+                                        !notificationsEnabled -> {
+                                            stringResource(R.string.notifications_required_for_background_sync)
+                                        }
+
+                                        enabled -> {
+                                            stringResource(R.string.apps_will_update_automatically)
+                                        }
+
+                                        else -> {
+                                            stringResource(R.string.tap_to_enable_automatic_updates)
+                                        }
                                     },
                                 style = MaterialTheme.typography.bodyMedium,
                                 color =
@@ -595,11 +611,12 @@ fun BackgroundSyncDialog(
                                             }
                                         }
 
-                                        else ->
+                                        else -> {
                                             Pair(
                                                 selectedPreset.intervalValue,
                                                 selectedPreset.localTimeUnit,
                                             )
+                                        }
                                     }
                                 } else {
                                     Pair("0", LocalTimeUnit.HOURS)

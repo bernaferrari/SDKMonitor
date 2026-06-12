@@ -17,7 +17,10 @@ internal fun Long.convertTimestampToDate(context: Context): String =
         val diff = now - this
 
         when {
-            diff < 60_000 -> context.getString(R.string.just_now)
+            diff < 60_000 -> {
+                context.getString(R.string.just_now)
+            }
+
             diff < 3_600_000 -> {
                 val minutes = (diff / 60_000).toInt()
                 context.resources.getQuantityString(R.plurals.minutes_ago, minutes, minutes)
@@ -69,10 +72,18 @@ inline val @receiver:ColorInt Int.lighten
 // colors inspired from https://www.vanschneider.com/colors
 fun Int.apiToColor(): Int =
     when (this) {
-        in 0..32 -> 0xFFD31B33.toInt() // red
-        33 -> 0xFFE54B4B.toInt() // red-orange
-        34 -> 0xFFE37A46.toInt() // orange
-        35 -> 0XFF178E96.toInt() // blue-green
+        in 0..33 -> 0xFFD31B33.toInt()
+
+        // red
+        34 -> 0xFFE54B4B.toInt()
+
+        // red-orange
+        35 -> 0xFFE37A46.toInt()
+
+        // orange
+        36 -> 0XFF178E96.toInt()
+
+        // blue-green
         else -> 0xFF14B572.toInt() // green
     }
 

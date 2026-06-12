@@ -4,7 +4,6 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.parcelize)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.compose)
     alias(libs.plugins.hilt)
@@ -12,7 +11,7 @@ plugins {
 }
 
 android {
-    compileSdk = 36
+    compileSdk = 37
 
     signingConfigs {
         register("release") {
@@ -38,8 +37,8 @@ android {
         applicationId = "com.bernaferrari.sdkmonitor"
         minSdk = 28
         targetSdk = 36
-        versionCode = 16
-        versionName = "2.0.2"
+        versionCode = 17
+        versionName = "2.0.3"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -85,6 +84,10 @@ android {
     }
 }
 
+configurations.configureEach {
+    resolutionStrategy.force("org.jetbrains.kotlin:kotlin-metadata-jvm:${libs.versions.kotlin.get()}")
+}
+
 dependencies {
     // Kotlin
     implementation(libs.kotlin.stdlib)
@@ -126,7 +129,9 @@ dependencies {
     implementation(libs.androidx.material3.adaptive.navigation)
     implementation(libs.androidx.material3.adaptive.navigation.suite.android)
     ksp(libs.hilt.android.compiler)
-    implementation(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
+    ksp(libs.kotlin.metadata.jvm)
+    annotationProcessor(libs.kotlin.metadata.jvm)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.hilt.work)
 

@@ -317,19 +317,25 @@ fun SettingsScreen(
                             title = stringResource(R.string.background_sync),
                             subtitle =
                                 when {
-                                    !notificationsEnabled -> stringResource(R.string.notifications_required_for_background_sync)
+                                    !notificationsEnabled -> {
+                                        stringResource(R.string.notifications_required_for_background_sync)
+                                    }
+
                                     prefs.backgroundSync -> {
                                         when {
-                                            prefs.syncInterval == "1" && prefs.syncLocalTimeUnit == LocalTimeUnit.DAYS ->
+                                            prefs.syncInterval == "1" && prefs.syncLocalTimeUnit == LocalTimeUnit.DAYS -> {
                                                 stringResource(R.string.enabled_daily_updates)
+                                            }
 
-                                            prefs.syncInterval == "7" && prefs.syncLocalTimeUnit == LocalTimeUnit.DAYS ->
+                                            prefs.syncInterval == "7" && prefs.syncLocalTimeUnit == LocalTimeUnit.DAYS -> {
                                                 stringResource(R.string.enabled_weekly_updates)
+                                            }
 
-                                            prefs.syncInterval == "30" && prefs.syncLocalTimeUnit == LocalTimeUnit.DAYS ->
+                                            prefs.syncInterval == "30" && prefs.syncLocalTimeUnit == LocalTimeUnit.DAYS -> {
                                                 stringResource(R.string.enabled_monthly_updates)
+                                            }
 
-                                            else ->
+                                            else -> {
                                                 stringResource(
                                                     R.string.enabled_every,
                                                     prefs.syncInterval,
@@ -338,10 +344,13 @@ fun SettingsScreen(
                                                         prefs.syncInterval,
                                                     ).lowercase(),
                                                 )
+                                            }
                                         }
                                     }
 
-                                    else -> stringResource(R.string.tap_to_configure_automatic_updates)
+                                    else -> {
+                                        stringResource(R.string.tap_to_configure_automatic_updates)
+                                    }
                                 },
                             icon = if (prefs.backgroundSync) Icons.Default.Sync else Icons.Default.SyncDisabled,
                             onClick = { showSyncDialog = true },

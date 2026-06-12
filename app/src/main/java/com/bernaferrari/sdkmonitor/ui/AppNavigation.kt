@@ -56,20 +56,22 @@ fun AppNavigation(
     // Track current tab for bottom navigation highlighting
     val currentTab = backStack.lastOrNull { it is MainTab || it is LogsTab || it is SettingsTab } ?: MainTab
 
-    val bottomNavItems = listOf(
-        BottomNavItem.Main,
-        BottomNavItem.Logs,
-        BottomNavItem.Settings,
-    )
+    val bottomNavItems =
+        listOf(
+            BottomNavItem.Main,
+            BottomNavItem.Logs,
+            BottomNavItem.Settings,
+        )
 
     NavigationSuiteScaffold(
         navigationSuiteItems = {
             bottomNavItems.forEach { item ->
-                val isSelected = when (item) {
-                    BottomNavItem.Main -> currentTab is MainTab
-                    BottomNavItem.Logs -> currentTab is LogsTab
-                    BottomNavItem.Settings -> currentTab is SettingsTab
-                }
+                val isSelected =
+                    when (item) {
+                        BottomNavItem.Main -> currentTab is MainTab
+                        BottomNavItem.Logs -> currentTab is LogsTab
+                        BottomNavItem.Settings -> currentTab is SettingsTab
+                    }
                 item(
                     icon = {
                         Icon(
@@ -81,11 +83,12 @@ fun AppNavigation(
                     selected = isSelected,
                     onClick = {
                         // Clear back stack and navigate to new tab
-                        val targetTab: NavKey = when (item) {
-                            BottomNavItem.Main -> MainTab
-                            BottomNavItem.Logs -> LogsTab
-                            BottomNavItem.Settings -> SettingsTab
-                        }
+                        val targetTab: NavKey =
+                            when (item) {
+                                BottomNavItem.Main -> MainTab
+                                BottomNavItem.Logs -> LogsTab
+                                BottomNavItem.Settings -> SettingsTab
+                            }
                         if (currentTab != targetTab) {
                             backStack.clear()
                             backStack.add(targetTab)
@@ -100,50 +103,51 @@ fun AppNavigation(
             backStack = backStack,
             onBack = { backStack.removeLastOrNull() },
             modifier = Modifier.fillMaxSize(),
-            entryProvider = entryProvider {
-                entry<MainTab> {
-                    MainScreenWithListDetail(
-                        appStartupPackageName = initialPackageName,
-                        onNavigateToDetails = { packageName ->
-                            backStack.add(AppDetails(packageName))
-                        },
-                    )
-                }
-                entry<LogsTab> {
-                    LogsScreenWithListDetail(
-                        onNavigateToDetails = { packageName ->
-                            backStack.add(AppDetails(packageName))
-                        },
-                    )
-                }
-                entry<SettingsTab> {
-                    SettingsScreenWithListDetail(
-                        onNavigateToDetails = { packageName ->
-                            backStack.add(AppDetails(packageName))
-                        },
-                        onNavigateToAbout = {
-                            backStack.add(About)
-                        },
-                    )
-                }
-                entry<AppDetails> { key ->
-                    DetailsScreen(
-                        packageName = key.packageName,
-                        onNavigateBack = {
-                            backStack.removeLastOrNull()
-                        },
-                        isTabletSize = isTablet(),
-                    )
-                }
-                entry<About> {
-                    AboutScreen(
-                        onNavigateBack = {
-                            backStack.removeLastOrNull()
-                        },
-                        isTabletSize = isTablet(),
-                    )
-                }
-            },
+            entryProvider =
+                entryProvider {
+                    entry<MainTab> {
+                        MainScreenWithListDetail(
+                            appStartupPackageName = initialPackageName,
+                            onNavigateToDetails = { packageName ->
+                                backStack.add(AppDetails(packageName))
+                            },
+                        )
+                    }
+                    entry<LogsTab> {
+                        LogsScreenWithListDetail(
+                            onNavigateToDetails = { packageName ->
+                                backStack.add(AppDetails(packageName))
+                            },
+                        )
+                    }
+                    entry<SettingsTab> {
+                        SettingsScreenWithListDetail(
+                            onNavigateToDetails = { packageName ->
+                                backStack.add(AppDetails(packageName))
+                            },
+                            onNavigateToAbout = {
+                                backStack.add(About)
+                            },
+                        )
+                    }
+                    entry<AppDetails> { key ->
+                        DetailsScreen(
+                            packageName = key.packageName,
+                            onNavigateBack = {
+                                backStack.removeLastOrNull()
+                            },
+                            isTabletSize = isTablet(),
+                        )
+                    }
+                    entry<About> {
+                        AboutScreen(
+                            onNavigateBack = {
+                                backStack.removeLastOrNull()
+                            },
+                            isTabletSize = isTablet(),
+                        )
+                    }
+                },
         )
     }
 }

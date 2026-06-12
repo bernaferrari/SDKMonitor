@@ -270,26 +270,30 @@ private fun EmptyLogsContent(modifier: Modifier = Modifier) {
         contentAlignment = Alignment.Center,
     ) {
         Column(
-            modifier = Modifier
-                .padding(48.dp)
-                .fillMaxWidth(),
+            modifier =
+                Modifier
+                    .padding(48.dp)
+                    .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             // Large animated icon with gradient background
             Box(
-                modifier = Modifier
-                    .size(120.dp)
-                    .background(
-                        brush = Brush.radialGradient(
-                            colors = listOf(
-                                MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
-                                MaterialTheme.colorScheme.primary.copy(alpha = 0.05f),
-                                Color.Transparent,
-                            ),
+                modifier =
+                    Modifier
+                        .size(120.dp)
+                        .background(
+                            brush =
+                                Brush.radialGradient(
+                                    colors =
+                                        listOf(
+                                            MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
+                                            MaterialTheme.colorScheme.primary.copy(alpha = 0.05f),
+                                            Color.Transparent,
+                                        ),
+                                ),
+                            shape = RoundedCornerShape(32.dp),
                         ),
-                        shape = RoundedCornerShape(32.dp),
-                    ),
                 contentAlignment = Alignment.Center,
             ) {
                 Surface(
@@ -318,18 +322,20 @@ private fun EmptyLogsContent(modifier: Modifier = Modifier) {
             ) {
                 Text(
                     text = stringResource(R.string.no_changes_yet),
-                    style = MaterialTheme.typography.headlineMedium.copy(
-                        fontWeight = FontWeight.Bold,
-                    ),
+                    style =
+                        MaterialTheme.typography.headlineMedium.copy(
+                            fontWeight = FontWeight.Bold,
+                        ),
                     color = MaterialTheme.colorScheme.onSurface,
                     textAlign = TextAlign.Center,
                 )
 
                 Text(
                     text = stringResource(R.string.when_apps_update_description),
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        lineHeight = 22.sp,
-                    ),
+                    style =
+                        MaterialTheme.typography.bodyMedium.copy(
+                            lineHeight = 22.sp,
+                        ),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(horizontal = 16.dp),

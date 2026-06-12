@@ -173,9 +173,18 @@ class SettingsViewModel
             // Parse interval like "30m", "1h", "2d", "7d", "30d" into number and unit
             return try {
                 when {
-                    interval.endsWith("m") -> Pair(interval.dropLast(1), LocalTimeUnit.MINUTES)
-                    interval.endsWith("h") -> Pair(interval.dropLast(1), LocalTimeUnit.HOURS)
-                    interval.endsWith("d") -> Pair(interval.dropLast(1), LocalTimeUnit.DAYS)
+                    interval.endsWith("m") -> {
+                        Pair(interval.dropLast(1), LocalTimeUnit.MINUTES)
+                    }
+
+                    interval.endsWith("h") -> {
+                        Pair(interval.dropLast(1), LocalTimeUnit.HOURS)
+                    }
+
+                    interval.endsWith("d") -> {
+                        Pair(interval.dropLast(1), LocalTimeUnit.DAYS)
+                    }
+
                     // Handle legacy formats without unit suffix
                     interval.toIntOrNull() != null -> {
                         val value = interval.toInt()
@@ -186,7 +195,9 @@ class SettingsViewModel
                         }
                     }
 
-                    else -> Pair("7", LocalTimeUnit.DAYS) // Default to weekly
+                    else -> {
+                        Pair("7", LocalTimeUnit.DAYS)
+                    } // Default to weekly
                 }
             } catch (e: Exception) {
                 Pair("7", LocalTimeUnit.DAYS) // Default to weekly on any error

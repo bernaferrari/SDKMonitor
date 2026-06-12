@@ -43,13 +43,14 @@ fun SDKMonitorTheme(
                 if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
             }
 
-            else ->
+            else -> {
                 rememberDynamicMaterialThemeState(
                     seedColor = primary,
                     style = PaletteStyle.TonalSpot,
                     isDark = darkTheme,
                     specVersion = ColorSpec.SpecVersion.SPEC_2025,
                 ).colorScheme
+            }
         }
     val view = LocalView.current
     if (!view.isInEditMode) {
