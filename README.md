@@ -1,4 +1,4 @@
-![SDK Monitor](assets/head.png)
+![SDK Monitor](assets/header.png)
 
 # SDK Monitor
 
