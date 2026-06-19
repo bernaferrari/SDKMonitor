@@ -18,3 +18,8 @@
 -keepclassmembers class kotlin.Metadata {
     public <methods>;
 }
+
+# App Functions
+-keep class * extends androidx.appfunctions.service.AppFunctionService { *; }
+-keep @androidx.appfunctions.service.AppFunction class * { *; }
+-keep @androidx.appfunctions.AppFunctionSerializable class * { *; }

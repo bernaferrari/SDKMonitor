@@ -1,6 +1,10 @@
 import java.io.FileInputStream
 import java.util.Properties
 
+ksp {
+    arg("appfunctions:aggregateAppFunctions", "true")
+}
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.parcelize)
@@ -154,6 +158,11 @@ dependencies {
     // UI Utils
     implementation(libs.androidx.palette.ktx)
     implementation(libs.material.kolor)
+
+    // App Functions (Android system AI integration)
+    implementation(libs.androidx.appfunctions)
+    implementation(libs.androidx.appfunctions.service)
+    ksp(libs.androidx.appfunctions.compiler)
 
     // Debugging
     implementation(libs.nappier)
