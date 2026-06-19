@@ -2,92 +2,39 @@
 
 # SDK Monitor
 
-[![API](https://img.shields.io/badge/API-24%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=24)
-[![Kotlin](https://img.shields.io/badge/Kotlin-100%25-blue.svg)](https://kotlinlang.org)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+**See which Android API level every installed app is targeting — and get notified when it changes.**
+
+Android does not surface `targetSdk` anywhere in Settings. SDK Monitor reads it from your installed apps, tracks updates over time, and shows you which apps are actually adopting newer security and privacy protections.
+
 [![F-Droid](https://img.shields.io/f-droid/v/com.bernaferrari.sdkmonitor.svg)](https://f-droid.org/packages/com.bernaferrari.sdkmonitor/)
 
-**SDK Monitor** shows you which Android API levels your installed apps are targeting. Since 2017 Google requires apps to target recent API levels for better security and privacy, this tool helps you see how up-to-date your apps really are.
-
-
-## 📱 Get it
+## Get it
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" alt="Get it on F-Droid" height="80">](https://f-droid.org/packages/com.bernaferrari.sdkmonitor/)
 
-[Download from GitHub](https://github.com/bernaferrari/SDKMonitor/releases/latest)
+[Download from GitHub Releases](https://github.com/bernaferrari/SDKMonitor/releases/latest)
 
-## 📸 Screenshots
+## Screenshots
 
-|       Home Screen        |             Logs              |          App Details           |             Settings             |
-| :----------------------: |:-----------------------------:|:------------------------------:| :------------------------------: |
-| ![Main](assets/main.png) | ![Analytics](assets/logs.png) | ![Details](assets/details.png) | ![Settings](assets/settings.png) |
+| Home | Change logs | App details | Settings |
+| :--: | :---------: | :---------: | :------: |
+| ![Home screen](assets/main.png) | ![Change logs](assets/logs.png) | ![App details](assets/details.png) | ![Settings](assets/settings.png) |
 
-## Why does this matter?
+## Features
 
-Newer Android versions come with better security and privacy features. When apps target recent API levels, they're forced to use these improvements. But Android doesn't show you this information by default, so SDK Monitor makes it visible. It also helps you see which apps are updating because they have to, versus those that genuinely want to improve.
+- **Target SDK at a glance** — Every installed app, sorted and searchable
+- **Change history** — See when an app bumps (or drops) its `targetSdk`
+- **Notifications** — Get alerted when a Play Store app changes its target level
+- **SDK analytics** — Charts showing how your app library is distributed across API levels
+- **App details** — Permissions, install dates, min/target SDK side by side
+- **CSV export** — Back up your data without leaving the device
+- **Fully offline** — No account, no cloud, no network access required
 
-## ✨ Features
+Available in English, Italian, French, Portuguese (BR), German, Spanish, Japanese, and Chinese.
 
-### What it does
+## Building from source
 
-- **SDK Analysis** - See targetSDK versions for all your apps
-- **Visual Charts** - Nice graphs showing how your apps are distributed
-- **Search & Filter** - Find apps quickly with live search
-- **App Details** - Full info including permissions and install dates
-- **Background Updates** - Automatically tracks changes when you install or update apps
-
-### How it works
-
-- **Adaptive Design** - Looks great on phones, tablets, and foldables
-- **Material You** - Matches your system colors
-- **Fast Scrolling** - Jump through long app lists easily
-- **Fully Offline** - No internet required, everything stays on your device
-
-### Languages
-
-English, Italian, French, Portuguese (BR), German, Spanish, Japanese, and Chinese.
-
-## 🏗️ How it's built
-
-### Tech stack
-
-- **Architecture**: Clean Architecture with MVVM
-- **UI**: Jetpack Compose with Material 3
-- **Database**: Room for storing app data
-- **DI**: Hilt for dependency injection
-- **Async**: Kotlin Coroutines and Flow
-- **Background**: WorkManager for scheduled tasks
-- **Navigation**: Compose Navigation with type safety
-
-### What's inside
-
-**Data handling**
-
-- Room database for local storage
-- Repository pattern for data access
-- Syncs with system when apps change
-
-**User interface**
-
-- Reactive UI with Compose and Flow
-- Custom charts built with Canvas
-- Responsive layouts for different screen sizes
-
-**App logic**
-
-- Business logic separated into use cases
-- Integrates with Android's PackageManager
-- Analyzes and categorizes SDK versions
-
-## 🔧 Building from source
-
-### What you need
-
-- Android Studio Hedgehog | 2023.1.1 or newer
-- JDK 17+
-- Android SDK with API 34+
-
-### Getting started
+Open the project in a recent Android Studio and run it. Or from the terminal:
 
 ```bash
 git clone https://github.com/bernaferrari/SDKMonitor.git
@@ -95,17 +42,13 @@ cd SDKMonitor
 ./gradlew assembleDebug
 ```
 
-### Running tests
+## What each target SDK level means for security and privacy
 
-```bash
-./gradlew test
-./gradlew connectedAndroidTest
-```
+Higher API levels mean apps must adopt newer platform protections.
 
-## 📊 About SDK versions
-
-Here's what different API levels mean:
-
+- **API 37** (Android 17): Advanced Protection Mode, post-quantum APK signing, Live Update APIs
+- **API 36** (Android 16): Local network permission, adaptive layout requirements, health data permission changes
+- **API 35** (Android 15): Private space, edge-to-edge enforcement, stricter foreground service limits
 - **API 34** (Android 14): Partial photo/video access
 - **API 33** (Android 13): Themed app icons, per-app language preferences, notification permission
 - **API 32** (Android 12L): Improved large screen support, new splash screen API
@@ -113,43 +56,6 @@ Here's what different API levels mean:
 - **API 30** (Android 11): Scoped storage enforcement, one-time permissions, background location restrictions
 - **API 29** (Android 10): Scoped storage (optional), dark theme, gesture navigation
 - **API 28** (Android 9): Network security config required, Apache HTTP client removed
-- **API 26-27** (Android 8.x): Background execution limits, notification channels, adaptive icons
-- **API 24-25** (Android 7.x): File provider requirements, doze mode, multi-window support
+- **API 26–27** (Android 8.x): Background execution limits, notification channels, adaptive icons
+- **API 24–25** (Android 7.x): File provider requirements, doze mode, multi-window support
 - **Below API 24**: Missing modern security and privacy features
-
-Higher API levels mean apps must adopt newer security and privacy protections.
-
-## 🤝 Contributing
-
-Want to help? Check out our [Contributing Guidelines](CONTRIBUTING.md) for:
-
-- Code style
-- How to submit changes
-- Reporting bugs
-- Suggesting features
-
-## 🐛 Need help?
-
-- **Bug reports**: [GitHub Issues](https://github.com/bernaferrari/SDKMonitor/issues)
-- **Questions**: [GitHub Discussions](https://github.com/bernaferrari/SDKMonitor/discussions)
-- **F-Droid**: [Package page](https://f-droid.org/packages/com.bernaferrari.sdkmonitor/)
-
-## 📄 License
-
-Licensed under Apache 2.0. See [LICENSE](LICENSE) for details.
-
-```
-Copyright 2024 Bernardo Ferrari
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-```
