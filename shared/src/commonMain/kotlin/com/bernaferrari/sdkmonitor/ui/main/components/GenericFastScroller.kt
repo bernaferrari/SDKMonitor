@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyListState
@@ -168,11 +169,18 @@ fun <T> GenericFastScroller(
     }
 
     val width = 40.dp
+    val verticalInset = 16.dp
+    val labelSlotHeight = 22.dp
+    val minimumTrackHeight = 72.dp
+    val preferredTrackHeight = maxOf(
+        minimumTrackHeight,
+        labelSlotHeight * letters.size + verticalInset * 2,
+    )
 
     Box(
         modifier =
             modifier
-                .fillMaxHeight()
+                .height(preferredTrackHeight)
                 .width(width)
                 .background(
                     color = Color.Transparent, // MaterialTheme.colorScheme.surface.copy(alpha = 0.8f),
@@ -184,7 +192,7 @@ fun <T> GenericFastScroller(
                 Modifier
                     .fillMaxHeight()
                     .width(width)
-                    .padding(vertical = 16.dp) // More vertical padding, less horizontal
+                    .padding(vertical = verticalInset)
                     .onGloballyPositioned { scrollerSize = it.size }
                     .pointerInput(items.hashCode()) {
                         awaitPointerEventScope {
