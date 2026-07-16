@@ -109,7 +109,15 @@ fun DemoSdkMonitorApp(
                 )
                 tab == DemoDestination.Logs.index -> LogsContent(
                     uiState = LogsUiState.Success(logs, logs.size),
-                    formatTime = { it.toString() },
+                    formatTime = { timestamp ->
+                        when (timestamp) {
+                            1_748_500_000_000L -> "Jun 19"
+                            1_748_400_000_000L -> "Jun 18"
+                            1_747_900_000_000L -> "Jun 12"
+                            1_747_500_000_000L -> "Jun 7"
+                            else -> "Jan 2024"
+                        }
+                    },
                     onLogClick = { selectedPackage = it.packageName },
                     onRetry = {},
                     contentModifier = modifier,
