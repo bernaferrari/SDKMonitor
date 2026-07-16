@@ -45,6 +45,7 @@
     <string name="sync_interval">Sync interval</string>
     <string name="app_filter">App filter</string>
     <string name="analytics">SDK analytics</string>
+    <string name="analytics_section">Analytics</string>
     <string name="analytics_empty">No analytics yet</string>
     <string name="clear_logs">Clear logs</string>
     <string name="export_data">Export data</string>

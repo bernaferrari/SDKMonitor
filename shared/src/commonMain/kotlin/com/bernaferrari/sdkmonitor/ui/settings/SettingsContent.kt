@@ -48,6 +48,7 @@ import com.bernaferrari.sdkmonitor.domain.LocalTimeUnit
 import com.bernaferrari.sdkmonitor.domain.ThemeMode
 import com.bernaferrari.sdkmonitor.ui.platform.sdkStrings
 import com.bernaferrari.sdkmonitor.ui.settings.components.AnalyticsSection
+import com.bernaferrari.sdkmonitor.ui.settings.components.AppFilterSelector
 import com.bernaferrari.sdkmonitor.ui.settings.components.BackgroundSyncDialog
 import com.bernaferrari.sdkmonitor.ui.settings.components.NotificationPermissionRequestCard
 import com.bernaferrari.sdkmonitor.ui.settings.components.NotificationWarningCard
@@ -193,14 +194,24 @@ fun SettingsContent(
                     }
 
                     AnalyticsSection(
-                        title = s.analytics,
-                        currentFilter = prefs.appFilter,
-                        onFilterChange = onAppFilterChange,
+                        title = s.analyticsSection,
+                        action = {
+                            AppFilterSelector(
+                                currentFilter = prefs.appFilter,
+                                onFilterChange = onAppFilterChange,
+                            )
+                        },
                     ) {
                         when {
-                            uiState.isAnalyticsLoading -> SdkAnalyticsPlaceholder()
-                            uiState.totalApps == 0 && !uiState.isAnalyticsLoading -> SdkAnalyticsEmptyState()
-                            else ->
+                            uiState.isAnalyticsLoading -> {
+                                SdkAnalyticsPlaceholder()
+                            }
+
+                            uiState.totalApps == 0 && !uiState.isAnalyticsLoading -> {
+                                SdkAnalyticsEmptyState()
+                            }
+
+                            else -> {
                                 SdkAnalyticsCard(
                                     sdkDistribution = uiState.sdkDistribution,
                                     totalApps = uiState.totalApps,
@@ -209,6 +220,7 @@ fun SettingsContent(
                                         showSdkDialog = true
                                     },
                                 )
+                            }
                         }
                     }
 
@@ -239,21 +251,38 @@ fun SettingsContent(
                             title = s.backgroundSync,
                             subtitle =
                                 when {
-                                    !notificationsEnabled -> s.notificationsRequired
-                                    prefs.backgroundSync ->
+                                    !notificationsEnabled -> {
+                                        s.notificationsRequired
+                                    }
+
+                                    prefs.backgroundSync -> {
                                         when {
-                                            prefs.syncInterval == "1" && prefs.syncLocalTimeUnit == LocalTimeUnit.DAYS -> s.enabledDaily
-                                            prefs.syncInterval == "7" && prefs.syncLocalTimeUnit == LocalTimeUnit.DAYS -> s.enabledWeekly
-                                            prefs.syncInterval == "30" && prefs.syncLocalTimeUnit == LocalTimeUnit.DAYS -> s.enabledMonthly
-                                            else ->
+                                            prefs.syncInterval == "1" && prefs.syncLocalTimeUnit == LocalTimeUnit.DAYS -> {
+                                                s.enabledDaily
+                                            }
+
+                                            prefs.syncInterval == "7" && prefs.syncLocalTimeUnit == LocalTimeUnit.DAYS -> {
+                                                s.enabledWeekly
+                                            }
+
+                                            prefs.syncInterval == "30" && prefs.syncLocalTimeUnit == LocalTimeUnit.DAYS -> {
+                                                s.enabledMonthly
+                                            }
+
+                                            else -> {
                                                 "${s.enabledEvery} ${prefs.syncInterval} ${
                                                     timeUnitDisplayName(
                                                         prefs.syncLocalTimeUnit,
                                                         prefs.syncInterval,
                                                     )
                                                 }"
+                                            }
                                         }
-                                    else -> s.tapToConfigureSync
+                                    }
+
+                                    else -> {
+                                        s.tapToConfigureSync
+                                    }
                                 },
                             icon = if (prefs.backgroundSync) Icons.Default.Sync else Icons.Default.SyncDisabled,
                             onClick = { showSyncDialog = true },

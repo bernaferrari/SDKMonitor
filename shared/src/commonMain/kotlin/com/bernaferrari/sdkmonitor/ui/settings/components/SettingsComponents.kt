@@ -13,28 +13,18 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.Android
-import androidx.compose.material.icons.filled.Apps
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.bernaferrari.sdkmonitor.domain.AppFilter
 import com.bernaferrari.sdkmonitor.ui.platform.sdkStrings
 
 @Composable
@@ -118,13 +108,17 @@ fun SettingsItem(
             }
 
             when {
-                isSwitch -> Switch(checked = switchValue, onCheckedChange = { onSwitchToggle?.invoke(it) })
-                onClick != null ->
+                isSwitch -> {
+                    Switch(checked = switchValue, onCheckedChange = { onSwitchToggle?.invoke(it) })
+                }
+
+                onClick != null -> {
                     Icon(
                         Icons.AutoMirrored.Filled.KeyboardArrowRight,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
+                }
             }
         }
     }
@@ -133,14 +127,10 @@ fun SettingsItem(
 @Composable
 fun AnalyticsSection(
     title: String,
-    currentFilter: AppFilter,
-    onFilterChange: (AppFilter) -> Unit,
     modifier: Modifier = Modifier,
+    action: @Composable () -> Unit = {},
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    val s = sdkStrings()
-    var showFilterMenu by remember { mutableStateOf(false) }
-
     Column(
         modifier =
             modifier
@@ -149,7 +139,7 @@ fun AnalyticsSection(
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -159,62 +149,7 @@ fun AnalyticsSection(
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.primary,
             )
-            Box {
-                Surface(
-                    onClick = { showFilterMenu = true },
-                    shape = RoundedCornerShape(12.dp),
-                    color = MaterialTheme.colorScheme.surfaceContainerHighest,
-                ) {
-                    Row(
-                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(6.dp),
-                    ) {
-                        Icon(
-                            imageVector =
-                                when (currentFilter) {
-                                    AppFilter.ALL_APPS -> Icons.Default.Apps
-                                    AppFilter.USER_APPS -> Icons.Default.Person
-                                    AppFilter.SYSTEM_APPS -> Icons.Default.Android
-                                },
-                            contentDescription = null,
-                            modifier = Modifier.size(18.dp),
-                        )
-                        Text(
-                            text =
-                                when (currentFilter) {
-                                    AppFilter.ALL_APPS -> s.allApps
-                                    AppFilter.USER_APPS -> s.userApps
-                                    AppFilter.SYSTEM_APPS -> s.systemApps
-                                },
-                            style = MaterialTheme.typography.labelLarge,
-                        )
-                    }
-                }
-                DropdownMenu(expanded = showFilterMenu, onDismissRequest = { showFilterMenu = false }) {
-                    DropdownMenuItem(
-                        text = { Text(s.userApps) },
-                        onClick = {
-                            onFilterChange(AppFilter.USER_APPS)
-                            showFilterMenu = false
-                        },
-                    )
-                    DropdownMenuItem(
-                        text = { Text(s.systemApps) },
-                        onClick = {
-                            onFilterChange(AppFilter.SYSTEM_APPS)
-                            showFilterMenu = false
-                        },
-                    )
-                    DropdownMenuItem(
-                        text = { Text(s.allApps) },
-                        onClick = {
-                            onFilterChange(AppFilter.ALL_APPS)
-                            showFilterMenu = false
-                        },
-                    )
-                }
-            }
+            action()
         }
         content()
     }

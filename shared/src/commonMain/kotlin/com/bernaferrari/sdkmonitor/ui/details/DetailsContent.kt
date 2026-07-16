@@ -3,16 +3,20 @@ package com.bernaferrari.sdkmonitor.ui.details
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -23,11 +27,11 @@ import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -101,10 +105,11 @@ fun DetailsContent(
                         onClick = navigateBack,
                         modifier = Modifier.padding(8.dp).size(48.dp),
                         shape = CircleShape,
-                        colors = IconButtonDefaults.filledIconButtonColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
-                            contentColor = MaterialTheme.colorScheme.primary,
-                        ),
+                        colors =
+                            IconButtonDefaults.filledIconButtonColors(
+                                containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                                contentColor = MaterialTheme.colorScheme.onSurface,
+                            ),
                     ) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
@@ -125,44 +130,69 @@ private fun DetailsBody(
 ) {
     val s = sdkStrings()
 
-    Column(
-        modifier =
-            contentModifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(
-                    start = 16.dp,
-                    end = 16.dp,
-                    top = if (showBackButton) 64.dp else 16.dp,
-                    bottom = 16.dp,
-                ),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+    Box(
+        modifier = contentModifier.fillMaxSize(),
+        contentAlignment = Alignment.TopCenter,
     ) {
-        AppDetailsCard(
-            appDetails = appDetails,
-            onAppInfoClick =
-                onAppInfoClick?.let { handler ->
-                    { handler(appDetails.packageName) }
-                },
-            onPlayStoreClick =
-                onPlayStoreClick?.let { handler ->
-                    { handler(appDetails.packageName) }
-                },
-        )
-
-        if (versions.isNotEmpty()) {
-            Text(
-                s.versionHistory,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.fillMaxWidth(),
+        Column(
+            modifier =
+                Modifier
+                    .widthIn(max = 720.dp)
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
+                    .padding(
+                        start = 16.dp,
+                        end = 16.dp,
+                        top = if (showBackButton) 64.dp else 16.dp,
+                        bottom = 24.dp,
+                    ),
+            verticalArrangement = Arrangement.spacedBy(20.dp),
+        ) {
+            AppDetailsCard(
+                appDetails = appDetails,
+                onAppInfoClick =
+                    onAppInfoClick?.let { handler ->
+                        { handler(appDetails.packageName) }
+                    },
+                onPlayStoreClick =
+                    onPlayStoreClick?.let { handler ->
+                        { handler(appDetails.packageName) }
+                    },
             )
-            versions.forEachIndexed { index, version ->
-                VersionCard(
-                    versionInfo = version,
-                    isLatest = index == 0,
-                    isLast = index == versions.lastIndex,
-                )
+
+            if (versions.isNotEmpty()) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    Text(
+                        text = s.versionHistory,
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold,
+                    )
+                    Surface(
+                        shape = RoundedCornerShape(999.dp),
+                        color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                    ) {
+                        Text(
+                            text = versions.size.toString(),
+                            style = MaterialTheme.typography.labelLarge,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
+                        )
+                    }
+                }
+                Column {
+                    versions.forEachIndexed { index, version ->
+                        VersionCard(
+                            versionInfo = version,
+                            isLatest = index == 0,
+                            isLast = index == versions.lastIndex,
+                        )
+                    }
+                }
             }
         }
     }

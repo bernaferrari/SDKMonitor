@@ -4,7 +4,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -18,10 +22,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.bernaferrari.sdkmonitor.domain.AppVersion
 import com.bernaferrari.sdkmonitor.ui.platform.apiToComposeColor
 import com.bernaferrari.sdkmonitor.ui.platform.sdkStrings
@@ -49,85 +53,147 @@ fun VersionTimelineEntry(
     isLast: Boolean = false,
 ) {
     val apiColor = versionInfo.sdkVersion.apiToComposeColor()
+    val railColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.72f)
+    val cardShape = versionHistoryItemShape(isFirst = isLatest, isLast = isLast)
     val s = sdkStrings()
 
     Row(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth().height(IntrinsicSize.Min),
         verticalAlignment = Alignment.Top,
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+            modifier = Modifier.width(24.dp).fillMaxHeight(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
             Box(
                 modifier =
                     Modifier
-                        .size(12.dp)
-                        .background(
-                            if (isLatest) apiColor else MaterialTheme.colorScheme.outlineVariant,
-                            CircleShape,
-                        ),
+                        .width(2.dp)
+                        .height(36.dp)
+                        .background(if (isLatest) MaterialTheme.colorScheme.surface else railColor),
             )
-            if (!isLast) {
-                Box(
-                    modifier =
-                        Modifier
-                            .width(2.dp)
-                            .height(48.dp)
-                            .background(MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)),
-                )
+            Surface(
+                modifier = Modifier.size(18.dp),
+                shape = CircleShape,
+                color = MaterialTheme.colorScheme.surface,
+            ) {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Box(
+                        modifier =
+                            Modifier
+                                .size(if (isLatest) 12.dp else 10.dp)
+                                .background(if (isLatest) apiColor else railColor, CircleShape),
+                    )
+                }
             }
-        }
-
-        Surface(
-            modifier = Modifier.weight(1f).padding(bottom = if (isLast) 0.dp else 8.dp),
-            shape = RoundedCornerShape(12.dp),
-            color = MaterialTheme.colorScheme.surfaceContainerLow,
-        ) {
-            Row(
+            Box(
                 modifier =
                     Modifier
-                        .fillMaxWidth()
-                        .padding(12.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = versionInfo.versionName.ifBlank { versionInfo.versionCode.toString() },
-                        style = MaterialTheme.typography.titleSmall,
-                        fontWeight = if (isLatest) FontWeight.Bold else FontWeight.Medium,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                    if (versionInfo.lastUpdateTime.isNotBlank()) {
-                        Text(
-                            text = versionInfo.lastUpdateTime,
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
-                    if (isLatest) {
-                        Text(
-                            text = s.version,
-                            style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp),
-                            color = MaterialTheme.colorScheme.primary,
-                        )
-                    }
-                }
+                        .width(2.dp)
+                        .weight(1f)
+                        .background(if (isLast) MaterialTheme.colorScheme.surface else railColor),
+            )
+        }
 
-                Box(
-                    modifier =
-                        Modifier
-                            .background(apiColor.copy(alpha = 0.15f), RoundedCornerShape(8.dp))
-                            .padding(horizontal = 10.dp, vertical = 6.dp),
+        Box(
+            modifier =
+                Modifier
+                    .weight(1f)
+                    .padding(bottom = if (isLast) 0.dp else 4.dp),
+        ) {
+            Surface(
+                modifier = Modifier.fillMaxWidth().defaultMinSize(minHeight = 90.dp),
+                shape = cardShape,
+                color = MaterialTheme.colorScheme.surfaceContainerLow,
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 14.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Text(
-                        text = versionInfo.sdkVersion.toString(),
-                        style = MaterialTheme.typography.labelLarge,
-                        fontWeight = FontWeight.Bold,
-                        color = apiColor,
-                    )
+                    Column(
+                        modifier = Modifier.weight(1f),
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                    ) {
+                        Text(
+                            text = versionInfo.versionName.ifBlank { versionInfo.versionCode.toString() },
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = if (isLatest) FontWeight.Bold else FontWeight.SemiBold,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        ) {
+                            if (versionInfo.lastUpdateTime.isNotBlank()) {
+                                Text(
+                                    text = versionInfo.lastUpdateTime,
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                )
+                            }
+                            if (isLatest) {
+                                Surface(
+                                    shape = RoundedCornerShape(999.dp),
+                                    color = MaterialTheme.colorScheme.primaryContainer,
+                                ) {
+                                    Text(
+                                        text = s.latest,
+                                        style = MaterialTheme.typography.labelSmall,
+                                        fontWeight = FontWeight.SemiBold,
+                                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    Surface(
+                        shape = RoundedCornerShape(12.dp),
+                        color = apiColor.copy(alpha = 0.12f),
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(horizontal = 11.dp, vertical = 7.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                        ) {
+                            Text(
+                                text = "API",
+                                style = MaterialTheme.typography.labelSmall,
+                                fontWeight = FontWeight.Bold,
+                                color = apiColor,
+                            )
+                            Text(
+                                text = versionInfo.sdkVersion.toString(),
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.ExtraBold,
+                                color = apiColor,
+                            )
+                        }
+                    }
                 }
             }
         }
     }
+}
+
+/** Matches the expressive segmented-list shape used for settings rows. */
+@Composable
+private fun versionHistoryItemShape(
+    isFirst: Boolean,
+    isLast: Boolean,
+): Shape {
+    val base = MaterialTheme.shapes.small as? RoundedCornerShape ?: return MaterialTheme.shapes.small
+    val emphasis = MaterialTheme.shapes.large as? RoundedCornerShape ?: return MaterialTheme.shapes.small
+
+    return RoundedCornerShape(
+        topStart = if (isFirst) emphasis.topStart else base.topStart,
+        topEnd = if (isFirst) emphasis.topEnd else base.topEnd,
+        bottomEnd = if (isLast) emphasis.bottomEnd else base.bottomEnd,
+        bottomStart = if (isLast) emphasis.bottomStart else base.bottomStart,
+    )
 }

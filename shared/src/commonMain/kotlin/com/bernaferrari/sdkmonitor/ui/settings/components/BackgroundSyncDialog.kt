@@ -246,7 +246,8 @@ fun BackgroundSyncDialog(
                                 ExposedDropdownMenuBox(
                                     expanded = unitMenuExpanded,
                                     onExpandedChange = { unitMenuExpanded = it },
-                                    modifier = Modifier.weight(0.55f),
+                                    // Match the vertical label space reserved by the "Every" field.
+                                    modifier = Modifier.weight(0.55f).padding(top = 8.dp),
                                 ) {
                                     OutlinedTextField(
                                         value = unitLabel(customUnit, customInterval.ifBlank { "1" }),

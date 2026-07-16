@@ -106,7 +106,7 @@ class RoomAppsRepository(
      * version rows, instead of relying on an unrelated app-table emission.
      */
     fun getChangeLogs(filter: AppFilter = AppFilter.ALL_APPS): Flow<List<LogEntry>> =
-        versionsDao.getAllChangesFlow().map { versions ->
+        versionsDao.getAllVersionsFlow().map { versions ->
             LogEntryLogic.buildChangeLogs(
                 versions = versions.map { it.toTracked() },
                 apps = appsDao.getAppsList().map { it.toTracked() },

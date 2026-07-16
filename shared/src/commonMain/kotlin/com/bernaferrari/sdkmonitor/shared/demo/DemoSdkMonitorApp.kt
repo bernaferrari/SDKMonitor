@@ -37,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalUriHandler
 import com.bernaferrari.sdkmonitor.data.repository.RoomAppsRepository
 import com.bernaferrari.sdkmonitor.domain.AppDetails
 import com.bernaferrari.sdkmonitor.domain.AppFilter
@@ -53,6 +54,7 @@ import com.bernaferrari.sdkmonitor.ui.logs.LogsContent
 import com.bernaferrari.sdkmonitor.ui.main.MainContent
 import com.bernaferrari.sdkmonitor.ui.platform.rememberComposeSdkStrings
 import com.bernaferrari.sdkmonitor.ui.settings.SettingsContent
+import com.bernaferrari.sdkmonitor.ui.settings.AboutContent
 import com.bernaferrari.sdkmonitor.ui.state.DetailsUiState
 import com.bernaferrari.sdkmonitor.ui.state.LogsUiState
 import com.bernaferrari.sdkmonitor.ui.state.MainUiState
@@ -71,6 +73,7 @@ fun DemoSdkMonitorApp(
     showWebBanner: Boolean = false,
 ) {
     val session = remember { DemoSessionState() }
+    val uriHandler = LocalUriHandler.current
     val prefs by session.preferences.collectAsState()
     val searchQuery by session.searchQuery.collectAsState()
     val sortOption by session.sortOption.collectAsState()
@@ -140,6 +143,7 @@ fun DemoSdkMonitorApp(
                 ) { selectedPackageName, onAppClick ->
                     LogsContent(
                         uiState = LogsUiState.Success(logs, logs.size),
+                        appFilter = prefs.appFilter,
                         selectedPackageName = selectedPackageName,
                         formatTime = ::demoLogDate,
                         onLogClick = { onAppClick(it.packageName) },
@@ -153,6 +157,16 @@ fun DemoSdkMonitorApp(
                     onSelectedPackageChange = { selectedPackage = it },
                     showEmptyDetailState = false,
                     modifier = modifier,
+                    aboutContent = { onNavigateBack, isDualPane ->
+                        AboutContent(
+                            appName = "SDK Monitor",
+                            versionName = "2.0.3",
+                            onNavigateBack = if (isDualPane) null else onNavigateBack,
+                            showTopBar = !isDualPane,
+                            onOpenUrl = uriHandler::openUri,
+                            onContact = { uriHandler.openUri("mailto:bernaferrari2+sdkmonitor@gmail.com") },
+                        )
+                    },
                 ) { _, onAppClick ->
                     SettingsContent(
                         uiState = SettingsUiState(
@@ -169,7 +183,7 @@ fun DemoSdkMonitorApp(
                         onBackgroundSyncToggle = {},
                         onSetSyncInterval = { _, _ -> },
                         onClearError = {},
-                        onNavigateToAbout = {},
+                        onNavigateToAbout = { selectedPackage = AboutDestinationKey },
                         onNavigateToAppDetails = onAppClick,
                     )
                 }
@@ -191,6 +205,7 @@ private fun DemoListDetailScaffold(
     onSelectedPackageChange: (String?) -> Unit,
     showEmptyDetailState: Boolean,
     modifier: Modifier = Modifier,
+    aboutContent: (@Composable (onNavigateBack: () -> Unit, isDualPane: Boolean) -> Unit)? = null,
     listPane: @Composable (selectedPackageName: String?, onAppClick: (String) -> Unit) -> Unit,
 ) {
     val navigator = rememberListDetailPaneScaffoldNavigator<String>()
@@ -227,9 +242,16 @@ private fun DemoListDetailScaffold(
         detailPane = {
             AnimatedPane {
                 val details = selectedPackage?.let { detailsFromRoom(allApps, it) }
+                val navigateBack: () -> Unit = {
+                    onSelectedPackageChange(null)
+                    scope.launch { navigator.navigateBack() }
+                    Unit
+                }
                 when {
                     selectedPackage == null && showEmptyDetailState -> EmptyDetailState()
                     selectedPackage == null -> Unit
+                    selectedPackage == AboutDestinationKey && aboutContent != null ->
+                        aboutContent(navigateBack, isDualPane)
                     details == null -> DetailsContent(
                         uiState = DetailsUiState.Error("App not found"),
                         onRetry = { onSelectedPackageChange(null) },
@@ -238,10 +260,7 @@ private fun DemoListDetailScaffold(
                         uiState = DetailsUiState.Success(details, versions),
                         onRetry = { onSelectedPackageChange(null) },
                         onNavigateBack = if (isDualPane) null else {
-                            {
-                                onSelectedPackageChange(null)
-                                scope.launch { navigator.navigateBack() }
-                            }
+                            navigateBack
                         },
                     )
                 }
@@ -250,6 +269,8 @@ private fun DemoListDetailScaffold(
         modifier = modifier,
     )
 }
+
+private const val AboutDestinationKey = "about"
 
 @Composable
 private fun EmptyDetailState() {

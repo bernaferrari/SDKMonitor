@@ -21,10 +21,12 @@ fun LogsScreen(
     modifier: Modifier = Modifier,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val appFilter by viewModel.appFilter.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
     LogsContent(
         uiState = uiState,
+        appFilter = appFilter,
         selectedPackageName = selectedPackageName,
         formatTime = { ts -> ts.convertTimestampToDate(context) },
         onLogClick = { onNavigateToAppDetails(it.packageName) },

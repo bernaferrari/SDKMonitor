@@ -6,11 +6,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Chat
 import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Extension
 import androidx.compose.material.icons.filled.Headset
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.MonitorHeart
 import androidx.compose.material.icons.filled.MusicNote
+import androidx.compose.material.icons.filled.Place
+import androidx.compose.material.icons.filled.PlayCircle
 import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.Shop
 import androidx.compose.material.icons.filled.Storefront
@@ -35,16 +39,21 @@ object DemoAppIconProvider : AppIconProvider {
     @Composable
     override fun AppIcon(packageName: String, size: Dp, modifier: Modifier) {
         val (icon, color) = when (packageName) {
-            "com.android.chrome", "org.mozilla.firefox" -> Icons.Default.Language to Color(0xFF4285F4)
+            "com.android.chrome" -> Icons.Default.Language to Color(0xFF4285F4)
+            "org.mozilla.firefox" -> Icons.Default.Language to Color(0xFFFF7139)
+            "com.google.android.youtube" -> Icons.Default.PlayCircle to Color(0xFFFF0000)
+            "com.google.android.gm" -> Icons.Default.Email to Color(0xFFEA4335)
+            "com.google.android.apps.maps" -> Icons.Default.Place to Color(0xFF34A853)
             "com.spotify.music" -> Icons.Default.MusicNote to Color(0xFF1DB954)
             "com.whatsapp" -> Icons.AutoMirrored.Filled.Chat to Color(0xFF25D366)
             "com.instagram.android" -> Icons.Default.CameraAlt to Color(0xFFE1306C)
             "com.google.android.gms" -> Icons.Default.Extension to Color(0xFF5F6368)
             "com.android.vending" -> Icons.Default.Shop to Color(0xFF01875F)
-            "com.twitter.android" -> Icons.Default.Storefront to Color(0xFF111111)
+            "com.twitter.android" -> Icons.Default.Close to Color(0xFF111111)
             "com.discord" -> Icons.Default.Headset to Color(0xFF5865F2)
             "com.bernaferrari.sdkmonitor" -> Icons.Default.MonitorHeart to MaterialTheme.colorScheme.primary
-            "com.bank.secure" -> Icons.Default.Security to Color(0xFF1565C0)
+            "org.thoughtcrime.securesms" -> Icons.AutoMirrored.Filled.Chat to Color(0xFF3A76F0)
+            "com.nu.production" -> Icons.Default.Security to Color(0xFF820AD1)
             else -> null to Color(0xFF795548)
         }
         Surface(modifier = modifier.size(size), shape = RoundedCornerShape(size / 3), color = color) {

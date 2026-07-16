@@ -7,6 +7,7 @@ import com.bernaferrari.sdkmonitor.shared.resources.about_section
 import com.bernaferrari.sdkmonitor.shared.resources.all_apps
 import com.bernaferrari.sdkmonitor.shared.resources.allow_notifications
 import com.bernaferrari.sdkmonitor.shared.resources.analytics
+import com.bernaferrari.sdkmonitor.shared.resources.analytics_section
 import com.bernaferrari.sdkmonitor.shared.resources.analytics_empty
 import com.bernaferrari.sdkmonitor.shared.resources.app_filter
 import com.bernaferrari.sdkmonitor.shared.resources.app_information
@@ -160,6 +161,7 @@ fun rememberComposeSdkStrings(): SdkStrings =
         syncInterval = stringResource(Res.string.sync_interval),
         appFilter = stringResource(Res.string.app_filter),
         analytics = stringResource(Res.string.analytics),
+        analyticsSection = stringResource(Res.string.analytics_section),
         analyticsEmpty = stringResource(Res.string.analytics_empty),
         clearLogs = stringResource(Res.string.clear_logs),
         exportData = stringResource(Res.string.export_data),

@@ -5,10 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <base href="/">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
-    <title>SDK Monitor — Live Demo</title>
+    <link rel="canonical" href="https://sdkmonitor.vercel.app/">
+    <meta name="description" content="Explore the SDK Monitor demo and track Android target SDKs across installed apps.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sdkmonitor.vercel.app/">
+    <meta property="og:site_name" content="SDK Monitor">
+    <meta property="og:title" content="SDK Monitor — Track Android Target SDKs Across Your Apps">
+    <meta property="og:description" content="Explore the SDK Monitor demo and track Android target SDKs across installed apps.">
+    <meta property="og:image" content="https://sdkmonitor.vercel.app/opengraph-image.png">
+    <meta property="og:image:width" content="1280">
+    <meta property="og:image:height" content="640">
+    <meta property="og:image:alt" content="SDK Monitor — Track Android target SDKs">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="SDK Monitor — Track Android Target SDKs Across Your Apps">
+    <meta name="twitter:description" content="Explore the SDK Monitor demo and track Android target SDKs across installed apps.">
+    <meta name="twitter:image" content="https://sdkmonitor.vercel.app/opengraph-image.png">
+    <title>SDK Monitor — Track Android Target SDKs Across Your Apps</title>
     <style>
-        html, body { margin: 0; padding: 0; height: 100%; width: 100%; background: #1a1a1a; }
-        #root { height: 100%; width: 100%; }
+        *, *::before, *::after { box-sizing: border-box; }
+        html, body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #1a1a1a;
+        }
+        #root {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+        }
+        canvas { display: block; }
     </style>
 </head>
 <body>

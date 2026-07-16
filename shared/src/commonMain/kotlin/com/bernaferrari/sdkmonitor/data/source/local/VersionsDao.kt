@@ -48,4 +48,7 @@ interface VersionsDao {
 
     @Query("SELECT * FROM versions ORDER BY lastUpdateTime DESC")
     suspend fun getAllVersionsSync(): List<Version>
+
+    @Query("SELECT * FROM versions ORDER BY lastUpdateTime DESC")
+    fun getAllVersionsFlow(): Flow<List<Version>>
 }

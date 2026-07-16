@@ -1,36 +1,27 @@
 package com.bernaferrari.sdkmonitor.ui.settings
 
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.automirrored.filled.OpenInNew
-import androidx.compose.material.icons.filled.Android
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -48,15 +39,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.bernaferrari.sdkmonitor.shared.resources.Res
 import com.bernaferrari.sdkmonitor.shared.resources.github_logo
@@ -64,11 +52,13 @@ import com.bernaferrari.sdkmonitor.shared.resources.linkedin_logo
 import com.bernaferrari.sdkmonitor.shared.resources.reddit_logo
 import com.bernaferrari.sdkmonitor.shared.resources.x_logo
 import com.bernaferrari.sdkmonitor.ui.platform.sdkStrings
-import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.DrawableResource
 
 sealed class AboutAction {
-    data class OpenUrl(val url: String) : AboutAction()
+    data class OpenUrl(
+        val url: String,
+    ) : AboutAction()
 
     data object ExportData : AboutAction()
 
@@ -83,7 +73,12 @@ private data class AboutLink(
     val action: AboutAction,
     val vectorIcon: ImageVector? = null,
     val drawable: DrawableResource? = null,
-    val tint: Color? = null,
+)
+
+private data class SocialLink(
+    val name: String,
+    val url: String,
+    val drawable: org.jetbrains.compose.resources.DrawableResource,
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -101,80 +96,78 @@ fun AboutContent(
     val s = sdkStrings()
     var showPrivacyDialog by remember { mutableStateOf(false) }
 
-    val headerAnimation by animateFloatAsState(
-        targetValue = 1f,
-        animationSpec = tween(800, easing = FastOutSlowInEasing),
-        label = "header",
-    )
-    val contentAnimation by animateFloatAsState(
-        targetValue = 1f,
-        animationSpec = tween(600, delayMillis = 200),
-        label = "content",
-    )
-
-    val onSurfaceTint = MaterialTheme.colorScheme.onSurfaceVariant
-    val links =
+    val projectLinks =
         listOf(
             AboutLink(
-                title = s.privacy,
-                subtitle = s.privacyBody,
-                action = AboutAction.ShowPrivacy,
-                vectorIcon = Icons.Default.Lock,
-            ),
-            AboutLink(
                 title = s.openSource,
-                subtitle = "github.com/bernaferrari/SDKMonitor",
+                subtitle = s.viewOnGitHub,
                 action = AboutAction.OpenUrl("https://github.com/bernaferrari/SDKMonitor"),
                 drawable = Res.drawable.github_logo,
-                tint = onSurfaceTint,
-            ),
-            AboutLink(
-                title = s.rateApp,
-                subtitle = "Star the repository",
-                action = AboutAction.OpenUrl("https://github.com/bernaferrari/SDKMonitor"),
-                vectorIcon = Icons.Default.Star,
-            ),
-            AboutLink(
-                title = "X / Twitter",
-                subtitle = "@bernaferrari",
-                action = AboutAction.OpenUrl("https://x.com/bernaferrari"),
-                drawable = Res.drawable.x_logo,
-                tint = onSurfaceTint,
-            ),
-            AboutLink(
-                title = "LinkedIn",
-                subtitle = "Bernardo Ferrari",
-                action = AboutAction.OpenUrl("https://www.linkedin.com/in/bernaferrari"),
-                drawable = Res.drawable.linkedin_logo,
-                tint = onSurfaceTint,
-            ),
-            AboutLink(
-                title = "Reddit",
-                subtitle = "u/bernaferrari",
-                action = AboutAction.OpenUrl("https://www.reddit.com/user/bernaferrari"),
-                drawable = Res.drawable.reddit_logo,
-                tint = onSurfaceTint,
-            ),
-            AboutLink(
-                title = s.exportData,
-                subtitle = "CSV backup of versions",
-                action = AboutAction.ExportData,
-                vectorIcon = Icons.Default.Download,
             ),
             AboutLink(
                 title = s.contact,
-                subtitle = "Reach the author",
+                subtitle = s.contactDescription,
                 action = AboutAction.ContactEmail,
                 vectorIcon = Icons.Default.Email,
             ),
         )
+    val socialLinks =
+        listOf(
+            SocialLink(
+                name = "LinkedIn",
+                url = "https://www.linkedin.com/in/bernaferrari",
+                drawable = Res.drawable.linkedin_logo,
+            ),
+            SocialLink(
+                name = "X",
+                url = "https://x.com/bernaferrari",
+                drawable = Res.drawable.x_logo,
+            ),
+            SocialLink(
+                name = "Reddit",
+                url = "https://www.reddit.com/user/bernaferrari",
+                drawable = Res.drawable.reddit_logo,
+            ),
+        )
+    val dataLinks =
+        listOf(
+            AboutLink(
+                title = s.privacy,
+                subtitle = s.noDataCollection,
+                action = AboutAction.ShowPrivacy,
+                vectorIcon = Icons.Default.Lock,
+            ),
+            AboutLink(
+                title = s.exportData,
+                subtitle = s.exportDataDescription,
+                action = AboutAction.ExportData,
+                vectorIcon = Icons.Default.Download,
+            ),
+        )
+
+    fun activate(action: AboutAction) {
+        when (action) {
+            is AboutAction.OpenUrl -> onOpenUrl(action.url)
+            AboutAction.ExportData -> onExportData()
+            AboutAction.ShowPrivacy -> showPrivacyDialog = true
+            AboutAction.ContactEmail -> onContact()
+        }
+    }
 
     Scaffold(
         modifier = contentModifier,
+        containerColor = MaterialTheme.colorScheme.surface,
         topBar = {
             if (showTopBar) {
                 TopAppBar(
-                    title = { Text(s.about) },
+                    title = {
+                        Text(
+                            text = s.about,
+                            fontWeight = FontWeight.Bold,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    },
                     navigationIcon = {
                         if (onNavigateBack != null) {
                             IconButton(onClick = onNavigateBack) {
@@ -182,95 +175,32 @@ fun AboutContent(
                             }
                         }
                     },
-                    colors =
-                        TopAppBarDefaults.topAppBarColors(
-                            containerColor = MaterialTheme.colorScheme.surface,
-                        ),
+                    colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.surface),
                 )
             }
         },
     ) { padding ->
-        Column(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(padding)
-                    .verticalScroll(rememberScrollState())
-                    .padding(20.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+        Box(
+            modifier = Modifier.fillMaxSize().padding(padding),
+            contentAlignment = Alignment.TopCenter,
         ) {
-            Box(
+            Column(
                 modifier =
                     Modifier
-                        .size(96.dp)
-                        .scale(headerAnimation)
-                        .alpha(headerAnimation)
-                        .clip(CircleShape)
-                        .background(
-                            Brush.linearGradient(
-                                listOf(
-                                    MaterialTheme.colorScheme.primary,
-                                    MaterialTheme.colorScheme.tertiary,
-                                ),
-                            ),
-                        ),
-                contentAlignment = Alignment.Center,
+                        .widthIn(max = 640.dp)
+                        .fillMaxWidth()
+                        .verticalScroll(rememberScrollState())
+                        .padding(horizontal = 20.dp, vertical = 12.dp),
+                verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
-                Icon(
-                    Icons.Default.Android,
-                    contentDescription = null,
-                    modifier = Modifier.size(48.dp),
-                    tint = MaterialTheme.colorScheme.onPrimary,
+                AboutHero(appName = appName, versionName = versionName)
+                AboutLinkGroup(links = projectLinks, onActivate = ::activate)
+                AboutLinkGroup(links = dataLinks, onActivate = ::activate)
+                AboutSocialRow(
+                    title = s.getInTouch,
+                    links = socialLinks,
+                    onOpenUrl = onOpenUrl,
                 )
-            }
-
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.alpha(contentAnimation),
-            ) {
-                Text(appName, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
-                Text(
-                    "${s.versionLabel} $versionName",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    s.madeWithLove,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    textAlign = TextAlign.Center,
-                )
-            }
-
-            links.forEach { link ->
-                AboutLinkCard(
-                    link = link,
-                    contentAlpha = contentAnimation,
-                    onActivate = {
-                        when (val action = link.action) {
-                            is AboutAction.OpenUrl -> onOpenUrl(action.url)
-                            AboutAction.ExportData -> onExportData()
-                            AboutAction.ShowPrivacy -> showPrivacyDialog = true
-                            AboutAction.ContactEmail -> onContact()
-                        }
-                    },
-                )
-            }
-
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(6.dp),
-                modifier = Modifier.padding(top = 8.dp),
-            ) {
-                Icon(
-                    Icons.Default.Favorite,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.size(16.dp),
-                )
-                Text(s.madeWithLove, style = MaterialTheme.typography.labelMedium)
             }
         }
     }
@@ -278,6 +208,7 @@ fun AboutContent(
     if (showPrivacyDialog) {
         AlertDialog(
             onDismissRequest = { showPrivacyDialog = false },
+            icon = { Icon(Icons.Default.Lock, contentDescription = null) },
             title = { Text(s.privacy) },
             text = { Text(s.privacyBody) },
             confirmButton = {
@@ -288,65 +219,207 @@ fun AboutContent(
 }
 
 @Composable
-private fun AboutLinkCard(
-    link: AboutLink,
-    contentAlpha: Float,
-    onActivate: () -> Unit,
+private fun AboutSocialRow(
+    title: String,
+    links: List<SocialLink>,
+    onOpenUrl: (String) -> Unit,
 ) {
-    Card(
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = segmentedListItemShape(isFirst = true, isLast = true),
+        color = MaterialTheme.colorScheme.surfaceContainerLow,
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 8.dp, top = 10.dp, bottom = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+        ) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.weight(1f),
+            )
+            links.forEach { link ->
+                IconButton(onClick = { onOpenUrl(link.url) }) {
+                    Icon(
+                        painter = painterResource(link.drawable),
+                        contentDescription = link.name,
+                        modifier = Modifier.size(22.dp),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun AboutHero(
+    appName: String,
+    versionName: String,
+) {
+    val s = sdkStrings()
+    val shape = RoundedCornerShape(24.dp)
+
+    Box(
         modifier =
             Modifier
                 .fillMaxWidth()
-                .alpha(contentAlpha)
-                .clickable(onClick = onActivate),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-        shape = RoundedCornerShape(16.dp),
+                .clip(shape)
+                .background(
+                    Brush.horizontalGradient(
+                        listOf(
+                            MaterialTheme.colorScheme.primaryContainer,
+                            MaterialTheme.colorScheme.tertiaryContainer,
+                        ),
+                    ),
+                ).padding(20.dp),
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(14.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Surface(
-                modifier = Modifier.size(44.dp),
-                shape = RoundedCornerShape(12.dp),
-                color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                modifier = Modifier.size(64.dp),
+                shape = RoundedCornerShape(19.dp),
+                color = MaterialTheme.colorScheme.primary,
             ) {
-                Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
-                    when {
-                        link.drawable != null -> {
-                            val painter: Painter = painterResource(link.drawable)
-                            Icon(
-                                painter = painter,
-                                contentDescription = null,
-                                modifier = Modifier.size(24.dp),
-                                tint = link.tint ?: MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                        }
-                        link.vectorIcon != null -> {
-                            Icon(
-                                imageVector = link.vectorIcon,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                        }
-                    }
+                Box(contentAlignment = Alignment.Center) {
+                    Text(
+                        text = "SDK",
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Black,
+                        color = MaterialTheme.colorScheme.onPrimary,
+                    )
                 }
             }
-            Column(modifier = Modifier.weight(1f)) {
-                Text(link.title, fontWeight = FontWeight.SemiBold)
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(5.dp),
+            ) {
                 Text(
-                    link.subtitle,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 2,
+                    text = appName,
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
+                Text(
+                    text = s.madeWithLove,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Surface(
+                    shape = RoundedCornerShape(999.dp),
+                    color = MaterialTheme.colorScheme.surface.copy(alpha = 0.72f),
+                ) {
+                    Text(
+                        text = "${s.versionLabel} $versionName",
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
+                    )
+                }
             }
-            Icon(
-                Icons.AutoMirrored.Filled.OpenInNew,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+        }
+    }
+}
+
+@Composable
+private fun AboutLinkGroup(
+    links: List<AboutLink>,
+    onActivate: (AboutAction) -> Unit,
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        links.forEachIndexed { index, link ->
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                shape = segmentedListItemShape(isFirst = index == 0, isLast = index == links.lastIndex),
+                color = MaterialTheme.colorScheme.surfaceContainerLow,
+            ) {
+                AboutLinkRow(link = link, onActivate = { onActivate(link.action) })
+            }
+        }
+    }
+}
+
+/** Matches NetGuard's expressive list geometry: emphasized outer corners, compact inner corners. */
+@Composable
+private fun segmentedListItemShape(
+    isFirst: Boolean,
+    isLast: Boolean,
+): Shape {
+    val base = MaterialTheme.shapes.small as? RoundedCornerShape ?: return MaterialTheme.shapes.small
+    val emphasis = MaterialTheme.shapes.large as? RoundedCornerShape ?: return MaterialTheme.shapes.small
+
+    return RoundedCornerShape(
+        topStart = if (isFirst) emphasis.topStart else base.topStart,
+        topEnd = if (isFirst) emphasis.topEnd else base.topEnd,
+        bottomEnd = if (isLast) emphasis.bottomEnd else base.bottomEnd,
+        bottomStart = if (isLast) emphasis.bottomStart else base.bottomStart,
+    )
+}
+
+@Composable
+private fun AboutLinkRow(
+    link: AboutLink,
+    onActivate: () -> Unit,
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth().clickable(onClick = onActivate).padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        Surface(
+            modifier = Modifier.size(44.dp),
+            shape = RoundedCornerShape(13.dp),
+            color = MaterialTheme.colorScheme.surfaceContainerHighest,
+        ) {
+            Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+                when {
+                    link.drawable != null -> Icon(
+                        painter = painterResource(link.drawable),
+                        contentDescription = null,
+                        modifier = Modifier.size(22.dp),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    link.vectorIcon != null -> Icon(
+                        imageVector = link.vectorIcon,
+                        contentDescription = null,
+                        modifier = Modifier.size(22.dp),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+        }
+        Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            Text(
+                text = link.title,
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.SemiBold,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+            Text(
+                text = link.subtitle,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
             )
         }
+        Icon(
+            imageVector =
+                if (link.action is AboutAction.OpenUrl) {
+                    Icons.AutoMirrored.Filled.OpenInNew
+                } else {
+                    Icons.AutoMirrored.Filled.KeyboardArrowRight
+                },
+            contentDescription = null,
+            modifier = Modifier.size(20.dp),
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
     }
 }

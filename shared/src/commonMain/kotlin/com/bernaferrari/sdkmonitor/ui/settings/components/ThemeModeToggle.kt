@@ -65,7 +65,7 @@ fun ThemeModeToggle(
                     width = borderWidth,
                     color =
                         if (isSelected) {
-                            MaterialTheme.colorScheme.inversePrimary
+                            MaterialTheme.colorScheme.primary
                         } else {
                             MaterialTheme.colorScheme.outlineVariant
                         },

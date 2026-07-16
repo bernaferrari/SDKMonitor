@@ -62,12 +62,16 @@ private fun demoTimestampFor(packageName: String, now: Long): Long =
         "com.android.vending" -> now - 3 * DemoDayMillis
         "com.whatsapp" -> now - 4 * DemoDayMillis
         "com.android.chrome" -> now - 6 * DemoDayMillis
-        "com.bank.secure" -> now - 8 * DemoDayMillis
+        "com.google.android.youtube" -> now - 7 * DemoDayMillis
+        "com.google.android.gm" -> now - 9 * DemoDayMillis
+        "com.google.android.apps.maps" -> now - 10 * DemoDayMillis
         "com.spotify.music" -> now - 11 * DemoDayMillis
         "com.discord" -> now - 14 * DemoDayMillis
+        "org.thoughtcrime.securesms" -> now - 16 * DemoDayMillis
         "org.mozilla.firefox" -> now - 18 * DemoDayMillis
         "com.instagram.android" -> now - 25 * DemoDayMillis
         "com.twitter.android" -> now - 42 * DemoDayMillis
+        "com.nu.production" -> now - 48 * DemoDayMillis
         else -> now - 180 * DemoDayMillis
     }
 
