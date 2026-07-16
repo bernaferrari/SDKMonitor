@@ -1,14 +1,28 @@
-@file:OptIn(androidx.compose.material3.adaptive.navigationsuite.ExperimentalMaterial3AdaptiveNavigationSuiteApi::class)
+@file:OptIn(
+    androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi::class,
+    androidx.compose.material3.adaptive.navigationsuite.ExperimentalMaterial3AdaptiveNavigationSuiteApi::class,
+)
 
 package com.bernaferrari.sdkmonitor.shared.demo
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Apps
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.adaptive.layout.AnimatedPane
+import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffold
+import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
+import androidx.compose.material3.adaptive.layout.PaneAdaptedValue
+import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -17,8 +31,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import com.bernaferrari.sdkmonitor.data.repository.RoomAppsRepository
 import com.bernaferrari.sdkmonitor.domain.AppDetails
 import com.bernaferrari.sdkmonitor.domain.AppFilter
@@ -29,6 +47,7 @@ import com.bernaferrari.sdkmonitor.domain.SettingsPreferences
 import com.bernaferrari.sdkmonitor.domain.SortOption
 import com.bernaferrari.sdkmonitor.domain.ThemeMode
 import com.bernaferrari.sdkmonitor.domain.logic.AnalyticsLogic
+import com.bernaferrari.sdkmonitor.domain.logic.formatRelativeTimestamp
 import com.bernaferrari.sdkmonitor.ui.details.DetailsContent
 import com.bernaferrari.sdkmonitor.ui.logs.LogsContent
 import com.bernaferrari.sdkmonitor.ui.main.MainContent
@@ -39,6 +58,8 @@ import com.bernaferrari.sdkmonitor.ui.state.LogsUiState
 import com.bernaferrari.sdkmonitor.ui.state.MainUiState
 import com.bernaferrari.sdkmonitor.ui.state.SettingsUiState
 import com.bernaferrari.sdkmonitor.ui.theme.SdkMonitorTheme
+import kotlinx.coroutines.launch
+import kotlin.time.Clock
 
 /**
  * Web/desktop data host. It uses the same Material adaptive navigation suite and shared screen
@@ -59,10 +80,9 @@ fun DemoSdkMonitorApp(
     val filteredApps = remember(allApps, prefs, searchQuery, sortOption) {
         AppListLogic.applyListPipeline(allApps, prefs.appFilter, sortOption, prefs.orderBySdk, searchQuery)
     }
-    var logs by remember { mutableStateOf<List<LogEntry>>(emptyList()) }
-    LaunchedEffect(roomRepository, prefs.appFilter, allApps) {
-        logs = AppListLogic.filterLogsByAppFilter(roomRepository.buildChangeLogs(prefs.appFilter), allApps, prefs.appFilter)
-    }
+    val logs by remember(roomRepository, prefs.appFilter) {
+        roomRepository.getChangeLogs(prefs.appFilter)
+    }.collectAsState(initial = emptyList())
     val (distribution, filteredForSdk) = remember(allApps, prefs.appFilter) {
         AnalyticsLogic.sdkDistribution(allApps, prefs.appFilter)
     }
@@ -88,63 +108,172 @@ fun DemoSdkMonitorApp(
             },
         ) {
             val modifier = Modifier.fillMaxSize()
-            val details = selectedPackage?.let { detailsFromRoom(allApps, it) }
             when {
-                selectedPackage != null && tab != DemoDestination.Settings.index -> DetailsContent(
-                    uiState = if (details == null) DetailsUiState.Error("App not found") else DetailsUiState.Success(details),
-                    onRetry = { selectedPackage = null },
-                    contentModifier = modifier,
-                )
-                tab == DemoDestination.Apps.index -> MainContent(
-                    uiState = MainUiState.Success(allApps, filteredApps, filteredApps.size),
-                    searchQuery = searchQuery,
-                    appFilter = prefs.appFilter,
-                    sortOption = sortOption,
-                    onSearchQueryChange = session::setSearchQuery,
-                    onAppFilterChange = session::setAppFilter,
-                    onSortOptionChange = session::setSortOption,
-                    onAppClick = { selectedPackage = it },
-                    onRetry = {},
-                    contentModifier = modifier,
-                )
-                tab == DemoDestination.Logs.index -> LogsContent(
-                    uiState = LogsUiState.Success(logs, logs.size),
-                    formatTime = { timestamp ->
-                        when (timestamp) {
-                            1_748_500_000_000L -> "Jun 19"
-                            1_748_400_000_000L -> "Jun 18"
-                            1_747_900_000_000L -> "Jun 12"
-                            1_747_500_000_000L -> "Jun 7"
-                            else -> "Jan 2024"
-                        }
-                    },
-                    onLogClick = { selectedPackage = it.packageName },
-                    onRetry = {},
-                    contentModifier = modifier,
-                )
-                else -> SettingsContent(
-                    uiState = SettingsUiState(
-                        isLoading = false,
-                        preferences = SettingsPreferences(prefs.themeMode, prefs.appFilter, prefs.backgroundSync),
-                        sdkDistribution = distribution,
-                        totalApps = filteredForSdk.size,
-                        allAppsForSdk = filteredForSdk,
-                    ),
-                    appVersionLabel = "SDK Monitor",
-                    availableThemeModes = ThemeMode.entries.filterNot { it == ThemeMode.MATERIAL_YOU },
-                    onThemeModeChange = session::setThemeMode,
-                    onAppFilterChange = session::setAppFilter,
-                    onBackgroundSyncToggle = {},
-                    onSetSyncInterval = { _, _ -> },
-                    onClearError = {},
-                    onNavigateToAbout = {},
-                    onNavigateToAppDetails = { selectedPackage = it },
-                    contentModifier = modifier,
-                )
+                tab == DemoDestination.Apps.index -> DemoListDetailScaffold(
+                    roomRepository = roomRepository,
+                    allApps = allApps,
+                    selectedPackage = selectedPackage,
+                    onSelectedPackageChange = { selectedPackage = it },
+                    showEmptyDetailState = true,
+                    modifier = modifier,
+                ) { selectedPackageName, onAppClick ->
+                    MainContent(
+                        uiState = MainUiState.Success(allApps, filteredApps, filteredApps.size),
+                        searchQuery = searchQuery,
+                        appFilter = prefs.appFilter,
+                        sortOption = sortOption,
+                        selectedPackageName = selectedPackageName,
+                        onSearchQueryChange = session::setSearchQuery,
+                        onAppFilterChange = session::setAppFilter,
+                        onSortOptionChange = session::setSortOption,
+                        onAppClick = onAppClick,
+                        onRetry = {},
+                    )
+                }
+                tab == DemoDestination.Logs.index -> DemoListDetailScaffold(
+                    roomRepository = roomRepository,
+                    allApps = allApps,
+                    selectedPackage = selectedPackage,
+                    onSelectedPackageChange = { selectedPackage = it },
+                    showEmptyDetailState = true,
+                    modifier = modifier,
+                ) { selectedPackageName, onAppClick ->
+                    LogsContent(
+                        uiState = LogsUiState.Success(logs, logs.size),
+                        selectedPackageName = selectedPackageName,
+                        formatTime = ::demoLogDate,
+                        onLogClick = { onAppClick(it.packageName) },
+                        onRetry = {},
+                    )
+                }
+                else -> DemoListDetailScaffold(
+                    roomRepository = roomRepository,
+                    allApps = allApps,
+                    selectedPackage = selectedPackage,
+                    onSelectedPackageChange = { selectedPackage = it },
+                    showEmptyDetailState = false,
+                    modifier = modifier,
+                ) { _, onAppClick ->
+                    SettingsContent(
+                        uiState = SettingsUiState(
+                            isLoading = false,
+                            preferences = SettingsPreferences(prefs.themeMode, prefs.appFilter, prefs.backgroundSync),
+                            sdkDistribution = distribution,
+                            totalApps = filteredForSdk.size,
+                            allAppsForSdk = filteredForSdk,
+                        ),
+                        appVersionLabel = "SDK Monitor",
+                        availableThemeModes = ThemeMode.entries.filterNot { it == ThemeMode.MATERIAL_YOU },
+                        onThemeModeChange = session::setThemeMode,
+                        onAppFilterChange = session::setAppFilter,
+                        onBackgroundSyncToggle = {},
+                        onSetSyncInterval = { _, _ -> },
+                        onClearError = {},
+                        onNavigateToAbout = {},
+                        onNavigateToAppDetails = onAppClick,
+                    )
+                }
             }
         }
     }
 }
+
+/**
+ * The same adaptive list-detail scaffold used by the original Android navigation host.
+ * It makes the active detail a second pane when there is room and a full-screen destination
+ * on compact windows, for Android, desktop, and WebAssembly alike.
+ */
+@Composable
+private fun DemoListDetailScaffold(
+    roomRepository: RoomAppsRepository,
+    allApps: List<AppVersion>,
+    selectedPackage: String?,
+    onSelectedPackageChange: (String?) -> Unit,
+    showEmptyDetailState: Boolean,
+    modifier: Modifier = Modifier,
+    listPane: @Composable (selectedPackageName: String?, onAppClick: (String) -> Unit) -> Unit,
+) {
+    val navigator = rememberListDetailPaneScaffoldNavigator<String>()
+    val scope = rememberCoroutineScope()
+    val isDualPane = navigator.scaffoldValue.secondary == PaneAdaptedValue.Expanded
+    val versions by remember(roomRepository, selectedPackage) {
+        selectedPackage?.let(roomRepository::getAppVersionHistory)
+            ?: kotlinx.coroutines.flow.flowOf(emptyList())
+    }.collectAsState(initial = emptyList())
+
+    LaunchedEffect(selectedPackage) {
+        if (selectedPackage == null) {
+            if (navigator.canNavigateBack()) navigator.navigateBack()
+        } else if (navigator.currentDestination?.contentKey != selectedPackage ||
+            navigator.currentDestination?.pane != ListDetailPaneScaffoldRole.Detail
+        ) {
+            navigator.navigateTo(ListDetailPaneScaffoldRole.Detail, selectedPackage)
+        }
+    }
+
+    ListDetailPaneScaffold(
+        directive = navigator.scaffoldDirective,
+        scaffoldState = navigator.scaffoldState,
+        listPane = {
+            AnimatedPane {
+                listPane(selectedPackage) { packageName ->
+                    onSelectedPackageChange(packageName)
+                    scope.launch {
+                        navigator.navigateTo(ListDetailPaneScaffoldRole.Detail, packageName)
+                    }
+                }
+            }
+        },
+        detailPane = {
+            AnimatedPane {
+                val details = selectedPackage?.let { detailsFromRoom(allApps, it) }
+                when {
+                    selectedPackage == null && showEmptyDetailState -> EmptyDetailState()
+                    selectedPackage == null -> Unit
+                    details == null -> DetailsContent(
+                        uiState = DetailsUiState.Error("App not found"),
+                        onRetry = { onSelectedPackageChange(null) },
+                    )
+                    else -> DetailsContent(
+                        uiState = DetailsUiState.Success(details, versions),
+                        onRetry = { onSelectedPackageChange(null) },
+                        onNavigateBack = if (isDualPane) null else {
+                            {
+                                onSelectedPackageChange(null)
+                                scope.launch { navigator.navigateBack() }
+                            }
+                        },
+                    )
+                }
+            }
+        },
+        modifier = modifier,
+    )
+}
+
+@Composable
+private fun EmptyDetailState() {
+    Column(
+        modifier = Modifier.fillMaxSize().padding(48.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        Surface(
+            color = MaterialTheme.colorScheme.surfaceContainer,
+            shape = RoundedCornerShape(8.dp),
+        ) {
+            Text(
+                text = "Select an app to get started",
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+                style = MaterialTheme.typography.bodyLarge,
+                textAlign = TextAlign.Center,
+            )
+        }
+    }
+}
+
+private fun demoLogDate(timestamp: Long): String =
+    formatRelativeTimestamp(timestamp, Clock.System.now().toEpochMilliseconds())
 
 private enum class DemoDestination(
     val index: Int,

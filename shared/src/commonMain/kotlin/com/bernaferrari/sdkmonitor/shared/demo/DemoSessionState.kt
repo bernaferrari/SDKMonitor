@@ -13,7 +13,8 @@ import kotlinx.coroutines.flow.update
  * Ephemeral demo UI state (filter/theme/search). App/version data comes from Room only.
  */
 class DemoSessionState {
-    private val _preferences = MutableStateFlow(UserPreferences())
+    // The web demo has no Android dynamic-color source; follow the browser/system appearance by default.
+    private val _preferences = MutableStateFlow(UserPreferences(themeMode = ThemeMode.SYSTEM))
     val preferences: StateFlow<UserPreferences> = _preferences.asStateFlow()
 
     private val _searchQuery = MutableStateFlow("")

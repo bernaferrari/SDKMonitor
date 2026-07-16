@@ -98,22 +98,20 @@ class RoomAppsRepository(
             }
         }
 
-    override fun getAppChangeLogs(): Flow<List<LogEntry>> =
+    override fun getAppChangeLogs(): Flow<List<LogEntry>> = getChangeLogs()
+
+    /**
+     * Observes version history, then derives real changes exactly as the Android log screen does.
+     * This is important for the demo too: the flow updates after Room finishes inserting its
+     * version rows, instead of relying on an unrelated app-table emission.
+     */
+    fun getChangeLogs(filter: AppFilter = AppFilter.ALL_APPS): Flow<List<LogEntry>> =
         versionsDao.getAllChangesFlow().map { versions ->
-            val apps = appsDao.getAppsList().associateBy { it.packageName }
-            versions.mapNotNull { version ->
-                val app = apps[version.packageName] ?: return@mapNotNull null
-                LogEntry(
-                    id = version.versionId.toLong(),
-                    packageName = version.packageName,
-                    appName = app.title,
-                    oldSdk = null,
-                    newSdk = version.targetSdk,
-                    oldVersion = null,
-                    newVersion = version.versionName,
-                    timestamp = version.lastUpdateTime,
-                )
-            }
+            LogEntryLogic.buildChangeLogs(
+                versions = versions.map { it.toTracked() },
+                apps = appsDao.getAppsList().map { it.toTracked() },
+                filter = filter,
+            )
         }
 
     override suspend fun clearAllLogs() {

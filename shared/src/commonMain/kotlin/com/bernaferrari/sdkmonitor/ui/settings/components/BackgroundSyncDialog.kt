@@ -28,6 +28,9 @@ import androidx.compose.material.icons.outlined.CalendarToday
 import androidx.compose.material.icons.outlined.DateRange
 import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -149,13 +152,35 @@ fun BackgroundSyncDialog(
                     }
                 }
 
-                Row(
+                Card(
+                    onClick = { enabled = !enabled },
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
+                    shape = RoundedCornerShape(16.dp),
+                    colors =
+                        CardDefaults.cardColors(
+                            containerColor =
+                                if (enabled) {
+                                    MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.45f)
+                                } else {
+                                    MaterialTheme.colorScheme.surfaceContainerHigh
+                                },
+                        ),
                 ) {
-                    Text(s.enableSync, style = MaterialTheme.typography.titleMedium)
-                    Switch(checked = enabled, onCheckedChange = { enabled = it })
+                    Row(
+                        modifier = Modifier.fillMaxWidth().padding(16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                            Text(s.enableSync, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
+                            Text(
+                                text = if (enabled) s.backgroundSyncDescription else s.tapToConfigureSync,
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                        Switch(checked = enabled, onCheckedChange = null)
+                    }
                 }
 
                 AnimatedVisibility(visible = enabled) {
@@ -203,20 +228,25 @@ fun BackgroundSyncDialog(
 
                         AnimatedVisibility(visible = preset == SyncPreset.CUSTOM) {
                             Row(
+                                modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                                 verticalAlignment = Alignment.CenterVertically,
                             ) {
                                 OutlinedTextField(
                                     value = customInterval,
-                                    onValueChange = { v -> if (v.all(Char::isDigit) && v.length <= 3) customInterval = v },
-                                    modifier = Modifier.weight(1f),
+                                    onValueChange = { value ->
+                                        if (value.all(Char::isDigit) && value.length <= 3) customInterval = value
+                                    },
+                                    modifier = Modifier.weight(0.45f),
                                     singleLine = true,
                                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                                    label = { Text(s.interval) },
+                                    label = { Text("Every") },
+                                    isError = customInterval.isBlank() || customInterval == "0",
                                 )
                                 ExposedDropdownMenuBox(
                                     expanded = unitMenuExpanded,
                                     onExpandedChange = { unitMenuExpanded = it },
+                                    modifier = Modifier.weight(0.55f),
                                 ) {
                                     OutlinedTextField(
                                         value = unitLabel(customUnit, customInterval.ifBlank { "1" }),
@@ -224,11 +254,13 @@ fun BackgroundSyncDialog(
                                         readOnly = true,
                                         modifier =
                                             Modifier
-                                                .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
-                                                .weight(1f),
-                                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(unitMenuExpanded) },
+                                                .fillMaxWidth()
+                                                .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable),
+                                        trailingIcon = {
+                                            ExposedDropdownMenuDefaults.TrailingIcon(unitMenuExpanded)
+                                        },
                                     )
-                                    androidx.compose.material3.DropdownMenu(
+                                    DropdownMenu(
                                         expanded = unitMenuExpanded,
                                         onDismissRequest = { unitMenuExpanded = false },
                                     ) {

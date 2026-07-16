@@ -3,23 +3,22 @@ package com.bernaferrari.sdkmonitor.shared.mock
 import com.bernaferrari.sdkmonitor.domain.AppDetails
 import com.bernaferrari.sdkmonitor.domain.AppListLogic
 import com.bernaferrari.sdkmonitor.domain.AppVersion
-import com.bernaferrari.sdkmonitor.domain.LogEntry
 
 /**
  * Sample data mimicking a real device library so the web demo shows SDK Monitor behavior offline.
  */
 object MockDemoData {
-    val apps: List<AppVersion> =
+    private val seedApps: List<AppVersion> =
         listOf(
-            AppVersion("com.android.chrome", "Chrome", 35, "Jun 12, 2026", "1.37.0", 1370, 0xFF4285F4),
-            AppVersion("com.spotify.music", "Spotify", 34, "Jun 8, 2026", "9.0.0", 900, 0xFF1DB954),
-            AppVersion("com.whatsapp", "WhatsApp", 35, "Jun 15, 2026", "2.3.0", 230, 0xFF25D366),
-            AppVersion("com.instagram.android", "Instagram", 34, "May 30, 2026", "3.5.8", 358, 0xFFE1306C),
+            AppVersion("com.android.chrome", "Chrome", 35, "", "1.37.0", 1370, 0xFF4285F4),
+            AppVersion("com.spotify.music", "Spotify", 34, "", "9.0.0", 900, 0xFF1DB954),
+            AppVersion("com.whatsapp", "WhatsApp", 35, "", "2.3.0", 230, 0xFF25D366),
+            AppVersion("com.instagram.android", "Instagram", 34, "", "3.5.8", 358, 0xFFE1306C),
             AppVersion(
                 "com.google.android.gms",
                 "Google Play services",
                 36,
-                "Jun 18, 2026",
+                "",
                 "25.2.0",
                 2520,
                 0xFF34A853,
@@ -29,37 +28,57 @@ object MockDemoData {
                 "com.android.vending",
                 "Google Play Store",
                 36,
-                "Jun 17, 2026",
+                "",
                 "45.2.0",
                 4520,
                 0xFF01875F,
                 isSystemApp = true,
             ),
-            AppVersion("org.mozilla.firefox", "Firefox", 35, "Jun 1, 2026", "1.39.0", 1390, 0xFFFF7139),
-            AppVersion("com.twitter.android", "X", 33, "Apr 20, 2026", "10.5.0", 1050, 0xFF000000),
-            AppVersion("com.discord", "Discord", 34, "Jun 5, 2026", "2.5.2", 252, 0xFF5865F2),
-            AppVersion("com.bernaferrari.sdkmonitor", "SDK Monitor", 36, "Jun 19, 2026", "2.0.3", 17, 0xFFFF8364),
+            AppVersion("org.mozilla.firefox", "Firefox", 35, "", "1.39.0", 1390, 0xFFFF7139),
+            AppVersion("com.discord", "Discord", 34, "", "2.5.2", 252, 0xFF5865F2),
+            AppVersion("com.bernaferrari.sdkmonitor", "SDK Monitor", 36, "", "2.0.3", 17, 0xFFFF8364),
             AppVersion(
                 "com.old.legacyapp",
                 "Legacy Notes",
                 28,
-                "Jan 3, 2024",
+                "",
                 "1.2.0",
                 12,
                 0xFF795548,
                 isFromPlayStore = false,
             ),
-            AppVersion("com.bank.secure", "SecureBank", 35, "Jun 10, 2026", "4.8.0", 480, 0xFF1565C0),
+            AppVersion("com.bank.secure", "SecureBank", 35, "", "4.8.0", 480, 0xFF1565C0),
         )
 
-    val logs: List<LogEntry> =
-        listOf(
-            LogEntry(1, "com.whatsapp", "WhatsApp", 34, 35, "2.2.0", "2.3.0", 1_748_400_000_000L),
-            LogEntry(2, "com.spotify.music", "Spotify", 33, 34, "8.0.0", "9.0.0", 1_747_900_000_000L),
-            LogEntry(3, "com.android.chrome", "Chrome", 34, 35, "1.36.0", "1.37.0", 1_747_500_000_000L),
-            LogEntry(4, "com.old.legacyapp", "Legacy Notes", 26, 28, "1.1.0", "1.2.0", 1_704_200_000_000L),
-            LogEntry(5, "com.google.android.gms", "Google Play services", 35, 36, "25.1.0", "25.2.0", 1_748_500_000_000L),
-        )
+    /** X is deliberately kept on the newest SDK represented by the rest of the mock device. */
+    val apps: List<AppVersion> =
+        seedApps +
+            AppVersion(
+                packageName = "com.twitter.android",
+                title = "X",
+                sdkVersion = seedApps.maxOf(AppVersion::sdkVersion),
+                lastUpdateTime = "",
+                versionName = "10.5.0",
+                versionCode = 1050,
+                backgroundColor = 0xFF000000,
+            )
+
+    fun previousVersionName(packageName: String): String =
+        when (packageName) {
+            "com.android.chrome" -> "1.36.0"
+            "com.spotify.music" -> "8.9.2"
+            "com.whatsapp" -> "2.2.0"
+            "com.instagram.android" -> "3.5.7"
+            "com.google.android.gms" -> "25.1.0"
+            "com.android.vending" -> "45.1.4"
+            "org.mozilla.firefox" -> "1.38.2"
+            "com.twitter.android" -> "10.4.1"
+            "com.discord" -> "2.5.1"
+            "com.bernaferrari.sdkmonitor" -> "2.0.2"
+            "com.old.legacyapp" -> "1.1.0"
+            "com.bank.secure" -> "4.7.3"
+            else -> "1.0.0"
+        }
 
     fun detailsFor(packageName: String): AppDetails? {
         val app = apps.find { it.packageName == packageName } ?: return null

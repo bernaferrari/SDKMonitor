@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -31,6 +30,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -91,30 +91,38 @@ fun SdkAnalyticsCard(
                             )
                         }
                     }
-                    Column {
-                        Text(s.analytics, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-                        Text(
-                            "$totalApps ${s.appsCount}",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
+                    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                        Text(s.analytics, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+                        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                            AnalyticsStat(
+                                value = totalApps.toString(),
+                                label = s.appsCount,
+                                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                                contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                            )
+                            AnalyticsStat(
+                                value = sdkDistribution.size.toString(),
+                                label = "SDKs",
+                                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                                contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                            )
+                        }
                     }
                 }
             }
 
-            LazyRow(
-                modifier = Modifier.fillMaxWidth().height(180.dp),
+            Row(
+                modifier = Modifier.fillMaxWidth().height(200.dp).padding(horizontal = 20.dp),
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
-                contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 20.dp),
                 verticalAlignment = Alignment.Bottom,
             ) {
-                items(sdkDistribution, key = { it.sdkVersion }) { item ->
+                sdkDistribution.forEach { item ->
                     val color = item.sdkVersion.apiToComposeColor()
                     val fraction = (item.appCount.toFloat() / maxCount) * animationProgress
                     Column(
                         modifier =
                             Modifier
-                                .width(48.dp)
+                                .weight(1f)
                                 .fillMaxHeight()
                                 .clickable { onSdkClick(item.sdkVersion) },
                         horizontalAlignment = Alignment.CenterHorizontally,
@@ -150,14 +158,81 @@ fun SdkAnalyticsCard(
                             fontWeight = FontWeight.SemiBold,
                         )
                         Text(
-                            text = item.sdkVersion.apiToVersionName().take(6),
+                            text = item.sdkVersion.apiToVersionName(),
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            maxLines = 1,
+                            maxLines = 2,
+                            textAlign = TextAlign.Center,
                         )
                     }
                 }
             }
+
+            LazyRow(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 20.dp),
+            ) {
+                items(sdkDistribution.sortedByDescending { it.sdkVersion }, key = { it.sdkVersion }) { item ->
+                    SdkLegendItem(item, s.appsCount, onClick = { onSdkClick(item.sdkVersion) })
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun AnalyticsStat(
+    value: String,
+    label: String,
+    containerColor: Color,
+    contentColor: Color,
+) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Surface(shape = RoundedCornerShape(6.dp), color = containerColor) {
+            Text(
+                text = value,
+                modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
+                style = MaterialTheme.typography.labelLarge,
+                fontWeight = FontWeight.Bold,
+                color = contentColor,
+            )
+        }
+        Text(label, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    }
+}
+
+@Composable
+private fun SdkLegendItem(item: SdkDistribution, appsLabel: String, onClick: () -> Unit) {
+    val color = item.sdkVersion.apiToComposeColor()
+    Surface(
+        onClick = onClick,
+        shape = RoundedCornerShape(12.dp),
+        color = color.copy(alpha = 0.1f),
+    ) {
+        Column(
+            modifier = Modifier.padding(12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+        ) {
+            Surface(
+                shape = RoundedCornerShape(8.dp),
+                color = color,
+            ) {
+                Text(
+                    text = item.sdkVersion.toString(),
+                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                )
+            }
+            Text(item.sdkVersion.apiToVersionName(), style = MaterialTheme.typography.labelSmall, color = color)
+            Text("${item.appCount} ${if (item.appCount == 1) "app" else appsLabel}", style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.SemiBold)
+            Text("${(item.percentage * 100).toInt()}%", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }

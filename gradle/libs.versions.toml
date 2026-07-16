@@ -5,6 +5,7 @@ appfunctions = "1.0.0-alpha10"
 coil = "3.5.0"
 composeBom = "2026.06.01"
 composeMultiplatform = "1.11.1"
+composeAdaptive = "1.2.0"
 coroutines = "1.11.0"
 datastore = "1.2.1"
 junit = "4.13.2"
@@ -74,7 +75,9 @@ androidx-startup = { module = "androidx.startup:startup-runtime", version.ref = 
 androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "work" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil-core = { module = "io.coil-kt.coil3:coil", version.ref = "coil" }
-# Kept on Compose 1.11 to match the Compose Multiplatform plugin above.
+compose-adaptive = { module = "org.jetbrains.compose.material3.adaptive:adaptive", version.ref = "composeAdaptive" }
+compose-adaptive-layout = { module = "org.jetbrains.compose.material3.adaptive:adaptive-layout", version.ref = "composeAdaptive" }
+compose-adaptive-navigation = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation", version.ref = "composeAdaptive" }
 compose-adaptive-navigation-suite = "org.jetbrains.compose.material3:material3-adaptive-navigation-suite:1.11.0-alpha07"
 junit = { module = "junit:junit", version.ref = "junit" }
 koin-android = { module = "io.insert-koin:koin-android" }

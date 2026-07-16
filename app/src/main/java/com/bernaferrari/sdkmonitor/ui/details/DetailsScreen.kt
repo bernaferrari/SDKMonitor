@@ -57,6 +57,7 @@ fun DetailsScreen(
                 }
             }
         },
+        onNavigateBack = onNavigateBack.takeUnless { isTabletSize },
         contentModifier = modifier,
     )
 }

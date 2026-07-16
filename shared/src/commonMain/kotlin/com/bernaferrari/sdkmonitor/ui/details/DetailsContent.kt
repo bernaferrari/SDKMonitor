@@ -9,18 +9,25 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -37,6 +44,7 @@ fun DetailsContent(
     onRetry: () -> Unit = {},
     onAppInfoClick: ((packageName: String) -> Unit)? = null,
     onPlayStoreClick: ((packageName: String) -> Unit)? = null,
+    onNavigateBack: (() -> Unit)? = null,
     contentModifier: Modifier = Modifier,
 ) {
     val s = sdkStrings()
@@ -74,13 +82,34 @@ fun DetailsContent(
         }
 
         is DetailsUiState.Success -> {
-            DetailsBody(
-                appDetails = uiState.appDetails,
-                versions = uiState.versions,
-                onAppInfoClick = onAppInfoClick,
-                onPlayStoreClick = onPlayStoreClick,
-                contentModifier = contentModifier,
-            )
+            Box(
+                modifier =
+                    contentModifier
+                        .fillMaxSize()
+                        .windowInsetsPadding(WindowInsets.statusBars),
+            ) {
+                DetailsBody(
+                    appDetails = uiState.appDetails,
+                    versions = uiState.versions,
+                    onAppInfoClick = onAppInfoClick,
+                    onPlayStoreClick = onPlayStoreClick,
+                    showBackButton = onNavigateBack != null,
+                    contentModifier = Modifier.fillMaxSize(),
+                )
+                onNavigateBack?.let { navigateBack ->
+                    FilledIconButton(
+                        onClick = navigateBack,
+                        modifier = Modifier.padding(8.dp).size(48.dp),
+                        shape = CircleShape,
+                        colors = IconButtonDefaults.filledIconButtonColors(
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+                            contentColor = MaterialTheme.colorScheme.primary,
+                        ),
+                    ) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                    }
+                }
+            }
         }
     }
 }
@@ -91,6 +120,7 @@ private fun DetailsBody(
     versions: List<AppVersion>,
     onAppInfoClick: ((packageName: String) -> Unit)?,
     onPlayStoreClick: ((packageName: String) -> Unit)?,
+    showBackButton: Boolean,
     contentModifier: Modifier = Modifier,
 ) {
     val s = sdkStrings()
@@ -100,7 +130,12 @@ private fun DetailsBody(
             contentModifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(16.dp),
+                .padding(
+                    start = 16.dp,
+                    end = 16.dp,
+                    top = if (showBackButton) 64.dp else 16.dp,
+                    bottom = 16.dp,
+                ),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         AppDetailsCard(

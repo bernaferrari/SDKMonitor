@@ -14,11 +14,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.bernaferrari.sdkmonitor.data.repository.RoomAppsRepository
 import com.bernaferrari.sdkmonitor.data.repository.asRoomAppsRepository
-import com.bernaferrari.sdkmonitor.data.repository.seedDemoDataIfEmpty
+import com.bernaferrari.sdkmonitor.data.repository.resetDemoData
 import com.bernaferrari.sdkmonitor.data.source.local.AppDatabase
+import com.bernaferrari.sdkmonitor.domain.logic.formatRelativeTimestamp
+import kotlin.time.Clock
 
 /**
- * Opens Room ([commonMain] [AppDatabase]), seeds demo rows once, runs UI on live data.
+ * Opens Room ([commonMain] [AppDatabase]), refreshes its disposable mock rows, runs UI on live data.
  */
 @Composable
 fun RoomDemoHost(
@@ -31,8 +33,10 @@ fun RoomDemoHost(
     LaunchedEffect(Unit) {
         runCatching {
             val db = createDatabase()
-            db.seedDemoDataIfEmpty()
-            db.asRoomAppsRepository()
+            db.resetDemoData()
+            db.asRoomAppsRepository { timestamp ->
+                formatRelativeTimestamp(timestamp, Clock.System.now().toEpochMilliseconds())
+            }
         }.onSuccess { repository = it }
             .onFailure { error = it.message ?: it.toString() }
     }
