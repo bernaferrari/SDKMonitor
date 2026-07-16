@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Grant execute permission for scripts
+        run: chmod +x gradlew scripts/*.sh
+
+      - name: Shared unit tests
+        run: ./gradlew :shared:desktopTest --stacktrace
+
+      - name: Compile shared (all targets)
+        run: ./gradlew :shared:compileKotlinWasmJs :shared:compileKotlinDesktop :shared:compileAndroidMain --stacktrace
+
+      - name: Compile Android app
+        run: ./gradlew :app:compileDebugKotlin --stacktrace
+
+      - name: Build and verify web demo
+        run: ./scripts/verify-web-deploy.sh --ci

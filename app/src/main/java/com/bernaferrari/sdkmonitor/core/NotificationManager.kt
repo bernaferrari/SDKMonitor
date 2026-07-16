@@ -10,15 +10,11 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.bernaferrari.sdkmonitor.MainActivity
 import com.bernaferrari.sdkmonitor.R
-import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
-import javax.inject.Singleton
+import org.koin.core.annotation.Single
 
-@Singleton
-class NotificationManager
-    @Inject
-    constructor(
-        @param:ApplicationContext private val context: Context,
+@Single
+class NotificationManager(
+        private val context: Context,
     ) {
         private val notificationManager = NotificationManagerCompat.from(context)
 

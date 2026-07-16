@@ -7,20 +7,16 @@ import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
-import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
-import javax.inject.Singleton
+import org.koin.core.annotation.Single
 
-@Singleton
-class SyncScheduler
-    @Inject
-    constructor(
-        @param:ApplicationContext private val context: Context,
+@Single
+class SyncScheduler(
+        private val context: Context,
     ) {
         private val workManager = WorkManager.getInstance(context)
 

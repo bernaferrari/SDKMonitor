@@ -7,20 +7,17 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bernaferrari.sdkmonitor.domain.model.ThemeMode
+import com.bernaferrari.sdkmonitor.domain.ThemeMode
 import com.bernaferrari.sdkmonitor.domain.repository.PreferencesRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import org.koin.core.annotation.KoinViewModel
 
-@HiltViewModel
-class ThemeViewModel
-    @Inject
-    constructor(
+@KoinViewModel
+class ThemeViewModel(
         private val preferencesRepository: PreferencesRepository,
     ) : ViewModel() {
         private val _themeMode = MutableStateFlow(ThemeMode.MATERIAL_YOU)

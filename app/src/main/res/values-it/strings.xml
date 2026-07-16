@@ -169,7 +169,7 @@
     <!-- Background Sync Dialog -->
     <string name="apps_will_update_automatically">Le app si aggiorneranno automaticamente</string>
     <string name="tap_to_enable_automatic_updates">Tocca per abilitare aggiornamenti automatici</string>
-    <string name="sync_frequency">Frequenza di Sincronizzazione</string>
+    <string name="sync_frequency">Frequenza di sincronizzazione</string>
     <string name="daily">Giornaliera</string>
     <string name="weekly">Settimanale</string>
     <string name="monthly">Mensile</string>
@@ -178,7 +178,7 @@
     <string name="once_every_week">Una volta alla settimana</string>
     <string name="once_every_month">Una volta al mese</string>
     <string name="set_your_own_interval">Imposta il tuo intervallo</string>
-    <string name="set_custom_interval">Imposta Intervallo Personalizzato</string>
+    <string name="set_custom_interval">Imposta intervallo personalizzato</string>
     <string name="every">Ogni</string>
     <string name="unit">Unità</string>
     <string name="required">Obbligatorio</string>

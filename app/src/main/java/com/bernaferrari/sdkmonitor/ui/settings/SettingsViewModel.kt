@@ -4,11 +4,15 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bernaferrari.sdkmonitor.core.SyncScheduler
-import com.bernaferrari.sdkmonitor.domain.model.AppFilter
-import com.bernaferrari.sdkmonitor.domain.model.ThemeMode
+import com.bernaferrari.sdkmonitor.domain.AppFilter
+import com.bernaferrari.sdkmonitor.domain.AppListLogic
+import com.bernaferrari.sdkmonitor.domain.LocalTimeUnit
+import com.bernaferrari.sdkmonitor.domain.SdkDistribution
+import com.bernaferrari.sdkmonitor.domain.SettingsPreferences
+import com.bernaferrari.sdkmonitor.domain.ThemeMode
 import com.bernaferrari.sdkmonitor.domain.repository.AppsRepository
 import com.bernaferrari.sdkmonitor.domain.repository.PreferencesRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.bernaferrari.sdkmonitor.ui.state.SettingsUiState
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,20 +24,17 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import javax.inject.Inject
 
 /**
  * Enhanced Settings ViewModel with granular state management
  * Each preference update is handled independently with proper loading states
  */
-@HiltViewModel
-class SettingsViewModel
-    @Inject
-    constructor(
-        private val preferencesRepository: PreferencesRepository,
-        private val appsRepository: AppsRepository,
-        private val syncScheduler: SyncScheduler,
-    ) : ViewModel() {
+@org.koin.core.annotation.KoinViewModel
+class SettingsViewModel(
+    private val preferencesRepository: PreferencesRepository,
+    private val appsRepository: AppsRepository,
+    private val syncScheduler: SyncScheduler,
+) : ViewModel() {
         private val _uiState = MutableStateFlow(SettingsUiState())
         val uiState: StateFlow<SettingsUiState> = _uiState.asStateFlow()
 
@@ -101,11 +102,7 @@ class SettingsViewModel
 
                     // Filter apps based on current app filter preference
                     val filteredApps =
-                        when (appFilter) {
-                            AppFilter.USER_APPS -> allApps.filter { it.isFromPlayStore }
-                            AppFilter.SYSTEM_APPS -> allApps.filter { !it.isFromPlayStore }
-                            AppFilter.ALL_APPS -> allApps
-                        }
+                        AppListLogic.filterByAppFilter(allApps, appFilter)
 
                     val distribution =
                         if (filteredApps.isNotEmpty()) {
@@ -163,7 +160,7 @@ class SettingsViewModel
                     _uiState.value =
                         _uiState.value.copy(
 //                    hasError = true,
-                            errorMessage = "Failed to update theme: ${e.localizedMessage}",
+                            errorMessage = "Failed to update theme: ${e.message}",
                         )
                 }
             }
@@ -369,7 +366,7 @@ class SettingsViewModel
                     // Write versions data
                     versions.forEach { version ->
                         writer.write(
-                            "${version.packageName},${version.versionId},${version.version},\"${
+                            "${version.packageName},${version.versionId},${version.versionCode},\"${
                                 version.versionName.replace(
                                     "\"",
                                     "\"\"",

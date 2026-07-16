@@ -88,8 +88,8 @@
     <string name="apps_count" formatted="false">%d apps</string>
     <string name="search_apps_hint">Pesquisar apps…</string>
     <string name="clear_search">Limpar pesquisa</string>
-    <string name="filter_apps">Filtrar Apps</string>
-    <string name="sort_by">Ordenar Por</string>
+    <string name="filter_apps">Filtrar apps</string>
+    <string name="sort_by">Ordenar por</string>
     <string name="all_apps">Todos os Apps</string>
     <string name="user_apps">Apps do usuário</string>
     <string name="system_apps">Apps do sistema</string>
@@ -199,7 +199,7 @@
     <!-- Background Sync Dialog -->
     <string name="apps_will_update_automatically">Apps serão atualizados automaticamente</string>
     <string name="tap_to_enable_automatic_updates">Toque para ativar atualizações automáticas</string>
-    <string name="sync_frequency">Frequência de Sincronização</string>
+    <string name="sync_frequency">Frequência de sincronização</string>
     <string name="daily">Diariamente</string>
     <string name="weekly">Semanalmente</string>
     <string name="monthly">Mensalmente</string>
@@ -208,7 +208,7 @@
     <string name="once_every_week">Uma vez por semana</string>
     <string name="once_every_month">Uma vez por mês</string>
     <string name="set_your_own_interval">Defina seu próprio intervalo</string>
-    <string name="set_custom_interval">Definir Intervalo Personalizado</string>
+    <string name="set_custom_interval">Definir intervalo personalizado</string>
     <string name="every">A cada</string>
     <string name="unit">Unidade</string>
     <string name="required">Obrigatório</string>

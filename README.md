@@ -4,6 +4,8 @@
 
 **See which Android API level every installed app is targeting — and get notified when it changes.**
 
+**Try the web demo:** [sdkmonitor.vercel.app](https://sdkmonitor.vercel.app/)
+
 Android does not surface `targetSdk` anywhere in Settings. SDK Monitor reads it from your installed apps, tracks updates over time, and shows you which apps are actually adopting newer security and privacy protections.
 
 [![F-Droid](https://img.shields.io/f-droid/v/com.bernaferrari.sdkmonitor.svg)](https://f-droid.org/packages/com.bernaferrari.sdkmonitor/)
@@ -41,6 +43,38 @@ git clone https://github.com/bernaferrari/SDKMonitor.git
 cd SDKMonitor
 ./gradlew assembleDebug
 ```
+
+### Desktop demo (Room)
+
+```bash
+./gradlew :shared:run
+```
+
+### Web demo (Room + wasmJs)
+
+Try the UI in a browser with a real Room 3 / OPFS SQLite database (demo data is seeded once if empty):
+
+```bash
+./gradlew :webApp:wasmJsBrowserDevelopmentRun
+```
+
+The browser target needs a [cross-origin isolated](https://web.dev/articles/coop-coep) context (COOP/COEP) so SQLite can use OPFS via the `:sqliteWasmWorker` Web Worker.
+
+Pushes to `main` build, verify, and deploy the web demo to [sdkmonitor.vercel.app](https://sdkmonitor.vercel.app/). The workflow needs `VERCEL_TOKEN`, `VERCEL_ORG_ID`, and `VERCEL_PROJECT_ID` repository secrets.
+
+### Kotlin Multiplatform layout
+
+| Module | Role |
+|--------|------|
+| `:shared` | **commonMain:** domain, Compose UI, Room 3 (`AppDatabase` / entities / DAOs / `RoomAppsRepository`). **androidMain / desktopMain / wasmJsMain:** only `createAppDatabase()` + platform driver |
+| `:app` | Android shell (Koin, WorkManager, device scan, intents); delegates DB/repo to `:shared` |
+| `:webApp` | wasmJs Compose entry → `RoomDemoHost` |
+| `:sqliteWasmWorker` | Web Worker driver for Room on wasmJs (OPFS) |
+
+**Room 3** lives in `commonMain` (not a non-JS-only source set). Platform code only wires `Room.databaseBuilder` + `SQLiteDriver` (`BundledSQLiteDriver` on Android/desktop, `WebWorkerSQLiteDriver` on wasmJs).
+
+**DI:** [Koin Compiler Plugin](https://insert-koin.io/docs/setup/compiler-plugin) **1.0.1** + `@ComponentScan` / `@KoinViewModel` / `@KoinWorker` — **not** the deprecated `koin-ksp-compiler`.
+
 
 ## What each target SDK level means for security and privacy
 

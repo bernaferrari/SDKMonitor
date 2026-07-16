@@ -92,7 +92,7 @@
     <string name="apps_count">%d apps</string>
     <string name="search_apps_hint">Rechercher des apps…</string>
     <string name="clear_search">Effacer la recherche</string>
-    <string name="filter_apps">Filtrer les Apps</string>
+    <string name="filter_apps">Filtrer les apps</string>
     <string name="sort_by">Trier par</string>
     <string name="all_apps">Toutes les Apps</string>
     <string name="user_apps">Apps utilisateur</string>

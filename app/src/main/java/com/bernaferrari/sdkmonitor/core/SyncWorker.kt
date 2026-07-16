@@ -1,23 +1,20 @@
 package com.bernaferrari.sdkmonitor.core
 
 import android.content.Context
-import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.bernaferrari.sdkmonitor.domain.repository.PreferencesRepository
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
+import org.koin.android.annotation.KoinWorker
 
-@HiltWorker
-class SyncWorker
-    @AssistedInject
-    constructor(
-        @Assisted context: Context,
-        @Assisted workerParameters: WorkerParameters,
+@KoinWorker
+
+class SyncWorker(
+        context: Context,
+        workerParameters: WorkerParameters,
         private val appManager: AppManager,
         private val preferencesRepository: PreferencesRepository,
         private val notificationManager: NotificationManager,

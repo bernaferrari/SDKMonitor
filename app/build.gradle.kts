@@ -10,8 +10,12 @@ plugins {
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.ksp)
     alias(libs.plugins.compose)
-    alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.koin.compiler)
+}
+
+koinCompiler {
+    userLogs = true
 }
 
 android {
@@ -61,11 +65,6 @@ android {
         }
     }
 
-    kotlin {
-        compilerOptions {
-            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
-        }
-    }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -93,6 +92,10 @@ configurations.configureEach {
 }
 
 dependencies {
+    implementation(project(":shared"))
+    // Room 3 lives in :shared (commonMain); app needs runtime on classpath for DI/types
+    implementation(libs.androidx.room3.runtime)
+    implementation(libs.androidx.sqlite.bundled)
     // Kotlin
     implementation(libs.kotlin.stdlib)
     implementation(libs.kotlinx.coroutines.core)
@@ -125,25 +128,20 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.coil.core)
 
-    // Hilt for Dependency Injection
-    implementation(libs.hilt.android)
+    // Koin
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
+    implementation(libs.koin.androidx.workmanager)
+    implementation(libs.koin.annotations)
+
     implementation(libs.androidx.material3.adaptive)
     implementation(libs.androidx.material3.adaptive.layout)
     implementation(libs.androidx.material3.adaptive)
     implementation(libs.androidx.material3.adaptive.navigation)
     implementation(libs.androidx.material3.adaptive.navigation.suite.android)
-    ksp(libs.hilt.android.compiler)
-    ksp(libs.hilt.compiler)
     ksp(libs.kotlin.metadata.jvm)
     annotationProcessor(libs.kotlin.metadata.jvm)
-    implementation(libs.hilt.navigation.compose)
-    implementation(libs.hilt.work)
-
-    // Room Database
-    ksp(libs.androidx.room.compiler)
-    implementation(libs.androidx.room.runtime)
-    implementation(libs.androidx.room.ktx)
-    implementation(libs.androidx.room.paging)
 
     // Paging
     implementation(libs.androidx.paging.runtime.ktx)

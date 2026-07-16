@@ -5,19 +5,16 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.bernaferrari.sdkmonitor.domain.model.AppFilter
-import com.bernaferrari.sdkmonitor.domain.model.ThemeMode
-import com.bernaferrari.sdkmonitor.domain.model.UserPreferences
+import com.bernaferrari.sdkmonitor.domain.AppFilter
+import com.bernaferrari.sdkmonitor.domain.ThemeMode
+import com.bernaferrari.sdkmonitor.domain.UserPreferences
 import com.bernaferrari.sdkmonitor.domain.repository.PreferencesRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
-import javax.inject.Singleton
+import org.koin.core.annotation.Single
 
-@Singleton
-class PreferencesRepositoryImpl
-    @Inject
-    constructor(
+@Single(binds = [PreferencesRepository::class])
+class PreferencesRepositoryImpl(
         private val dataStore: DataStore<Preferences>,
     ) : PreferencesRepository {
         companion object {

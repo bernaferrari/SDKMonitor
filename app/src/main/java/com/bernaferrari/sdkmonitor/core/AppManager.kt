@@ -7,15 +7,14 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import androidx.core.graphics.drawable.toBitmap
 import androidx.palette.graphics.Palette
-import com.bernaferrari.sdkmonitor.data.App
-import com.bernaferrari.sdkmonitor.data.Version
-import com.bernaferrari.sdkmonitor.domain.model.AppDetails
-import com.bernaferrari.sdkmonitor.domain.model.AppFilter
+import com.bernaferrari.sdkmonitor.domain.AppDetails
+import com.bernaferrari.sdkmonitor.domain.AppFilter
+import com.bernaferrari.sdkmonitor.domain.TrackedApp
+import com.bernaferrari.sdkmonitor.domain.TrackedVersion
 import com.bernaferrari.sdkmonitor.domain.repository.AppsRepository
 import com.bernaferrari.sdkmonitor.domain.repository.PreferencesRepository
 import com.bernaferrari.sdkmonitor.extensions.convertTimestampToDate
 import com.bernaferrari.sdkmonitor.extensions.darken
-import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,35 +22,32 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
+import org.koin.core.annotation.Single
 
-@Singleton
-class AppManager
-    @Inject
-    constructor(
-        @param:ApplicationContext private val context: Context,
-        private val appsRepository: AppsRepository,
-        private val preferencesRepository: PreferencesRepository,
-        private val notificationManager: NotificationManager,
-    ) {
-        private val packageManager: PackageManager = context.packageManager
+@Single
+class AppManager(
+    private val context: Context,
+    private val appsRepository: AppsRepository,
+    private val preferencesRepository: PreferencesRepository,
+    private val notificationManager: NotificationManager,
+) {
+    private val packageManager: PackageManager = context.packageManager
 
-        // In-memory icon cache to avoid repeated OS calls
-        private val iconCache = java.util.concurrent.ConcurrentHashMap<String, android.graphics.drawable.Drawable>()
+    // In-memory icon cache to avoid repeated OS calls
+    private val iconCache = java.util.concurrent.ConcurrentHashMap<String, android.graphics.drawable.Drawable>()
 
-        // Track first sync progress
-        private val _isFirstSync = MutableStateFlow(false)
-        val isFirstSync: StateFlow<Boolean> = _isFirstSync.asStateFlow()
+    // Track first sync progress
+    private val _isFirstSync = MutableStateFlow(false)
+    val isFirstSync: StateFlow<Boolean> = _isFirstSync.asStateFlow()
 
-        private val _syncProgress = MutableStateFlow(SyncProgress())
-        val syncProgress: StateFlow<SyncProgress> = _syncProgress.asStateFlow()
+    private val _syncProgress = MutableStateFlow(SyncProgress())
+    val syncProgress: StateFlow<SyncProgress> = _syncProgress.asStateFlow()
 
-        data class SyncProgress(
-            val current: Int = 0,
-            val total: Int = 0,
-            val isActive: Boolean = false,
-        )
+    data class SyncProgress(
+        val current: Int = 0,
+        val total: Int = 0,
+        val isActive: Boolean = false,
+    )
 
         private fun isUserApp(ai: ApplicationInfo?): Boolean {
             if (ai == null) return false
@@ -86,9 +82,12 @@ class AppManager
             val lastVersion = appsRepository.getLastVersion(packageInfo.packageName)?.targetSdk
 
             if (lastVersion != currentTargetSDK) {
+                val versionId =
+                    "${packageInfo.packageName} $versionCode ${packageInfo.versionName ?: ""} $currentTargetSDK".hashCode()
                 val version =
-                    Version(
-                        version = versionCode,
+                    TrackedVersion(
+                        versionId = versionId,
+                        versionCode = versionCode,
                         packageName = packageInfo.packageName,
                         versionName = packageInfo.versionName ?: "",
                         lastUpdateTime = packageInfo.lastUpdateTime,
@@ -138,7 +137,7 @@ class AppManager
             val label = getAppLabel(packageInfo)
 
             appsRepository.insertApp(
-                App(
+                TrackedApp(
                     packageName = packageInfo.packageName,
                     title = label,
                     backgroundColor = 0,

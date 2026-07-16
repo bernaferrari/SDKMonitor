@@ -87,8 +87,8 @@
     <string name="apps_count">%d Apps</string>
     <string name="search_apps_hint">Apps durchsuchen…</string>
     <string name="clear_search">Suche löschen</string>
-    <string name="filter_apps">Apps Filtern</string>
-    <string name="sort_by">Sortieren Nach</string>
+    <string name="filter_apps">Apps filtern</string>
+    <string name="sort_by">Sortieren nach</string>
     <string name="all_apps">Alle Apps</string>
     <string name="user_apps">Benutzer-Apps</string>
     <string name="system_apps">System-Apps</string>
@@ -171,7 +171,7 @@
     <string name="battery_not_low">Batterie nicht schwach</string>
     <string name="apps_will_update_automatically">Apps werden automatisch aktualisiert</string>
     <string name="tap_to_enable_automatic_updates">Tippen um automatische Updates zu aktivieren</string>
-    <string name="sync_frequency">Synchronisationsfrequenz</string>
+    <string name="sync_frequency">Häufigkeit der Synchronisation</string>
     <string name="daily">Täglich</string>
     <string name="weekly">Wöchentlich</string>
     <string name="monthly">Monatlich</string>
@@ -180,7 +180,7 @@
     <string name="once_every_week">Einmal wöchentlich</string>
     <string name="once_every_month">Einmal monatlich</string>
     <string name="set_your_own_interval">Eigenes Intervall festlegen</string>
-    <string name="set_custom_interval">Benutzerdefiniertes Intervall Festlegen</string>
+    <string name="set_custom_interval">Eigene Zeit einstellen</string>
     <string name="every">Alle</string>
     <string name="unit">Einheit</string>
     <string name="required">Erforderlich</string>
@@ -190,7 +190,7 @@
     <string name="error">Fehler</string>
     <string name="close">Schließen</string>
     <string name="open">Öffnen</string>
-    <string name="analytics">Analytics</string>
+    <string name="analytics">Analytik</string>
     <string name="timeline">Zeitleiste</string>
     <string name="updated_to">Aktualisiert auf</string>
     <string name="app_icon">App-Icon</string>
@@ -201,7 +201,7 @@
     <string name="settings_screen_title">Einstellungen</string>
     <string name="privacy_first">🔒 Datenschutz Zuerst</string>
     <string name="privacy_description">Diese App sammelt, speichert oder überträgt keine persönlichen Daten. Alle Informationen bleiben vollständig lokal auf deinem Gerät.</string>
-    <string name="sdk_analytics">SDK-Analytics</string>
+    <string name="sdk_analytics">SDK-Analytik</string>
     <string name="apps_lowercase">Apps</string>
     <string name="versions_lowercase">Versionen</string>
     <string name="api_format">API %d</string>

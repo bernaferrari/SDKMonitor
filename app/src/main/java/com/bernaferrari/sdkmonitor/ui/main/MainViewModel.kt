@@ -3,13 +3,14 @@ package com.bernaferrari.sdkmonitor.ui.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bernaferrari.sdkmonitor.core.AppManager
-import com.bernaferrari.sdkmonitor.domain.model.AppFilter
-import com.bernaferrari.sdkmonitor.domain.model.AppVersion
-import com.bernaferrari.sdkmonitor.domain.model.SortOption
+import com.bernaferrari.sdkmonitor.domain.AppFilter
+import com.bernaferrari.sdkmonitor.domain.AppListLogic
+import com.bernaferrari.sdkmonitor.domain.AppVersion
+import com.bernaferrari.sdkmonitor.domain.SortOption
 import com.bernaferrari.sdkmonitor.domain.repository.AppsRepository
 import com.bernaferrari.sdkmonitor.domain.repository.PreferencesRepository
-import com.bernaferrari.sdkmonitor.extensions.normalizeString
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.bernaferrari.sdkmonitor.domain.logic.StringNormalize
+import com.bernaferrari.sdkmonitor.ui.state.MainUiState
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -19,31 +20,13 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-sealed class MainUiState {
-    data object Loading : MainUiState()
-
-    data class Success(
-        val apps: List<AppVersion>,
-        val filteredApps: List<AppVersion>,
-        val totalCount: Int,
-    ) : MainUiState()
-
-    data class Error(
-        val message: String,
-        val throwable: Throwable? = null,
-    ) : MainUiState()
-}
-
-@HiltViewModel
-class MainViewModel
-    @Inject
-    constructor(
-        appsRepository: AppsRepository,
-        private val preferencesRepository: PreferencesRepository,
-        private val appManager: AppManager,
-    ) : ViewModel() {
+@org.koin.core.annotation.KoinViewModel
+class MainViewModel(
+    appsRepository: AppsRepository,
+    private val preferencesRepository: PreferencesRepository,
+    private val appManager: AppManager,
+) : ViewModel() {
         private val _searchQuery = MutableStateFlow("")
         val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
@@ -72,34 +55,17 @@ class MainViewModel
                     _appFilter.value = prefs.appFilter
                     _sortOption.value = if (prefs.orderBySdk) SortOption.SDK else SortOption.NAME
 
-                    // Apply filtering based on preferences
-                    val filteredByPrefs =
-                        when (prefs.appFilter) {
-                            AppFilter.ALL_APPS -> apps
-                            AppFilter.USER_APPS -> apps.filter { it.isFromPlayStore }
-                            AppFilter.SYSTEM_APPS -> apps.filter { !it.isFromPlayStore }
-                        }
-
-                    // Apply ordering based on preferences
+                    val sort = if (prefs.orderBySdk) SortOption.SDK else SortOption.NAME
                     val orderedApps =
-                        if (prefs.orderBySdk) {
-                            filteredByPrefs.sortedWith(
-                                compareByDescending<AppVersion> { it.sdkVersion }
-                                    .thenBy { it.title.lowercase() },
-                            )
-                        } else {
-                            filteredByPrefs.sortedBy { it.title.lowercase() }
-                        }
-
-                    // Apply search query
-                    val searchFiltered =
-                        if (query.isBlank()) {
-                            orderedApps
-                        } else {
-                            orderedApps.filter { appVersion ->
-                                query.normalizeString() in appVersion.title.normalizeString()
-                            }
-                        }
+                        AppListLogic.applyListPipeline(
+                            apps = apps,
+                            filter = prefs.appFilter,
+                            sortOption = sort,
+                            orderBySdk = prefs.orderBySdk,
+                            searchQuery = query,
+                            normalize = StringNormalize::normalize,
+                        )
+                    val searchFiltered = orderedApps
 
                     // Show loading only if first sync or empty and not loaded yet
                     if ((!hasLoaded && orderedApps.isEmpty()) || isFirstSync) {
@@ -113,7 +79,7 @@ class MainViewModel
                     }
                 } catch (e: Exception) {
                     MainUiState.Error(
-                        message = e.localizedMessage ?: "Failed to load apps",
+                        message = e.message ?: "Failed to load apps",
                         throwable = e,
                     )
                 }

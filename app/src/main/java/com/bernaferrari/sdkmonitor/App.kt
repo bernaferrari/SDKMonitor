@@ -2,28 +2,34 @@ package com.bernaferrari.sdkmonitor
 
 import android.app.Application
 import androidx.appfunctions.service.AppFunctionConfiguration
-import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
+import com.bernaferrari.sdkmonitor.di.SdkMonitorKoinApp
 import com.bernaferrari.sdkmonitor.functions.SdkMonitorFunctions
-import dagger.hilt.android.HiltAndroidApp
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
+import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.workmanager.factory.KoinWorkerFactory
+import org.koin.androidx.workmanager.koin.workManagerFactory
+import org.koin.plugin.module.dsl.startKoin
 
-@HiltAndroidApp
 class App :
     Application(),
     Configuration.Provider,
     AppFunctionConfiguration.Provider {
-    @Inject
-    lateinit var workerFactory: HiltWorkerFactory
+    private val sdkMonitorFunctions: SdkMonitorFunctions by inject()
 
-    @Inject
-    lateinit var sdkMonitorFunctions: SdkMonitorFunctions
+    override fun onCreate() {
+        super.onCreate()
+        startKoin<SdkMonitorKoinApp> {
+            androidContext(this@App)
+            workManagerFactory()
+        }
+    }
 
     override val workManagerConfiguration: Configuration
         get() =
             Configuration
                 .Builder()
-                .setWorkerFactory(workerFactory)
+                .setWorkerFactory(KoinWorkerFactory())
                 .setMinimumLoggingLevel(android.util.Log.DEBUG)
                 .build()
 

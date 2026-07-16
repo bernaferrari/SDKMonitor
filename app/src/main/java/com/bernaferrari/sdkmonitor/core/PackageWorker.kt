@@ -1,22 +1,19 @@
 package com.bernaferrari.sdkmonitor.core
 
 import android.content.Context
-import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
 import io.github.aakira.napier.Napier
+import org.koin.android.annotation.KoinWorker
 
-@HiltWorker
-class PackageWorker
-    @AssistedInject
-    constructor(
-        @Assisted context: Context,
-        @Assisted workerParams: WorkerParameters,
+@KoinWorker
+
+class PackageWorker(
+        context: Context,
+        workerParams: WorkerParameters,
         private val appManager: AppManager,
     ) : CoroutineWorker(context, workerParams) {
         companion object {

@@ -9,13 +9,16 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.compose.runtime.CompositionLocalProvider
 import com.bernaferrari.sdkmonitor.ui.AppNavigation
+import com.bernaferrari.sdkmonitor.ui.platform.AndroidAppIconProvider
+import com.bernaferrari.sdkmonitor.ui.platform.LocalAppIconProvider
+import com.bernaferrari.sdkmonitor.ui.platform.LocalSdkStrings
+import com.bernaferrari.sdkmonitor.ui.platform.rememberAndroidSdkStrings
 import com.bernaferrari.sdkmonitor.ui.theme.SDKMonitorTheme
 import com.bernaferrari.sdkmonitor.ui.theme.ThemeViewModel
-import dagger.hilt.android.AndroidEntryPoint
+import org.koin.compose.viewmodel.koinViewModel
 
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,16 +30,23 @@ class MainActivity : ComponentActivity() {
         val packageName = intent?.getStringExtra("package_name")
 
         setContent {
-            val themeViewModel: ThemeViewModel = hiltViewModel()
+            val themeViewModel: ThemeViewModel = koinViewModel()
+            val sdkStrings = rememberAndroidSdkStrings()
+            val appIcons = AndroidAppIconProvider()
 
             SDKMonitorTheme(
                 darkTheme = themeViewModel.shouldUseDarkTheme(),
                 dynamicColor = themeViewModel.shouldUseDynamicColor(),
             ) {
-                AppNavigation(
-                    modifier = Modifier.fillMaxSize(),
-                    initialPackageName = packageName,
-                )
+                CompositionLocalProvider(
+                    LocalSdkStrings provides sdkStrings,
+                    LocalAppIconProvider provides appIcons,
+                ) {
+                    AppNavigation(
+                        modifier = Modifier.fillMaxSize(),
+                        initialPackageName = packageName,
+                    )
+                }
             }
         }
     }

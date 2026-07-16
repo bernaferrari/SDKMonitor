@@ -6,21 +6,18 @@ import androidx.lifecycle.viewModelScope
 import com.bernaferrari.sdkmonitor.R
 import com.bernaferrari.sdkmonitor.core.AppManager
 import com.bernaferrari.sdkmonitor.domain.repository.AppsRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
+import com.bernaferrari.sdkmonitor.ui.state.DetailsUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import org.koin.core.annotation.KoinViewModel
 
-@HiltViewModel
-class DetailsViewModel
-    @Inject
-    constructor(
+@KoinViewModel
+class DetailsViewModel(
         private val appsRepository: AppsRepository,
         private val appManager: AppManager,
-        @param:ApplicationContext private val context: Context,
+        private val context: Context,
     ) : ViewModel() {
         private val _uiState = MutableStateFlow<DetailsUiState>(DetailsUiState.Loading)
         val uiState: StateFlow<DetailsUiState> = _uiState.asStateFlow()
@@ -39,23 +36,14 @@ class DetailsViewModel
 
                     // If app exists, fetch its versions and create AppDetails
                     if (app != null) {
-                        val versions = appsRepository.getAppVersions(packageName)
-
-                        // Use appManager to get complete AppDetails
+    val versions = appsRepository.getAppVersions(packageName)
                         val appDetails = appManager.getAppDetails(packageName)
-                        val appVersionList =
-                            versions.map {
-                                it.toAppVersion(
-                                    appDetails,
-                                    context,
-                                )
-                            } // Changed from toVersionInfo to toAppVersion
+                        val appVersionList = versions.map { it.toAppVersion(appDetails, context) }
 
-                        // Update UI state with success
                         _uiState.value =
                             DetailsUiState.Success(
                                 appDetails = appDetails,
-                                versions = appVersionList, // Changed from versionInfoList to appVersionList
+                                versions = appVersionList,
                             )
                     } else {
                         // If app doesn't exist in database, try to get it from package manager

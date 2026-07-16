@@ -10,7 +10,8 @@ plugins {
 }
 
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    // Kotlin/Wasm registers the Node.js distribution repository for its toolchain.
+    repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
     repositories {
         google()
         mavenCentral()
@@ -18,3 +19,6 @@ dependencyResolutionManagement {
 }
 
 include(":app")
+include(":shared")
+include(":webApp")
+include(":sqliteWasmWorker")

@@ -1,9 +1,5 @@
 package com.bernaferrari.sdkmonitor.extensions
 
-import java.text.Normalizer
+import com.bernaferrari.sdkmonitor.domain.logic.StringNormalize
 
-internal fun String.normalizeString() =
-    Normalizer
-        .normalize(this, Normalizer.Form.NFD)
-        .lowercase()
-        .replace("\\p{InCombiningDiacriticalMarks}+".toRegex(), "")
+internal fun String.normalizeString(): String = StringNormalize.normalize(this)

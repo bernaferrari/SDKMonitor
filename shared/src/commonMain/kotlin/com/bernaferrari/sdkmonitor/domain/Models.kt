@@ -1,0 +1,116 @@
+package com.bernaferrari.sdkmonitor.domain
+
+/**
+ * Shared domain models used by the Android app and the web/desktop demo.
+ */
+data class AppDetails(
+    val packageName: String,
+    val title: String,
+    val versionName: String,
+    val versionCode: Long,
+    val targetSdk: Int,
+    val minSdk: Int,
+    val size: Long,
+    val lastUpdateTime: String,
+    val isSystemApp: Boolean = false,
+)
+
+data class AppVersion(
+    val packageName: String,
+    val title: String,
+    val sdkVersion: Int,
+    val lastUpdateTime: String,
+    val versionName: String = "",
+    val versionCode: Long = 0L,
+    /** ARGB color; stored as [Long] for multiplatform (demo uses hex literals). */
+    val backgroundColor: Long = 0L,
+    /** User-installed / non-system app on Android; demo maps from [isSystemApp]. */
+    val isFromPlayStore: Boolean = false,
+    val isSystemApp: Boolean = false,
+)
+
+/**
+ * Platform-agnostic app row (maps from Room [App] entity — Room lives in commonMain).
+ * [isFromPlayStore] means user-installed / non-system on Android.
+ */
+data class TrackedApp(
+    val packageName: String,
+    val title: String,
+    val backgroundColor: Int,
+    val isFromPlayStore: Boolean,
+) {
+    val isSystemApp: Boolean get() = !isFromPlayStore
+}
+
+/**
+ * Platform-agnostic version row (maps from Room [Version] entity in commonMain).
+ */
+data class TrackedVersion(
+    val versionId: Int,
+    val versionCode: Long,
+    val packageName: String,
+    val versionName: String,
+    val lastUpdateTime: Long,
+    val targetSdk: Int,
+)
+
+data class UserPreferences(
+    val lightMode: Boolean = true,
+    val appFilter: AppFilter = AppFilter.USER_APPS,
+    val backgroundSync: Boolean = false,
+    val orderBySdk: Boolean = false,
+    val syncInterval: String = "30m",
+    val themeMode: ThemeMode = ThemeMode.MATERIAL_YOU,
+)
+
+data class LogEntry(
+    val id: Long,
+    val packageName: String,
+    val appName: String,
+    val oldSdk: Int?,
+    val newSdk: Int,
+    val oldVersion: String?,
+    val newVersion: String,
+    val timestamp: Long,
+)
+
+enum class AppFilter {
+    ALL_APPS,
+    USER_APPS,
+    SYSTEM_APPS,
+}
+
+enum class SortOption {
+    NAME,
+    SDK,
+}
+
+enum class ThemeMode {
+    SYSTEM,
+    MATERIAL_YOU,
+    LIGHT,
+    DARK,
+}
+
+enum class LocalTimeUnit(
+    val code: Int,
+) {
+    MINUTES(0),
+    HOURS(1),
+    DAYS(2),
+}
+
+data class SdkDistribution(
+    val sdkVersion: Int,
+    val appCount: Int,
+    val percentage: Float,
+)
+
+data class SettingsPreferences(
+    val themeMode: ThemeMode = ThemeMode.MATERIAL_YOU,
+    val appFilter: AppFilter = AppFilter.ALL_APPS,
+    val backgroundSync: Boolean = false,
+    val orderBySdk: Boolean = false,
+    val syncInterval: String = "30",
+    val syncLocalTimeUnit: LocalTimeUnit = LocalTimeUnit.MINUTES,
+)
