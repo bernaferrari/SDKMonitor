@@ -60,7 +60,7 @@ Try the UI in a browser with a real Room 3 / OPFS SQLite database (demo data is 
 
 The browser target needs a [cross-origin isolated](https://web.dev/articles/coop-coep) context (COOP/COEP) so SQLite can use OPFS via the `:sqliteWasmWorker` Web Worker.
 
-Pushes to `main` build, verify, and deploy the web demo to [sdkmonitor.vercel.app](https://sdkmonitor.vercel.app/). The workflow needs `VERCEL_TOKEN`, `VERCEL_ORG_ID`, and `VERCEL_PROJECT_ID` repository secrets.
+Pushes and pull requests run the Android, shared, and web checks in GitHub Actions. After setting `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID`, the verified web bundle can be deployed to [sdkmonitor.vercel.app](https://sdkmonitor.vercel.app/) with `./scripts/deploy-web-vercel.sh`; CI deployment is intentionally disabled until the repository has a valid Vercel credential or the Vercel project is connected to Git.
 
 ### Kotlin Multiplatform layout
 
