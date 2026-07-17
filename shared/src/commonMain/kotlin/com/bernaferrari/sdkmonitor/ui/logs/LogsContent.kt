@@ -101,6 +101,7 @@ fun LogsContent(
                                     log = log,
                                     isSelected = log.packageName == selectedPackageName,
                                     position = expressiveListItemPosition(index, logs.lastIndex),
+                                    formattedTime = period,
                                     onClick = { onLogClick(log) },
                                 )
                             }

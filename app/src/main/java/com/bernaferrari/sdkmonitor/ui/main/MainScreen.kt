@@ -1,7 +1,6 @@
 package com.bernaferrari.sdkmonitor.ui.main
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -31,10 +30,6 @@ fun MainScreen(
         } else {
             0f
         }
-
-    LaunchedEffect(Unit) {
-        viewModel.loadApps()
-    }
 
     MainContent(
         uiState = uiState,

@@ -79,13 +79,16 @@ fun DemoSdkMonitorApp(
     val sortOption by session.sortOption.collectAsState()
     var tab by remember { mutableIntStateOf(0) }
     var selectedPackage by remember { mutableStateOf<String?>(null) }
-    val allApps by roomRepository.getAppsWithVersions().collectAsState(initial = emptyList())
+    val appsFlow = remember(roomRepository) { roomRepository.getAppsWithVersions() }
+    val allAppsOrNull by appsFlow.collectAsState<List<AppVersion>, List<AppVersion>?>(initial = null)
+    val allApps = allAppsOrNull.orEmpty()
     val filteredApps = remember(allApps, prefs, searchQuery, sortOption) {
         AppListLogic.applyListPipeline(allApps, prefs.appFilter, sortOption, prefs.orderBySdk, searchQuery)
     }
-    val logs by remember(roomRepository, prefs.appFilter) {
+    val logsOrNull by remember(roomRepository, prefs.appFilter) {
         roomRepository.getChangeLogs(prefs.appFilter)
-    }.collectAsState(initial = emptyList())
+    }.collectAsState<List<LogEntry>, List<LogEntry>?>(initial = null)
+    val logs = logsOrNull.orEmpty()
     val (distribution, filteredForSdk) = remember(allApps, prefs.appFilter) {
         AnalyticsLogic.sdkDistribution(allApps, prefs.appFilter)
     }
@@ -122,7 +125,12 @@ fun DemoSdkMonitorApp(
                     modifier = modifier,
                 ) { selectedPackageName, onAppClick ->
                     MainContent(
-                        uiState = MainUiState.Success(allApps, filteredApps, filteredApps.size),
+                        uiState =
+                            if (allAppsOrNull == null) {
+                                MainUiState.Loading
+                            } else {
+                                MainUiState.Success(allApps, filteredApps, filteredApps.size)
+                            },
                         searchQuery = searchQuery,
                         appFilter = prefs.appFilter,
                         sortOption = sortOption,
@@ -143,7 +151,12 @@ fun DemoSdkMonitorApp(
                     modifier = modifier,
                 ) { selectedPackageName, onAppClick ->
                     LogsContent(
-                        uiState = LogsUiState.Success(logs, logs.size),
+                        uiState =
+                            if (logsOrNull == null) {
+                                LogsUiState.Loading
+                            } else {
+                                LogsUiState.Success(logs, logs.size)
+                            },
                         appFilter = prefs.appFilter,
                         selectedPackageName = selectedPackageName,
                         formatTime = ::demoLogDate,

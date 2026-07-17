@@ -97,16 +97,16 @@ enum class ThemePalette(
     val seedArgb: Long?,
 ) {
     DYNAMIC("dynamic", null),
-    EMBER("ember", 0xFFF45D48),
-    CLAY("clay", 0xFF9B5541),
-    SOLAR("solar", 0xFFAD6500),
-    CITRINE("citrine", 0xFF7B7900),
-    GROVE("grove", 0xFF2A7D4F),
-    LAGOON("lagoon", 0xFF008577),
-    TIDE("tide", 0xFF007C91),
-    AZURE("azure", 0xFF3768B0),
-    ORCHID("orchid", 0xFF7656A7),
-    BERRY("berry", 0xFFA23D68),
+    EMBER("ember", 0xFFFF2D1F),
+    CLAY("clay", 0xFFF4512C),
+    SOLAR("solar", 0xFFFF8A00),
+    CITRINE("citrine", 0xFFC5C500),
+    GROVE("grove", 0xFF00C96B),
+    LAGOON("lagoon", 0xFF00CDB0),
+    TIDE("tide", 0xFF00B8D4),
+    AZURE("azure", 0xFF1677FF),
+    ORCHID("orchid", 0xFF9B51FF),
+    BERRY("berry", 0xFFF2387A),
     ;
 
     companion object {

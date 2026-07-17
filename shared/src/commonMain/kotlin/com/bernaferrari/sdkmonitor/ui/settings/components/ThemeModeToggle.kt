@@ -43,8 +43,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.lerp
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
@@ -105,8 +108,8 @@ fun ThemeAppearanceSelector(
 
         FlowRow(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp, vertical = 4.dp),
-            horizontalArrangement = Arrangement.Start,
-            verticalArrangement = Arrangement.Top,
+            horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             availablePalettes.forEach { palette ->
                 ThemeColorItem(
@@ -132,6 +135,23 @@ private fun ThemeColorItem(
             MaterialTheme.colorScheme.primary
         } else {
             Color(requireNotNull(palette.seedArgb))
+        }
+    val swatchBrush =
+        remember(displayColor) {
+            Brush.linearGradient(
+                colors =
+                    listOf(
+                        lerp(displayColor, Color.White, 0.16f),
+                        displayColor,
+                        lerp(displayColor, Color.Black, 0.10f),
+                    ),
+            )
+        }
+    val checkColor =
+        when {
+            palette == ThemePalette.DYNAMIC -> MaterialTheme.colorScheme.onPrimary
+            displayColor.luminance() > 0.24f -> Color.Black.copy(alpha = 0.78f)
+            else -> Color.White
         }
     val cornerRadius by
         animateDpAsState(
@@ -230,13 +250,13 @@ private fun ThemeColorItem(
                     .rotate(rotation)
                     .shadow(elevation = safeElevation, shape = RoundedCornerShape(cornerRadius), clip = false)
                     .clip(RoundedCornerShape(cornerRadius))
-                    .background(displayColor)
+                    .background(swatchBrush)
                     .padding(borderWidth)
                     .clip(RoundedCornerShape((cornerRadius - borderWidth).coerceAtLeast(0.dp)))
                     .background(borderColor)
                     .padding(2.dp)
                     .clip(RoundedCornerShape(innerRadius))
-                    .background(displayColor),
+                    .background(swatchBrush),
             contentAlignment = Alignment.Center,
         ) {
             if (palette == ThemePalette.DYNAMIC && !isSelected) {
@@ -260,12 +280,7 @@ private fun ThemeColorItem(
                             scaleY = safeProgress
                             alpha = checkProgress.coerceIn(0f, 1f)
                         },
-                tint =
-                    if (palette == ThemePalette.DYNAMIC) {
-                        MaterialTheme.colorScheme.onPrimary
-                    } else {
-                        Color.White
-                    },
+                tint = checkColor,
             )
         }
     }
