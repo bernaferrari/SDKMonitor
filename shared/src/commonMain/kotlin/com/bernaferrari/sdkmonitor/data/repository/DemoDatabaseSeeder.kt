@@ -72,7 +72,10 @@ private fun demoTimestampFor(packageName: String, now: Long): Long =
         "com.instagram.android" -> now - 25 * DemoDayMillis
         "com.twitter.android" -> now - 42 * DemoDayMillis
         "com.nu.production" -> now - 48 * DemoDayMillis
-        else -> now - 180 * DemoDayMillis
+        else -> {
+            val staggeredDays = 5L + packageName.sumOf(Char::code).toLong() % 80L
+            now - staggeredDays * DemoDayMillis
+        }
     }
 
 private const val DemoDayMillis = 86_400_000L

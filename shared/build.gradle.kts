@@ -45,6 +45,7 @@ kotlin {
                 implementation(libs.kotlinx.coroutines.core)
                 implementation(libs.kotlinx.serialization.core)
                 implementation(libs.nappier)
+                implementation(libs.material.kolor)
                 // Room 3: entities / DAOs / AppDatabase in commonMain
                 implementation(libs.androidx.room3.runtime)
             }

@@ -18,22 +18,14 @@ import androidx.core.view.WindowCompat
 import com.materialkolor.PaletteStyle
 import com.materialkolor.dynamiccolor.ColorSpec
 import com.materialkolor.rememberDynamicMaterialThemeState
+import com.bernaferrari.sdkmonitor.domain.ThemePalette
 
 // private val primary = Color(0xFF1976D2)
-private val primary = Color(0xffFF8364)
-
-// private val primary = Color(
-//    red = 0.219f,
-//    green = 0.325f,
-//    blue = 0.961f,
-//    alpha = 1.0f,
-//    colorSpace = ColorSpaces.DisplayP3
-// )
-
 @Composable
 fun SDKMonitorTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = true,
+    themePalette: ThemePalette = ThemePalette.DYNAMIC,
     content: @Composable () -> Unit,
 ) {
     val colorScheme =
@@ -45,7 +37,7 @@ fun SDKMonitorTheme(
 
             else -> {
                 rememberDynamicMaterialThemeState(
-                    seedColor = primary,
+                    seedColor = Color((themePalette.seedArgb ?: ThemePalette.EMBER.seedArgb)!!),
                     style = PaletteStyle.TonalSpot,
                     isDark = darkTheme,
                     specVersion = ColorSpec.SpecVersion.SPEC_2025,

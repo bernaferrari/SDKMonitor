@@ -60,7 +60,8 @@ data class UserPreferences(
     val backgroundSync: Boolean = false,
     val orderBySdk: Boolean = false,
     val syncInterval: String = "30m",
-    val themeMode: ThemeMode = ThemeMode.MATERIAL_YOU,
+    val themeMode: ThemeMode = ThemeMode.SYSTEM,
+    val themePalette: ThemePalette = ThemePalette.DYNAMIC,
 )
 
 data class LogEntry(
@@ -87,9 +88,31 @@ enum class SortOption {
 
 enum class ThemeMode {
     SYSTEM,
-    MATERIAL_YOU,
     LIGHT,
     DARK,
+}
+
+enum class ThemePalette(
+    val token: String,
+    val seedArgb: Long?,
+) {
+    DYNAMIC("dynamic", null),
+    EMBER("ember", 0xFFF45D48),
+    CLAY("clay", 0xFF9B5541),
+    SOLAR("solar", 0xFFAD6500),
+    CITRINE("citrine", 0xFF7B7900),
+    GROVE("grove", 0xFF2A7D4F),
+    LAGOON("lagoon", 0xFF008577),
+    TIDE("tide", 0xFF007C91),
+    AZURE("azure", 0xFF3768B0),
+    ORCHID("orchid", 0xFF7656A7),
+    BERRY("berry", 0xFFA23D68),
+    ;
+
+    companion object {
+        fun fromToken(token: String?): ThemePalette? =
+            entries.firstOrNull { it.token == token?.lowercase() }
+    }
 }
 
 enum class LocalTimeUnit(
@@ -107,7 +130,8 @@ data class SdkDistribution(
 )
 
 data class SettingsPreferences(
-    val themeMode: ThemeMode = ThemeMode.MATERIAL_YOU,
+    val themeMode: ThemeMode = ThemeMode.SYSTEM,
+    val themePalette: ThemePalette = ThemePalette.DYNAMIC,
     val appFilter: AppFilter = AppFilter.ALL_APPS,
     val backgroundSync: Boolean = false,
     val orderBySdk: Boolean = false,

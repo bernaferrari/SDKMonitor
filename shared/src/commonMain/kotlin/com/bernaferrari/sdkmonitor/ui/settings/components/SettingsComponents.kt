@@ -1,6 +1,5 @@
 package com.bernaferrari.sdkmonitor.ui.settings.components
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -75,8 +74,7 @@ fun SettingsItem(
                     }
                 },
         shape = RoundedCornerShape(16.dp),
-        color = MaterialTheme.colorScheme.surface,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+        color = MaterialTheme.colorScheme.surfaceContainerLow,
     ) {
         Row(
             modifier =
@@ -89,10 +87,10 @@ fun SettingsItem(
             Surface(
                 modifier = Modifier.size(48.dp),
                 shape = RoundedCornerShape(12.dp),
-                color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.72f),
             ) {
                 Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxWidth()) {
-                    Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.onPrimaryContainer)
                 }
             }
 

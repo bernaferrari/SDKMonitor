@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.bernaferrari.sdkmonitor.domain.AppFilter
 import com.bernaferrari.sdkmonitor.domain.ThemeMode
+import com.bernaferrari.sdkmonitor.domain.ThemePalette
 import com.bernaferrari.sdkmonitor.domain.UserPreferences
 import com.bernaferrari.sdkmonitor.domain.repository.PreferencesRepository
 import kotlinx.coroutines.flow.Flow
@@ -19,6 +20,7 @@ class PreferencesRepositoryImpl(
     ) : PreferencesRepository {
         companion object {
             private val THEME_MODE_KEY = stringPreferencesKey("theme_mode")
+            private val THEME_PALETTE_KEY = stringPreferencesKey("theme_palette")
             private val APP_FILTER_KEY =
                 stringPreferencesKey("app_filter")
             private val BACKGROUND_SYNC_KEY = booleanPreferencesKey("background_sync")
@@ -30,9 +32,12 @@ class PreferencesRepositoryImpl(
             dataStore.data.map { preferences ->
                 UserPreferences(
                     themeMode =
-                        ThemeMode.valueOf(
-                            preferences[THEME_MODE_KEY] ?: ThemeMode.MATERIAL_YOU.name,
-                        ),
+                        preferences[THEME_MODE_KEY]
+                            ?.let { stored -> ThemeMode.entries.firstOrNull { it.name == stored } }
+                            ?: ThemeMode.SYSTEM,
+                    themePalette =
+                        ThemePalette.fromToken(preferences[THEME_PALETTE_KEY])
+                            ?: ThemePalette.DYNAMIC,
                     appFilter =
                         AppFilter.valueOf(
                             preferences[APP_FILTER_KEY] ?: AppFilter.USER_APPS.name,
@@ -70,6 +75,12 @@ class PreferencesRepositoryImpl(
         override suspend fun updateThemeMode(themeMode: ThemeMode) {
             dataStore.edit { preferences ->
                 preferences[THEME_MODE_KEY] = themeMode.name
+            }
+        }
+
+        override suspend fun updateThemePalette(themePalette: ThemePalette) {
+            dataStore.edit { preferences ->
+                preferences[THEME_PALETTE_KEY] = themePalette.token
             }
         }
     }

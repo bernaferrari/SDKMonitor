@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -40,7 +41,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
@@ -163,6 +163,7 @@ fun AboutContent(
                     title = {
                         Text(
                             text = s.about,
+                            style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
@@ -187,15 +188,15 @@ fun AboutContent(
             Column(
                 modifier =
                     Modifier
-                        .widthIn(max = 640.dp)
+                        .widthIn(max = 680.dp)
                         .fillMaxWidth()
                         .verticalScroll(rememberScrollState())
-                        .padding(horizontal = 20.dp, vertical = 12.dp),
-                verticalArrangement = Arrangement.spacedBy(20.dp),
+                        .padding(horizontal = 16.dp, vertical = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(24.dp),
             ) {
                 AboutHero(appName = appName, versionName = versionName)
-                AboutLinkGroup(links = projectLinks, onActivate = ::activate)
-                AboutLinkGroup(links = dataLinks, onActivate = ::activate)
+                AboutLinkGroup(title = "Project", links = projectLinks, onActivate = ::activate)
+                AboutLinkGroup(title = "Data & privacy", links = dataLinks, onActivate = ::activate)
                 AboutSocialRow(
                     title = s.getInTouch,
                     links = socialLinks,
@@ -260,37 +261,48 @@ private fun AboutHero(
     versionName: String,
 ) {
     val s = sdkStrings()
-    val shape = RoundedCornerShape(24.dp)
+    val shape = RoundedCornerShape(28.dp)
+    val heroContentColor = MaterialTheme.colorScheme.onPrimary
 
     Box(
         modifier =
             Modifier
                 .fillMaxWidth()
                 .clip(shape)
-                .background(
-                    Brush.horizontalGradient(
-                        listOf(
-                            MaterialTheme.colorScheme.primaryContainer,
-                            MaterialTheme.colorScheme.tertiaryContainer,
-                        ),
-                    ),
-                ).padding(20.dp),
+                .background(MaterialTheme.colorScheme.primary)
+                .padding(24.dp),
     ) {
+        Box(
+            modifier =
+                Modifier
+                    .align(Alignment.TopEnd)
+                    .size(160.dp)
+                    .clip(CircleShape)
+                    .background(heroContentColor.copy(alpha = 0.07f)),
+        )
+        Box(
+            modifier =
+                Modifier
+                    .align(Alignment.BottomEnd)
+                    .size(72.dp)
+                    .clip(CircleShape)
+                    .background(heroContentColor.copy(alpha = 0.08f)),
+        )
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(20.dp),
         ) {
             Surface(
                 modifier = Modifier.size(64.dp),
                 shape = RoundedCornerShape(19.dp),
-                color = MaterialTheme.colorScheme.primary,
+                color = heroContentColor.copy(alpha = 0.14f),
             ) {
                 Box(contentAlignment = Alignment.Center) {
                     Text(
                         text = "SDK",
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Black,
-                        color = MaterialTheme.colorScheme.onPrimary,
+                        color = heroContentColor,
                     )
                 }
             }
@@ -302,23 +314,24 @@ private fun AboutHero(
                     text = appName,
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
+                    color = heroContentColor,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
                 Text(
                     text = s.madeWithLove,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = heroContentColor.copy(alpha = 0.76f),
                 )
                 Surface(
                     shape = RoundedCornerShape(999.dp),
-                    color = MaterialTheme.colorScheme.surface.copy(alpha = 0.72f),
+                    color = heroContentColor.copy(alpha = 0.14f),
                 ) {
                     Text(
                         text = "${s.versionLabel} $versionName",
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = heroContentColor,
                         modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
                     )
                 }
@@ -329,17 +342,27 @@ private fun AboutHero(
 
 @Composable
 private fun AboutLinkGroup(
+    title: String,
     links: List<AboutLink>,
     onActivate: (AboutAction) -> Unit,
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        links.forEachIndexed { index, link ->
-            Surface(
-                modifier = Modifier.fillMaxWidth(),
-                shape = segmentedListItemShape(isFirst = index == 0, isLast = index == links.lastIndex),
-                color = MaterialTheme.colorScheme.surfaceContainerLow,
-            ) {
-                AboutLinkRow(link = link, onActivate = { onActivate(link.action) })
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleSmall,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.padding(horizontal = 12.dp),
+        )
+        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            links.forEachIndexed { index, link ->
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = segmentedListItemShape(isFirst = index == 0, isLast = index == links.lastIndex),
+                    color = MaterialTheme.colorScheme.surfaceContainerLow,
+                ) {
+                    AboutLinkRow(link = link, onActivate = { onActivate(link.action) })
+                }
             }
         }
     }
@@ -375,7 +398,7 @@ private fun AboutLinkRow(
         Surface(
             modifier = Modifier.size(44.dp),
             shape = RoundedCornerShape(13.dp),
-            color = MaterialTheme.colorScheme.surfaceContainerHighest,
+            color = MaterialTheme.colorScheme.primaryContainer,
         ) {
             Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
                 when {
@@ -383,13 +406,13 @@ private fun AboutLinkRow(
                         painter = painterResource(link.drawable),
                         contentDescription = null,
                         modifier = Modifier.size(22.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
                     link.vectorIcon != null -> Icon(
                         imageVector = link.vectorIcon,
                         contentDescription = null,
                         modifier = Modifier.size(22.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
                 }
             }
@@ -419,7 +442,7 @@ private fun AboutLinkRow(
                 },
             contentDescription = null,
             modifier = Modifier.size(20.dp),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            tint = MaterialTheme.colorScheme.primary,
         )
     }
 }

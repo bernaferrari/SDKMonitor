@@ -3,6 +3,7 @@ package com.bernaferrari.sdkmonitor.shared.demo
 import com.bernaferrari.sdkmonitor.domain.AppFilter
 import com.bernaferrari.sdkmonitor.domain.SortOption
 import com.bernaferrari.sdkmonitor.domain.ThemeMode
+import com.bernaferrari.sdkmonitor.domain.ThemePalette
 import com.bernaferrari.sdkmonitor.domain.UserPreferences
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,7 +15,14 @@ import kotlinx.coroutines.flow.update
  */
 class DemoSessionState {
     // The web demo has no Android dynamic-color source; follow the browser/system appearance by default.
-    private val _preferences = MutableStateFlow(UserPreferences(themeMode = ThemeMode.SYSTEM))
+    private val _preferences =
+        MutableStateFlow(
+            UserPreferences(
+                themeMode = ThemeMode.SYSTEM,
+                themePalette = ThemePalette.EMBER,
+                appFilter = AppFilter.ALL_APPS,
+            ),
+        )
     val preferences: StateFlow<UserPreferences> = _preferences.asStateFlow()
 
     private val _searchQuery = MutableStateFlow("")
@@ -37,5 +45,9 @@ class DemoSessionState {
 
     fun setThemeMode(mode: ThemeMode) {
         _preferences.update { it.copy(themeMode = mode) }
+    }
+
+    fun setThemePalette(palette: ThemePalette) {
+        _preferences.update { it.copy(themePalette = palette) }
     }
 }

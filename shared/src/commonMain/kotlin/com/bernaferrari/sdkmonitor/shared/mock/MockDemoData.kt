@@ -42,6 +42,7 @@ object MockDemoData {
             AppVersion("com.discord", "Discord", 34, "", "2.5.2", 252, 0xFF5865F2),
             AppVersion("com.bernaferrari.sdkmonitor", "SDK Monitor", 36, "", "2.0.3", 17, 0xFFFF8364),
             AppVersion("com.nu.production", "Nubank", 34, "", "8.143.0", 81430, 0xFF820AD1),
+            AppVersion("com.adobe.reader", "Adobe Acrobat", 35, "", "25.7.0", 2570, 0xFFEC1C24),
         )
 
     /** X is deliberately kept on the newest SDK represented by the rest of the mock device. */

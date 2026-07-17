@@ -13,12 +13,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Storage
-import androidx.compose.material.icons.filled.Tag
-import androidx.compose.material.icons.filled.Update
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -28,7 +24,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -54,7 +49,7 @@ fun AppDetailsCard(
         shape = RoundedCornerShape(24.dp),
         colors =
             CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
             ),
         elevation = CardDefaults.cardElevation(0.dp),
     ) {
@@ -75,10 +70,6 @@ fun AppDetailsCard(
                     onPlayStoreClick = onPlayStoreClick,
                 )
             }
-            HorizontalDivider(
-                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
-                thickness = 1.dp,
-            )
             AppInfoSection(appDetails = appDetails)
         }
     }
@@ -276,23 +267,20 @@ private fun ActionButtonsSection(
 @Composable
 private fun AppInfoSection(appDetails: AppDetails) {
     val s = sdkStrings()
-    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
         InfoRow(
             label = s.versionLabel,
             value = "${appDetails.versionName} (${appDetails.versionCode})",
-            icon = Icons.Default.Tag,
         )
         if (appDetails.lastUpdateTime.isNotBlank()) {
             InfoRow(
                 label = s.updatedLabel,
                 value = appDetails.lastUpdateTime,
-                icon = Icons.Default.Update,
             )
         }
         InfoRow(
             label = s.sizeLabel,
             value = formatFileSize(appDetails.size),
-            icon = Icons.Default.Storage,
         )
     }
 }
@@ -301,43 +289,26 @@ private fun AppInfoSection(appDetails: AppDetails) {
 private fun InfoRow(
     label: String,
     value: String,
-    icon: ImageVector,
     modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        Surface(
-            shape = RoundedCornerShape(8.dp),
-            color = MaterialTheme.colorScheme.surfaceContainerHighest,
-        ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = label,
-                modifier =
-                    Modifier
-                        .padding(8.dp)
-                        .size(16.dp),
-                tint = MaterialTheme.colorScheme.primary,
-            )
-        }
-
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = label,
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            Text(
-                text = value,
-                style =
-                    MaterialTheme.typography.bodyMedium.copy(
-                        fontWeight = FontWeight.Medium,
-                    ),
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-        }
+        Text(
+            text = label,
+            modifier = Modifier.weight(0.38f),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Text(
+            text = value,
+            modifier = Modifier.weight(0.62f),
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.onSurface,
+            textAlign = TextAlign.End,
+        )
     }
 }

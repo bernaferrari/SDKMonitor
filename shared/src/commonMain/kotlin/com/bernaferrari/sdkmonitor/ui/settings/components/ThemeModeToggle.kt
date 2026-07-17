@@ -1,107 +1,294 @@
+@file:OptIn(
+    androidx.compose.foundation.layout.ExperimentalLayoutApi::class,
+    androidx.compose.material3.ExperimentalMaterial3ExpressiveApi::class,
+)
+
 package com.bernaferrari.sdkmonitor.ui.settings.components
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.BorderStroke
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.BrightnessAuto
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.LightMode
+import androidx.compose.material.icons.filled.Palette
+import androidx.compose.material3.ButtonGroupDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
+import androidx.compose.material3.ToggleButton
+import androidx.compose.material3.ToggleButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.bernaferrari.sdkmonitor.domain.ThemeMode
-import com.bernaferrari.sdkmonitor.ui.theme.ui
+import com.bernaferrari.sdkmonitor.domain.ThemePalette
 
 @Composable
-fun ThemeModeToggle(
-    themeMode: ThemeMode,
-    isSelected: Boolean,
-    onClick: () -> Unit,
+fun ThemeAppearanceSelector(
+    selectedMode: ThemeMode,
+    selectedPalette: ThemePalette,
+    availablePalettes: List<ThemePalette>,
+    onModeSelected: (ThemeMode) -> Unit,
+    onPaletteSelected: (ThemePalette) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val ui = themeMode.ui()
-    val cornerRadius by animateDpAsState(
-        targetValue = if (isSelected) 32.dp else 16.dp,
-        animationSpec = tween(durationMillis = 300),
-        label = "cornerRadius",
-    )
-    val borderWidth by animateDpAsState(
-        targetValue = if (isSelected) 2.dp else 1.dp,
-        animationSpec = tween(durationMillis = 300),
-        label = "borderWidth",
-    )
-
     Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        OutlinedCard(
-            onClick = onClick,
-            modifier = Modifier.height(64.dp),
-            shape = RoundedCornerShape(cornerRadius),
-            colors =
-                CardDefaults.outlinedCardColors(
-                    containerColor =
-                        if (isSelected) {
-                            MaterialTheme.colorScheme.primaryContainer
-                        } else {
-                            MaterialTheme.colorScheme.surface
-                        },
-                ),
-            border =
-                BorderStroke(
-                    width = borderWidth,
-                    color =
-                        if (isSelected) {
-                            MaterialTheme.colorScheme.primary
-                        } else {
-                            MaterialTheme.colorScheme.outlineVariant
-                        },
-                ),
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
         ) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
-            ) {
-                Icon(
-                    imageVector = if (isSelected) ui.selectedIcon else ui.icon,
-                    contentDescription = ui.title,
-                    modifier = Modifier.size(24.dp),
-                    tint =
-                        if (isSelected) {
-                            MaterialTheme.colorScheme.onPrimaryContainer
-                        } else {
-                            MaterialTheme.colorScheme.onSurfaceVariant
+            ThemeMode.entries.forEachIndexed { index, mode ->
+                val (label, icon) = mode.labelAndIcon()
+                ToggleButton(
+                    checked = mode == selectedMode,
+                    onCheckedChange = { checked ->
+                        if (checked && mode != selectedMode) onModeSelected(mode)
+                    },
+                    modifier = Modifier.weight(1f),
+                    shapes =
+                        when (index) {
+                            0 -> ButtonGroupDefaults.connectedLeadingButtonShapes()
+                            ThemeMode.entries.lastIndex -> ButtonGroupDefaults.connectedTrailingButtonShapes()
+                            else -> ButtonGroupDefaults.connectedMiddleButtonShapes()
                         },
-                )
+                    colors =
+                        ToggleButtonDefaults.toggleButtonColors(
+                            checkedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                            checkedContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                            contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        ),
+                ) {
+                    Icon(icon, contentDescription = null, modifier = Modifier.size(ToggleButtonDefaults.IconSize))
+                    Spacer(modifier = Modifier.size(ToggleButtonDefaults.IconSpacing))
+                    Text(label, style = MaterialTheme.typography.labelLarge)
+                }
             }
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Text(
-            text = ui.title,
-            style = MaterialTheme.typography.labelMedium,
-            color =
-                if (isSelected) {
-                    MaterialTheme.colorScheme.onSurface
-                } else {
-                    MaterialTheme.colorScheme.onSurfaceVariant
-                },
-            textAlign = TextAlign.Center,
-            maxLines = 1,
-        )
+        FlowRow(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp, vertical = 4.dp),
+            horizontalArrangement = Arrangement.Start,
+            verticalArrangement = Arrangement.Top,
+        ) {
+            availablePalettes.forEach { palette ->
+                ThemeColorItem(
+                    palette = palette,
+                    isSelected = palette == selectedPalette,
+                    onClick = { onPaletteSelected(palette) },
+                )
+            }
+        }
     }
 }
+
+@Composable
+private fun ThemeColorItem(
+    palette: ThemePalette,
+    isSelected: Boolean,
+    onClick: () -> Unit,
+) {
+    val haptics = LocalHapticFeedback.current
+    val interactionSource = remember { MutableInteractionSource() }
+    val displayColor =
+        if (palette == ThemePalette.DYNAMIC) {
+            MaterialTheme.colorScheme.primary
+        } else {
+            Color(requireNotNull(palette.seedArgb))
+        }
+    val cornerRadius by
+        animateDpAsState(
+            targetValue = if (isSelected) 8.dp else 18.dp,
+            animationSpec =
+                spring(
+                    dampingRatio = Spring.DampingRatioMediumBouncy,
+                    stiffness = Spring.StiffnessMedium,
+                ),
+            label = "${palette.token}CornerRadius",
+        )
+    val elevation by
+        animateDpAsState(
+            targetValue = if (isSelected) 6.dp else 1.dp,
+            animationSpec =
+                spring(
+                    dampingRatio = Spring.DampingRatioMediumBouncy,
+                    stiffness = Spring.StiffnessMedium,
+                ),
+            label = "${palette.token}Elevation",
+        )
+    val borderProgress by
+        animateFloatAsState(
+            targetValue = if (isSelected) 1f else 0f,
+            animationSpec =
+                spring(
+                    dampingRatio = Spring.DampingRatioMediumBouncy,
+                    stiffness = Spring.StiffnessMedium,
+                ),
+            label = "${palette.token}BorderProgress",
+        )
+    val borderColor by
+        animateColorAsState(
+            targetValue =
+                if (isSelected) {
+                    MaterialTheme.colorScheme.surfaceContainerHighest
+                } else {
+                    Color.Transparent
+                },
+            animationSpec =
+                spring(
+                    dampingRatio = Spring.DampingRatioMediumBouncy,
+                    stiffness = Spring.StiffnessMedium,
+                ),
+            label = "${palette.token}BorderColor",
+        )
+    val rotation by
+        animateFloatAsState(
+            targetValue = if (isSelected) 0f else 45f,
+            animationSpec =
+                spring(
+                    dampingRatio = Spring.DampingRatioMediumBouncy,
+                    stiffness = Spring.StiffnessLow,
+                ),
+            label = "${palette.token}Rotation",
+        )
+    val checkProgress by
+        animateFloatAsState(
+            targetValue = if (isSelected) 1f else 0f,
+            animationSpec =
+                spring(
+                    dampingRatio = Spring.DampingRatioMediumBouncy,
+                    stiffness = Spring.StiffnessMedium,
+                ),
+            label = "${palette.token}CheckProgress",
+        )
+    val borderWidth = (2.dp * borderProgress).coerceAtLeast(0.dp)
+    val safeElevation = elevation.coerceAtLeast(0.dp)
+    val innerRadius = (cornerRadius - borderWidth - 2.dp).coerceAtLeast(0.dp)
+
+    Box(
+        modifier =
+            Modifier
+                .size(44.dp)
+                .clip(RoundedCornerShape(16.dp))
+                .clickable(
+                    interactionSource = interactionSource,
+                    indication = null,
+                    onClick = {
+                        if (!isSelected) {
+                            haptics.performHapticFeedback(HapticFeedbackType.LongPress)
+                            onClick()
+                        }
+                    },
+                ).semantics {
+                    role = Role.RadioButton
+                    selected = isSelected
+                    contentDescription = palette.displayName()
+                },
+        contentAlignment = Alignment.Center,
+    ) {
+        Box(
+            modifier =
+                Modifier
+                    .size(36.dp)
+                    .rotate(rotation)
+                    .shadow(elevation = safeElevation, shape = RoundedCornerShape(cornerRadius), clip = false)
+                    .clip(RoundedCornerShape(cornerRadius))
+                    .background(displayColor)
+                    .padding(borderWidth)
+                    .clip(RoundedCornerShape((cornerRadius - borderWidth).coerceAtLeast(0.dp)))
+                    .background(borderColor)
+                    .padding(2.dp)
+                    .clip(RoundedCornerShape(innerRadius))
+                    .background(displayColor),
+            contentAlignment = Alignment.Center,
+        ) {
+            if (palette == ThemePalette.DYNAMIC && !isSelected) {
+                Icon(
+                    imageVector = Icons.Default.Palette,
+                    contentDescription = null,
+                    modifier = Modifier.size(16.dp).rotate(-rotation),
+                    tint = MaterialTheme.colorScheme.onPrimary,
+                )
+            }
+            Icon(
+                imageVector = Icons.Default.Check,
+                contentDescription = null,
+                modifier =
+                    Modifier
+                        .size(18.dp)
+                        .rotate(-rotation)
+                        .graphicsLayer {
+                            val safeProgress = checkProgress.coerceAtLeast(0f)
+                            scaleX = safeProgress
+                            scaleY = safeProgress
+                            alpha = checkProgress.coerceIn(0f, 1f)
+                        },
+                tint =
+                    if (palette == ThemePalette.DYNAMIC) {
+                        MaterialTheme.colorScheme.onPrimary
+                    } else {
+                        Color.White
+                    },
+            )
+        }
+    }
+}
+
+private fun ThemeMode.labelAndIcon(): Pair<String, ImageVector> =
+    when (this) {
+        ThemeMode.SYSTEM -> "System" to Icons.Default.BrightnessAuto
+        ThemeMode.LIGHT -> "Light" to Icons.Default.LightMode
+        ThemeMode.DARK -> "Dark" to Icons.Default.DarkMode
+    }
+
+private fun ThemePalette.displayName(): String =
+    when (this) {
+        ThemePalette.DYNAMIC -> "Wallpaper"
+        ThemePalette.EMBER -> "Ember"
+        ThemePalette.CLAY -> "Clay"
+        ThemePalette.SOLAR -> "Solar"
+        ThemePalette.CITRINE -> "Citrine"
+        ThemePalette.GROVE -> "Grove"
+        ThemePalette.LAGOON -> "Lagoon"
+        ThemePalette.TIDE -> "Tide"
+        ThemePalette.AZURE -> "Azure"
+        ThemePalette.ORCHID -> "Orchid"
+        ThemePalette.BERRY -> "Berry"
+    }

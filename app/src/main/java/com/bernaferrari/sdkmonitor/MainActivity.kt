@@ -37,6 +37,7 @@ class MainActivity : ComponentActivity() {
             SDKMonitorTheme(
                 darkTheme = themeViewModel.shouldUseDarkTheme(),
                 dynamicColor = themeViewModel.shouldUseDynamicColor(),
+                themePalette = themeViewModel.currentThemePalette(),
             ) {
                 CompositionLocalProvider(
                     LocalSdkStrings provides sdkStrings,

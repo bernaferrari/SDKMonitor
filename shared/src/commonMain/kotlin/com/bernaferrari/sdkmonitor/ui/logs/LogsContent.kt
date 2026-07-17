@@ -46,6 +46,7 @@ import androidx.compose.ui.unit.dp
 import com.bernaferrari.sdkmonitor.domain.LogEntry
 import com.bernaferrari.sdkmonitor.domain.AppFilter
 import com.bernaferrari.sdkmonitor.ui.logs.components.LogsCard
+import com.bernaferrari.sdkmonitor.ui.components.expressiveListItemPosition
 import com.bernaferrari.sdkmonitor.ui.platform.sdkStrings
 import com.bernaferrari.sdkmonitor.ui.state.LogsUiState
 import kotlin.time.Clock
@@ -96,7 +97,12 @@ fun LogsContent(
                                 LogPeriodHeader(period, logs.size)
                             }
                             itemsIndexed(logs, key = { _, log -> "${period}_${log.id}" }) { index, log ->
-                                LogsCard(log = log, isSelected = log.packageName == selectedPackageName, isLast = index == logs.lastIndex, formattedTime = formatTime(log.timestamp), onClick = { onLogClick(log) })
+                                LogsCard(
+                                    log = log,
+                                    isSelected = log.packageName == selectedPackageName,
+                                    position = expressiveListItemPosition(index, logs.lastIndex),
+                                    onClick = { onLogClick(log) },
+                                )
                             }
                         }
                     }
@@ -108,21 +114,23 @@ fun LogsContent(
 
 @Composable
 private fun LogPeriodHeader(period: String, count: Int) {
-    Surface(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
-        shape = RoundedCornerShape(12.dp),
-        color = MaterialTheme.colorScheme.surfaceContainer,
+    Row(
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(
+                    start = 32.dp,
+                    end = 16.dp,
+                    top = 24.dp,
+                    bottom = 8.dp,
+                ),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        Row(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-        ) {
-            Icon(Icons.Default.History, contentDescription = null, modifier = Modifier.size(20.dp), tint = MaterialTheme.colorScheme.primary)
-            Text(period, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
-            Surface(shape = RoundedCornerShape(8.dp), color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)) {
-                Text(count.toString(), modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
-            }
+        Icon(Icons.Default.History, contentDescription = null, modifier = Modifier.size(18.dp), tint = MaterialTheme.colorScheme.primary)
+        Text(period, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+        Surface(shape = RoundedCornerShape(8.dp), color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)) {
+            Text(count.toString(), modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
         }
     }
 }

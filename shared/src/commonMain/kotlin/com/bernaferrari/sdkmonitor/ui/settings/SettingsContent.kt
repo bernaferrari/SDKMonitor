@@ -46,6 +46,7 @@ import androidx.compose.ui.unit.dp
 import com.bernaferrari.sdkmonitor.domain.AppFilter
 import com.bernaferrari.sdkmonitor.domain.LocalTimeUnit
 import com.bernaferrari.sdkmonitor.domain.ThemeMode
+import com.bernaferrari.sdkmonitor.domain.ThemePalette
 import com.bernaferrari.sdkmonitor.ui.platform.sdkStrings
 import com.bernaferrari.sdkmonitor.ui.settings.components.AnalyticsSection
 import com.bernaferrari.sdkmonitor.ui.settings.components.AppFilterSelector
@@ -57,7 +58,7 @@ import com.bernaferrari.sdkmonitor.ui.settings.components.SdkAnalyticsEmptyState
 import com.bernaferrari.sdkmonitor.ui.settings.components.SdkAnalyticsPlaceholder
 import com.bernaferrari.sdkmonitor.ui.settings.components.SettingsItem
 import com.bernaferrari.sdkmonitor.ui.settings.components.SettingsSection
-import com.bernaferrari.sdkmonitor.ui.settings.components.ThemeModeToggle
+import com.bernaferrari.sdkmonitor.ui.settings.components.ThemeAppearanceSelector
 import com.bernaferrari.sdkmonitor.ui.state.SettingsUiState
 
 /**
@@ -68,8 +69,9 @@ import com.bernaferrari.sdkmonitor.ui.state.SettingsUiState
 fun SettingsContent(
     uiState: SettingsUiState,
     appVersionLabel: String,
-    availableThemeModes: List<ThemeMode> = ThemeMode.entries,
+    availableThemePalettes: List<ThemePalette> = ThemePalette.entries,
     onThemeModeChange: (ThemeMode) -> Unit,
+    onThemePaletteChange: (ThemePalette) -> Unit,
     onAppFilterChange: (AppFilter) -> Unit,
     onBackgroundSyncToggle: () -> Unit,
     onSetSyncInterval: (interval: String, unit: LocalTimeUnit) -> Unit,
@@ -178,19 +180,15 @@ fun SettingsContent(
                             .verticalScroll(rememberScrollState()),
                 ) {
                     SettingsSection(title = s.appearance) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        ) {
-                            availableThemeModes.forEach { theme ->
-                                ThemeModeToggle(
-                                    themeMode = theme,
-                                    isSelected = prefs.themeMode == theme,
-                                    onClick = { onThemeModeChange(theme) },
-                                    modifier = Modifier.weight(1f),
-                                )
-                            }
-                        }
+                        ThemeAppearanceSelector(
+                            selectedMode = prefs.themeMode,
+                            selectedPalette =
+                                prefs.themePalette.takeIf { it in availableThemePalettes }
+                                    ?: ThemePalette.EMBER,
+                            availablePalettes = availableThemePalettes,
+                            onModeSelected = onThemeModeChange,
+                            onPaletteSelected = onThemePaletteChange,
+                        )
                     }
 
                     AnalyticsSection(

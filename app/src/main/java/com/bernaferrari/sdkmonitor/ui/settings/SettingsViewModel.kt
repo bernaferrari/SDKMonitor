@@ -10,6 +10,7 @@ import com.bernaferrari.sdkmonitor.domain.LocalTimeUnit
 import com.bernaferrari.sdkmonitor.domain.SdkDistribution
 import com.bernaferrari.sdkmonitor.domain.SettingsPreferences
 import com.bernaferrari.sdkmonitor.domain.ThemeMode
+import com.bernaferrari.sdkmonitor.domain.ThemePalette
 import com.bernaferrari.sdkmonitor.domain.repository.AppsRepository
 import com.bernaferrari.sdkmonitor.domain.repository.PreferencesRepository
 import com.bernaferrari.sdkmonitor.ui.state.SettingsUiState
@@ -58,6 +59,7 @@ class SettingsViewModel(
                             val preferences =
                                 SettingsPreferences(
                                     themeMode = userPreferences.themeMode,
+                                    themePalette = userPreferences.themePalette,
                                     appFilter = userPreferences.appFilter,
                                     backgroundSync = userPreferences.backgroundSync,
                                     syncInterval = interval,
@@ -161,6 +163,19 @@ class SettingsViewModel(
                         _uiState.value.copy(
 //                    hasError = true,
                             errorMessage = "Failed to update theme: ${e.message}",
+                        )
+                }
+            }
+        }
+
+        fun updateThemePalette(themePalette: ThemePalette) {
+            viewModelScope.launch {
+                try {
+                    preferencesRepository.updateThemePalette(themePalette)
+                } catch (e: Exception) {
+                    _uiState.value =
+                        _uiState.value.copy(
+                            errorMessage = "Failed to update theme color: ${e.message}",
                         )
                 }
             }

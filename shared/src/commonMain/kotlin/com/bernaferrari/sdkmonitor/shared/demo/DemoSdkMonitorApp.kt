@@ -46,7 +46,7 @@ import com.bernaferrari.sdkmonitor.domain.AppVersion
 import com.bernaferrari.sdkmonitor.domain.LogEntry
 import com.bernaferrari.sdkmonitor.domain.SettingsPreferences
 import com.bernaferrari.sdkmonitor.domain.SortOption
-import com.bernaferrari.sdkmonitor.domain.ThemeMode
+import com.bernaferrari.sdkmonitor.domain.ThemePalette
 import com.bernaferrari.sdkmonitor.domain.logic.AnalyticsLogic
 import com.bernaferrari.sdkmonitor.domain.logic.formatRelativeTimestamp
 import com.bernaferrari.sdkmonitor.ui.details.DetailsContent
@@ -92,6 +92,7 @@ fun DemoSdkMonitorApp(
 
     SdkMonitorTheme(
         themeMode = prefs.themeMode,
+        themePalette = prefs.themePalette,
         strings = rememberComposeSdkStrings(),
         appIconProvider = DemoAppIconProvider,
     ) {
@@ -171,14 +172,21 @@ fun DemoSdkMonitorApp(
                     SettingsContent(
                         uiState = SettingsUiState(
                             isLoading = false,
-                            preferences = SettingsPreferences(prefs.themeMode, prefs.appFilter, prefs.backgroundSync),
+                            preferences =
+                                SettingsPreferences(
+                                    themeMode = prefs.themeMode,
+                                    themePalette = prefs.themePalette,
+                                    appFilter = prefs.appFilter,
+                                    backgroundSync = prefs.backgroundSync,
+                                ),
                             sdkDistribution = distribution,
                             totalApps = filteredForSdk.size,
                             allAppsForSdk = filteredForSdk,
                         ),
                         appVersionLabel = "SDK Monitor",
-                        availableThemeModes = ThemeMode.entries.filterNot { it == ThemeMode.MATERIAL_YOU },
+                        availableThemePalettes = ThemePalette.entries.filterNot { it == ThemePalette.DYNAMIC },
                         onThemeModeChange = session::setThemeMode,
+                        onThemePaletteChange = session::setThemePalette,
                         onAppFilterChange = session::setAppFilter,
                         onBackgroundSyncToggle = {},
                         onSetSyncInterval = { _, _ -> },

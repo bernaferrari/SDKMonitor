@@ -8,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bernaferrari.sdkmonitor.domain.ThemeMode
+import com.bernaferrari.sdkmonitor.domain.ThemePalette
 import com.bernaferrari.sdkmonitor.domain.repository.PreferencesRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,8 +21,10 @@ import org.koin.core.annotation.KoinViewModel
 class ThemeViewModel(
         private val preferencesRepository: PreferencesRepository,
     ) : ViewModel() {
-        private val _themeMode = MutableStateFlow(ThemeMode.MATERIAL_YOU)
+        private val _themeMode = MutableStateFlow(ThemeMode.SYSTEM)
         val themeMode: StateFlow<ThemeMode> = _themeMode.asStateFlow()
+        private val _themePalette = MutableStateFlow(ThemePalette.DYNAMIC)
+        val themePalette: StateFlow<ThemePalette> = _themePalette.asStateFlow()
 
         init {
             observeThemePreferences()
@@ -34,6 +37,7 @@ class ThemeViewModel(
                     .catch { /* Handle error silently, use default */ }
                     .collect { preferences ->
                         _themeMode.value = preferences.themeMode
+                        _themePalette.value = preferences.themePalette
                     }
             }
         }
@@ -47,13 +51,18 @@ class ThemeViewModel(
                 ThemeMode.LIGHT -> false
                 ThemeMode.DARK -> true
                 ThemeMode.SYSTEM -> systemInDarkTheme
-                ThemeMode.MATERIAL_YOU -> systemInDarkTheme
             }
         }
 
         @Composable
+        fun currentThemePalette(): ThemePalette {
+            val currentPalette by themePalette.collectAsState()
+            return currentPalette
+        }
+
+        @Composable
         fun shouldUseDynamicColor(): Boolean {
-            val currentTheme by themeMode.collectAsState()
-            return currentTheme == ThemeMode.MATERIAL_YOU && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+            val currentPalette by themePalette.collectAsState()
+            return currentPalette == ThemePalette.DYNAMIC && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
         }
     }

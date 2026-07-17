@@ -23,6 +23,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bernaferrari.sdkmonitor.BuildConfig
 import com.bernaferrari.sdkmonitor.R
+import com.bernaferrari.sdkmonitor.domain.ThemePalette
 import org.koin.compose.viewmodel.koinViewModel
 
 /**
@@ -77,7 +78,14 @@ fun SettingsScreen(
     SettingsContent(
         uiState = uiState,
         appVersionLabel = appVersionLabel,
+        availableThemePalettes =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                ThemePalette.entries
+            } else {
+                ThemePalette.entries.filterNot { it == ThemePalette.DYNAMIC }
+            },
         onThemeModeChange = viewModel::updateThemeMode,
+        onThemePaletteChange = viewModel::updateThemePalette,
         onAppFilterChange = viewModel::updateAppFilter,
         onBackgroundSyncToggle = viewModel::toggleBackgroundSync,
         onSetSyncInterval = viewModel::setSyncInterval,

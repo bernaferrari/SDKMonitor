@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -53,11 +54,14 @@ import androidx.compose.ui.unit.dp
 import com.bernaferrari.sdkmonitor.domain.AppFilter
 import com.bernaferrari.sdkmonitor.domain.AppVersion
 import com.bernaferrari.sdkmonitor.domain.SortOption
+import com.bernaferrari.sdkmonitor.ui.components.expressiveListItemPosition
 import com.bernaferrari.sdkmonitor.ui.main.components.FastScroller
 import com.bernaferrari.sdkmonitor.ui.main.components.FloatingLetterIndicator
 import com.bernaferrari.sdkmonitor.ui.main.components.MainAppCard
 import com.bernaferrari.sdkmonitor.ui.platform.sdkStrings
 import com.bernaferrari.sdkmonitor.ui.state.MainUiState
+
+private const val FastScrollerSectionThreshold = 8
 
 @Composable
 fun MainContent(
@@ -239,35 +243,61 @@ fun MainContent(
                             emptyList()
                         }
                     }
-                    val showFastScroller = uiState.filteredApps.size > 15 && searchQuery.isBlank()
+                    val groups: List<Pair<String, List<AppVersion>>> =
+                        if (groupedByName.isNotEmpty()) groupedByName else groupedBySdk
+                    val showFastScroller = groups.size > FastScrollerSectionThreshold
                     Box(modifier = Modifier.fillMaxSize()) {
-                        LazyColumn(state = listState, modifier = Modifier.fillMaxSize()) {
-                            val groups: List<Pair<String, List<AppVersion>>> = if (groupedByName.isNotEmpty()) groupedByName else groupedBySdk
-                            if (groups.isNotEmpty()) {
-                                groups.forEach { (header, apps) ->
-                                    item(key = "header_$header") {
-                                        Surface(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), shape = RoundedCornerShape(12.dp), color = if (groupedBySdk.isNotEmpty()) MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f) else MaterialTheme.colorScheme.surfaceContainer) {
-                                            Text(header, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
+                        Row(modifier = Modifier.fillMaxSize()) {
+                            LazyColumn(
+                                state = listState,
+                                modifier = Modifier.weight(1f).fillMaxHeight(),
+                            ) {
+                                if (groups.isNotEmpty()) {
+                                    groups.forEach { (header, apps) ->
+                                        item(key = "header_$header") {
+                                            AppSectionHeader(
+                                                header = header,
+                                                isSdkSection = groupedBySdk.isNotEmpty(),
+                                            )
+                                        }
+                                        itemsIndexed(apps, key = { _, app -> "${header}_${app.packageName}" }) { index, app ->
+                                            MainAppCard(
+                                                appVersion = app,
+                                                searchQuery = searchQuery,
+                                                isSelected = app.packageName == selectedPackageName,
+                                                position = expressiveListItemPosition(index, apps.lastIndex),
+                                                endPadding = if (showFastScroller) 0.dp else 16.dp,
+                                                onClick = { onAppClick(app.packageName) },
+                                            )
                                         }
                                     }
-                                    itemsIndexed(apps, key = { _, app -> "${header}_${app.packageName}" }) { index, app ->
-                                        MainAppCard(appVersion = app, searchQuery = searchQuery, isSelected = app.packageName == selectedPackageName, isLast = index == apps.lastIndex, onClick = { onAppClick(app.packageName) })
+                                } else {
+                                    itemsIndexed(uiState.filteredApps, key = { _, app -> app.packageName }) { index, app ->
+                                        MainAppCard(
+                                            appVersion = app,
+                                            searchQuery = searchQuery,
+                                            isSelected = app.packageName == selectedPackageName,
+                                            position = expressiveListItemPosition(index, uiState.filteredApps.lastIndex),
+                                            endPadding = if (showFastScroller) 0.dp else 16.dp,
+                                            onClick = { onAppClick(app.packageName) },
+                                        )
                                     }
                                 }
-                            } else {
-                                itemsIndexed(uiState.filteredApps, key = { _, app -> app.packageName }) { index, app ->
-                                    MainAppCard(appVersion = app, searchQuery = searchQuery, isSelected = app.packageName == selectedPackageName, isLast = index == uiState.filteredApps.lastIndex, onClick = { onAppClick(app.packageName) })
-                                }
                             }
-                        }
 
-                        if (showFastScroller) {
-                            FastScroller(
-                                modifier = Modifier.align(Alignment.CenterEnd), apps = uiState.filteredApps, listState = listState, appFilter = appFilter, sortOption = sortOption, scrollOffsetDp = 80,
-                                onLetterSelected = { currentScrollLetter = it; isScrollerActive = true },
-                                onScrollFinished = { isScrollerActive = false; currentScrollLetter = "" },
-                                onInteractionStart = { isScrollerActive = true },
-                            )
+                            if (showFastScroller) {
+                                FastScroller(
+                                    modifier = Modifier.align(Alignment.CenterVertically),
+                                    apps = uiState.filteredApps,
+                                    listState = listState,
+                                    appFilter = appFilter,
+                                    sortOption = sortOption,
+                                    scrollOffsetDp = 80,
+                                    onLetterSelected = { currentScrollLetter = it; isScrollerActive = true },
+                                    onScrollFinished = { isScrollerActive = false; currentScrollLetter = "" },
+                                    onInteractionStart = { isScrollerActive = true },
+                                )
+                            }
                         }
 
                         if (isScrollerActive && currentScrollLetter.isNotEmpty()) {
@@ -282,6 +312,33 @@ fun MainContent(
             }
         }
     }
+}
+
+@Composable
+private fun AppSectionHeader(
+    header: String,
+    isSdkSection: Boolean,
+) {
+    Text(
+        text = header,
+        style =
+            if (isSdkSection) {
+                MaterialTheme.typography.titleMedium
+            } else {
+                MaterialTheme.typography.titleSmall
+            },
+        fontWeight = FontWeight.Bold,
+        color = MaterialTheme.colorScheme.primary,
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(
+                    start = 32.dp,
+                    end = 16.dp,
+                    top = if (isSdkSection) 24.dp else 16.dp,
+                    bottom = if (isSdkSection) 8.dp else 4.dp,
+                ),
+    )
 }
 
 @Composable

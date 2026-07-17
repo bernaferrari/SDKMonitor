@@ -2,6 +2,7 @@ package com.bernaferrari.sdkmonitor.domain.repository
 
 import com.bernaferrari.sdkmonitor.domain.AppFilter
 import com.bernaferrari.sdkmonitor.domain.ThemeMode
+import com.bernaferrari.sdkmonitor.domain.ThemePalette
 import com.bernaferrari.sdkmonitor.domain.UserPreferences
 import kotlinx.coroutines.flow.Flow
 
@@ -17,4 +18,6 @@ interface PreferencesRepository {
     suspend fun updateAppFilter(filter: AppFilter)
 
     suspend fun updateThemeMode(themeMode: ThemeMode)
+
+    suspend fun updateThemePalette(themePalette: ThemePalette)
 }
