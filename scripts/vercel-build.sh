@@ -4,7 +4,13 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
-if ! command -v java >/dev/null 2>&1; then
+java_major=0
+if command -v java >/dev/null 2>&1; then
+  java_major="$(java -version 2>&1 | head -n 1 | sed -E 's/.*version "([0-9]+).*/\1/')"
+  [[ "$java_major" =~ ^[0-9]+$ ]] || java_major=0
+fi
+
+if (( java_major < 17 )); then
   JDK_HOME="${VERCEL_CACHE_DIR:-$HOME/.cache}/temurin-21"
   if [[ ! -x "$JDK_HOME/bin/java" ]]; then
     mkdir -p "$JDK_HOME"
