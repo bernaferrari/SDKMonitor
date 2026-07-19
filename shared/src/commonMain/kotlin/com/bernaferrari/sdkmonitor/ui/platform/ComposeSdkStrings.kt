@@ -18,13 +18,19 @@ import com.bernaferrari.sdkmonitor.shared.resources.apps
 import com.bernaferrari.sdkmonitor.shared.resources.apps_count
 import com.bernaferrari.sdkmonitor.shared.resources.background_sync
 import com.bernaferrari.sdkmonitor.shared.resources.background_sync_description
+import com.bernaferrari.sdkmonitor.shared.resources.back
 import com.bernaferrari.sdkmonitor.shared.resources.cancel
 import com.bernaferrari.sdkmonitor.shared.resources.clear
 import com.bernaferrari.sdkmonitor.shared.resources.clear_logs
+import com.bernaferrari.sdkmonitor.shared.resources.close_sdk_details
+import com.bernaferrari.sdkmonitor.shared.resources.change_logs
+import com.bernaferrari.sdkmonitor.shared.resources.change_timeline
+import com.bernaferrari.sdkmonitor.shared.resources.contact_description
 import com.bernaferrari.sdkmonitor.shared.resources.contact
 import com.bernaferrari.sdkmonitor.shared.resources.custom
 import com.bernaferrari.sdkmonitor.shared.resources.daily
 import com.bernaferrari.sdkmonitor.shared.resources.days
+import com.bernaferrari.sdkmonitor.shared.resources.data_and_privacy
 import com.bernaferrari.sdkmonitor.shared.resources.enable_sync
 import com.bernaferrari.sdkmonitor.shared.resources.enabled_daily
 import com.bernaferrari.sdkmonitor.shared.resources.enabled_every
@@ -33,18 +39,22 @@ import com.bernaferrari.sdkmonitor.shared.resources.enabled_weekly
 import com.bernaferrari.sdkmonitor.shared.resources.error
 import com.bernaferrari.sdkmonitor.shared.resources.error_loading_settings
 import com.bernaferrari.sdkmonitor.shared.resources.export_data
+import com.bernaferrari.sdkmonitor.shared.resources.export_data_description
+import com.bernaferrari.sdkmonitor.shared.resources.every
 import com.bernaferrari.sdkmonitor.shared.resources.failed_to_load_apps
 import com.bernaferrari.sdkmonitor.shared.resources.failed_to_load_logs
 import com.bernaferrari.sdkmonitor.shared.resources.hours
+import com.bernaferrari.sdkmonitor.shared.resources.installed_apps
 import com.bernaferrari.sdkmonitor.shared.resources.interval
 import com.bernaferrari.sdkmonitor.shared.resources.just_now
 import com.bernaferrari.sdkmonitor.shared.resources.last_update
 import com.bernaferrari.sdkmonitor.shared.resources.latest
 import com.bernaferrari.sdkmonitor.shared.resources.learn_more_about_app
 import com.bernaferrari.sdkmonitor.shared.resources.loading
+import com.bernaferrari.sdkmonitor.shared.resources.loading_apps
+import com.bernaferrari.sdkmonitor.shared.resources.loading_change_history
 import com.bernaferrari.sdkmonitor.shared.resources.loading_settings
 import com.bernaferrari.sdkmonitor.shared.resources.logs
-import com.bernaferrari.sdkmonitor.shared.resources.made_with_love
 import com.bernaferrari.sdkmonitor.shared.resources.min_sdk
 import com.bernaferrari.sdkmonitor.shared.resources.minutes
 import com.bernaferrari.sdkmonitor.shared.resources.monthly
@@ -54,6 +64,8 @@ import com.bernaferrari.sdkmonitor.shared.resources.no_apps_found
 import com.bernaferrari.sdkmonitor.shared.resources.no_apps_subtitle
 import com.bernaferrari.sdkmonitor.shared.resources.no_logs_subtitle
 import com.bernaferrari.sdkmonitor.shared.resources.no_logs_yet
+import com.bernaferrari.sdkmonitor.shared.resources.no_installed_apps_target_sdk
+import com.bernaferrari.sdkmonitor.shared.resources.no_data_collection
 import com.bernaferrari.sdkmonitor.shared.resources.notification_permission_body
 import com.bernaferrari.sdkmonitor.shared.resources.notification_permission_title
 import com.bernaferrari.sdkmonitor.shared.resources.notification_warning_body
@@ -61,6 +73,10 @@ import com.bernaferrari.sdkmonitor.shared.resources.notification_warning_title
 import com.bernaferrari.sdkmonitor.shared.resources.notifications_required
 import com.bernaferrari.sdkmonitor.shared.resources.open_settings
 import com.bernaferrari.sdkmonitor.shared.resources.open_source
+import com.bernaferrari.sdkmonitor.shared.resources.oops_something_went_wrong
+import com.bernaferrari.sdkmonitor.shared.resources.past_month
+import com.bernaferrari.sdkmonitor.shared.resources.past_six_months
+import com.bernaferrari.sdkmonitor.shared.resources.past_week
 import com.bernaferrari.sdkmonitor.shared.resources.package_name
 import com.bernaferrari.sdkmonitor.shared.resources.permissions
 import com.bernaferrari.sdkmonitor.shared.resources.play_store
@@ -69,6 +85,7 @@ import com.bernaferrari.sdkmonitor.shared.resources.plural_hours
 import com.bernaferrari.sdkmonitor.shared.resources.plural_minutes
 import com.bernaferrari.sdkmonitor.shared.resources.privacy
 import com.bernaferrari.sdkmonitor.shared.resources.privacy_body
+import com.bernaferrari.sdkmonitor.shared.resources.project
 import com.bernaferrari.sdkmonitor.shared.resources.rate_app
 import com.bernaferrari.sdkmonitor.shared.resources.refresh
 import com.bernaferrari.sdkmonitor.shared.resources.retry
@@ -77,6 +94,9 @@ import com.bernaferrari.sdkmonitor.shared.resources.search
 import com.bernaferrari.sdkmonitor.shared.resources.search_apps
 import com.bernaferrari.sdkmonitor.shared.resources.settings
 import com.bernaferrari.sdkmonitor.shared.resources.settings_title
+import com.bernaferrari.sdkmonitor.shared.resources.setting_up_your_apps
+import com.bernaferrari.sdkmonitor.shared.resources.showing
+import com.bernaferrari.sdkmonitor.shared.resources.singular_app
 import com.bernaferrari.sdkmonitor.shared.resources.singular_day
 import com.bernaferrari.sdkmonitor.shared.resources.singular_hour
 import com.bernaferrari.sdkmonitor.shared.resources.singular_minute
@@ -84,6 +104,10 @@ import com.bernaferrari.sdkmonitor.shared.resources.size
 import com.bernaferrari.sdkmonitor.shared.resources.size_label
 import com.bernaferrari.sdkmonitor.shared.resources.sort_by_name
 import com.bernaferrari.sdkmonitor.shared.resources.sort_by_sdk
+import com.bernaferrari.sdkmonitor.shared.resources.sort_by
+import com.bernaferrari.sdkmonitor.shared.resources.something_went_wrong
+import com.bernaferrari.sdkmonitor.shared.resources.activity_overview
+import com.bernaferrari.sdkmonitor.shared.resources.analyzing_app_ecosystem
 import com.bernaferrari.sdkmonitor.shared.resources.sync_dialog_title
 import com.bernaferrari.sdkmonitor.shared.resources.sync_interval
 import com.bernaferrari.sdkmonitor.shared.resources.syncing
@@ -108,6 +132,8 @@ import com.bernaferrari.sdkmonitor.shared.resources.version
 import com.bernaferrari.sdkmonitor.shared.resources.version_history
 import com.bernaferrari.sdkmonitor.shared.resources.version_label
 import com.bernaferrari.sdkmonitor.shared.resources.weekly
+import com.bernaferrari.sdkmonitor.shared.resources.get_in_touch
+import com.bernaferrari.sdkmonitor.shared.resources.view_on_github
 import org.jetbrains.compose.resources.stringResource
 
 /**
@@ -135,10 +161,24 @@ fun rememberComposeSdkStrings(): SdkStrings =
         systemApps = stringResource(Res.string.system_apps),
         sortByName = stringResource(Res.string.sort_by_name),
         sortBySdk = stringResource(Res.string.sort_by_sdk),
+        sortBy = stringResource(Res.string.sort_by),
+        settingUpYourApps = stringResource(Res.string.setting_up_your_apps),
+        loadingApps = stringResource(Res.string.loading_apps),
+        somethingWentWrong = stringResource(Res.string.something_went_wrong),
         noAppsFound = stringResource(Res.string.no_apps_found),
         noAppsSubtitle = stringResource(Res.string.no_apps_subtitle),
         noLogsYet = stringResource(Res.string.no_logs_yet),
         noLogsSubtitle = stringResource(Res.string.no_logs_subtitle),
+        changeLogs = stringResource(Res.string.change_logs),
+        loadingChangeHistory = stringResource(Res.string.loading_change_history),
+        analyzingAppEcosystem = stringResource(Res.string.analyzing_app_ecosystem),
+        oopsSomethingWentWrong = stringResource(Res.string.oops_something_went_wrong),
+        changeTimeline = stringResource(Res.string.change_timeline),
+        showing = stringResource(Res.string.showing),
+        activityOverview = stringResource(Res.string.activity_overview),
+        pastWeek = stringResource(Res.string.past_week),
+        pastMonth = stringResource(Res.string.past_month),
+        pastSixMonths = stringResource(Res.string.past_six_months),
         targetSdk = stringResource(Res.string.target_sdk),
         minSdk = stringResource(Res.string.min_sdk),
         version = stringResource(Res.string.version),
@@ -170,6 +210,8 @@ fun rememberComposeSdkStrings(): SdkStrings =
         days = stringResource(Res.string.days),
         cancel = stringResource(Res.string.cancel),
         save = stringResource(Res.string.save),
+        every = stringResource(Res.string.every),
+        back = stringResource(Res.string.back),
         justNow = stringResource(Res.string.just_now),
         systemApp = stringResource(Res.string.system_app),
         userApp = stringResource(Res.string.user_app),
@@ -209,14 +251,24 @@ fun rememberComposeSdkStrings(): SdkStrings =
         pluralDays = stringResource(Res.string.plural_days),
         latest = stringResource(Res.string.latest),
         appsCount = stringResource(Res.string.apps_count),
+        singularApp = stringResource(Res.string.singular_app),
+        installedApps = stringResource(Res.string.installed_apps),
+        closeSdkDetails = stringResource(Res.string.close_sdk_details),
+        noInstalledAppsTargetSdk = stringResource(Res.string.no_installed_apps_target_sdk),
         noAnalyticsData = stringResource(Res.string.no_analytics_data),
         noAnalyticsSubtitle = stringResource(Res.string.no_analytics_subtitle),
         privacy = stringResource(Res.string.privacy),
         privacyBody = stringResource(Res.string.privacy_body),
         openSource = stringResource(Res.string.open_source),
+        project = stringResource(Res.string.project),
+        dataAndPrivacy = stringResource(Res.string.data_and_privacy),
+        getInTouch = stringResource(Res.string.get_in_touch),
+        viewOnGitHub = stringResource(Res.string.view_on_github),
+        contactDescription = stringResource(Res.string.contact_description),
+        noDataCollection = stringResource(Res.string.no_data_collection),
+        exportDataDescription = stringResource(Res.string.export_data_description),
         rateApp = stringResource(Res.string.rate_app),
         contact = stringResource(Res.string.contact),
-        madeWithLove = stringResource(Res.string.made_with_love),
         versionLabel = stringResource(Res.string.version_label),
         updatedLabel = stringResource(Res.string.updated_label),
         sizeLabel = stringResource(Res.string.size_label),

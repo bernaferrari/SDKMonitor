@@ -4,9 +4,28 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 DIST="$ROOT/webApp/build/dist/wasmJs/productionExecutable"
+SKIP_BUILD=false
+
+for arg in "$@"; do
+  case "$arg" in
+    --ci) ;;
+    --skip-build) SKIP_BUILD=true ;;
+    -h|--help)
+      echo "Usage: $0 [--ci] [--skip-build]"
+      exit 0
+      ;;
+    *)
+      echo "Unknown argument: $arg" >&2
+      exit 1
+      ;;
+  esac
+done
 
 cd "$ROOT"
-./gradlew :webApp:wasmJsBrowserDistribution --no-daemon
+if [[ "$SKIP_BUILD" == false ]]; then
+  ./gradlew :webApp:wasmJsBrowserDistribution \
+    --no-daemon --parallel --build-cache --configuration-cache
+fi
 cp "$ROOT/webApp/vercel.json" "$DIST/vercel.json"
 
 required_files=(index.html sdkmonitor-demo.js vercel.json sqlite-wasm-worker/worker.js)

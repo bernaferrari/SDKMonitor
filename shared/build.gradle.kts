@@ -39,7 +39,6 @@ kotlin {
                 implementation(libs.compose.adaptive.layout)
                 implementation(libs.compose.adaptive.navigation)
                 implementation(libs.compose.adaptive.navigation.suite)
-                implementation(compose.materialIconsExtended)
                 implementation(compose.ui)
                 implementation(compose.components.resources)
                 implementation(libs.kotlinx.coroutines.core)

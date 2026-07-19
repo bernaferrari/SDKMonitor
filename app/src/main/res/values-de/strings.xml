@@ -43,6 +43,16 @@
         <item quantity="other">vor %d Tagen</item>
     </plurals>
 
+    <plurals name="weeks_ago">
+        <item quantity="one">vor %d Woche</item>
+        <item quantity="other">vor %d Wochen</item>
+    </plurals>
+
+    <plurals name="months_ago">
+        <item quantity="one">vor %d Monat</item>
+        <item quantity="other">vor %d Monaten</item>
+    </plurals>
+
     <string name="sync_every" formatted="false">Alle %d %s synchronisieren</string>
     <string name="sync_disabled">Synchronisation deaktiviert</string>
 
@@ -85,6 +95,7 @@
 
     <!-- Main Screen -->
     <string name="apps_count">%d Apps</string>
+    <string name="singular_app">App</string>
     <string name="search_apps_hint">Apps durchsuchen…</string>
     <string name="clear_search">Suche löschen</string>
     <string name="filter_apps">Apps filtern</string>
@@ -183,6 +194,11 @@
     <string name="set_custom_interval">Eigene Zeit einstellen</string>
     <string name="every">Alle</string>
     <string name="unit">Einheit</string>
+    <string name="installed_apps">Installierte Apps</string>
+    <string name="close_sdk_details">SDK-Details schließen</string>
+    <string name="no_installed_apps_target_sdk">Keine installierten Apps verwenden derzeit dieses SDK.</string>
+    <string name="project">Projekt</string>
+    <string name="data_and_privacy">Daten &amp; Datenschutz</string>
     <string name="required">Erforderlich</string>
 
     <!-- Common UI Elements -->

@@ -5,6 +5,8 @@
 
 package com.bernaferrari.sdkmonitor.ui.settings.components
 
+import com.bernaferrari.sdkmonitor.ui.icons.MaterialSymbols
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
@@ -23,12 +25,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.BrightnessAuto
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.DarkMode
-import androidx.compose.material.icons.filled.LightMode
-import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material3.ButtonGroupDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -42,13 +38,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.luminance
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.semantics.Role
@@ -163,16 +157,6 @@ private fun ThemeColorItem(
                 ),
             label = "${palette.token}CornerRadius",
         )
-    val elevation by
-        animateDpAsState(
-            targetValue = if (isSelected) 6.dp else 1.dp,
-            animationSpec =
-                spring(
-                    dampingRatio = Spring.DampingRatioMediumBouncy,
-                    stiffness = Spring.StiffnessMedium,
-                ),
-            label = "${palette.token}Elevation",
-        )
     val borderProgress by
         animateFloatAsState(
             targetValue = if (isSelected) 1f else 0f,
@@ -219,7 +203,6 @@ private fun ThemeColorItem(
             label = "${palette.token}CheckProgress",
         )
     val borderWidth = (2.dp * borderProgress).coerceAtLeast(0.dp)
-    val safeElevation = elevation.coerceAtLeast(0.dp)
     val innerRadius = (cornerRadius - borderWidth - 2.dp).coerceAtLeast(0.dp)
 
     Box(
@@ -248,7 +231,6 @@ private fun ThemeColorItem(
                 Modifier
                     .size(36.dp)
                     .rotate(rotation)
-                    .shadow(elevation = safeElevation, shape = RoundedCornerShape(cornerRadius), clip = false)
                     .clip(RoundedCornerShape(cornerRadius))
                     .background(swatchBrush)
                     .padding(borderWidth)
@@ -261,14 +243,14 @@ private fun ThemeColorItem(
         ) {
             if (palette == ThemePalette.DYNAMIC && !isSelected) {
                 Icon(
-                    imageVector = Icons.Default.Palette,
+                    imageVector = MaterialSymbols.Filled.Palette,
                     contentDescription = null,
                     modifier = Modifier.size(16.dp).rotate(-rotation),
                     tint = MaterialTheme.colorScheme.onPrimary,
                 )
             }
             Icon(
-                imageVector = Icons.Default.Check,
+                imageVector = MaterialSymbols.Filled.Check,
                 contentDescription = null,
                 modifier =
                     Modifier
@@ -288,16 +270,15 @@ private fun ThemeColorItem(
 
 private fun ThemeMode.labelAndIcon(): Pair<String, ImageVector> =
     when (this) {
-        ThemeMode.SYSTEM -> "System" to Icons.Default.BrightnessAuto
-        ThemeMode.LIGHT -> "Light" to Icons.Default.LightMode
-        ThemeMode.DARK -> "Dark" to Icons.Default.DarkMode
+        ThemeMode.SYSTEM -> "System" to MaterialSymbols.Filled.BrightnessAuto
+        ThemeMode.LIGHT -> "Light" to MaterialSymbols.Filled.LightMode
+        ThemeMode.DARK -> "Dark" to MaterialSymbols.Filled.DarkMode
     }
 
 private fun ThemePalette.displayName(): String =
     when (this) {
         ThemePalette.DYNAMIC -> "Wallpaper"
         ThemePalette.EMBER -> "Ember"
-        ThemePalette.CLAY -> "Clay"
         ThemePalette.SOLAR -> "Solar"
         ThemePalette.CITRINE -> "Citrine"
         ThemePalette.GROVE -> "Grove"

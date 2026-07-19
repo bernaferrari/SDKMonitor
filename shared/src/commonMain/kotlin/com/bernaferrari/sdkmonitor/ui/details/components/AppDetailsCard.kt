@@ -1,5 +1,7 @@
 package com.bernaferrari.sdkmonitor.ui.details.components
 
+import com.bernaferrari.sdkmonitor.ui.icons.MaterialSymbols
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,9 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -222,7 +221,7 @@ private fun ActionButtonsSection(
                 shape = RoundedCornerShape(16.dp),
             ) {
                 Icon(
-                    imageVector = Icons.Default.Info,
+                    imageVector = MaterialSymbols.Filled.Info,
                     contentDescription = null,
                     modifier = Modifier.size(18.dp),
                 )
@@ -245,7 +244,7 @@ private fun ActionButtonsSection(
                 shape = RoundedCornerShape(16.dp),
             ) {
                 Icon(
-                    imageVector = Icons.Default.PlayArrow,
+                    imageVector = MaterialSymbols.Filled.PlayArrow,
                     contentDescription = null,
                     modifier = Modifier.size(18.dp),
                 )

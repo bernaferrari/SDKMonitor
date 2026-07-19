@@ -2,15 +2,12 @@
 
 package com.bernaferrari.sdkmonitor.ui
 
+import com.bernaferrari.sdkmonitor.ui.icons.MaterialSymbols
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Apps
-import androidx.compose.material.icons.filled.History
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -30,6 +27,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -360,12 +358,12 @@ fun isTablet(): Boolean {
 }
 
 private sealed class BottomNavItem(
-    val icon: androidx.compose.ui.graphics.vector.ImageVector,
+    val icon: ImageVector,
     val label: Int,
 ) {
-    data object Main : BottomNavItem(Icons.Default.Apps, R.string.main_title)
+    data object Main : BottomNavItem(MaterialSymbols.Filled.Apps, R.string.main_title)
 
-    data object Logs : BottomNavItem(Icons.Default.History, R.string.logs_title)
+    data object Logs : BottomNavItem(MaterialSymbols.Filled.History, R.string.logs_title)
 
-    data object Settings : BottomNavItem(Icons.Default.Settings, R.string.settings_title)
+    data object Settings : BottomNavItem(MaterialSymbols.Filled.Settings, R.string.settings_title)
 }

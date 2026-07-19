@@ -1,5 +1,11 @@
 package com.bernaferrari.sdkmonitor.ui.details
 
+import com.bernaferrari.sdkmonitor.ui.icons.MaterialSymbols
+
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.CubicBezierEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,9 +24,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.FilledTonalButton
@@ -30,6 +33,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -41,6 +47,8 @@ import com.bernaferrari.sdkmonitor.ui.details.components.AppDetailsCard
 import com.bernaferrari.sdkmonitor.ui.details.components.VersionCard
 import com.bernaferrari.sdkmonitor.ui.platform.sdkStrings
 import com.bernaferrari.sdkmonitor.ui.state.DetailsUiState
+
+private val DetailsBackButtonEasing = CubicBezierEasing(0.25f, 0.1f, 0.25f, 1f)
 
 @Composable
 fun DetailsContent(
@@ -73,7 +81,7 @@ fun DetailsContent(
                 verticalArrangement = Arrangement.Center,
             ) {
                 Icon(
-                    imageVector = Icons.Default.Warning,
+                    imageVector = MaterialSymbols.Filled.Warning,
                     contentDescription = null,
                     modifier = Modifier.size(48.dp),
                     tint = MaterialTheme.colorScheme.error,
@@ -86,6 +94,23 @@ fun DetailsContent(
         }
 
         is DetailsUiState.Success -> {
+            val scrollState = rememberScrollState()
+            val isScrolled by remember(scrollState) { derivedStateOf { scrollState.value > 0 } }
+            val backButtonContainerColor by
+                animateColorAsState(
+                    targetValue =
+                        if (isScrolled) {
+                            MaterialTheme.colorScheme.surfaceContainerHigh
+                        } else {
+                            MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0f)
+                        },
+                    animationSpec =
+                        tween(
+                            durationMillis = 150,
+                            easing = DetailsBackButtonEasing,
+                        ),
+                    label = "detailsBackButtonContainer",
+                )
             Box(
                 modifier =
                     contentModifier
@@ -98,6 +123,7 @@ fun DetailsContent(
                     onAppInfoClick = onAppInfoClick,
                     onPlayStoreClick = onPlayStoreClick,
                     showBackButton = onNavigateBack != null,
+                    scrollState = scrollState,
                     contentModifier = Modifier.fillMaxSize(),
                 )
                 onNavigateBack?.let { navigateBack ->
@@ -107,11 +133,11 @@ fun DetailsContent(
                         shape = CircleShape,
                         colors =
                             IconButtonDefaults.filledIconButtonColors(
-                                containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                                containerColor = backButtonContainerColor,
                                 contentColor = MaterialTheme.colorScheme.onSurface,
                             ),
                     ) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(MaterialSymbols.Filled.ArrowBack, contentDescription = s.back)
                     }
                 }
             }
@@ -126,6 +152,7 @@ private fun DetailsBody(
     onAppInfoClick: ((packageName: String) -> Unit)?,
     onPlayStoreClick: ((packageName: String) -> Unit)?,
     showBackButton: Boolean,
+    scrollState: ScrollState,
     contentModifier: Modifier = Modifier,
 ) {
     val s = sdkStrings()
@@ -139,7 +166,7 @@ private fun DetailsBody(
                 Modifier
                     .widthIn(max = 720.dp)
                     .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
+                    .verticalScroll(scrollState)
                     .padding(
                         start = 16.dp,
                         end = 16.dp,

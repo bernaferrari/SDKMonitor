@@ -36,7 +36,10 @@ fun formatRelativeTimestamp(timestamp: Long, now: Long): String {
         elapsed < MinuteMillis -> "Just now"
         elapsed < HourMillis -> "${elapsed / MinuteMillis} min ago"
         elapsed < DayMillis -> "${elapsed / HourMillis} hr ago"
-        elapsed < WeekMillis -> "${elapsed / DayMillis} days ago"
+        elapsed < WeekMillis -> {
+            val days = elapsed / DayMillis
+            if (days == 1L) "1 day ago" else "$days days ago"
+        }
         elapsed < MonthMillis -> {
             val weeks = elapsed / WeekMillis
             if (weeks == 1L) "1 week ago" else "$weeks weeks ago"

@@ -4,6 +4,9 @@
   "installCommand": "",
   "buildCommand": "./scripts/vercel-build.sh",
   "outputDirectory": "webApp/build/dist/wasmJs/productionExecutable",
+  "git": {
+    "deploymentEnabled": false
+  },
   "headers": [
     {
       "source": "/(.*)",

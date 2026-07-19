@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="background:#121212;color-scheme:dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark">
+    <meta name="theme-color" content="#121212">
     <base href="/">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="canonical" href="https://sdkmonitor.vercel.app/">
@@ -24,22 +26,50 @@
     <style>
         *, *::before, *::after { box-sizing: border-box; }
         html, body {
-            margin: 0;
             width: 100%;
             height: 100%;
+            margin: 0;
+            padding: 0;
             overflow: hidden;
-            background: #1a1a1a;
+            background: #121212;
         }
-        #root {
-            position: fixed;
-            inset: 0;
-            overflow: hidden;
+        #loading {
+            color: #e8e8e8;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1.25rem;
+            width: 100%;
+            height: 100%;
+            background: #121212;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(232, 232, 232, 0.15);
+            border-top-color: #90caf9;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .label {
+            margin: 0;
+            font-size: 0.95rem;
+            letter-spacing: 0.02em;
+            opacity: 0.9;
         }
         canvas { display: block; }
     </style>
 </head>
 <body>
-<div id="root"></div>
+<div id="loading" role="status" aria-live="polite" aria-busy="true">
+    <div class="spinner" aria-hidden="true"></div>
+    <p class="label">Loading SDK Monitor…</p>
+</div>
 <script src="sdkmonitor-demo.js"></script>
 </body>
 </html>

@@ -1,5 +1,7 @@
 package com.bernaferrari.sdkmonitor.ui.settings
 
+import com.bernaferrari.sdkmonitor.ui.icons.MaterialSymbols
+
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -18,10 +20,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Sync
-import androidx.compose.material.icons.filled.SyncDisabled
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -282,7 +280,7 @@ fun SettingsContent(
                                         s.tapToConfigureSync
                                     }
                                 },
-                            icon = if (prefs.backgroundSync) Icons.Default.Sync else Icons.Default.SyncDisabled,
+                            icon = if (prefs.backgroundSync) MaterialSymbols.Filled.Sync else MaterialSymbols.Filled.SyncDisabled,
                             onClick = { showSyncDialog = true },
                         )
                     }
@@ -293,7 +291,7 @@ fun SettingsContent(
                         SettingsItem(
                             title = appVersionLabel,
                             subtitle = s.learnMoreAboutApp,
-                            icon = Icons.Default.Info,
+                            icon = MaterialSymbols.Filled.Info,
                             onClick = onNavigateToAbout,
                         )
                     }

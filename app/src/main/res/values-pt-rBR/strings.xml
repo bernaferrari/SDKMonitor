@@ -43,6 +43,16 @@
         <item quantity="other">há %d dias</item>
     </plurals>
 
+    <plurals name="weeks_ago">
+        <item quantity="one">há %d semana</item>
+        <item quantity="other">há %d semanas</item>
+    </plurals>
+
+    <plurals name="months_ago">
+        <item quantity="one">há %d mês</item>
+        <item quantity="other">há %d meses</item>
+    </plurals>
+
     <string name="sync_every" formatted="false">Sincronizar a cada %d %s</string>
     <string name="sync_disabled">Sincronização desabilitada</string>
 
@@ -86,6 +96,7 @@
 
     <!-- Main Screen -->
     <string name="apps_count" formatted="false">%d apps</string>
+    <string name="singular_app">app</string>
     <string name="search_apps_hint">Pesquisar apps…</string>
     <string name="clear_search">Limpar pesquisa</string>
     <string name="filter_apps">Filtrar apps</string>
@@ -211,6 +222,11 @@
     <string name="set_custom_interval">Definir intervalo personalizado</string>
     <string name="every">A cada</string>
     <string name="unit">Unidade</string>
+    <string name="installed_apps">Apps instalados</string>
+    <string name="close_sdk_details">Fechar detalhes do SDK</string>
+    <string name="no_installed_apps_target_sdk">Nenhum app instalado usa atualmente este SDK.</string>
+    <string name="project">Projeto</string>
+    <string name="data_and_privacy">Dados e privacidade</string>
     <string name="required">Obrigatório</string>
     <string name="enable_sync">Ativar Sync</string>
     <string name="disable_sync">Desativar Sync</string>

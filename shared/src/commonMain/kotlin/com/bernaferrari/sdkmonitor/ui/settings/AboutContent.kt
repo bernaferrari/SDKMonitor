@@ -1,5 +1,7 @@
 package com.bernaferrari.sdkmonitor.ui.settings
 
+import com.bernaferrari.sdkmonitor.ui.icons.MaterialSymbols
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -13,15 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.automirrored.filled.OpenInNew
-import androidx.compose.material.icons.filled.Download
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -42,7 +36,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -53,6 +46,7 @@ import com.bernaferrari.sdkmonitor.shared.resources.reddit_logo
 import com.bernaferrari.sdkmonitor.shared.resources.x_logo
 import com.bernaferrari.sdkmonitor.ui.platform.sdkStrings
 import org.jetbrains.compose.resources.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
 import org.jetbrains.compose.resources.DrawableResource
 
 sealed class AboutAction {
@@ -71,7 +65,7 @@ private data class AboutLink(
     val title: String,
     val subtitle: String,
     val action: AboutAction,
-    val vectorIcon: ImageVector? = null,
+    val imageVector: ImageVector? = null,
     val drawable: DrawableResource? = null,
 )
 
@@ -108,7 +102,7 @@ fun AboutContent(
                 title = s.contact,
                 subtitle = s.contactDescription,
                 action = AboutAction.ContactEmail,
-                vectorIcon = Icons.Default.Email,
+                imageVector = MaterialSymbols.Filled.Email,
             ),
         )
     val socialLinks =
@@ -135,13 +129,13 @@ fun AboutContent(
                 title = s.privacy,
                 subtitle = s.noDataCollection,
                 action = AboutAction.ShowPrivacy,
-                vectorIcon = Icons.Default.Lock,
+                imageVector = MaterialSymbols.Filled.Lock,
             ),
             AboutLink(
                 title = s.exportData,
                 subtitle = s.exportDataDescription,
                 action = AboutAction.ExportData,
-                vectorIcon = Icons.Default.Download,
+                imageVector = MaterialSymbols.Filled.Download,
             ),
         )
 
@@ -172,7 +166,7 @@ fun AboutContent(
                     navigationIcon = {
                         if (onNavigateBack != null) {
                             IconButton(onClick = onNavigateBack) {
-                                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = s.cancel)
+                                Icon(MaterialSymbols.Filled.ArrowBack, contentDescription = s.cancel)
                             }
                         }
                     },
@@ -195,8 +189,8 @@ fun AboutContent(
                 verticalArrangement = Arrangement.spacedBy(24.dp),
             ) {
                 AboutHero(appName = appName, versionName = versionName)
-                AboutLinkGroup(title = "Project", links = projectLinks, onActivate = ::activate)
-                AboutLinkGroup(title = "Data & privacy", links = dataLinks, onActivate = ::activate)
+                AboutLinkGroup(title = s.project, links = projectLinks, onActivate = ::activate)
+                AboutLinkGroup(title = s.dataAndPrivacy, links = dataLinks, onActivate = ::activate)
                 AboutSocialRow(
                     title = s.getInTouch,
                     links = socialLinks,
@@ -209,7 +203,7 @@ fun AboutContent(
     if (showPrivacyDialog) {
         AlertDialog(
             onDismissRequest = { showPrivacyDialog = false },
-            icon = { Icon(Icons.Default.Lock, contentDescription = null) },
+            icon = { Icon(MaterialSymbols.Filled.Lock, contentDescription = null) },
             title = { Text(s.privacy) },
             text = { Text(s.privacyBody) },
             confirmButton = {
@@ -272,22 +266,6 @@ private fun AboutHero(
                 .background(MaterialTheme.colorScheme.primary)
                 .padding(24.dp),
     ) {
-        Box(
-            modifier =
-                Modifier
-                    .align(Alignment.TopEnd)
-                    .size(160.dp)
-                    .clip(CircleShape)
-                    .background(heroContentColor.copy(alpha = 0.07f)),
-        )
-        Box(
-            modifier =
-                Modifier
-                    .align(Alignment.BottomEnd)
-                    .size(72.dp)
-                    .clip(CircleShape)
-                    .background(heroContentColor.copy(alpha = 0.08f)),
-        )
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(20.dp),
@@ -317,11 +295,6 @@ private fun AboutHero(
                     color = heroContentColor,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                )
-                Text(
-                    text = s.madeWithLove,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = heroContentColor.copy(alpha = 0.76f),
                 )
                 Surface(
                     shape = RoundedCornerShape(999.dp),
@@ -354,7 +327,7 @@ private fun AboutLinkGroup(
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.padding(horizontal = 12.dp),
         )
-        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
             links.forEachIndexed { index, link ->
                 Surface(
                     modifier = Modifier.fillMaxWidth(),
@@ -408,8 +381,8 @@ private fun AboutLinkRow(
                         modifier = Modifier.size(22.dp),
                         tint = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
-                    link.vectorIcon != null -> Icon(
-                        imageVector = link.vectorIcon,
+                    link.imageVector != null -> Icon(
+                        imageVector = link.imageVector,
                         contentDescription = null,
                         modifier = Modifier.size(22.dp),
                         tint = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -434,11 +407,11 @@ private fun AboutLinkRow(
             )
         }
         Icon(
-            imageVector =
+             imageVector =
                 if (link.action is AboutAction.OpenUrl) {
-                    Icons.AutoMirrored.Filled.OpenInNew
+                    MaterialSymbols.Filled.OpenInNew
                 } else {
-                    Icons.AutoMirrored.Filled.KeyboardArrowRight
+                    MaterialSymbols.Filled.KeyboardArrowRight
                 },
             contentDescription = null,
             modifier = Modifier.size(20.dp),

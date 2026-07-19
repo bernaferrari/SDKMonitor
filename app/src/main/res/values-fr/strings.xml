@@ -47,6 +47,18 @@
         <item quantity="other">il y a %d jours</item>
     </plurals>
 
+    <plurals name="weeks_ago">
+        <item quantity="one">il y a %d semaine</item>
+        <item quantity="many">il y a %d semaines</item>
+        <item quantity="other">il y a %d semaines</item>
+    </plurals>
+
+    <plurals name="months_ago">
+        <item quantity="one">il y a %d mois</item>
+        <item quantity="many">il y a %d mois</item>
+        <item quantity="other">il y a %d mois</item>
+    </plurals>
+
     <string name="sync_every" formatted="false">Synchroniser toutes les %d %s</string>
     <string name="sync_disabled">Synchronisation désactivée</string>
 
@@ -90,6 +102,7 @@
 
     <!-- Main Screen -->
     <string name="apps_count">%d apps</string>
+    <string name="singular_app">application</string>
     <string name="search_apps_hint">Rechercher des apps…</string>
     <string name="clear_search">Effacer la recherche</string>
     <string name="filter_apps">Filtrer les apps</string>
@@ -182,6 +195,11 @@
     <string name="set_custom_interval">Définir un intervalle personnalisé</string>
     <string name="every">Toutes les</string>
     <string name="unit">Unité</string>
+    <string name="installed_apps">Applications installées</string>
+    <string name="close_sdk_details">Fermer les détails du SDK</string>
+    <string name="no_installed_apps_target_sdk">Aucune application installée n’utilise actuellement ce SDK.</string>
+    <string name="project">Projet</string>
+    <string name="data_and_privacy">Données et confidentialité</string>
     <string name="required">Requis</string>
     <string name="enable_sync">Activer la sync</string>
     <string name="disable_sync">Désactiver la sync</string>

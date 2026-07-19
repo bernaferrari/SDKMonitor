@@ -1,5 +1,9 @@
 package com.bernaferrari.sdkmonitor.ui.settings.components
 
+import androidx.compose.ui.graphics.vector.ImageVector
+
+import com.bernaferrari.sdkmonitor.ui.icons.MaterialSymbols
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -19,12 +23,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.TrendingUp
-import androidx.compose.material.icons.filled.Android
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.outlined.Apps
-import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -42,7 +40,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -88,9 +85,9 @@ fun SdkAnalyticsCard(
                 ) {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         Icon(
-                            imageVector = Icons.AutoMirrored.Filled.TrendingUp,
+                            imageVector = MaterialSymbols.Filled.TrendingUp,
                             contentDescription = null,
-                            modifier = Modifier.size(22.dp),
+                            modifier = Modifier.size(28.dp),
                             tint = MaterialTheme.colorScheme.primary,
                         )
                     }
@@ -136,6 +133,7 @@ fun SdkAnalyticsCard(
                 items(sdkDistribution, key = { it.sdkVersion }) { item ->
                     SdkLegendItem(
                         item = item,
+                        appLabel = s.singularApp,
                         appsLabel = s.appsCount,
                         onClick = { onSdkClick(item.sdkVersion) },
                     )
@@ -250,6 +248,7 @@ private fun SdkBarChart(
 @Composable
 private fun SdkLegendItem(
     item: SdkDistribution,
+    appLabel: String,
     appsLabel: String,
     onClick: () -> Unit,
 ) {
@@ -282,7 +281,7 @@ private fun SdkLegendItem(
                 maxLines = 1,
             )
             Text(
-                text = "${item.appCount} ${if (item.appCount == 1) "app" else appsLabel}",
+                text = "${item.appCount} ${if (item.appCount == 1) appLabel else appsLabel}",
                 style = MaterialTheme.typography.bodySmall,
                 fontWeight = FontWeight.SemiBold,
             )
@@ -328,7 +327,7 @@ fun AppFilterSelector(
                     maxLines = 1,
                 )
                 Icon(
-                    imageVector = Icons.Default.KeyboardArrowDown,
+                    imageVector = MaterialSymbols.Filled.KeyboardArrowDown,
                     contentDescription = null,
                     modifier = Modifier.size(18.dp),
                 )
@@ -386,9 +385,9 @@ fun AppFilterSelector(
 
 private fun AppFilter.icon(): ImageVector =
     when (this) {
-        AppFilter.ALL_APPS -> Icons.Outlined.Apps
-        AppFilter.USER_APPS -> Icons.Outlined.Person
-        AppFilter.SYSTEM_APPS -> Icons.Default.Android
+        AppFilter.ALL_APPS -> MaterialSymbols.Outlined.Apps
+        AppFilter.USER_APPS -> MaterialSymbols.Outlined.Person
+        AppFilter.SYSTEM_APPS -> MaterialSymbols.Filled.Android
     }
 
 private fun AppFilter.label(strings: SdkStrings): String =
@@ -425,7 +424,7 @@ fun SdkAnalyticsEmptyState(modifier: Modifier = Modifier) {
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             Icon(
-                Icons.AutoMirrored.Filled.TrendingUp,
+                MaterialSymbols.Filled.TrendingUp,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )

@@ -1,5 +1,10 @@
 package com.bernaferrari.sdkmonitor.ui.logs.components
 
+import androidx.compose.ui.graphics.vector.ImageVector
+
+import com.bernaferrari.sdkmonitor.ui.icons.MaterialSymbols
+import com.bernaferrari.sdkmonitor.ui.platform.sdkStrings
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,10 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.TrendingUp
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Sync
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilledTonalButton
@@ -24,7 +25,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -103,6 +103,7 @@ fun ErrorStateCard(
     onRetry: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val s = sdkStrings()
     Card(
         modifier =
             modifier
@@ -133,7 +134,7 @@ fun ErrorStateCard(
                     contentAlignment = Alignment.Center,
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Info,
+                        imageVector = MaterialSymbols.Filled.Info,
                         contentDescription = title,
                         modifier = Modifier.size(40.dp),
                         tint = MaterialTheme.colorScheme.error,
@@ -160,9 +161,9 @@ fun ErrorStateCard(
             }
 
             FilledTonalButton(onClick = onRetry) {
-                Icon(Icons.Default.Sync, contentDescription = null, modifier = Modifier.size(18.dp))
+                Icon(MaterialSymbols.Filled.Sync, contentDescription = null, modifier = Modifier.size(18.dp))
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Retry")
+                Text(s.retry)
             }
         }
     }
@@ -170,10 +171,11 @@ fun ErrorStateCard(
 
 @Composable
 fun EmptyLogsPlaceholder(modifier: Modifier = Modifier) {
+    val s = sdkStrings()
     EmptyStateCard(
-        title = "No change logs yet",
-        subtitle = "SDK changes will appear here when apps update",
-        icon = Icons.AutoMirrored.Outlined.TrendingUp,
+        title = s.noLogsYet,
+        subtitle = s.noLogsSubtitle,
+        icon = MaterialSymbols.Outlined.TrendingUp,
         modifier = modifier,
     )
 }

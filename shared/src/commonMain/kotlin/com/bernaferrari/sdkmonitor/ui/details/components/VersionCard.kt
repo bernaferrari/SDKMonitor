@@ -100,7 +100,7 @@ fun VersionTimelineEntry(
             modifier =
                 Modifier
                     .weight(1f)
-                    .padding(bottom = if (isLast) 0.dp else 4.dp),
+                    .padding(bottom = if (isLast) 0.dp else 2.dp),
         ) {
             Surface(
                 modifier = Modifier.fillMaxWidth().defaultMinSize(minHeight = 90.dp),

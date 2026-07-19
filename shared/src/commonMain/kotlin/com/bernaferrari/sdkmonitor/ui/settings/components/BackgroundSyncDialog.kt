@@ -1,5 +1,9 @@
 package com.bernaferrari.sdkmonitor.ui.settings.components
 
+import androidx.compose.ui.graphics.vector.ImageVector
+
+import com.bernaferrari.sdkmonitor.ui.icons.MaterialSymbols
+
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -18,15 +22,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CalendarMonth
-import androidx.compose.material.icons.filled.CalendarToday
-import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Tune
-import androidx.compose.material.icons.outlined.CalendarMonth
-import androidx.compose.material.icons.outlined.CalendarToday
-import androidx.compose.material.icons.outlined.DateRange
-import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -51,7 +46,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -67,10 +61,10 @@ enum class SyncPreset(
     val intervalValue: String,
     val localTimeUnit: LocalTimeUnit,
 ) {
-    DAILY({ it.daily }, Icons.Outlined.CalendarToday, Icons.Filled.CalendarToday, "1", LocalTimeUnit.DAYS),
-    WEEKLY({ it.weekly }, Icons.Outlined.DateRange, Icons.Filled.DateRange, "7", LocalTimeUnit.DAYS),
-    MONTHLY({ it.monthly }, Icons.Outlined.CalendarMonth, Icons.Filled.CalendarMonth, "30", LocalTimeUnit.DAYS),
-    CUSTOM({ it.custom }, Icons.Outlined.Tune, Icons.Filled.Tune, "", LocalTimeUnit.HOURS),
+    DAILY({ it.daily }, MaterialSymbols.Outlined.CalendarToday, MaterialSymbols.Filled.CalendarToday, "1", LocalTimeUnit.DAYS),
+    WEEKLY({ it.weekly }, MaterialSymbols.Outlined.DateRange, MaterialSymbols.Filled.DateRange, "7", LocalTimeUnit.DAYS),
+    MONTHLY({ it.monthly }, MaterialSymbols.Outlined.CalendarMonth, MaterialSymbols.Filled.CalendarMonth, "30", LocalTimeUnit.DAYS),
+    CUSTOM({ it.custom }, MaterialSymbols.Outlined.Tune, MaterialSymbols.Filled.Tune, "", LocalTimeUnit.HOURS),
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -240,7 +234,7 @@ fun BackgroundSyncDialog(
                                     modifier = Modifier.weight(0.45f),
                                     singleLine = true,
                                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                                    label = { Text("Every") },
+                                    label = { Text(s.every) },
                                     isError = customInterval.isBlank() || customInterval == "0",
                                 )
                                 ExposedDropdownMenuBox(

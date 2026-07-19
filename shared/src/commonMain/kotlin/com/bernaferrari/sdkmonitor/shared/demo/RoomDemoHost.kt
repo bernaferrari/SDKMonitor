@@ -17,7 +17,10 @@ import com.bernaferrari.sdkmonitor.data.repository.asRoomAppsRepository
 import com.bernaferrari.sdkmonitor.data.repository.resetDemoData
 import com.bernaferrari.sdkmonitor.data.source.local.AppDatabase
 import com.bernaferrari.sdkmonitor.domain.logic.formatRelativeTimestamp
+import com.bernaferrari.sdkmonitor.shared.resources.Res
+import com.bernaferrari.sdkmonitor.shared.resources.room_failed
 import kotlin.time.Clock
+import org.jetbrains.compose.resources.stringResource
 
 /**
  * Opens Room ([commonMain] [AppDatabase]), refreshes its disposable mock rows, runs UI on live data.
@@ -44,7 +47,7 @@ fun RoomDemoHost(
     when {
         error != null -> {
             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text("Room failed: $error")
+                Text(stringResource(Res.string.room_failed, error.orEmpty()))
             }
         }
         repository == null -> {

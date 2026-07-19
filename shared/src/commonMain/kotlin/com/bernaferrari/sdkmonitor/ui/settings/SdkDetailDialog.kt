@@ -1,7 +1,8 @@
 package com.bernaferrari.sdkmonitor.ui.settings
 
+import com.bernaferrari.sdkmonitor.ui.icons.MaterialSymbols
+
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,11 +16,6 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.outlined.Apps
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -35,6 +31,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.bernaferrari.sdkmonitor.domain.AppVersion
+import com.bernaferrari.sdkmonitor.ui.components.ExpressiveListCard
+import com.bernaferrari.sdkmonitor.ui.components.ExpressiveListItemPosition
+import com.bernaferrari.sdkmonitor.ui.components.expressiveListItemPosition
 import com.bernaferrari.sdkmonitor.ui.platform.PlatformAppIcon
 import com.bernaferrari.sdkmonitor.ui.platform.apiToComposeColor
 import com.bernaferrari.sdkmonitor.ui.platform.apiToVersionName
@@ -51,7 +50,6 @@ fun SdkDetailDialog(
     val s = sdkStrings()
     val apiColor = sdkVersion.apiToComposeColor()
     val sortedApps = remember(apps) { apps.sortedBy { it.title.lowercase() } }
-    val appCountLabel = if (apps.size == 1) "app" else s.appsCount
 
     Dialog(onDismissRequest = onDismiss) {
         Surface(
@@ -77,7 +75,7 @@ fun SdkDetailDialog(
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     Text(
-                        text = "Installed $appCountLabel",
+                        text = s.installedApps,
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                     )
@@ -105,14 +103,9 @@ fun SdkDetailDialog(
                         itemsIndexed(sortedApps, key = { _, app -> app.packageName }) { index, app ->
                             SdkAppRow(
                                 app = app,
+                                position = expressiveListItemPosition(index, sortedApps.lastIndex),
                                 onClick = { onAppClick(app.packageName) },
                             )
-                            if (index < sortedApps.lastIndex) {
-                                HorizontalDivider(
-                                    modifier = Modifier.padding(start = 80.dp, end = 20.dp),
-                                    color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.72f),
-                                )
-                            }
                         }
                     }
                 }
@@ -127,6 +120,7 @@ private fun SdkDialogHeader(
     apiColor: Color,
     onDismiss: () -> Unit,
 ) {
+    val s = sdkStrings()
     Surface(
         modifier = Modifier.fillMaxWidth(),
         color = apiColor.copy(alpha = 0.1f),
@@ -173,14 +167,14 @@ private fun SdkDialogHeader(
                     overflow = TextOverflow.Ellipsis,
                 )
                 Text(
-                    text = "Target SDK",
+                    text = s.targetSdk,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
 
             IconButton(onClick = onDismiss) {
-                Icon(Icons.Default.Close, contentDescription = "Close SDK details")
+                Icon(MaterialSymbols.Filled.Close, contentDescription = s.closeSdkDetails)
             }
         }
     }
@@ -189,35 +183,26 @@ private fun SdkDialogHeader(
 @Composable
 private fun SdkAppRow(
     app: AppVersion,
+    position: ExpressiveListItemPosition,
     onClick: () -> Unit,
 ) {
-    Row(
-        modifier = Modifier.fillMaxWidth().clickable(onClick = onClick).padding(horizontal = 20.dp, vertical = 14.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
+    ExpressiveListCard(
+        isSelected = false,
+        position = position,
+        onClick = onClick,
+        endPadding = 16.dp,
     ) {
-        PlatformAppIcon(packageName = app.packageName, size = 44.dp)
-        Column(
+        PlatformAppIcon(packageName = app.packageName, size = 40.dp)
+        Text(
+            text = app.title,
+            style = MaterialTheme.typography.bodyLarge,
+            fontWeight = FontWeight.SemiBold,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
             modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(2.dp),
-        ) {
-            Text(
-                text = app.title,
-                style = MaterialTheme.typography.bodyLarge,
-                fontWeight = FontWeight.SemiBold,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-            Text(
-                text = app.packageName,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-        }
+        )
         Icon(
-            imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+            imageVector = MaterialSymbols.Filled.KeyboardArrowRight,
             contentDescription = null,
             modifier = Modifier.size(20.dp),
             tint = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -227,6 +212,7 @@ private fun SdkAppRow(
 
 @Composable
 private fun EmptySdkApps(modifier: Modifier = Modifier) {
+    val s = sdkStrings()
     Column(
         modifier = modifier.fillMaxWidth().padding(32.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -239,20 +225,20 @@ private fun EmptySdkApps(modifier: Modifier = Modifier) {
         ) {
             Box(contentAlignment = Alignment.Center) {
                 Icon(
-                    imageVector = Icons.Outlined.Apps,
+                    imageVector = MaterialSymbols.Outlined.Apps,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
         }
         Text(
-            text = "No apps found",
+            text = s.noAppsFound,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.padding(top = 12.dp),
         )
         Text(
-            text = "No installed apps currently target this SDK.",
+            text = s.noInstalledAppsTargetSdk,
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(top = 4.dp),

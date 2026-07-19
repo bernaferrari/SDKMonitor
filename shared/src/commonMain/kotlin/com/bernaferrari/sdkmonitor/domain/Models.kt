@@ -98,7 +98,6 @@ enum class ThemePalette(
 ) {
     DYNAMIC("dynamic", null),
     EMBER("ember", 0xFFFF2D1F),
-    CLAY("clay", 0xFFF4512C),
     SOLAR("solar", 0xFFFF8A00),
     CITRINE("citrine", 0xFFC5C500),
     GROVE("grove", 0xFF00C96B),

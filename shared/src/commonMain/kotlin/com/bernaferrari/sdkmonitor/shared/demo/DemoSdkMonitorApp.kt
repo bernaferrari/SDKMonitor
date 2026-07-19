@@ -5,15 +5,12 @@
 
 package com.bernaferrari.sdkmonitor.shared.demo
 
+import com.bernaferrari.sdkmonitor.ui.icons.MaterialSymbols
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Apps
-import androidx.compose.material.icons.filled.History
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -35,6 +32,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.platform.LocalUriHandler
@@ -320,11 +318,11 @@ private fun demoLogDate(timestamp: Long): String =
 private enum class DemoDestination(
     val index: Int,
     val label: String,
-    val icon: androidx.compose.ui.graphics.vector.ImageVector,
+    val icon: ImageVector,
 ) {
-    Apps(0, "Apps", Icons.Default.Apps),
-    Logs(1, "Logs", Icons.Default.History),
-    Settings(2, "Settings", Icons.Default.Settings),
+    Apps(0, "Apps", MaterialSymbols.Filled.Apps),
+    Logs(1, "Logs", MaterialSymbols.Filled.History),
+    Settings(2, "Settings", MaterialSymbols.Filled.Settings),
 }
 
 private fun detailsFromRoom(allApps: List<AppVersion>, packageName: String): AppDetails? {

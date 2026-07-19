@@ -4,13 +4,21 @@ package com.bernaferrari.sdkmonitor.domain.logic
  * Pure helpers for Android API levels (shared with demos and App Functions).
  */
 object ApiLevel {
+    /** Newest API level represented by the app's status colors and demo data. */
+    const val LATEST_SUPPORTED = 37
+
+    fun latestMinus(versionsBehind: Int): Int {
+        require(versionsBehind >= 0) { "versionsBehind must not be negative" }
+        return (LATEST_SUPPORTED - versionsBehind).coerceAtLeast(1)
+    }
+
     /** ARGB without alpha channel bits; callers add alpha if needed. */
     fun colorArgb(api: Int): Long =
-        when (api) {
-            in 0..33 -> 0xFFD31B33
-            34 -> 0xFFE54B4B
-            35 -> 0xFFE37A46
-            36 -> 0xFF178E96
+        when {
+            api <= latestMinus(4) -> 0xFFD31B33
+            api == latestMinus(3) -> 0xFFE54B4B
+            api == latestMinus(2) -> 0xFFE37A46
+            api == latestMinus(1) -> 0xFF178E96
             else -> 0xFF14B572
         }
 

@@ -43,6 +43,16 @@
         <item quantity="other">%d days ago</item>
     </plurals>
 
+    <plurals name="weeks_ago">
+        <item quantity="one">%d week ago</item>
+        <item quantity="other">%d weeks ago</item>
+    </plurals>
+
+    <plurals name="months_ago">
+        <item quantity="one">%d month ago</item>
+        <item quantity="other">%d months ago</item>
+    </plurals>
+
     <string name="sync_every" formatted="false">Sync every %d %s</string>
     <string name="sync_disabled">Sync is disabled</string>
 
@@ -177,6 +187,12 @@
     <string name="set_your_own_interval">Set your own interval</string>
     <string name="set_custom_interval">Set custom interval</string>
     <string name="every">Every</string>
+    <string name="installed_apps">Installed apps</string>
+    <string name="singular_app">app</string>
+    <string name="close_sdk_details">Close SDK details</string>
+    <string name="no_installed_apps_target_sdk">No installed apps currently target this SDK.</string>
+    <string name="project">Project</string>
+    <string name="data_and_privacy">Data &amp; privacy</string>
     <string name="unit">Unit</string>
     <string name="required">Required</string>
     <string name="enable_sync">Enable Sync</string>

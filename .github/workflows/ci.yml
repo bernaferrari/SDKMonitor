@@ -2,11 +2,18 @@ name: CI
 
 on:
   push:
-    branches: [main]
   pull_request:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: sdkmonitor-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  build:
+  web:
+    name: KMP web
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -18,19 +25,15 @@ jobs:
           java-version: 21
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v5
+        uses: gradle/actions/setup-gradle@v6
 
       - name: Grant execute permission for scripts
         run: chmod +x gradlew scripts/*.sh
 
-      - name: Shared unit tests
-        run: ./gradlew :shared:desktopTest --stacktrace
+      - name: Run common tests and build web demo
+        run: >-
+          ./gradlew :shared:wasmJsBrowserTest :webApp:wasmJsBrowserDistribution
+          --no-daemon --parallel --build-cache --configuration-cache
 
-      - name: Compile shared (all targets)
-        run: ./gradlew :shared:compileKotlinWasmJs :shared:compileKotlinDesktop :shared:compileAndroidMain --stacktrace
-
-      - name: Compile Android app
-        run: ./gradlew :app:compileDebugKotlin --stacktrace
-
-      - name: Build and verify web demo
-        run: ./scripts/verify-web-deploy.sh --ci
+      - name: Verify web demo
+        run: ./scripts/verify-web-deploy.sh --ci --skip-build

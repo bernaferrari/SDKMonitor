@@ -47,6 +47,18 @@
         <item quantity="other">%d giorni fa</item>
     </plurals>
 
+    <plurals name="weeks_ago">
+        <item quantity="one">%d settimana fa</item>
+        <item quantity="many">%d settimane fa</item>
+        <item quantity="other">%d settimane fa</item>
+    </plurals>
+
+    <plurals name="months_ago">
+        <item quantity="one">%d mese fa</item>
+        <item quantity="many">%d mesi fa</item>
+        <item quantity="other">%d mesi fa</item>
+    </plurals>
+
     <string name="sync_every" formatted="false">Sincronizza ogni %d %s</string>
     <string name="sync_disabled">Sincronizzazione disabilitata</string>
 
@@ -90,6 +102,7 @@
 
     <!-- Main Screen -->
     <string name="apps_count" formatted="false">%d app</string>
+    <string name="singular_app">app</string>
     <string name="search_apps_hint">Cerca app…</string>
     <string name="clear_search">Cancella ricerca</string>
     <string name="filter_apps">Filtra app</string>
@@ -181,6 +194,11 @@
     <string name="set_custom_interval">Imposta intervallo personalizzato</string>
     <string name="every">Ogni</string>
     <string name="unit">Unità</string>
+    <string name="installed_apps">App installate</string>
+    <string name="close_sdk_details">Chiudi dettagli SDK</string>
+    <string name="no_installed_apps_target_sdk">Nessuna app installata utilizza attualmente questo SDK.</string>
+    <string name="project">Progetto</string>
+    <string name="data_and_privacy">Dati e privacy</string>
     <string name="required">Obbligatorio</string>
     <string name="enable_sync">Abilita Sync</string>
     <string name="disable_sync">Disabilita Sync</string>

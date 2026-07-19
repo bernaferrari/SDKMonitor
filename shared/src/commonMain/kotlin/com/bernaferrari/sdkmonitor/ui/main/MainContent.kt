@@ -1,8 +1,11 @@
 package com.bernaferrari.sdkmonitor.ui.main
 
+import com.bernaferrari.sdkmonitor.ui.icons.MaterialSymbols
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,15 +19,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Android
-import androidx.compose.material.icons.filled.Apps
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.SearchOff
-import androidx.compose.material.icons.filled.Error
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -141,11 +135,11 @@ fun MainContent(
                     onValueChange = onSearchQueryChange,
                     modifier = Modifier.weight(1f),
                     placeholder = { Text(s.searchApps, color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)) },
-                    leadingIcon = { Icon(Icons.Default.Search, contentDescription = s.search, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp)) },
+                    leadingIcon = { Icon(MaterialSymbols.Filled.Search, contentDescription = s.search, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp)) },
                     trailingIcon = {
                         if (searchQuery.isNotEmpty()) {
                             IconButton(onClick = { onSearchQueryChange("") }) {
-                                Icon(Icons.Default.Clear, contentDescription = s.clear)
+                                Icon(MaterialSymbols.Filled.Clear, contentDescription = s.clear)
                             }
                         }
                     },
@@ -170,9 +164,9 @@ fun MainContent(
                         Icon(
                             imageVector =
                                 when (appFilter) {
-                                    AppFilter.ALL_APPS -> Icons.Default.Apps
-                                    AppFilter.USER_APPS -> Icons.Default.Person
-                                    AppFilter.SYSTEM_APPS -> Icons.Default.Android
+                                    AppFilter.ALL_APPS -> MaterialSymbols.Filled.Apps
+                                    AppFilter.USER_APPS -> MaterialSymbols.Filled.Person
+                                    AppFilter.SYSTEM_APPS -> MaterialSymbols.Filled.Android
                                 },
                             contentDescription = s.appFilter,
                         )
@@ -199,7 +193,7 @@ fun MainContent(
                         Icon(sortOption.icon(), contentDescription = null)
                     }
                     DropdownMenu(expanded = showSortMenu, onDismissRequest = { showSortMenu = false }, shape = RoundedCornerShape(12.dp), containerColor = MaterialTheme.colorScheme.surface) {
-                        Text("Sort by", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
+                        Text(s.sortBy, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
                         SortOption.entries.forEach { option ->
                             val label = if (option == SortOption.NAME) s.sortByName else s.sortBySdk
                             DropdownMenuItem(
@@ -215,8 +209,8 @@ fun MainContent(
         }
 
         when (uiState) {
-            is MainUiState.Loading -> LoadingBody(isFirstSync, syncProgress)
-            is MainUiState.Error -> ErrorBody(message = uiState.message, retryLabel = s.retry, onRetry = onRetry)
+            is MainUiState.Loading -> LoadingBody(isFirstSync, syncProgress, s)
+            is MainUiState.Error -> ErrorBody(message = uiState.message, retryLabel = s.retry, errorLabel = s.error, title = s.somethingWentWrong, onRetry = onRetry)
             is MainUiState.Success -> {
                 if (uiState.filteredApps.isEmpty()) {
                     EmptyBody(title = s.noAppsFound, subtitle = s.noAppsSubtitle)
@@ -251,6 +245,7 @@ fun MainContent(
                             LazyColumn(
                                 state = listState,
                                 modifier = Modifier.weight(1f).fillMaxHeight(),
+                                contentPadding = PaddingValues(bottom = 16.dp),
                             ) {
                                 if (groups.isNotEmpty()) {
                                     groups.forEach { (header, apps) ->
@@ -305,6 +300,7 @@ fun MainContent(
                                 letter = currentScrollLetter,
                                 yPosition = 0f,
                                 modifier = Modifier.align(Alignment.Center),
+                                horizontalOffset = 0.dp,
                             )
                         }
                     }
@@ -342,7 +338,7 @@ private fun AppSectionHeader(
 }
 
 @Composable
-private fun LoadingBody(isFirstSync: Boolean, syncProgress: Float) {
+private fun LoadingBody(isFirstSync: Boolean, syncProgress: Float, strings: com.bernaferrari.sdkmonitor.ui.platform.SdkStrings) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
@@ -350,11 +346,11 @@ private fun LoadingBody(isFirstSync: Boolean, syncProgress: Float) {
         Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(16.dp)) {
             CircularProgressIndicator(modifier = Modifier.size(48.dp), color = MaterialTheme.colorScheme.primary)
             if (isFirstSync && syncProgress in 0f..1f) {
-                Text("Setting up your apps", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-                Text("Syncing apps", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(strings.settingUpYourApps, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                Text(strings.syncing, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 LinearProgressIndicator(progress = { syncProgress }, modifier = Modifier.fillMaxWidth(0.7f).height(8.dp), color = MaterialTheme.colorScheme.primary, trackColor = MaterialTheme.colorScheme.surfaceVariant)
             } else {
-                Text("Loading apps", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(strings.loadingApps, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
     }
@@ -364,15 +360,17 @@ private fun LoadingBody(isFirstSync: Boolean, syncProgress: Float) {
 private fun ErrorBody(
     message: String,
     retryLabel: String,
+    errorLabel: String,
+    title: String,
     onRetry: () -> Unit,
 ) {
     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Card(modifier = Modifier.padding(24.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer), shape = RoundedCornerShape(16.dp)) {
             Column(Modifier.padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Icon(Icons.Default.Error, "Error", Modifier.size(40.dp), MaterialTheme.colorScheme.onErrorContainer)
-                Text("Something went wrong", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onErrorContainer)
+                Icon(MaterialSymbols.Filled.Error, errorLabel, Modifier.size(40.dp), MaterialTheme.colorScheme.onErrorContainer)
+                Text(title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onErrorContainer)
                 Text(message, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onErrorContainer.copy(alpha = 0.8f), textAlign = TextAlign.Center)
-                FilledTonalButton(onClick = onRetry) { Icon(Icons.Default.Refresh, retryLabel, Modifier.size(16.dp)); Spacer(Modifier.width(8.dp)); Text(retryLabel) }
+                FilledTonalButton(onClick = onRetry) { Icon(MaterialSymbols.Filled.Refresh, retryLabel, Modifier.size(16.dp)); Spacer(Modifier.width(8.dp)); Text(retryLabel) }
             }
         }
     }
@@ -392,7 +390,7 @@ private fun EmptyBody(
         verticalArrangement = Arrangement.Center,
     ) {
         Icon(
-            imageVector = Icons.Default.SearchOff,
+            imageVector = MaterialSymbols.Filled.SearchOff,
             contentDescription = null,
             modifier = Modifier.size(48.dp),
             tint = MaterialTheme.colorScheme.onSurfaceVariant,

@@ -39,6 +39,14 @@
         <item quantity="other">%d日前</item>
     </plurals>
 
+    <plurals name="weeks_ago">
+        <item quantity="other">%d週間前</item>
+    </plurals>
+
+    <plurals name="months_ago">
+        <item quantity="other">%dか月前</item>
+    </plurals>
+
     <string name="sync_every" formatted="false">%d %s毎に同期</string>
     <string name="sync_disabled">同期が無効です</string>
 
@@ -82,6 +90,7 @@
 
     <!-- Main Screen -->
     <string name="apps_count">%d個のアプリ</string>
+    <string name="singular_app">アプリ</string>
     <string name="search_apps_hint">アプリを検索…</string>
     <string name="clear_search">検索をクリア</string>
     <string name="filter_apps">アプリをフィルター</string>
@@ -216,6 +225,11 @@
     <string name="set_custom_interval">カスタム間隔を設定</string>
     <string name="every">毎</string>
     <string name="unit">単位</string>
+    <string name="installed_apps">インストール済みアプリ</string>
+    <string name="close_sdk_details">SDKの詳細を閉じる</string>
+    <string name="no_installed_apps_target_sdk">現在このSDKを対象とするインストール済みアプリはありません。</string>
+    <string name="project">プロジェクト</string>
+    <string name="data_and_privacy">データとプライバシー</string>
     <string name="required">必須</string>
     <string name="select_app_to_get_started">開始するアプリを選択</string>
 

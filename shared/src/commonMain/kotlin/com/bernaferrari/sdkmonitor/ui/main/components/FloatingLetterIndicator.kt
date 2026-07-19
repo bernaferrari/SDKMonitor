@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineHeightStyle
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 
@@ -25,6 +26,7 @@ fun FloatingLetterIndicator(
     letter: String,
     yPosition: Float,
     modifier: Modifier = Modifier,
+    horizontalOffset: Dp = (-60).dp,
 ) {
     val density = LocalDensity.current
     val indicatorSize = 80.dp
@@ -36,7 +38,7 @@ fun FloatingLetterIndicator(
                 .aspectRatio(1f)
                 .offset {
                     IntOffset(
-                        x = with(density) { (-60).dp.roundToPx() }, // Position to the left of the scroller
+                        x = with(density) { horizontalOffset.roundToPx() },
                         y = (yPosition - with(density) { (indicatorSize / 2).toPx() }).toInt(), // Center vertically on touch point
                     )
                 },
