@@ -50,7 +50,6 @@ import com.bernaferrari.sdkmonitor.domain.AppVersion
 import com.bernaferrari.sdkmonitor.domain.SortOption
 import com.bernaferrari.sdkmonitor.ui.components.expressiveListItemPosition
 import com.bernaferrari.sdkmonitor.ui.main.components.FastScroller
-import com.bernaferrari.sdkmonitor.ui.main.components.FloatingLetterIndicator
 import com.bernaferrari.sdkmonitor.ui.main.components.MainAppCard
 import com.bernaferrari.sdkmonitor.ui.platform.sdkStrings
 import com.bernaferrari.sdkmonitor.ui.state.MainUiState
@@ -77,8 +76,6 @@ fun MainContent(
     val s = sdkStrings()
     var showSortMenu by remember { mutableStateOf(false) }
     var showFilterMenu by remember { mutableStateOf(false) }
-    var isScrollerActive by remember { mutableStateOf(false) }
-    var currentScrollLetter by remember { mutableStateOf("") }
     val listState = rememberLazyListState()
 
     Column(modifier = contentModifier.fillMaxSize()) {
@@ -288,20 +285,8 @@ fun MainContent(
                                     appFilter = appFilter,
                                     sortOption = sortOption,
                                     scrollOffsetDp = 80,
-                                    onLetterSelected = { currentScrollLetter = it; isScrollerActive = true },
-                                    onScrollFinished = { isScrollerActive = false; currentScrollLetter = "" },
-                                    onInteractionStart = { isScrollerActive = true },
                                 )
                             }
-                        }
-
-                        if (isScrollerActive && currentScrollLetter.isNotEmpty()) {
-                            FloatingLetterIndicator(
-                                letter = currentScrollLetter,
-                                yPosition = 0f,
-                                modifier = Modifier.align(Alignment.Center),
-                                horizontalOffset = 0.dp,
-                            )
                         }
                     }
                 }

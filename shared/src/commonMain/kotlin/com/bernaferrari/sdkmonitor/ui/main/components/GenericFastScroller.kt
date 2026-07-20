@@ -51,9 +51,6 @@ import kotlin.math.abs
  * @param letterToIndexMap Map of letters to their corresponding indices in the LazyColumn
  * @param scrollOffsetPx Additional offset in pixels to apply when scrolling (useful to show context above target)
  * @param modifier Modifier for the component
- * @param onLetterSelected Callback when a letter is selected
- * @param onScrollFinished Callback when scrolling interaction finishes
- * @param onInteractionStart Callback when interaction starts
  */
 @Composable
 fun <T> GenericFastScroller(
@@ -63,9 +60,6 @@ fun <T> GenericFastScroller(
     getIndexKey: (T) -> String,
     letterToIndexMap: Map<String, Int>,
     scrollOffsetPx: Int = 0,
-    onLetterSelected: (String) -> Unit = {},
-    onScrollFinished: () -> Unit = {},
-    onInteractionStart: () -> Unit = {},
 ) {
     val coroutineScope = rememberCoroutineScope()
     val density = LocalDensity.current
@@ -114,7 +108,6 @@ fun <T> GenericFastScroller(
     var isInteracting by remember { mutableStateOf(false) }
     var currentDragPosition by remember { mutableFloatStateOf(0f) }
     var scrollerSize by remember { mutableStateOf(IntSize.Zero) }
-    var currentSelectedLetter by remember { mutableStateOf("") }
     var previousSelectedLetter by remember { mutableStateOf("") }
 
     // Auto-reset when items change
@@ -162,9 +155,6 @@ fun <T> GenericFastScroller(
             previousSelectedLetter = selectedLetter
         }
 
-        currentSelectedLetter = selectedLetter
-
-        onLetterSelected(selectedLetter)
         scrollToLetter(selectedLetter)
     }
 
@@ -198,7 +188,6 @@ fun <T> GenericFastScroller(
                         awaitPointerEventScope {
                             while (true) {
                                 val down = awaitFirstDown()
-                                onInteractionStart()
                                 isInteracting = true
 
                                 // Haptic feedback on initial touch
@@ -222,7 +211,6 @@ fun <T> GenericFastScroller(
                                 }
                                 isInteracting = false
                                 previousSelectedLetter = "" // Reset for next interaction
-                                onScrollFinished()
                             }
                         }
                     },
@@ -307,13 +295,6 @@ fun <T> GenericFastScroller(
             }
         }
 
-        // Floating letter indicator using the new component
-        if (isInteracting && currentSelectedLetter.isNotEmpty()) {
-            FloatingLetterIndicator(
-                letter = currentSelectedLetter,
-                yPosition = currentDragPosition,
-            )
-        }
     }
 }
 

@@ -18,9 +18,6 @@ fun FastScroller(
     appFilter: AppFilter,
     sortOption: SortOption, // Add sortOption parameter
     scrollOffsetDp: Int = 60, // Default 60dp offset as requested
-    onLetterSelected: (String) -> Unit,
-    onScrollFinished: () -> Unit,
-    onInteractionStart: () -> Unit = {},
 ) {
     val density = LocalDensity.current
     val scrollOffsetPx =
@@ -97,8 +94,5 @@ fun FastScroller(
         letterToIndexMap = letterToIndexMap,
         scrollOffsetPx = scrollOffsetPx,
         modifier = modifier,
-        onLetterSelected = onLetterSelected,
-        onScrollFinished = onScrollFinished,
-        onInteractionStart = onInteractionStart,
     )
 }
