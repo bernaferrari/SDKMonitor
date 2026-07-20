@@ -76,6 +76,7 @@ fun SettingsContent(
     onClearError: () -> Unit,
     onNavigateToAbout: () -> Unit,
     onNavigateToAppDetails: (String) -> Unit,
+    isAboutSelected: Boolean = false,
     notificationsEnabled: Boolean = true,
     canRequestPermission: Boolean = false,
     hasRequestedPermission: Boolean = false,
@@ -293,6 +294,7 @@ fun SettingsContent(
                             subtitle = s.learnMoreAboutApp,
                             icon = MaterialSymbols.Filled.Info,
                             onClick = onNavigateToAbout,
+                            isSelected = isAboutSelected,
                         )
                     }
 

@@ -33,6 +33,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun SettingsScreen(
     onNavigateToAppDetails: (String) -> Unit = {},
     onNavigateToAbout: () -> Unit = {},
+    isAboutSelected: Boolean = false,
     viewModel: SettingsViewModel = koinViewModel(),
     modifier: Modifier = Modifier,
 ) {
@@ -92,6 +93,7 @@ fun SettingsScreen(
         onClearError = viewModel::clearError,
         onNavigateToAbout = onNavigateToAbout,
         onNavigateToAppDetails = onNavigateToAppDetails,
+        isAboutSelected = isAboutSelected,
         notificationsEnabled = notificationsEnabled,
         canRequestPermission = canRequestPermission,
         hasRequestedPermission = hasRequestedPermission,

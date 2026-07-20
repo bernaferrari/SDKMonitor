@@ -271,6 +271,7 @@ private fun SettingsScreenWithListDetail(
         listPane = {
             AnimatedPane {
                 SettingsScreen(
+                    isAboutSelected = listDetailNavigator.currentDestination?.contentKey == "about",
                     onNavigateToAppDetails = { packageName ->
                         scope.launch {
                             listDetailNavigator.navigateTo(

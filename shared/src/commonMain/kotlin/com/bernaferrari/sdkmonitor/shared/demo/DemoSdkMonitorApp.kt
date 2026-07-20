@@ -179,7 +179,7 @@ fun DemoSdkMonitorApp(
                             onContact = { uriHandler.openUri("mailto:bernaferrari2+sdkmonitor@gmail.com") },
                         )
                     },
-                ) { _, onAppClick ->
+                ) { selectedPackageName, onAppClick ->
                     SettingsContent(
                         uiState = SettingsUiState(
                             isLoading = false,
@@ -204,6 +204,7 @@ fun DemoSdkMonitorApp(
                         onClearError = {},
                         onNavigateToAbout = { selectedPackage = AboutDestinationKey },
                         onNavigateToAppDetails = onAppClick,
+                        isAboutSelected = selectedPackageName == AboutDestinationKey,
                     )
                 }
             }

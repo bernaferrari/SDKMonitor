@@ -1,9 +1,10 @@
 package com.bernaferrari.sdkmonitor.ui.settings.components
 
-import androidx.compose.ui.graphics.vector.ImageVector
-
-import com.bernaferrari.sdkmonitor.ui.icons.MaterialSymbols
-
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.animateDp
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.updateTransition
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,11 +21,17 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.bernaferrari.sdkmonitor.ui.icons.MaterialSymbols
 import com.bernaferrari.sdkmonitor.ui.platform.sdkStrings
 
 @Composable
@@ -61,21 +68,54 @@ fun SettingsItem(
     switchValue: Boolean = false,
     onSwitchToggle: ((Boolean) -> Unit)? = null,
     onClick: (() -> Unit)? = null,
+    isSelected: Boolean = false,
 ) {
+    val selectionTransition = updateTransition(isSelected, label = "settingsItemSelection")
+    val cornerRadius by
+        selectionTransition.animateDp(
+            transitionSpec = { tween(durationMillis = SettingsSelectionAnimationDurationMillis) },
+            label = "cornerRadius",
+        ) { selected ->
+            if (selected) 20.dp else 16.dp
+        }
+    val containerColor by
+        selectionTransition.animateColor(
+            transitionSpec = { tween(durationMillis = SettingsSelectionAnimationDurationMillis) },
+            label = "containerColor",
+        ) { selected ->
+            if (selected) {
+                MaterialTheme.colorScheme.surfaceContainerHigh
+            } else {
+                MaterialTheme.colorScheme.surfaceContainerLow
+            }
+        }
+    val borderColor by
+        selectionTransition.animateColor(
+            transitionSpec = { tween(durationMillis = SettingsSelectionAnimationDurationMillis) },
+            label = "borderColor",
+        ) { selected ->
+            if (selected) {
+                MaterialTheme.colorScheme.primary.copy(alpha = 0.55f)
+            } else {
+                Color.Transparent
+            }
+        }
+
     Surface(
         modifier =
             modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(16.dp))
+                .clip(RoundedCornerShape(cornerRadius))
                 .clickable {
                     if (isSwitch) {
                         onSwitchToggle?.invoke(!switchValue)
                     } else {
                         onClick?.invoke()
                     }
-                },
-        shape = RoundedCornerShape(16.dp),
-        color = MaterialTheme.colorScheme.surfaceContainerLow,
+                }.semantics { selected = isSelected },
+        shape = RoundedCornerShape(cornerRadius),
+        color = containerColor,
+        border = BorderStroke(2.dp, borderColor),
     ) {
         Row(
             modifier =
@@ -122,6 +162,8 @@ fun SettingsItem(
         }
     }
 }
+
+private const val SettingsSelectionAnimationDurationMillis = 150
 
 @Composable
 fun AnalyticsSection(
