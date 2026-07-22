@@ -172,7 +172,7 @@ fun DemoSdkMonitorApp(
                     aboutContent = { onNavigateBack, isDualPane ->
                         AboutContent(
                             appName = "SDK Monitor",
-                            versionName = "2.0.3",
+                            versionName = "2.1",
                             onNavigateBack = if (isDualPane) null else onNavigateBack,
                             showTopBar = !isDualPane,
                             onOpenUrl = uriHandler::openUri,

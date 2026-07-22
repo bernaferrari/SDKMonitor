@@ -36,7 +36,9 @@ Available in English, Italian, French, Portuguese (BR), German, Spanish, Japanes
 
 ## Building from source
 
-Open the project in a recent Android Studio and run it. Or from the terminal:
+### Android app
+
+Open the project in a recent Android Studio and run it, or build it from the terminal:
 
 ```bash
 git clone https://github.com/bernaferrari/SDKMonitor.git
@@ -44,37 +46,13 @@ cd SDKMonitor
 ./gradlew assembleDebug
 ```
 
-### Desktop demo (Room)
+### Web demo
 
-```bash
-./gradlew :shared:run
-```
-
-### Web demo (Room + wasmJs)
-
-Try the UI in a browser with a real Room 3 / OPFS SQLite database (demo data is seeded once if empty):
+Run the web demo locally (sample data is added the first time):
 
 ```bash
 ./gradlew :webApp:wasmJsBrowserDevelopmentRun
 ```
-
-The browser target needs a [cross-origin isolated](https://web.dev/articles/coop-coep) context (COOP/COEP) so SQLite can use OPFS via the `:sqliteWasmWorker` Web Worker.
-
-Pushes and pull requests run the Android, shared, and web checks in GitHub Actions. The Vercel Git integration deploys previews from branches and deploys `main` to [sdkmonitor.vercel.app](https://sdkmonitor.vercel.app/). After setting `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID`, the verified web bundle can also be deployed manually with `./scripts/deploy-web-vercel.sh`.
-
-### Kotlin Multiplatform layout
-
-| Module | Role |
-|--------|------|
-| `:shared` | **commonMain:** domain, Compose UI, Room 3 (`AppDatabase` / entities / DAOs / `RoomAppsRepository`). **androidMain / desktopMain / wasmJsMain:** only `createAppDatabase()` + platform driver |
-| `:app` | Android shell (Koin, WorkManager, device scan, intents); delegates DB/repo to `:shared` |
-| `:webApp` | wasmJs Compose entry → `RoomDemoHost` |
-| `:sqliteWasmWorker` | Web Worker driver for Room on wasmJs (OPFS) |
-
-**Room 3** lives in `commonMain` (not a non-JS-only source set). Platform code only wires `Room.databaseBuilder` + `SQLiteDriver` (`BundledSQLiteDriver` on Android/desktop, `WebWorkerSQLiteDriver` on wasmJs).
-
-**DI:** [Koin Compiler Plugin](https://insert-koin.io/docs/setup/compiler-plugin) **1.0.1** + `@ComponentScan` / `@KoinViewModel` / `@KoinWorker` — **not** the deprecated `koin-ksp-compiler`.
-
 
 ## What each target SDK level means for security and privacy
 
