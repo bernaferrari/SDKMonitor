@@ -11,7 +11,7 @@ import org.koin.androidx.workmanager.factory.KoinWorkerFactory
 import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.plugin.module.dsl.startKoin
 
-class App :
+open class App :
     Application(),
     Configuration.Provider,
     AppFunctionConfiguration.Provider {

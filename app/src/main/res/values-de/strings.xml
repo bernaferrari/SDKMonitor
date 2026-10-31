@@ -138,7 +138,7 @@
     <string name="target_sdk">Ziel-SDK</string>
     <string name="min_sdk">Min-SDK</string>
     <string name="play_store">Play Store</string>
-    <string name="app_information">App-Informationen</string>
+    <string name="app_information">App-Info</string>
     <string name="package_label">Paket</string>
     <string name="version_label">Version</string>
     <string name="updated_label">Aktualisiert</string>

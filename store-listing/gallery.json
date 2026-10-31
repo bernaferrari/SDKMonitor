@@ -1,0 +1,152 @@
+{
+  "phone": [
+    {
+      "feature": "apps",
+      "layout": "gate-right",
+      "raw": "phone/01-apps.png",
+      "file": "phone/phone-01-apps.jpg"
+    },
+    {
+      "feature": "logs",
+      "layout": "gate-left",
+      "raw": "phone/03-logs.png",
+      "file": "phone/phone-02-logs.jpg"
+    },
+    {
+      "feature": "details",
+      "layout": "hang",
+      "raw": "phone/02-details.png",
+      "file": "phone/phone-03-details.jpg"
+    },
+    {
+      "feature": "settings",
+      "layout": "gate-right",
+      "raw": "phone/04-settings.png",
+      "file": "phone/phone-04-settings.jpg"
+    },
+    {
+      "feature": "dark",
+      "layout": "duo",
+      "file": "phone/phone-05-dark.jpg",
+      "devices": [
+        {
+          "raw": "phone/11-apps-dark.png",
+          "role": "primary"
+        },
+        {
+          "raw": "phone/12-details-dark.png",
+          "role": "secondary"
+        }
+      ]
+    }
+  ],
+  "tablet7": [
+    {
+      "feature": "apps",
+      "layout": "gate-right",
+      "raw": "tablet7/01-apps.png",
+      "file": "tablet7/tablet7-01-apps.jpg"
+    },
+    {
+      "feature": "logs",
+      "layout": "gate-left",
+      "raw": "tablet7/03-logs.png",
+      "file": "tablet7/tablet7-02-logs.jpg"
+    },
+    {
+      "feature": "dark",
+      "layout": "duo",
+      "file": "tablet7/tablet7-03-dark.jpg",
+      "devices": [
+        {
+          "raw": "tablet7/11-apps-dark.png",
+          "role": "primary"
+        },
+        {
+          "raw": "tablet7/12-details-dark.png",
+          "role": "secondary"
+        }
+      ]
+    }
+  ],
+  "tablet10": [
+    {
+      "feature": "tablet10/apps",
+      "layout": "gate-right",
+      "raw": "tablet10/02-details.png",
+      "file": "tablet10/tablet10-01-apps.jpg"
+    },
+    {
+      "feature": "logs",
+      "layout": "gate-right",
+      "raw": "tablet10/03-logs.png",
+      "file": "tablet10/tablet10-02-logs.jpg"
+    },
+    {
+      "feature": "tablet10/dark",
+      "layout": "gate-right",
+      "raw": "tablet10/12-details-dark.png",
+      "file": "tablet10/tablet10-03-dark.jpg"
+    }
+  ],
+  "readme": [
+    {
+      "feature": "readme-identity",
+      "layout": "hero",
+      "file": "readme/hero.jpg",
+      "identity": true,
+      "devices": [
+        {
+          "raw": "phone/03-logs.png",
+          "role": "left"
+        },
+        {
+          "raw": "phone/01-apps.png",
+          "role": "center"
+        },
+        {
+          "raw": "phone/02-details.png",
+          "role": "right"
+        }
+      ]
+    },
+    {
+      "feature": "readme-tools",
+      "layout": "trio",
+      "file": "readme/tools.jpg",
+      "devices": [
+        {
+          "raw": "phone/02-details.png",
+          "role": "one",
+          "label": "Every *version*"
+        },
+        {
+          "raw": "phone/03-logs.png",
+          "role": "two",
+          "label": "Every *change*"
+        },
+        {
+          "raw": "phone/04-settings.png",
+          "role": "three",
+          "label": "Fully *offline*"
+        }
+      ]
+    },
+    {
+      "feature": "readme-big-screen",
+      "layout": "spread",
+      "file": "readme/big-screen.jpg",
+      "devices": [
+        {
+          "raw": "tablet10/02-details.png",
+          "role": "slate",
+          "frame": "tablet"
+        },
+        {
+          "raw": "phone/11-apps-dark.png",
+          "role": "front"
+        }
+      ]
+    }
+  ]
+}

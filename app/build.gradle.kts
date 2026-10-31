@@ -63,6 +63,13 @@ android {
             )
             signingConfig = signingConfigs.getByName("release")
         }
+        // Store screenshots only: debug code plus src/storeCapture, which lists the sample apps of
+        // store-listing/fixture-apps.json and seeds their update history. Never released.
+        register("storeCapture") {
+            initWith(getByName("debug"))
+            applicationIdSuffix = ".storecapture"
+            matchingFallbacks += "debug"
+        }
     }
 
 

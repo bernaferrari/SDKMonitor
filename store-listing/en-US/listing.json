@@ -1,0 +1,5 @@
+{
+  "title": "SDK Monitor",
+  "shortDescription": "See every app's target SDK, and get told when an app changes it.",
+  "fullDescription": "SDK Monitor shows the target SDK of every installed app: the Android version each one is built for. Apps that target a newer version get Android's newer privacy and security protections; apps that lag behind don't.\n\n• Every installed app with its target SDK, sorted and searchable\n• A change log of every target SDK bump or drop\n• A notification when an app changes its target SDK\n• Each app's version history, minimum and target SDK side by side\n• Light, dark and dynamic color, on phones, tablets and foldables\n• Export to CSV\n\nNo account, no ads and no network access: nothing leaves your phone."
+}

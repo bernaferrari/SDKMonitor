@@ -1,0 +1,13 @@
+{
+  "icons": [
+    {
+      "android": {"res": "app/src/main/res", "legacy": true},
+      "files": [
+        {"path": "store-listing/brand/icon.png", "size": 512, "shape": "square"},
+        {"path": "store-listing/brand/icon.svg", "shape": "square"},
+        {"path": "app/src/main/ic_launcher-web.png", "size": 512, "shape": "circle"},
+        {"path": "webApp/src/wasmJsMain/resources/favicon.svg", "shape": "rounded"}
+      ]
+    }
+  ]
+}

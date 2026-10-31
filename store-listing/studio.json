@@ -1,0 +1,33 @@
+{
+  "app": "SDK Monitor",
+  "package": "com.bernaferrari.sdkmonitor",
+  "locales": [
+    "en-US"
+  ],
+  "defaultLocale": "en-US",
+  "supersample": 2,
+  "capture": {
+    "build": "./gradlew :app:assembleStoreCapture -q",
+    "install": [
+      {
+        "apk": "app/build/outputs/apk/storeCapture/app-storeCapture.apk",
+        "package": "com.bernaferrari.sdkmonitor.storecapture"
+      }
+    ],
+    "runs": [
+      {
+        "locales": "default"
+      }
+    ]
+  },
+  "bounds": {
+    "layouts": {
+      "tablet10": {
+        "right": 0.22
+      },
+      "hang": {
+        "top": true
+      }
+    }
+  }
+}

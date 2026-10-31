@@ -1,0 +1,465 @@
+{
+ "about": "Fictional apps for SDK Monitor's store captures: code-free APKs with a drawn icon and a real targetSdk, so the app reads them through PackageManager. history (oldest first, last = what is installed) mirrors StoreCaptureFixtures.kt, which seeds the earlier versions.",
+ "apps": [
+  {
+   "package": "app.atlasbank",
+   "label": "Atlas Bank",
+   "colors": [
+    "#2f6fed",
+    "#1b46b8"
+   ],
+   "glyph": "landmark",
+   "internet": true,
+   "targetSdk": 36,
+   "versionName": "7.4.0",
+   "versionCode": 740,
+   "history": [
+    {
+     "versionName": "6.2.0",
+     "targetSdk": 34,
+     "daysAgo": 240
+    },
+    {
+     "versionName": "7.0.1",
+     "targetSdk": 35,
+     "daysAgo": 96
+    },
+    {
+     "versionName": "7.4.0",
+     "targetSdk": 36,
+     "daysAgo": 12
+    }
+   ]
+  },
+  {
+   "package": "news.brightside",
+   "label": "Brightside News",
+   "colors": [
+    "#ff7a45",
+    "#e04a1f"
+   ],
+   "glyph": "newspaper",
+   "internet": true,
+   "targetSdk": 35,
+   "versionName": "4.1.2",
+   "versionCode": 412,
+   "category": "news",
+   "history": [
+    {
+     "versionName": "3.8.0",
+     "targetSdk": 34,
+     "daysAgo": 180
+    },
+    {
+     "versionName": "4.1.2",
+     "targetSdk": 35,
+     "daysAgo": 27
+    }
+   ]
+  },
+  {
+   "package": "weather.clearsky",
+   "label": "Clearsky Weather",
+   "colors": [
+    "#62c6f7",
+    "#2a86d6"
+   ],
+   "glyph": "cloud-sun",
+   "internet": true,
+   "targetSdk": 37,
+   "versionName": "3.2.1",
+   "versionCode": 321,
+   "history": [
+    {
+     "versionName": "2.9.0",
+     "targetSdk": 35,
+     "daysAgo": 210
+    },
+    {
+     "versionName": "3.0.0",
+     "targetSdk": 36,
+     "daysAgo": 88
+    },
+    {
+     "versionName": "3.2.1",
+     "targetSdk": 37,
+     "daysAgo": 5
+    }
+   ]
+  },
+  {
+   "package": "app.cookbook.kitchen",
+   "label": "Cookbook",
+   "colors": [
+    "#ffb547",
+    "#f08a00"
+   ],
+   "glyph": "chef-hat",
+   "internet": true,
+   "targetSdk": 34,
+   "versionName": "5.4.0",
+   "versionCode": 540,
+   "history": [
+    {
+     "versionName": "5.0.3",
+     "targetSdk": 33,
+     "daysAgo": 300
+    },
+    {
+     "versionName": "5.4.0",
+     "targetSdk": 34,
+     "daysAgo": 64
+    }
+   ]
+  },
+  {
+   "package": "app.fernway.maps",
+   "label": "Fernway Maps",
+   "colors": [
+    "#5bc96b",
+    "#1f8f4e"
+   ],
+   "glyph": "map",
+   "internet": true,
+   "targetSdk": 36,
+   "versionName": "11.9.4",
+   "versionCode": 1194,
+   "category": "maps",
+   "history": [
+    {
+     "versionName": "11.2.0",
+     "targetSdk": 35,
+     "daysAgo": 150
+    },
+    {
+     "versionName": "11.9.4",
+     "targetSdk": 36,
+     "daysAgo": 21
+    }
+   ]
+  },
+  {
+   "package": "chat.harbor",
+   "label": "Harbor Chat",
+   "colors": [
+    "#34d1a6",
+    "#0e9a77"
+   ],
+   "glyph": "message-circle",
+   "internet": true,
+   "targetSdk": 37,
+   "versionName": "9.0.0",
+   "versionCode": 900,
+   "category": "social",
+   "history": [
+    {
+     "versionName": "8.1.0",
+     "targetSdk": 35,
+     "daysAgo": 190
+    },
+    {
+     "versionName": "8.6.2",
+     "targetSdk": 36,
+     "daysAgo": 70
+    },
+    {
+     "versionName": "9.0.0",
+     "targetSdk": 37,
+     "daysAgo": 2
+    }
+   ]
+  },
+  {
+   "package": "notes.lumen",
+   "label": "Lumen Notes",
+   "colors": [
+    "#ffd84d",
+    "#f2b600"
+   ],
+   "glyph": "notebook-pen",
+   "internet": true,
+   "targetSdk": 36,
+   "versionName": "2.0.0",
+   "versionCode": 200,
+   "category": "productivity",
+   "history": [
+    {
+     "versionName": "1.8.0",
+     "targetSdk": 35,
+     "daysAgo": 130
+    },
+    {
+     "versionName": "2.0.0",
+     "targetSdk": 36,
+     "daysAgo": 33
+    }
+   ]
+  },
+  {
+   "package": "app.metrotransit",
+   "label": "Metro Transit",
+   "colors": [
+    "#8a8f98",
+    "#545a63"
+   ],
+   "glyph": "train-front",
+   "internet": true,
+   "targetSdk": 31,
+   "versionName": "3.3.1",
+   "versionCode": 331,
+   "history": [
+    {
+     "versionName": "3.3.1",
+     "targetSdk": 31,
+     "daysAgo": 420
+    }
+   ]
+  },
+  {
+   "package": "fm.moonlight",
+   "label": "Moonlight Podcasts",
+   "colors": [
+    "#8b6cf6",
+    "#5a3fd0"
+   ],
+   "glyph": "podcast",
+   "internet": true,
+   "targetSdk": 35,
+   "versionName": "4.7.3",
+   "versionCode": 473,
+   "category": "audio",
+   "history": [
+    {
+     "versionName": "4.4.0",
+     "targetSdk": 34,
+     "daysAgo": 160
+    },
+    {
+     "versionName": "4.7.3",
+     "targetSdk": 35,
+     "daysAgo": 44
+    }
+   ]
+  },
+  {
+   "package": "app.parceltrack",
+   "label": "Parcel Track",
+   "colors": [
+    "#c08457",
+    "#8d5a32"
+   ],
+   "glyph": "package",
+   "internet": true,
+   "targetSdk": 33,
+   "versionName": "2.1.0",
+   "versionCode": 210,
+   "history": [
+    {
+     "versionName": "2.1.0",
+     "targetSdk": 33,
+     "daysAgo": 260
+    }
+   ]
+  },
+  {
+   "package": "games.pixelquest",
+   "label": "Pixel Quest",
+   "colors": [
+    "#ff5d8f",
+    "#d12e63"
+   ],
+   "glyph": "gamepad-2",
+   "internet": true,
+   "targetSdk": 29,
+   "versionName": "1.4.2",
+   "versionCode": 142,
+   "category": "game",
+   "history": [
+    {
+     "versionName": "1.4.2",
+     "targetSdk": 29,
+     "daysAgo": 610
+    }
+   ]
+  },
+  {
+   "package": "app.pocketledger",
+   "label": "Pocket Ledger",
+   "colors": [
+    "#3ccf91",
+    "#129a63"
+   ],
+   "glyph": "wallet",
+   "internet": true,
+   "targetSdk": 34,
+   "versionName": "3.2.5",
+   "versionCode": 325,
+   "history": [
+    {
+     "versionName": "3.0.0",
+     "targetSdk": 33,
+     "daysAgo": 280
+    },
+    {
+     "versionName": "3.2.5",
+     "targetSdk": 34,
+     "daysAgo": 58
+    }
+   ]
+  },
+  {
+   "package": "mail.quill",
+   "label": "Quill Mail",
+   "colors": [
+    "#4f8cff",
+    "#2a5fd6"
+   ],
+   "glyph": "mail",
+   "internet": true,
+   "targetSdk": 36,
+   "versionName": "6.3.1",
+   "versionCode": 631,
+   "category": "productivity",
+   "history": [
+    {
+     "versionName": "6.0.0",
+     "targetSdk": 35,
+     "daysAgo": 140
+    },
+    {
+     "versionName": "6.3.1",
+     "targetSdk": 36,
+     "daysAgo": 16
+    }
+   ]
+  },
+  {
+   "package": "photo.snapframe",
+   "label": "Snapframe",
+   "colors": [
+    "#ff9f43",
+    "#e8631a"
+   ],
+   "glyph": "camera",
+   "internet": true,
+   "targetSdk": 35,
+   "versionName": "2.8.0",
+   "versionCode": 280,
+   "category": "image",
+   "history": [
+    {
+     "versionName": "2.6.0",
+     "targetSdk": 34,
+     "daysAgo": 170
+    },
+    {
+     "versionName": "2.8.0",
+     "targetSdk": 35,
+     "daysAgo": 39
+    }
+   ]
+  },
+  {
+   "package": "fm.tidalradio",
+   "label": "Tidal Radio",
+   "colors": [
+    "#20c3d0",
+    "#0b8f9c"
+   ],
+   "glyph": "radio",
+   "internet": true,
+   "targetSdk": 33,
+   "versionName": "5.1.0",
+   "versionCode": 510,
+   "category": "audio",
+   "history": [
+    {
+     "versionName": "5.1.0",
+     "targetSdk": 33,
+     "daysAgo": 330
+    }
+   ]
+  },
+  {
+   "package": "app.trailmark",
+   "label": "Trailmark",
+   "colors": [
+    "#7fbf4d",
+    "#4d8a24"
+   ],
+   "glyph": "mountain",
+   "internet": true,
+   "targetSdk": 32,
+   "versionName": "2.5.0",
+   "versionCode": 250,
+   "history": [
+    {
+     "versionName": "2.2.0",
+     "targetSdk": 31,
+     "daysAgo": 350
+    },
+    {
+     "versionName": "2.5.0",
+     "targetSdk": 32,
+     "daysAgo": 120
+    }
+   ]
+  },
+  {
+   "package": "app.vaultpass",
+   "label": "Vault Passwords",
+   "colors": [
+    "#4a4f5c",
+    "#23262e"
+   ],
+   "glyph": "key-round",
+   "internet": true,
+   "targetSdk": 37,
+   "versionName": "4.5.2",
+   "versionCode": 452,
+   "history": [
+    {
+     "versionName": "4.0.0",
+     "targetSdk": 35,
+     "daysAgo": 200
+    },
+    {
+     "versionName": "4.3.0",
+     "targetSdk": 36,
+     "daysAgo": 77
+    },
+    {
+     "versionName": "4.5.2",
+     "targetSdk": 37,
+     "daysAgo": 9
+    }
+   ]
+  },
+  {
+   "package": "music.wavelength",
+   "label": "Wavelength Music",
+   "colors": [
+    "#f2557a",
+    "#c22a52"
+   ],
+   "glyph": "music",
+   "internet": true,
+   "targetSdk": 36,
+   "versionName": "7.5.1",
+   "versionCode": 751,
+   "category": "audio",
+   "history": [
+    {
+     "versionName": "7.2.0",
+     "targetSdk": 35,
+     "daysAgo": 110
+    },
+    {
+     "versionName": "7.5.1",
+     "targetSdk": 36,
+     "daysAgo": 7
+    }
+   ]
+  }
+ ]
+}

@@ -137,7 +137,7 @@
     <string name="try_again">Try Again</string>
     <string name="target_sdk">Target SDK</string>
     <string name="min_sdk">Min SDK</string>
-    <string name="app_information">App Information</string>
+    <string name="app_information">App info</string>
     <string name="play_store">Play Store</string>
     <string name="package_label">Package</string>
     <string name="version_label">Version</string>

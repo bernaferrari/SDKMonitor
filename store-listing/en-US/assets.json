@@ -1,0 +1,176 @@
+{
+  "galleries": {
+    "phone": [
+      {
+        "file": "phone/phone-01-apps.jpg",
+        "feature": "apps",
+        "slide": 0,
+        "width": 1080,
+        "height": 1920,
+        "bytes": 219371,
+        "sources": [
+          "raw/phone/01-apps.png"
+        ]
+      },
+      {
+        "file": "phone/phone-02-logs.jpg",
+        "feature": "logs",
+        "slide": 1,
+        "width": 1080,
+        "height": 1920,
+        "bytes": 203416,
+        "sources": [
+          "raw/phone/03-logs.png"
+        ]
+      },
+      {
+        "file": "phone/phone-03-details.jpg",
+        "feature": "details",
+        "slide": 2,
+        "width": 1080,
+        "height": 1920,
+        "bytes": 205384,
+        "sources": [
+          "raw/phone/02-details.png"
+        ]
+      },
+      {
+        "file": "phone/phone-04-settings.jpg",
+        "feature": "settings",
+        "slide": 3,
+        "width": 1080,
+        "height": 1920,
+        "bytes": 191306,
+        "sources": [
+          "raw/phone/04-settings.png"
+        ]
+      },
+      {
+        "file": "phone/phone-05-dark.jpg",
+        "feature": "dark",
+        "slide": 4,
+        "width": 1080,
+        "height": 1920,
+        "bytes": 224037,
+        "sources": [
+          "raw/phone/11-apps-dark.png",
+          "raw/phone/12-details-dark.png"
+        ]
+      }
+    ],
+    "tablet7": [
+      {
+        "file": "tablet7/tablet7-01-apps.jpg",
+        "feature": "apps",
+        "slide": 0,
+        "width": 1200,
+        "height": 1920,
+        "bytes": 224666,
+        "sources": [
+          "raw/tablet7/01-apps.png"
+        ]
+      },
+      {
+        "file": "tablet7/tablet7-02-logs.jpg",
+        "feature": "logs",
+        "slide": 1,
+        "width": 1200,
+        "height": 1920,
+        "bytes": 221115,
+        "sources": [
+          "raw/tablet7/03-logs.png"
+        ]
+      },
+      {
+        "file": "tablet7/tablet7-03-dark.jpg",
+        "feature": "dark",
+        "slide": 2,
+        "width": 1200,
+        "height": 1920,
+        "bytes": 231915,
+        "sources": [
+          "raw/tablet7/11-apps-dark.png",
+          "raw/tablet7/12-details-dark.png"
+        ]
+      }
+    ],
+    "tablet10": [
+      {
+        "file": "tablet10/tablet10-01-apps.jpg",
+        "feature": "tablet10/apps",
+        "slide": 0,
+        "width": 1920,
+        "height": 1200,
+        "bytes": 211595,
+        "sources": [
+          "raw/tablet10/02-details.png"
+        ]
+      },
+      {
+        "file": "tablet10/tablet10-02-logs.jpg",
+        "feature": "logs",
+        "slide": 1,
+        "width": 1920,
+        "height": 1200,
+        "bytes": 218023,
+        "sources": [
+          "raw/tablet10/03-logs.png"
+        ]
+      },
+      {
+        "file": "tablet10/tablet10-03-dark.jpg",
+        "feature": "tablet10/dark",
+        "slide": 2,
+        "width": 1920,
+        "height": 1200,
+        "bytes": 220096,
+        "sources": [
+          "raw/tablet10/12-details-dark.png"
+        ]
+      }
+    ],
+    "readme": [
+      {
+        "file": "readme/hero.jpg",
+        "feature": "readme-identity",
+        "slide": 0,
+        "width": 2400,
+        "height": 1260,
+        "bytes": 307801,
+        "sources": [
+          "raw/phone/03-logs.png",
+          "raw/phone/01-apps.png",
+          "raw/phone/02-details.png"
+        ]
+      },
+      {
+        "file": "readme/tools.jpg",
+        "feature": "readme-tools",
+        "slide": 1,
+        "width": 2400,
+        "height": 1260,
+        "bytes": 296458,
+        "sources": [
+          "raw/phone/02-details.png",
+          "raw/phone/03-logs.png",
+          "raw/phone/04-settings.png"
+        ]
+      },
+      {
+        "file": "readme/big-screen.jpg",
+        "feature": "readme-big-screen",
+        "slide": 2,
+        "width": 2400,
+        "height": 1260,
+        "bytes": 300333,
+        "sources": [
+          "raw/tablet10/02-details.png",
+          "raw/phone/11-apps-dark.png"
+        ],
+        "notes": [
+          "copy shrunk to 94%"
+        ]
+      }
+    ]
+  }
+}

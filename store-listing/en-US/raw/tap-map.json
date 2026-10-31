@@ -1,0 +1,18 @@
+{
+ "phone|dark|Apps#0": "0.0.0.0.1.0.0.1.0",
+ "phone|dark|Atlas Bank#0": "0.0.0.0.0.0.0.1.1.0.1",
+ "phone|light|Clearsky Weather#0": "0.0.0.0.0.0.0.1.5.0.1",
+ "phone|light|Logs#0": "0.0.0.0.1.0.1.0.0",
+ "phone|light|Settings#0": "0.0.0.0.1.0.2.0.0",
+ "tablet10|dark|Apps#0": "0.0.0.0.0.0.0.1.0",
+ "tablet10|dark|Atlas Bank#0": "0.0.0.0.1.0.0.1.1.0.1",
+ "tablet10|light|Clearsky Weather#0": "0.0.0.0.1.0.0.1.5.0.1",
+ "tablet10|light|Harbor Chat#0": "0.0.0.0.1.0.0.0.0.3.0.1",
+ "tablet10|light|Logs#0": "0.0.0.0.0.0.1.0.0",
+ "tablet10|light|Settings#0": "0.0.0.0.0.0.2.0.0",
+ "tablet7|dark|Apps#0": "0.0.0.0.0.0.0.1.0",
+ "tablet7|dark|Atlas Bank#0": "0.0.0.0.1.0.0.1.1.0.1",
+ "tablet7|light|Clearsky Weather#0": "0.0.0.0.1.0.0.1.5.0.1",
+ "tablet7|light|Logs#0": "0.0.0.0.0.0.1.0.0",
+ "tablet7|light|Settings#0": "0.0.0.0.0.0.2.0.0"
+}

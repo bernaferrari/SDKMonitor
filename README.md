@@ -1,4 +1,4 @@
-![SDK Monitor](assets/header.png)
+![SDK Monitor: the change log, the app list with each app's target SDK, and an app's version history](store-listing/en-US/readme/hero.jpg)
 
 # SDK Monitor
 
@@ -18,9 +18,9 @@ Android does not surface `targetSdk` anywhere in Settings. SDK Monitor reads it 
 
 ## Screenshots
 
-| Home | Change logs | App details | Settings |
-| :--: | :---------: | :---------: | :------: |
-| ![Home screen](assets/main.png) | ![Change logs](assets/logs.png) | ![App details](assets/details.png) | ![Settings](assets/settings.png) |
+![An app's version history, the change log of target SDK bumps, and offline settings with SDK analytics](store-listing/en-US/readme/tools.jpg)
+
+![SDK Monitor on a tablet, the app list beside an app's details, with a phone in dark mode](store-listing/en-US/readme/big-screen.jpg)
 
 ## Features
 

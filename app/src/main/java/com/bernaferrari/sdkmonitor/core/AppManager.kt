@@ -33,6 +33,12 @@ class AppManager(
 ) {
     private val packageManager: PackageManager = context.packageManager
 
+    companion object {
+        /** A store-capture build lists only its sample apps; null lists every installed app. */
+        @Volatile
+        var onlyPackages: Set<String>? = null
+    }
+
     // In-memory icon cache to avoid repeated OS calls
     private val iconCache = java.util.concurrent.ConcurrentHashMap<String, android.graphics.drawable.Drawable>()
 
@@ -55,7 +61,12 @@ class AppManager(
             return ai.flags and mask == 0
         }
 
-        fun getPackages(): List<PackageInfo> = packageManager.getInstalledPackages(PackageManager.GET_META_DATA)
+        fun getPackages(): List<PackageInfo> = installedPackages()
+
+        private fun installedPackages(): List<PackageInfo> =
+            packageManager.getInstalledPackages(PackageManager.GET_META_DATA).let { all ->
+                onlyPackages?.let { only -> all.filter { it.packageName in only } } ?: all
+            }
 
         suspend fun removePackageName(packageName: String) =
             withContext(Dispatchers.IO) {
@@ -169,8 +180,7 @@ class AppManager(
         }
 
         private fun getPackagesWithOrigin(): List<PackageInfo> =
-            packageManager
-                .getInstalledPackages(PackageManager.GET_META_DATA)
+            installedPackages()
                 .filter { isUserApp(it.applicationInfo) }
 
         fun getPackageInfo(packageName: String): PackageInfo? =
@@ -278,9 +288,8 @@ class AppManager(
                 }
 
                 // Get all installed packages
-                val installedPackages =
-                    packageManager.getInstalledPackages(PackageManager.GET_META_DATA)
-                val installedPackageNames = installedPackages.map { it.packageName }.toSet()
+                val installed = installedPackages()
+                val installedPackageNames = installed.map { it.packageName }.toSet()
                 val dbPackageNames = dbApps.map { it.packageName }.toSet()
 
                 // Find apps in DB but not installed anymore
@@ -300,13 +309,13 @@ class AppManager(
                     _syncProgress.value =
                         SyncProgress(
                             current = 0,
-                            total = installedPackages.size,
+                            total = installed.size,
                             isActive = true,
                         )
                 }
 
                 // Sync all currently installed apps
-                installedPackages.forEachIndexed { index, packageInfo ->
+                installed.forEachIndexed { index, packageInfo ->
                     try {
                         insertNewApp(packageInfo)
                         insertNewVersion(packageInfo)

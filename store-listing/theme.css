@@ -1,0 +1,72 @@
+/* SDK Monitor: "strata". A dark ember field lit by the icon's bands, red into orange into yellow. The
+   copy sits at the top, its first letter exactly where the device below starts; devices run large, off
+   the bottom (or hang from the top with the copy underneath). */
+@font-face{font-family:Studio;src:url(fonts/GoogleSansFlex-Latin.woff2) format('woff2');font-weight:100 1000;font-style:normal;font-display:block}
+:root{--field:#160c07;--ink:#fff7ef;--coral:#ffa53d;--green:#ffd24a;--muted:#e6cdb8;--frame-top:#fbf5ef;--frame-bottom:#ecdccd}
+body,.campaign{background:var(--field);color:var(--ink)}
+body{font-family:Studio,var(--script-font),sans-serif}
+
+header{left:84px;right:84px;top:150px;text-align:left;z-index:5}
+h1{font-size:104px;line-height:1.02;letter-spacing:-.02em;font-weight:720;font-variation-settings:'opsz' 144,'ROND' 40}
+/* The highlighted phrase in the icon's orange; [..] picks its yellow. */
+h1 em{font-style:normal;color:var(--coral)}
+h1 ins{text-decoration:none;color:var(--green)}
+header p{margin:26px 0 0;font-size:40px;line-height:1.28;font-weight:420;color:var(--muted);max-width:880px;white-space:pre-line}
+
+
+/* Frames: warm porcelain, so light and dark screens both stand clear of the dark field. */
+.device{--bezel:14px;--radius:78px;background:linear-gradient(170deg,var(--frame-top),var(--frame-bottom));
+  box-shadow:inset 0 0 0 2px #ffffffc0,inset 0 -3px 0 #c7a48c55,0 50px 110px -20px #050201ee,0 0 0 1px #05020150}
+
+/* Phone: the app across the whole column, its left edge under the copy's first letter. */
+.phone .gate-right .primary,.phone .gate-left .primary{left:84px;top:620px;width:912px}
+/* Hanging from the top, copy underneath. */
+.phone .hang header{top:1330px}
+.phone .hang .primary{left:84px;top:-740px;width:912px}
+/* Light and dark side by side: the light one lines up with the copy, the dark one steps in front. */
+.phone .duo .primary{left:84px;top:640px;width:560px}
+.phone .duo .secondary{left:436px;top:820px;width:560px;z-index:3}
+
+/* 7-inch portrait: the same system, a little wider. */
+.tablet7 header{left:96px;right:96px;top:160px}
+.tablet7 h1{font-size:112px}
+.tablet7 header p{font-size:42px}
+.tablet7 .gate-right .primary,.tablet7 .gate-left .primary{left:96px;top:640px;width:1008px}
+.tablet7 .hang header{top:1360px}
+.tablet7 .hang .primary{left:96px;top:-400px;width:1008px}
+.tablet7 .duo .primary{left:96px;top:660px;width:640px}
+.tablet7 .duo .secondary{left:464px;top:820px;width:640px}
+
+/* 10-inch landscape: copy on the left, its first line level with the top of the tablet on the right
+   (which may run off the right edge). */
+.tablet10 header{left:90px;right:auto;top:250px;width:520px}
+.tablet10 h1{font-size:84px}
+.tablet10 h1 .line{white-space:normal}
+.tablet10 header p{margin:24px 0 0;font-size:32px;max-width:500px;white-space:normal}
+.tablet10 .gate-right .primary{left:630px;top:250px;width:1270px}
+.tablet10 .duo .primary{left:640px;top:60px;width:1060px}
+.tablet10 .duo .secondary{left:1000px;top:500px;width:1060px}
+
+/* README art: wide and wordless, on the same field, with the stream running between the phones. */
+/* Name card: the icon, name and line centred above the three phones. */
+.readme .identity{top:70px}
+.readme .identity img{border-radius:28%;box-shadow:0 20px 60px -14px #ff8a3d80}
+.readme .identity span{font-weight:760;letter-spacing:-.03em;font-variation-settings:'opsz' 144,'ROND' 40}
+.readme .identity small{font-weight:460;color:var(--muted)}
+.readme .identity small em{color:var(--coral)}
+.readme .hero .left{left:270px;top:440px}
+.readme .hero .center{top:360px}
+.readme .hero .right{left:1590px;top:440px}
+/* Trio: three phones under short captions; the stream runs between them. */
+.readme .trio .device{width:560px;top:200px}
+.readme .trio .one{left:170px}
+.readme .trio .two{left:920px}
+.readme .trio .three{left:1670px}
+.readme .trio .device-label{transform:translateY(calc(-100% - 24px));font-weight:560;letter-spacing:-.01em;color:var(--ink)}
+.readme .trio .device-label em{font-style:normal;color:var(--coral)}
+/* Spread: the headline on the left, a landscape tablet, and a phone in dark mode in front of it. */
+.readme .spread header{left:110px;top:200px;bottom:auto;width:640px;display:block}
+.readme .spread h1{font-size:104px}
+.readme .spread header p{font-size:38px}
+.readme .spread .slate{left:960px;top:150px;width:1380px}
+.readme .spread .front{left:636px;top:450px;width:400px}
