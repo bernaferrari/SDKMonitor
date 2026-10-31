@@ -7,7 +7,7 @@
         "slide": 0,
         "width": 1080,
         "height": 1920,
-        "bytes": 190688,
+        "bytes": 192025,
         "sources": [
           "raw/phone/01-apps.png"
         ]
@@ -18,7 +18,7 @@
         "slide": 1,
         "width": 1080,
         "height": 1920,
-        "bytes": 178012,
+        "bytes": 197593,
         "sources": [
           "raw/phone/03-logs.png"
         ]
@@ -29,7 +29,7 @@
         "slide": 2,
         "width": 1080,
         "height": 1920,
-        "bytes": 181051,
+        "bytes": 179183,
         "sources": [
           "raw/phone/05-insights.png"
         ]
@@ -40,7 +40,7 @@
         "slide": 3,
         "width": 1080,
         "height": 1920,
-        "bytes": 182797,
+        "bytes": 181826,
         "sources": [
           "raw/phone/02-details.png"
         ]
@@ -51,7 +51,7 @@
         "slide": 4,
         "width": 1080,
         "height": 1920,
-        "bytes": 175014,
+        "bytes": 171832,
         "sources": [
           "raw/phone/04-settings.png"
         ]
@@ -62,7 +62,7 @@
         "slide": 5,
         "width": 1080,
         "height": 1920,
-        "bytes": 226079,
+        "bytes": 226990,
         "sources": [
           "raw/phone/11-apps-dark.png",
           "raw/phone/12-details-dark.png"
@@ -76,7 +76,7 @@
         "slide": 0,
         "width": 1200,
         "height": 1920,
-        "bytes": 200903,
+        "bytes": 201812,
         "sources": [
           "raw/tablet7/01-apps.png"
         ]
@@ -87,7 +87,7 @@
         "slide": 1,
         "width": 1200,
         "height": 1920,
-        "bytes": 200711,
+        "bytes": 205489,
         "sources": [
           "raw/tablet7/03-logs.png"
         ]
@@ -98,7 +98,7 @@
         "slide": 2,
         "width": 1200,
         "height": 1920,
-        "bytes": 215101,
+        "bytes": 218057,
         "sources": [
           "raw/tablet7/11-apps-dark.png",
           "raw/tablet7/12-details-dark.png"
@@ -112,7 +112,7 @@
         "slide": 0,
         "width": 1920,
         "height": 1200,
-        "bytes": 176867,
+        "bytes": 179176,
         "sources": [
           "raw/tablet10/02-details.png"
         ]
@@ -123,7 +123,7 @@
         "slide": 1,
         "width": 1920,
         "height": 1200,
-        "bytes": 173815,
+        "bytes": 179412,
         "sources": [
           "raw/tablet10/03-logs.png"
         ]
@@ -134,7 +134,7 @@
         "slide": 2,
         "width": 1920,
         "height": 1200,
-        "bytes": 185811,
+        "bytes": 100994,
         "sources": [
           "raw/tablet10/12-details-dark.png"
         ]
@@ -147,7 +147,7 @@
         "slide": 0,
         "width": 2400,
         "height": 1260,
-        "bytes": 247928,
+        "bytes": 245445,
         "sources": [
           "raw/phone/01-apps.png"
         ]
@@ -158,7 +158,7 @@
         "slide": 1,
         "width": 2400,
         "height": 1260,
-        "bytes": 264747,
+        "bytes": 274257,
         "sources": [
           "raw/phone/05-insights.png",
           "raw/phone/01-apps.png",
@@ -171,7 +171,7 @@
         "slide": 2,
         "width": 2400,
         "height": 1260,
-        "bytes": 285101,
+        "bytes": 313915,
         "sources": [
           "raw/phone/05-insights.png",
           "raw/phone/03-logs.png",
@@ -184,13 +184,10 @@
         "slide": 3,
         "width": 2400,
         "height": 1260,
-        "bytes": 255035,
+        "bytes": 247879,
         "sources": [
-          "raw/tablet10/03-logs.png",
+          "raw/tablet7/03-logs.png",
           "raw/phone/06-sdk-sheet.png"
-        ],
-        "notes": [
-          "copy shrunk to 84%"
         ]
       },
       {
@@ -199,10 +196,10 @@
         "slide": 4,
         "width": 2400,
         "height": 1260,
-        "bytes": 283393,
+        "bytes": 226718,
         "sources": [
-          "raw/tablet10/02-details.png",
-          "raw/phone/11-apps-dark.png"
+          "raw/tablet7/01-apps.png",
+          "raw/phone/12-details-dark.png"
         ]
       }
     ],
@@ -213,7 +210,7 @@
         "slide": 0,
         "width": 1280,
         "height": 640,
-        "bytes": 503443,
+        "bytes": 501561,
         "sources": [
           "raw/phone/01-apps.png"
         ]

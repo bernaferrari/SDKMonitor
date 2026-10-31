@@ -1,5 +1,5 @@
 /* SDK Monitor, after the original header: navy ink on a peach-to-sky field (theme.js), the highlight in the icon's
-   red-to-orange gradient, white 3D devices (phone3d.js), always shown whole. */
+   headlines highlighted in indigo, white 3D devices (phone3d.js), always shown whole. */
 @font-face{font-family:Studio;src:url(fonts/GoogleSansFlex-Latin.woff2) format('woff2');font-weight:100 1000;font-style:normal;font-display:block}
 :root{--field:#f5f2f3;--ink:#161b26;--coral:#d9471b;--green:#178e96;--muted:#5d6372;--frame-top:#ffffff;--frame-bottom:#e6e9f0}
 body,.campaign{background:var(--field);color:var(--ink)}
@@ -7,8 +7,6 @@ body{font-family:Studio,var(--script-font),sans-serif}
 
 header{left:84px;right:84px;top:150px;text-align:center;z-index:5}
 h1{font-size:100px;line-height:1.04;letter-spacing:-.028em;font-weight:680;font-variation-settings:'opsz' 144,'ROND' 0}
-/* The highlighted phrase in the brand's red-orange (the icon's top band); [..] picks a teal. */
-h1 em{font-style:normal;color:var(--coral)}
 h1 ins{text-decoration:none;color:var(--green)}
 header p{margin:28px auto 0;font-size:38px;line-height:1.3;font-weight:420;letter-spacing:-.005em;color:var(--muted);max-width:880px;white-space:pre-line}
 
@@ -53,7 +51,6 @@ header p{margin:28px auto 0;font-size:38px;line-height:1.3;font-weight:420;lette
 .readme .identity img{border-radius:28%;box-shadow:0 18px 50px -16px #3a2a1a55}
 .readme .identity span{font-weight:700;letter-spacing:-.032em;font-variation-settings:'opsz' 144,'ROND' 0}
 .readme .identity small{font-weight:460;color:var(--muted)}
-.readme .identity small em{color:var(--coral)}
 .readme .hero .left{left:380px;top:430px;width:470px}
 .readme .hero .center{left:940px;top:370px;width:520px}
 .readme .hero .right{left:1550px;top:430px;width:470px}
@@ -63,7 +60,6 @@ header p{margin:28px auto 0;font-size:38px;line-height:1.3;font-weight:420;lette
 .readme .trio .two{left:910px}
 .readme .trio .three{left:1650px}
 .readme .trio .device-label{transform:translateY(calc(-100% - 24px));font-weight:560;letter-spacing:-.01em;color:var(--ink)}
-.readme .trio .device-label em{font-style:normal;color:var(--coral)}
 /* Spread: the headline on the left, then a 7-inch tablet and a phone side by side, both whole. */
 .readme .spread header{left:110px;top:200px;bottom:auto;width:640px;display:block}
 .readme .spread h1{font-size:104px}
@@ -77,9 +73,8 @@ header p{margin:28px auto 0;font-size:38px;line-height:1.3;font-weight:420;lette
 .social .identity img{width:108px;height:108px;border-radius:28%;box-shadow:0 14px 40px -14px #3a2a1a55}
 .social .identity span{font-size:82px;font-weight:700;letter-spacing:-.032em;font-variation-settings:'opsz' 144,'ROND' 0}
 .social .identity small{font-size:29px;margin-top:10px;font-weight:460;color:var(--muted)}
-.social .identity small em{color:var(--coral)}
 /* The share image is the original's composition at 1280 wide: the header's phone, zoomed by the width ratio. */
-.social .banner .front{zoom:.5333;left:1397px;top:58px}
+.social .banner .front{zoom:.5333;left:1500px;top:66px}
 
 /* README art (also kotlin-reforge's) stays flat: no tilt.
    The README's name card is the name and line alone; the branded hero (kotlin-reforge) keeps the icon. */
@@ -96,17 +91,17 @@ header p{margin:28px auto 0;font-size:38px;line-height:1.3;font-weight:420;lette
 .readme .banner .identity span{font-size:210px;font-weight:720}
 .readme .banner .identity small{font-size:66px;margin-top:10px;text-align:left;font-weight:420}
 .readme .banner .identity small em{background:none;color:inherit;-webkit-text-fill-color:currentColor}
-.readme .banner .front{left:1397px;top:70.6px}
+.readme .banner .front{left:1500px;top:80px}
 /* The README header's and share image's phone: phone3d.js reads this frame's size, bezel, corners and transform
-   and draws a real 3D phone in its place with three.js, at a Galaxy S25's depth. Turned 30 degrees, so its silver
+   and draws a real 3D phone in its place with three.js, at a Galaxy S25's depth. Turned a gentle 22 degrees, so its
    side shows, in the place the original header's phone held. studio.json "frames.fixed" lists "banner", so the
    studio leaves this bezel and radius alone instead of scaling them from the width. */
 .readme .banner .front,.social .banner .front{width:705px;--bezel:18px;--radius:100px;
-  transform:perspective(4200px) rotateY(-30deg) rotateX(7deg) rotateZ(3deg)}
+  transform:perspective(4200px) rotateY(-22deg) rotateX(4deg) rotateZ(2deg)}
 .banner .phone3d{filter:drop-shadow(24px 40px 50px #2a304040) drop-shadow(6px 12px 16px #2a304026)}
 
-/* The highlight: the icon's red into orange, in the type itself, like Apple's gradient headlines. */
-h1 em,.identity small em,.device-label em{font-style:normal;background:linear-gradient(95deg,#d42e1f 0%,#ea4f1f 50%,#f47a1a 100%);
-  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+/* The highlight: the highlighted words in indigo against the navy, the complement of the peach wash and an echo
+   of the sky on the right, apart from the app's warm screens; taglines and captions do the same. */
+h1 em,.identity small em,.device-label em{font-style:normal;background:none;color:#3a52d6;-webkit-text-fill-color:#3a52d6}
 .tablet10 header,.readme .spread header{text-align:left}
 .tablet10 header p,.readme .spread header p{margin-left:0}

@@ -1,5 +1,5 @@
 // SDK Monitor, after the original header: peach to sky blue with soft glows, a white curve, a frosted tile and
-// fine dot grids, continuous across the Play strip. The share image adds the app's own idea, Android API levels
+// continuous across the Play strip. The share image adds the app's own idea, Android API levels
 // as a line of seals, each in the shape and color the app gives that level.
 import {panoramaGradient, panoramaLights, panoramaX} from './studio/shapes.js';
 
@@ -57,18 +57,13 @@ function art(ctx) {
   const alone = kind === 'readme' || kind === 'social';
   const layout = ctx.slide?.layout;
   // The original header's field: peach in the top left, a pale middle, clear sky blue on the right, with soft
-  // glows, a wide white curve and a frosted tile (fine dot grids on the Play strip only). On the Play strip it is one picture laid across
+  // glows, a wide white curve and a frosted tile. On the Play strip it is one picture laid across
   // every card (x in card widths), the tiles and grids on the seams, half on each card.
   const wash = alone
     ? `<linearGradient id="wash" x1="0" y1="0" x2="1" y2=".6"><stop offset="0" stop-color="${PEACH}"/><stop offset=".45" stop-color="${PAPER}"/><stop offset="1" stop-color="${SKY}"/></linearGradient>`
     : panoramaGradient(ctx, 'wash', [PEACH, PAPER, SKY, PAPER, PEACH, SKY]);
   let body = `<defs>${wash}</defs><rect width="${W}" height="${H}" fill="url(#wash)"/>`;
-  const u = Math.max(W, H), g = Math.min(W, H) * .02;
-  const dots = (x0, y0, cols, rows) => {
-    let d = '';
-    for (let i = 0; i < cols; i++) for (let j = 0; j < rows; j++) d += `<circle cx="${x0 + i * g}" cy="${y0 + j * g}" r="${g * .12}"/>`;
-    return `<g fill="#8a93a8" fill-opacity=".35">${d}</g>`;
-  };
+  const u = Math.max(W, H);
   const tile = (x, y, t, rot) =>
     `<rect x="${x - t / 2}" y="${y - t / 2}" width="${t}" height="${t}" rx="${t * .22}" fill="#ffffff" fill-opacity=".35" stroke="#ffffff" stroke-opacity=".8" stroke-width="${t * .01}" transform="rotate(${rot} ${x} ${y})"/>`;
   const curve = (cx, cy, r) =>
@@ -86,7 +81,6 @@ function art(ctx) {
     body += curve(X(n * .78), H * 1.7, W * 1.6);
     const t = Math.min(W, H) * .16;
     for (let k = 1; k < n; k += 2) body += tile(X(k), H * (k % 4 === 1 ? .62 : .72), t, k % 4 === 1 ? -8 : 10);
-    for (let k = 2; k < n; k += 2) body += dots(X(k) - 2 * g, H * .08, 5, 4);
   }
   // The share image and the README header carry the line of seals at the bottom left, one per level, spanning the
   // name card above it (share image: icon edge to the tagline's end; header: under the name).
