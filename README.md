@@ -1,73 +1,84 @@
-![SDK Monitor: the change log, the app list with each app's target SDK, and an app's version history](store-listing/en-US/readme/hero.jpg)
+<h1 align="center">
+  <img src="store-listing/en-US/readme/header.jpg" width="100%" alt="SDK Monitor: see which apps keep up with Android, beside the app list with every app's target SDK">
+</h1>
 
-# SDK Monitor
+<p align="center"><strong>See which apps keep up with Android.</strong></p>
 
-**See which Android API level every installed app is targeting — and get notified when it changes.**
+<p align="center">Every app declares the Android version it was built for, its <em>target SDK</em>, and that decides which of Android's newer privacy and security protections apply to it. Android never shows it. SDK Monitor shows it for every app on your phone, and keeps a record of every change.</p>
 
-**Try the web demo:** [sdkmonitor.vercel.app](https://sdkmonitor.vercel.app/)
+<p align="center">
+  <a href="https://f-droid.org/packages/com.bernaferrari.sdkmonitor/"><img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" height="80" alt="Get it on F-Droid"></a>
+  <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://app/%7B%22id%22%3A%22com.bernaferrari.sdkmonitor%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2Fbernaferrari%2FSDKMonitor%22%2C%22author%22%3A%22bernaferrari%22%2C%22name%22%3A%22SDK%20Monitor%22%7D"><img src="docs/obtainium-badge.png" height="54" alt="Get it on Obtainium"></a>
+</p>
 
-Android does not surface `targetSdk` anywhere in Settings. SDK Monitor reads it from your installed apps, tracks updates over time, and shows you which apps are actually adopting newer security and privacy protections.
+<p align="center">
+  <a href="https://github.com/bernaferrari/SDKMonitor/releases/latest">Download the APK</a> · <a href="https://sdkmonitor.vercel.app/">Try it in your browser</a>
+</p>
 
-[![F-Droid](https://img.shields.io/f-droid/v/com.bernaferrari.sdkmonitor.svg)](https://f-droid.org/packages/com.bernaferrari.sdkmonitor/)
+## Where your apps stand
 
-## Get it
+<p align="center">
+  <img src="store-listing/en-US/readme/tools.jpg" width="100%" alt="SDK analytics by Android version, the change log of target SDK bumps, and an app's details with its version history">
+</p>
 
-[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" alt="Get it on F-Droid" height="80">](https://f-droid.org/packages/com.bernaferrari.sdkmonitor/)
+- **Every app at a glance.** Searchable, sorted by name or target SDK, each app marked with its level. Its shape says how current it is: a green sun for the latest Android, down to a red triangle for apps far behind.
+- **Analytics.** How many of your apps target each Android version, for your own apps, system apps or both. Tap a level to see the apps behind it.
+- **Every change, kept.** When an app updates and moves its target SDK, SDK Monitor logs it, so you can see who keeps up and who falls behind over weeks and months.
+- **Each app's story.** Target and minimum SDK, version, size, and a history of every version you have had.
 
-[Download from GitHub Releases](https://github.com/bernaferrari/SDKMonitor/releases/latest)
+## On a tablet
 
-## Screenshots
+<p align="center">
+  <img src="store-listing/en-US/readme/tablet.jpg" width="100%" alt="SDK analytics and the change log on a tablet, and a phone showing the apps that target Android 16">
+</p>
 
-![An app's version history, the change log of target SDK bumps, and offline settings with SDK analytics](store-listing/en-US/readme/tools.jpg)
+<p align="center">
+  <img src="store-listing/en-US/readme/big-screen.jpg" width="100%" alt="The app list on a tablet, and an app's details in dark mode on a phone">
+</p>
 
-![SDK Monitor on a tablet, the app list beside an app's details, with a phone in dark mode](store-listing/en-US/readme/big-screen.jpg)
+## Private by design
 
-## Features
+- **No internet permission.** SDK Monitor cannot go online, so nothing about your apps leaves your phone. No account, no ads, no analytics.
+- **Background checks, on your schedule.** It looks for changes as often as you choose and notifies you when an app moves its target SDK.
+- **Your data, exportable.** Save everything as a CSV file whenever you like.
+- **Light, dark and dynamic color**, in English, German, Spanish, French, Italian, Portuguese (Brazil), Japanese and Chinese.
 
-- **Target SDK at a glance** — Every installed app, sorted and searchable
-- **Change history** — See when an app bumps (or drops) its `targetSdk`
-- **Notifications** — Get alerted when a Play Store app changes its target level
-- **SDK analytics** — Charts showing how your app library is distributed across API levels
-- **App details** — Permissions, install dates, min/target SDK side by side
-- **CSV export** — Back up your data without leaving the device
-- **Fully offline** — No account, no cloud, no network access required
+## Why the target SDK matters
 
-Available in English, Italian, French, Portuguese (BR), German, Spanish, Japanese, and Chinese.
+Each Android release adds protections, but an app only gets most of them once it targets that release. An app targeting an old level is exempt from them, even on the newest phone.
 
-## Building from source
-
-### Android app
-
-Open the project in a recent Android Studio and run it, or build it from the terminal:
-
-```bash
-git clone https://github.com/bernaferrari/SDKMonitor.git
-cd SDKMonitor
-./gradlew assembleDebug
-```
-
-### Web demo
-
-Run the web demo locally (sample data is added the first time):
-
-```bash
-./gradlew :webApp:wasmJsBrowserDevelopmentRun
-```
-
-## What each target SDK level means for security and privacy
-
-Higher API levels mean apps must adopt newer platform protections.
+<details>
+<summary>What each level brings</summary>
 
 - **API 37** (Android 17): Advanced Protection Mode, post-quantum APK signing, Live Update APIs
 - **API 36** (Android 16): Local network permission, adaptive layout requirements, health data permission changes
 - **API 35** (Android 15): Private space, edge-to-edge enforcement, stricter foreground service limits
-- **API 34** (Android 14): Partial photo/video access
-- **API 33** (Android 13): Themed app icons, per-app language preferences, notification permission
-- **API 32** (Android 12L): Improved large screen support, new splash screen API
-- **API 31** (Android 12): Material You, approximate location permission, clipboard access notifications
-- **API 30** (Android 11): Scoped storage enforcement, one-time permissions, background location restrictions
-- **API 29** (Android 10): Scoped storage (optional), dark theme, gesture navigation
-- **API 28** (Android 9): Network security config required, Apache HTTP client removed
-- **API 26–27** (Android 8.x): Background execution limits, notification channels, adaptive icons
-- **API 24–25** (Android 7.x): File provider requirements, doze mode, multi-window support
-- **Below API 24**: Missing modern security and privacy features
+- **API 34** (Android 14): Partial photo and video access
+- **API 33** (Android 13): Notification permission, themed app icons, per-app language preferences
+- **API 32** (Android 12L): Better large screen support
+- **API 31** (Android 12): Approximate location, clipboard access notices, Material You
+- **API 30** (Android 11): Scoped storage enforced, one-time permissions, background location limits
+- **API 29** (Android 10): Scoped storage, dark theme, gesture navigation
+- **API 28** (Android 9): Cleartext traffic blocked by default, Apache HTTP client removed
+- **API 26–27** (Android 8): Background execution limits, notification channels, adaptive icons
+- **API 24–25** (Android 7): File provider requirement, Doze, multi-window
+- **Below API 24**: None of the modern privacy and security protections
+
+</details>
+
+## Building from source
+
+SDK Monitor is Kotlin Multiplatform with Compose and Material 3 Expressive: the Android app, and a web demo that runs the same screens on sample data.
+
+```bash
+git clone https://github.com/bernaferrari/SDKMonitor.git
+cd SDKMonitor
+./gradlew :app:assembleDebug                      # Android app
+./gradlew :webApp:wasmJsBrowserDevelopmentRun     # web demo
+```
+
+The store and README images are regenerated from the app itself; see [store-listing/README.md](store-listing/README.md).
+
+## License
+
+[Apache License 2.0](LICENSE)

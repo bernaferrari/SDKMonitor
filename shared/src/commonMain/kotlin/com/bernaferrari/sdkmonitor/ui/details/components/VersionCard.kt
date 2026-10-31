@@ -27,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.bernaferrari.sdkmonitor.domain.AppVersion
+import com.bernaferrari.sdkmonitor.ui.components.SdkVersionBadge
 import com.bernaferrari.sdkmonitor.ui.platform.apiToComposeColor
 import com.bernaferrari.sdkmonitor.ui.platform.sdkStrings
 
@@ -153,28 +154,8 @@ fun VersionTimelineEntry(
                         }
                     }
 
-                    Surface(
-                        shape = RoundedCornerShape(12.dp),
-                        color = apiColor.copy(alpha = 0.12f),
-                    ) {
-                        Column(
-                            modifier = Modifier.padding(horizontal = 11.dp, vertical = 7.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                        ) {
-                            Text(
-                                text = "API",
-                                style = MaterialTheme.typography.labelSmall,
-                                fontWeight = FontWeight.Bold,
-                                color = apiColor,
-                            )
-                            Text(
-                                text = versionInfo.sdkVersion.toString(),
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.ExtraBold,
-                                color = apiColor,
-                            )
-                        }
-                    }
+                    // The level in its shape with its Android version under it, as in the app list.
+                    SdkVersionBadge(sdkVersion = versionInfo.sdkVersion)
                 }
             }
         }

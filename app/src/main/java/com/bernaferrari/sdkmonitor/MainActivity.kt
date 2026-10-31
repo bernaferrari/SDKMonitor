@@ -38,6 +38,7 @@ class MainActivity : ComponentActivity() {
                 darkTheme = themeViewModel.shouldUseDarkTheme(),
                 dynamicColor = themeViewModel.shouldUseDynamicColor(),
                 themePalette = themeViewModel.currentThemePalette(),
+                colorStyle = themeViewModel.currentColorStyle(),
             ) {
                 CompositionLocalProvider(
                     LocalSdkStrings provides sdkStrings,

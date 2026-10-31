@@ -10,6 +10,7 @@ import com.bernaferrari.sdkmonitor.domain.LocalTimeUnit
 import com.bernaferrari.sdkmonitor.domain.SdkDistribution
 import com.bernaferrari.sdkmonitor.domain.SettingsPreferences
 import com.bernaferrari.sdkmonitor.domain.ThemeMode
+import com.bernaferrari.sdkmonitor.domain.ColorStyle
 import com.bernaferrari.sdkmonitor.domain.ThemePalette
 import com.bernaferrari.sdkmonitor.domain.repository.AppsRepository
 import com.bernaferrari.sdkmonitor.domain.repository.PreferencesRepository
@@ -60,6 +61,7 @@ class SettingsViewModel(
                                 SettingsPreferences(
                                     themeMode = userPreferences.themeMode,
                                     themePalette = userPreferences.themePalette,
+                                    colorStyle = userPreferences.colorStyle,
                                     appFilter = userPreferences.appFilter,
                                     backgroundSync = userPreferences.backgroundSync,
                                     syncInterval = interval,
@@ -166,6 +168,10 @@ class SettingsViewModel(
                         )
                 }
             }
+        }
+
+        fun updateColorStyle(colorStyle: ColorStyle) {
+            viewModelScope.launch { preferencesRepository.updateColorStyle(colorStyle) }
         }
 
         fun updateThemePalette(themePalette: ThemePalette) {

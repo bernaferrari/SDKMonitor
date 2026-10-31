@@ -111,12 +111,12 @@
     
     <!-- Logs Screen -->
     <string name="change_logs">変更履歴</string>
-    <string name="loading_change_history">✨ 変更履歴を読み込み中</string>
+    <string name="loading_change_history">変更履歴を読み込み中</string>
     <string name="analyzing_app_ecosystem">アプリエコシステムを分析中…</string>
     <string name="oops_something_went_wrong">おっと！問題が発生しました</string>
     <string name="no_changes_yet">まだ変更はありません</string>
     <string name="when_apps_update_description">アプリがターゲットSDKバージョンを更新すると、ここにタイムラインが表示されます。</string>
-    <string name="sdk_monitor_watching">✨ SDKモニターが監視中</string>
+    <string name="sdk_monitor_watching">SDKモニターが監視中</string>
     <string name="change_timeline">変更履歴</string>
     <string name="showing">表示中</string>
     <string name="activity_overview">アクティビティ概要</string>
@@ -171,7 +171,7 @@
     <string name="loading_settings">設定を読み込み中…</string>
     <string name="error_loading_settings">設定の読み込みエラー</string>
     <string name="settings_screen_title">設定</string>
-    <string name="privacy_first">🔒 プライバシー優先</string>
+    <string name="privacy_first">プライバシー優先</string>
     <string name="privacy_description">このアプリは個人データを収集、保存、送信しません。すべての情報はお使いのデバイスに完全にローカルに保存されます。</string>
     <string name="sdk_analytics">SDK分析</string>
     <string name="apps_lowercase">アプリ</string>

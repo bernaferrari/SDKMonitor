@@ -116,12 +116,12 @@
     
     <!-- Logs Screen -->
     <string name="change_logs">Change Logs</string>
-    <string name="loading_change_history">✨ Loading Change History</string>
+    <string name="loading_change_history">Loading change history</string>
     <string name="analyzing_app_ecosystem">Analyzing your app ecosystem…</string>
     <string name="oops_something_went_wrong">Oops! Something went wrong</string>
     <string name="no_changes_yet">No Changes Yet</string>
     <string name="when_apps_update_description">When apps update their target SDK versions, you\'ll see a timeline of changes here.</string>
-    <string name="sdk_monitor_watching">✨ SDK Monitor is watching</string>
+    <string name="sdk_monitor_watching">SDK Monitor is watching</string>
     <string name="change_timeline">Change Timeline</string>
     <string name="showing">Showing</string>
     <string name="activity_overview">Activity Overview</string>
@@ -216,7 +216,7 @@
     <string name="loading_settings">Loading settings…</string>
     <string name="error_loading_settings">Error loading settings</string>
     <string name="settings_screen_title">Settings</string>
-    <string name="privacy_first">🔒 Privacy First</string>
+    <string name="privacy_first">Privacy first</string>
     <string name="privacy_description">This app doesn\'t collect, store, or transmit any personal data. All information remains completely local on your device.</string>
     <string name="sdk_analytics">SDK Analytics</string>
     <string name="apps_lowercase">apps</string>
@@ -239,7 +239,7 @@
 
     <!-- About Screen -->
     <string name="made_with_care_by">Made with care by</string>
-    <string name="privacy_first_title">Privacy First</string>
+    <string name="privacy_first_title">Privacy first</string>
     <string name="zero_tracking">Zero tracking</string>
     <string name="open_source">Open Source</string>
     <string name="view_on_github">View on GitHub</string>

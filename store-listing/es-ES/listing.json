@@ -1,0 +1,5 @@
+{
+  "title": "SDK Monitor",
+  "shortDescription": "Mira el SDK de destino de cada app y entérate cuando una app lo cambia.",
+  "fullDescription": "SDK Monitor muestra el SDK de destino de cada app instalada: la versión de Android para la que está hecha. Las apps que apuntan a una versión más nueva reciben las protecciones de privacidad y seguridad más recientes de Android; las que se quedan atrás, no.\n\n• Todas las apps instaladas con su SDK de destino, ordenables y con búsqueda\n• Un registro de cada cambio de SDK de destino\n• Una notificación cuando una app cambia su SDK de destino\n• El historial de versiones de cada app, con el SDK mínimo y de destino lado a lado\n• Claro, oscuro y color dinámico, en teléfonos, tabletas y plegables\n• Exportación a CSV\n\nSin cuenta, sin anuncios y sin acceso a la red: nada sale de tu teléfono."
+}

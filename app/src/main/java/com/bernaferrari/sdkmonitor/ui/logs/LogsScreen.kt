@@ -6,7 +6,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bernaferrari.sdkmonitor.extensions.convertTimestampToDate
-import com.bernaferrari.sdkmonitor.ui.state.LogsUiState
+import com.bernaferrari.sdkmonitor.ui.insights.SdkInsights
+import com.bernaferrari.sdkmonitor.ui.settings.SettingsViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 /**
@@ -21,17 +22,25 @@ fun LogsScreen(
     modifier: Modifier = Modifier,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val appFilter by viewModel.appFilter.collectAsStateWithLifecycle()
+    // The SDK insights that lead this tab come from the same model as Settings.
+    val settingsViewModel: SettingsViewModel = koinViewModel()
+    val settingsState by settingsViewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
     LogsContent(
         uiState = uiState,
-        appFilter = appFilter,
         selectedPackageName = selectedPackageName,
         formatTime = { ts -> ts.convertTimestampToDate(context) },
         onLogClick = { onNavigateToAppDetails(it.packageName) },
         onRetry = viewModel::refreshLogs,
         onRefresh = viewModel::refreshLogs,
         contentModifier = modifier,
+        insights = {
+            SdkInsights(
+                state = settingsState,
+                onAppFilterChange = settingsViewModel::updateAppFilter,
+                onAppClick = onNavigateToAppDetails,
+            )
+        },
     )
 }

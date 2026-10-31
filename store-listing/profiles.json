@@ -32,5 +32,12 @@
     "frame": "phone",
     "label": "README",
     "defaultLocaleOnly": true
+  },
+  "social": {
+    "width": 1280,
+    "height": 640,
+    "frame": "phone",
+    "label": "Share image",
+    "defaultLocaleOnly": true
   }
 }

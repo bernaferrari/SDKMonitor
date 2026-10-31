@@ -1,44 +1,40 @@
 package com.bernaferrari.sdkmonitor.ui.settings.components
 
-import androidx.compose.ui.graphics.vector.ImageVector
-
-import com.bernaferrari.sdkmonitor.ui.icons.MaterialSymbols
-
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonGroupDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuAnchorType
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
-import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialShapes
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.ToggleButton
+import androidx.compose.material3.ToggleButtonDefaults
+import androidx.compose.material3.toShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -46,12 +42,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.bernaferrari.sdkmonitor.domain.LocalTimeUnit
+import com.bernaferrari.sdkmonitor.ui.components.ExpressiveListItemPosition
+import com.bernaferrari.sdkmonitor.ui.components.expressiveListItemPosition
+import com.bernaferrari.sdkmonitor.ui.icons.MaterialSymbols
 import com.bernaferrari.sdkmonitor.ui.platform.sdkStrings
 
 enum class SyncPreset(
@@ -67,7 +70,7 @@ enum class SyncPreset(
     CUSTOM({ it.custom }, MaterialSymbols.Outlined.Tune, MaterialSymbols.Filled.Tune, "", LocalTimeUnit.HOURS),
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun BackgroundSyncDialog(
     isEnabled: Boolean = false,
@@ -100,7 +103,6 @@ fun BackgroundSyncDialog(
     var customUnit by remember {
         mutableStateOf(if (selectedPreset == SyncPreset.CUSTOM) currentUnit else LocalTimeUnit.HOURS)
     }
-    var unitMenuExpanded by remember { mutableStateOf(false) }
 
     fun unitLabel(unit: LocalTimeUnit, value: String): String {
         val one = value.toIntOrNull() == 1
@@ -121,18 +123,17 @@ fun BackgroundSyncDialog(
                     .padding(24.dp)
                     .widthIn(max = 480.dp)
                     .fillMaxWidth(),
-            shape = RoundedCornerShape(24.dp),
-            color = MaterialTheme.colorScheme.surface,
-            shadowElevation = 8.dp,
+            shape = RoundedCornerShape(28.dp),
+            color = MaterialTheme.colorScheme.surfaceContainerHigh,
         ) {
             Column(
                 modifier =
                     Modifier
-                        .padding(20.dp)
+                        .padding(24.dp)
                         .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
-                Text(s.syncDialogTitle, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+                SyncHeader(enabled = enabled, title = s.syncDialogTitle, description = s.backgroundSyncDescription)
 
                 AnimatedVisibility(
                     visible = !notificationsEnabled,
@@ -146,127 +147,87 @@ fun BackgroundSyncDialog(
                     }
                 }
 
-                Card(
+                // On or off: one large row, tinted when on.
+                Surface(
                     onClick = { enabled = !enabled },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(16.dp),
-                    colors =
-                        CardDefaults.cardColors(
-                            containerColor =
-                                if (enabled) {
-                                    MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.45f)
-                                } else {
-                                    MaterialTheme.colorScheme.surfaceContainerHigh
-                                },
-                        ),
+                    shape = RoundedCornerShape(20.dp),
+                    color = if (enabled) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceContainerLowest,
+                    contentColor = if (enabled) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurface,
                 ) {
                     Row(
-                        modifier = Modifier.fillMaxWidth().padding(16.dp),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 16.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                            Text(s.enableSync, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
-                            Text(
-                                text = if (enabled) s.backgroundSyncDescription else s.tapToConfigureSync,
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                        }
-                        Switch(checked = enabled, onCheckedChange = null)
+                        Text(s.enableSync, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f))
+                        Switch(
+                            checked = enabled,
+                            onCheckedChange = null,
+                            thumbContent = {
+                                if (enabled) Icon(MaterialSymbols.Filled.Check, contentDescription = null, modifier = Modifier.size(SwitchDefaults.IconSize))
+                            },
+                        )
                     }
                 }
 
                 AnimatedVisibility(visible = enabled) {
-                    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                        Text(s.interval, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold)
-                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            SyncPreset.entries.forEach { option ->
-                                val selected = preset == option
-                                OutlinedCard(
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Text(
+                            s.interval,
+                            style = MaterialTheme.typography.titleSmall,
+                            fontWeight = FontWeight.SemiBold,
+                            color = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.padding(start = 4.dp, top = 4.dp),
+                        )
+                        // How often: a connected list, the chosen row tinted and checked.
+                        Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                            SyncPreset.entries.forEachIndexed { index, option ->
+                                SyncPresetRow(
+                                    title = option.title(s),
+                                    icon = if (preset == option) option.iconSelected else option.icon,
+                                    selected = preset == option,
+                                    position = expressiveListItemPosition(index, SyncPreset.entries.lastIndex),
                                     onClick = { preset = option },
-                                    modifier = Modifier.weight(1f),
-                                    border =
-                                        BorderStroke(
-                                            if (selected) 2.dp else 1.dp,
-                                            if (selected) {
-                                                MaterialTheme.colorScheme.primary
-                                            } else {
-                                                MaterialTheme.colorScheme.outlineVariant
-                                            },
-                                        ),
-                                ) {
-                                    Column(
-                                        modifier = Modifier.padding(10.dp).fillMaxWidth(),
-                                        horizontalAlignment = Alignment.CenterHorizontally,
-                                    ) {
-                                        Icon(
-                                            if (selected) option.iconSelected else option.icon,
-                                            contentDescription = null,
-                                            tint =
-                                                if (selected) {
-                                                    MaterialTheme.colorScheme.primary
-                                                } else {
-                                                    MaterialTheme.colorScheme.onSurfaceVariant
-                                                },
-                                        )
-                                        Text(
-                                            option.title(s),
-                                            style = MaterialTheme.typography.labelSmall,
-                                            maxLines = 1,
-                                        )
-                                    }
-                                }
+                                )
                             }
                         }
 
                         AnimatedVisibility(visible = preset == SyncPreset.CUSTOM) {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                verticalAlignment = Alignment.CenterVertically,
+                            Column(
+                                modifier = Modifier.padding(top = 8.dp),
+                                verticalArrangement = Arrangement.spacedBy(12.dp),
                             ) {
                                 OutlinedTextField(
                                     value = customInterval,
                                     onValueChange = { value ->
                                         if (value.all(Char::isDigit) && value.length <= 3) customInterval = value
                                     },
-                                    modifier = Modifier.weight(0.45f),
+                                    modifier = Modifier.fillMaxWidth(),
                                     singleLine = true,
+                                    shape = RoundedCornerShape(16.dp),
                                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                                     label = { Text(s.every) },
                                     isError = customInterval.isBlank() || customInterval == "0",
                                 )
-                                ExposedDropdownMenuBox(
-                                    expanded = unitMenuExpanded,
-                                    onExpandedChange = { unitMenuExpanded = it },
-                                    // Match the vertical label space reserved by the "Every" field.
-                                    modifier = Modifier.weight(0.55f).padding(top = 8.dp),
-                                ) {
-                                    OutlinedTextField(
-                                        value = unitLabel(customUnit, customInterval.ifBlank { "1" }),
-                                        onValueChange = {},
-                                        readOnly = true,
-                                        modifier =
-                                            Modifier
-                                                .fillMaxWidth()
-                                                .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable),
-                                        trailingIcon = {
-                                            ExposedDropdownMenuDefaults.TrailingIcon(unitMenuExpanded)
-                                        },
-                                    )
-                                    DropdownMenu(
-                                        expanded = unitMenuExpanded,
-                                        onDismissRequest = { unitMenuExpanded = false },
-                                    ) {
-                                        LocalTimeUnit.entries.forEach { unit ->
-                                            DropdownMenuItem(
-                                                text = { Text(unitLabel(unit, customInterval.ifBlank { "1" })) },
-                                                onClick = {
-                                                    customUnit = unit
-                                                    unitMenuExpanded = false
+                                Row(horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween)) {
+                                    LocalTimeUnit.entries.forEachIndexed { index, unit ->
+                                        ToggleButton(
+                                            checked = customUnit == unit,
+                                            onCheckedChange = { customUnit = unit },
+                                            modifier = Modifier.weight(1f),
+                                            colors = ToggleButtonDefaults.colors(
+                                                checkedContainerColor = MaterialTheme.colorScheme.primary,
+                                                checkedContentColor = MaterialTheme.colorScheme.onPrimary,
+                                                containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+                                                contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                            ),
+                                            shapes =
+                                                when (index) {
+                                                    0 -> ButtonGroupDefaults.connectedLeadingButtonShapes()
+                                                    LocalTimeUnit.entries.lastIndex -> ButtonGroupDefaults.connectedTrailingButtonShapes()
+                                                    else -> ButtonGroupDefaults.connectedMiddleButtonShapes()
                                                 },
-                                            )
+                                        ) {
+                                            Text(unitLabel(unit, customInterval.ifBlank { "1" }), maxLines = 1)
                                         }
                                     }
                                 }
@@ -275,13 +236,12 @@ fun BackgroundSyncDialog(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(4.dp))
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.End),
+                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
                 ) {
-                    OutlinedButton(onClick = onDismiss) { Text(s.cancel) }
-                    FilledTonalButton(
+                    TextButton(onClick = onDismiss) { Text(s.cancel) }
+                    Button(
                         onClick = {
                             val interval =
                                 when (preset) {
@@ -299,6 +259,79 @@ fun BackgroundSyncDialog(
                     ) { Text(s.save) }
                 }
             }
+        }
+    }
+}
+
+/** The dialog's crest: sync in a scalloped seal, bright when checking is on, quiet when off. */
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+private fun SyncHeader(
+    enabled: Boolean,
+    title: String,
+    description: String,
+) {
+    val scheme = MaterialTheme.colorScheme
+    val seal by animateColorAsState(if (enabled) scheme.primary else scheme.outline, label = "sync_seal")
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        Box(
+            modifier = Modifier.size(72.dp).background(seal, MaterialShapes.Cookie12Sided.toShape()),
+            contentAlignment = Alignment.Center,
+        ) {
+            Icon(
+                if (enabled) MaterialSymbols.Filled.Sync else MaterialSymbols.Filled.SyncDisabled,
+                contentDescription = null,
+                modifier = Modifier.size(32.dp),
+                tint = scheme.surface,
+            )
+        }
+        Text(title, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
+        Text(
+            description,
+            style = MaterialTheme.typography.bodyMedium,
+            color = scheme.onSurfaceVariant,
+            textAlign = TextAlign.Center,
+        )
+    }
+}
+
+@Composable
+private fun SyncPresetRow(
+    title: String,
+    icon: ImageVector,
+    selected: Boolean,
+    position: ExpressiveListItemPosition,
+    onClick: () -> Unit,
+) {
+    val outer = 20.dp
+    val inner = 6.dp
+    val shape =
+        RoundedCornerShape(
+            topStart = if (position == ExpressiveListItemPosition.First || position == ExpressiveListItemPosition.Single) outer else inner,
+            topEnd = if (position == ExpressiveListItemPosition.First || position == ExpressiveListItemPosition.Single) outer else inner,
+            bottomStart = if (position == ExpressiveListItemPosition.Last || position == ExpressiveListItemPosition.Single) outer else inner,
+            bottomEnd = if (position == ExpressiveListItemPosition.Last || position == ExpressiveListItemPosition.Single) outer else inner,
+        )
+    val scheme = MaterialTheme.colorScheme
+    Surface(
+        onClick = onClick,
+        shape = shape,
+        color = if (selected) scheme.secondaryContainer else scheme.surfaceContainerLowest,
+        contentColor = if (selected) scheme.onSecondaryContainer else scheme.onSurface,
+        modifier = Modifier.fillMaxWidth().semantics { this.selected = selected },
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp),
+            horizontalArrangement = Arrangement.spacedBy(14.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Icon(icon, contentDescription = null)
+            Text(title, style = MaterialTheme.typography.bodyLarge, fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal, modifier = Modifier.weight(1f))
+            if (selected) Icon(MaterialSymbols.Filled.Check, contentDescription = null)
         }
     }
 }

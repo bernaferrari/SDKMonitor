@@ -9,5 +9,5 @@ import com.bernaferrari.sdkmonitor.domain.SortOption
 fun SortOption.icon(): ImageVector =
     when (this) {
         SortOption.NAME -> MaterialSymbols.Filled.SortByAlpha
-        SortOption.SDK -> MaterialSymbols.Filled.Android
+        SortOption.SDK -> MaterialSymbols.Filled.Numbers
     }

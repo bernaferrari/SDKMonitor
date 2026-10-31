@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copy the shared UI asks for (SdkStrings); AndroidSdkPlatform maps each to its field. -->
+<resources>
+    <string name="analytics_empty">まだ統計がありません</string>
+    <string name="analytics_section">統計</string>
+    <string name="app_filter">アプリの絞り込み</string>
+    <string name="clear_logs">ログを消去</string>
+    <string name="days">日</string>
+    <string name="enabled_daily">有効・毎日チェック</string>
+    <string name="enabled_monthly">有効・毎月チェック</string>
+    <string name="enabled_weekly">有効・毎週チェック</string>
+    <string name="failed_to_load_apps">アプリを読み込めませんでした</string>
+    <string name="hours">時間</string>
+    <string name="interval">間隔</string>
+    <string name="last_update">最終更新</string>
+    <string name="minutes">分</string>
+    <string name="no_analytics_data">まだ統計データがありません</string>
+    <string name="no_analytics_subtitle">アプリを同期するとターゲット SDK の分布が表示されます</string>
+    <string name="no_apps_subtitle">別の絞り込みや検索を試してください</string>
+    <string name="no_logs_subtitle">アプリが更新されると SDK の変更がここに表示されます</string>
+    <string name="notification_permission_body">通知を許可すると、アプリがターゲット SDK を変えたときに SDK Monitor がお知らせします。</string>
+    <string name="notification_permission_title">通知を有効にする</string>
+    <string name="notification_warning_body">システム設定を開いて、バックグラウンド同期の通知を有効にしてください。</string>
+    <string name="notification_warning_title">通知がオフです</string>
+    <string name="notifications_required">バックグラウンド同期には通知が必要です</string>
+    <string name="package_name">パッケージ</string>
+    <string name="permissions">権限</string>
+    <string name="plural_days">日</string>
+    <string name="plural_hours">時間</string>
+    <string name="plural_minutes">分</string>
+    <string name="rate_app">GitHub で評価</string>
+    <string name="refresh">更新</string>
+    <string name="search">検索</string>
+    <string name="singular_day">日</string>
+    <string name="singular_hour">時間</string>
+    <string name="singular_minute">分</string>
+    <string name="size">サイズ</string>
+    <string name="sync_dialog_title">バックグラウンド同期</string>
+    <string name="sync_interval">同期の間隔</string>
+    <string name="syncing">アプリを同期中…</string>
+    <string name="system_app">システム</string>
+    <string name="tap_to_configure_sync">タップして自動チェックを設定</string>
+    <string name="theme">テーマ</string>
+    <string name="user_app">ユーザー</string>
+    <string name="version">バージョン</string>
+    <string name="color_style">配色スタイル</string>
+    <string name="style_expressive">表情豊か</string>
+    <string name="style_vibrant">鮮やか</string>
+    <string name="style_tonal">トーナル</string>
+    <string name="style_cmf">落ち着き</string>
+</resources>

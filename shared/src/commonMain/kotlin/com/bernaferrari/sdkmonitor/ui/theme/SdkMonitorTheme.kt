@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
 import com.bernaferrari.sdkmonitor.domain.ThemeMode
+import com.bernaferrari.sdkmonitor.domain.ColorStyle
 import com.bernaferrari.sdkmonitor.domain.ThemePalette
 import com.bernaferrari.sdkmonitor.ui.platform.AppIconProvider
 import com.bernaferrari.sdkmonitor.ui.platform.DefaultSdkStrings
@@ -23,6 +24,7 @@ import com.bernaferrari.sdkmonitor.ui.platform.SdkStrings
 fun SdkMonitorTheme(
     themeMode: ThemeMode = ThemeMode.SYSTEM,
     themePalette: ThemePalette = ThemePalette.EMBER,
+    colorStyle: ColorStyle = ColorStyle.TONAL,
     darkTheme: Boolean =
         when (themeMode) {
             ThemeMode.DARK -> true
@@ -39,9 +41,9 @@ fun SdkMonitorTheme(
     ) {
         MaterialExpressiveTheme(
             colorScheme =
-                com.materialkolor.rememberDynamicMaterialThemeState(
+                com.materialkolor.material3.rememberDynamicMaterialThemeState(
                     seedColor = Color((themePalette.seedArgb ?: ThemePalette.EMBER.seedArgb)!!),
-                    style = com.materialkolor.PaletteStyle.TonalSpot,
+                    style = colorStyle.paletteStyle(),
                     isDark = darkTheme,
                     specVersion = com.materialkolor.dynamiccolor.ColorSpec.SpecVersion.SPEC_2025,
                 ).colorScheme,

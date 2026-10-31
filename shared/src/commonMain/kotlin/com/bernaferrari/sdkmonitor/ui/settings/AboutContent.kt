@@ -1,6 +1,5 @@
 package com.bernaferrari.sdkmonitor.ui.settings
 
-import com.bernaferrari.sdkmonitor.ui.icons.MaterialSymbols
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -35,19 +34,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.bernaferrari.sdkmonitor.shared.resources.Res
-import com.bernaferrari.sdkmonitor.shared.resources.github_logo
-import com.bernaferrari.sdkmonitor.shared.resources.linkedin_logo
-import com.bernaferrari.sdkmonitor.shared.resources.reddit_logo
-import com.bernaferrari.sdkmonitor.shared.resources.x_logo
+import com.bernaferrari.sdkmonitor.ui.icons.BrandIcons
+import com.bernaferrari.sdkmonitor.ui.icons.MaterialSymbols
+import com.bernaferrari.sdkmonitor.ui.icons.SdkMonitorMark
 import com.bernaferrari.sdkmonitor.ui.platform.sdkStrings
-import org.jetbrains.compose.resources.painterResource
-import androidx.compose.ui.graphics.vector.ImageVector
-import org.jetbrains.compose.resources.DrawableResource
 
 sealed class AboutAction {
     data class OpenUrl(
@@ -65,14 +61,13 @@ private data class AboutLink(
     val title: String,
     val subtitle: String,
     val action: AboutAction,
-    val imageVector: ImageVector? = null,
-    val drawable: DrawableResource? = null,
+    val imageVector: ImageVector,
 )
 
 private data class SocialLink(
     val name: String,
     val url: String,
-    val drawable: org.jetbrains.compose.resources.DrawableResource,
+    val icon: ImageVector,
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -96,7 +91,7 @@ fun AboutContent(
                 title = s.openSource,
                 subtitle = s.viewOnGitHub,
                 action = AboutAction.OpenUrl("https://github.com/bernaferrari/SDKMonitor"),
-                drawable = Res.drawable.github_logo,
+                imageVector = BrandIcons.GitHub,
             ),
             AboutLink(
                 title = s.contact,
@@ -110,17 +105,17 @@ fun AboutContent(
             SocialLink(
                 name = "LinkedIn",
                 url = "https://www.linkedin.com/in/bernaferrari",
-                drawable = Res.drawable.linkedin_logo,
+                icon = BrandIcons.LinkedIn,
             ),
             SocialLink(
                 name = "X",
                 url = "https://x.com/bernaferrari",
-                drawable = Res.drawable.x_logo,
+                icon = BrandIcons.X,
             ),
             SocialLink(
                 name = "Reddit",
                 url = "https://www.reddit.com/user/bernaferrari",
-                drawable = Res.drawable.reddit_logo,
+                icon = BrandIcons.Reddit,
             ),
         )
     val dataLinks =
@@ -238,7 +233,7 @@ private fun AboutSocialRow(
             links.forEach { link ->
                 IconButton(onClick = { onOpenUrl(link.url) }) {
                     Icon(
-                        painter = painterResource(link.drawable),
+                        imageVector = link.icon,
                         contentDescription = link.name,
                         modifier = Modifier.size(22.dp),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -270,18 +265,14 @@ private fun AboutHero(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(20.dp),
         ) {
+            // The launcher icon itself: the banded mark on white, in the icon's own squircle.
             Surface(
                 modifier = Modifier.size(64.dp),
                 shape = RoundedCornerShape(19.dp),
-                color = heroContentColor.copy(alpha = 0.14f),
+                color = Color.White,
             ) {
                 Box(contentAlignment = Alignment.Center) {
-                    Text(
-                        text = "SDK",
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Black,
-                        color = heroContentColor,
-                    )
+                    Icon(SdkMonitorMark, contentDescription = null, tint = Color.Unspecified, modifier = Modifier.size(width = 44.dp, height = 18.dp))
                 }
             }
             Column(
@@ -374,20 +365,12 @@ private fun AboutLinkRow(
             color = MaterialTheme.colorScheme.primaryContainer,
         ) {
             Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
-                when {
-                    link.drawable != null -> Icon(
-                        painter = painterResource(link.drawable),
-                        contentDescription = null,
-                        modifier = Modifier.size(22.dp),
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    )
-                    link.imageVector != null -> Icon(
-                        imageVector = link.imageVector,
-                        contentDescription = null,
-                        modifier = Modifier.size(22.dp),
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    )
-                }
+                Icon(
+                    imageVector = link.imageVector,
+                    contentDescription = null,
+                    modifier = Modifier.size(22.dp),
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                )
             }
         }
         Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {

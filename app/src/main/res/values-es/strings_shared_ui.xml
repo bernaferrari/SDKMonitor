@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copy the shared UI asks for (SdkStrings); AndroidSdkPlatform maps each to its field. -->
+<resources>
+    <string name="analytics_empty">Aún no hay estadísticas</string>
+    <string name="analytics_section">Estadísticas</string>
+    <string name="app_filter">Filtro de apps</string>
+    <string name="clear_logs">Borrar registro</string>
+    <string name="days">Días</string>
+    <string name="enabled_daily">Activado · comprobación diaria</string>
+    <string name="enabled_monthly">Activado · comprobación mensual</string>
+    <string name="enabled_weekly">Activado · comprobación semanal</string>
+    <string name="failed_to_load_apps">No se pudieron cargar las apps</string>
+    <string name="hours">Horas</string>
+    <string name="interval">Intervalo</string>
+    <string name="last_update">Última actualización</string>
+    <string name="minutes">Minutos</string>
+    <string name="no_analytics_data">Aún no hay datos de estadísticas</string>
+    <string name="no_analytics_subtitle">Sincroniza las apps para ver la distribución de SDK de destino</string>
+    <string name="no_apps_subtitle">Prueba otro filtro u otra búsqueda</string>
+    <string name="no_logs_subtitle">Los cambios de SDK aparecerán aquí cuando las apps se actualicen</string>
+    <string name="notification_permission_body">Permite las notificaciones para que SDK Monitor te avise cuando una app cambie su SDK de destino.</string>
+    <string name="notification_permission_title">Activar notificaciones</string>
+    <string name="notification_warning_body">Abre los ajustes del sistema para activar las notificaciones de la sincronización en segundo plano.</string>
+    <string name="notification_warning_title">Notificaciones desactivadas</string>
+    <string name="notifications_required">La sincronización en segundo plano necesita notificaciones</string>
+    <string name="package_name">Paquete</string>
+    <string name="permissions">Permisos</string>
+    <string name="plural_days">días</string>
+    <string name="plural_hours">horas</string>
+    <string name="plural_minutes">minutos</string>
+    <string name="rate_app">Valorar en GitHub</string>
+    <string name="refresh">Actualizar</string>
+    <string name="search">Buscar</string>
+    <string name="singular_day">día</string>
+    <string name="singular_hour">hora</string>
+    <string name="singular_minute">minuto</string>
+    <string name="size">Tamaño</string>
+    <string name="sync_dialog_title">Sincronización en segundo plano</string>
+    <string name="sync_interval">Intervalo de sincronización</string>
+    <string name="syncing">Sincronizando apps…</string>
+    <string name="system_app">Sistema</string>
+    <string name="tap_to_configure_sync">Toca para configurar las comprobaciones automáticas</string>
+    <string name="theme">Tema</string>
+    <string name="user_app">Usuario</string>
+    <string name="version">Versión</string>
+    <string name="color_style">Estilo de color</string>
+    <string name="style_expressive">Expresivo</string>
+    <string name="style_vibrant">Vibrante</string>
+    <string name="style_tonal">Tonal</string>
+    <string name="style_cmf">Suave</string>
+</resources>

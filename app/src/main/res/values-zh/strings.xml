@@ -117,12 +117,12 @@
     
     <!-- Logs Screen -->
     <string name="change_logs">变更记录</string>
-    <string name="loading_change_history">✨ 正在加载变更历史</string>
+    <string name="loading_change_history">正在加载变更历史</string>
     <string name="analyzing_app_ecosystem">正在分析您的应用生态系统…</string>
     <string name="oops_something_went_wrong">哎呀！出现了问题</string>
     <string name="no_changes_yet">暂无变化</string>
     <string name="when_apps_update_description">当应用更新其目标SDK版本时，您将在此处看到变化时间线。</string>
-    <string name="sdk_monitor_watching">✨ SDK监视器正在监控</string>
+    <string name="sdk_monitor_watching">SDK监视器正在监控</string>
     <string name="change_timeline">变化时间线</string>
     <string name="showing">显示</string>
     <string name="activity_overview">活动概览</string>
@@ -215,7 +215,7 @@
     <string name="loading_settings">正在加载设置…</string>
     <string name="error_loading_settings">加载设置时出错</string>
     <string name="settings_screen_title">设置</string>
-    <string name="privacy_first">🔒 隐私优先</string>
+    <string name="privacy_first">隐私优先</string>
     <string name="privacy_description">此应用不收集、存储或传输任何个人数据。所有信息都完全保存在您的设备本地。</string>
     <string name="sdk_analytics">SDK分析</string>
     <string name="apps_lowercase">应用</string>

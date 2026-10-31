@@ -1,51 +1,71 @@
 {
- "apps": {
-  "title": "Every app's\n*target SDK.*",
-  "body": "See which apps keep up with Android\nand which fall behind.",
-  "alt": "The app list, each app with its target SDK and Android version"
- },
- "logs": {
-  "title": "Know when\n*apps change.*",
-  "body": "Every target SDK bump,\nlogged as it happens.",
-  "alt": "The change log: Harbor Chat, Clearsky Weather and Vault Passwords moving to Android 17"
- },
- "details": {
-  "title": "Every update,\n*on the record.*",
-  "body": "Versions, dates and SDKs\nfor each app.",
-  "alt": "Clearsky Weather's details: target and minimum SDK, and its version history"
- },
- "settings": {
-  "title": "Private,\n*and offline.*",
-  "body": "No account, no network,\nnothing leaves your phone.",
-  "alt": "Settings: theme, sorting, system apps and background sync"
- },
- "dark": {
-  "title": "Just as clear\n*after dark.*",
-  "body": "Light, dark and dynamic color.",
-  "alt": "The app list and an app's details in dark mode"
- },
- "tablet10/apps": {
-  "title": "Room for\n*the whole list.*",
-  "body": "Apps on the left, details on the right.",
-  "alt": "The app list beside one app's details on a landscape tablet"
- },
- "tablet10/dark": {
-  "title": "Just as clear\n*after dark.*",
-  "body": "Light, dark and dynamic color.",
-  "alt": "The app list beside an app's details in dark mode on a landscape tablet"
- },
- "readme-identity": {
-  "title": "SDK Monitor",
-  "alt": "SDK Monitor: the change log, the app list with target SDKs, and an app's version history",
-  "tagline": "See which apps *keep up with Android.*"
- },
- "readme-tools": {
-  "title": "",
-  "alt": "An app's version history, the change log, and offline settings"
- },
- "readme-big-screen": {
-  "title": "Made for\n*big screens.*",
-  "body": "The list and details side by side.",
-  "alt": "SDK Monitor on a tablet, with a phone in dark mode"
- }
+  "apps": {
+    "title": "Every app's\n*target SDK.*",
+    "body": "See which apps keep up with Android\nand which fall behind.",
+    "alt": "The app list, each app with its target SDK and Android version"
+  },
+  "logs": {
+    "title": "Know when\n*apps change.*",
+    "body": "Every target SDK bump,\nlogged as it happens.",
+    "alt": "The change log: 2 changes this week, 8 this month; Harbor Chat and Clearsky Weather moved to Android 17"
+  },
+  "details": {
+    "title": "Every update,\n*on the record.*",
+    "body": "Versions, dates and SDKs\nfor each app.",
+    "alt": "Clearsky Weather's details: target and minimum SDK, and its version history"
+  },
+  "settings": {
+    "title": "Private,\n*and offline.*",
+    "body": "No account, no network,\nnothing leaves your phone.",
+    "alt": "Settings: light, dark or system theme, color presets and background sync"
+  },
+  "dark": {
+    "title": "Just as clear\n*after dark.*",
+    "body": "Light, dark and dynamic color.",
+    "alt": "The app list and an app's details in dark mode"
+  },
+  "tablet10/apps": {
+    "title": "Room for\n*the whole list.*",
+    "body": "Apps on the left, details on the right.",
+    "alt": "The app list beside one app's details on a landscape tablet"
+  },
+  "tablet10/dark": {
+    "title": "Just as clear\n*after dark.*",
+    "body": "Light, dark and dynamic color.",
+    "alt": "The app list beside an app's details in dark mode on a landscape tablet"
+  },
+  "readme-identity": {
+    "title": "SDK Monitor",
+    "alt": "SDK Monitor: SDK analytics with each level's shape, the app list with every app's target SDK, and an app's details",
+    "tagline": "See which apps *keep up with Android.*"
+  },
+  "readme-tools": {
+    "title": "",
+    "alt": "SDK analytics by Android version, the change log of target SDK bumps, and an app's details with its version history"
+  },
+  "readme-big-screen": {
+    "title": "Phone or\n*tablet.*",
+    "body": "Light or dark, at any size.",
+    "alt": "The app list on a tablet, and an app's details in dark mode on a phone"
+  },
+  "insights": {
+    "title": "Where your apps\n*stand today.*",
+    "body": "How many apps target\neach Android version.",
+    "alt": "SDK analytics: how many apps target Android 17, 16, 15 and older"
+  },
+  "readme-tablet": {
+    "title": "Every change,\n*at a glance.*",
+    "body": "Where apps stand and what changed, on a tablet.",
+    "alt": "SDK analytics and the change log on a tablet, and a phone showing the apps that target Android 16"
+  },
+  "social-card": {
+    "title": "SDK Monitor",
+    "tagline": "See which apps *keep up with Android.*",
+    "alt": "SDK Monitor: see which apps keep up with Android"
+  },
+  "readme-header": {
+    "title": "SDK Monitor",
+    "tagline": "See which apps *keep up with Android.*",
+    "alt": "SDK Monitor: see which apps keep up with Android, beside the app list with every app's target SDK"
+  }
 }

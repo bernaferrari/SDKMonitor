@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copy the shared UI asks for (SdkStrings); AndroidSdkPlatform maps each to its field. -->
+<resources>
+    <string name="analytics_empty">No analytics yet</string>
+    <string name="analytics_section">Analytics</string>
+    <string name="app_filter">App filter</string>
+    <string name="clear_logs">Clear logs</string>
+    <string name="days">Days</string>
+    <string name="enabled_daily">Enabled · daily updates</string>
+    <string name="enabled_monthly">Enabled · monthly updates</string>
+    <string name="enabled_weekly">Enabled · weekly updates</string>
+    <string name="failed_to_load_apps">Failed to load apps</string>
+    <string name="hours">Hours</string>
+    <string name="interval">Interval</string>
+    <string name="last_update">Last update</string>
+    <string name="minutes">Minutes</string>
+    <string name="no_analytics_data">No analytics data yet</string>
+    <string name="no_analytics_subtitle">Sync apps first to see target SDK distribution</string>
+    <string name="no_apps_subtitle">Try a different filter or search</string>
+    <string name="no_logs_subtitle">SDK changes will appear here when apps update</string>
+    <string name="notification_permission_body">Allow notifications so SDK Monitor can alert you when an app changes its target SDK.</string>
+    <string name="notification_permission_title">Enable notifications</string>
+    <string name="notification_warning_body">Open system settings to enable notifications for background sync alerts.</string>
+    <string name="notification_warning_title">Notifications disabled</string>
+    <string name="notifications_required">Notifications are required for background sync</string>
+    <string name="package_name">Package</string>
+    <string name="permissions">Permissions</string>
+    <string name="plural_days">days</string>
+    <string name="plural_hours">hours</string>
+    <string name="plural_minutes">minutes</string>
+    <string name="rate_app">Rate on GitHub</string>
+    <string name="refresh">Refresh</string>
+    <string name="search">Search</string>
+    <string name="singular_day">day</string>
+    <string name="singular_hour">hour</string>
+    <string name="singular_minute">minute</string>
+    <string name="size">Size</string>
+    <string name="sync_dialog_title">Background sync</string>
+    <string name="sync_interval">Sync interval</string>
+    <string name="syncing">Syncing apps…</string>
+    <string name="system_app">System</string>
+    <string name="tap_to_configure_sync">Tap to configure automatic updates</string>
+    <string name="theme">Theme</string>
+    <string name="user_app">User</string>
+    <string name="version">Version</string>
+    <string name="color_style">Color style</string>
+    <string name="style_expressive">Expressive</string>
+    <string name="style_vibrant">Vibrant</string>
+    <string name="style_tonal">Tonal</string>
+    <string name="style_cmf">Muted</string>
+</resources>

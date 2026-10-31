@@ -2,7 +2,14 @@
   "app": "SDK Monitor",
   "package": "com.bernaferrari.sdkmonitor",
   "locales": [
-    "en-US"
+    "en-US",
+    "de-DE",
+    "es-ES",
+    "fr-FR",
+    "it-IT",
+    "pt-BR",
+    "ja-JP",
+    "zh-CN"
   ],
   "defaultLocale": "en-US",
   "supersample": 2,
@@ -29,5 +36,10 @@
         "top": true
       }
     }
+  },
+  "frames": {
+    "fixed": [
+      "banner"
+    ]
   }
 }

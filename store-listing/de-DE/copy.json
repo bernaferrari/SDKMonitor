@@ -1,0 +1,42 @@
+{
+ "apps": {
+  "title": "Das Ziel-SDK\n*jeder App.*",
+  "body": "Sieh, welche Apps mit Android\nmithalten und welche nicht.",
+  "alt": "Die App-Liste, jede App mit ihrem Ziel-SDK und ihrer Android-Version"
+ },
+ "logs": {
+  "title": "Wissen, wann sich\n*Apps ändern.*",
+  "body": "Jedes Ziel-SDK-Update,\nsofort protokolliert.",
+  "alt": "SDK-Statistik über dem Änderungsprotokoll: Harbor Chat und Clearsky Weather wechseln zu Android 17"
+ },
+ "details": {
+  "title": "Jedes Update,\n*festgehalten.*",
+  "body": "Versionen, Daten und SDKs\nfür jede App.",
+  "alt": "Details zu Clearsky Weather: Ziel- und Mindest-SDK und der Versionsverlauf"
+ },
+ "settings": {
+  "title": "Privat\n*und offline.*",
+  "body": "Kein Konto, kein Netzwerk,\nnichts verlässt dein Handy.",
+  "alt": "Einstellungen: helles, dunkles oder System-Design, Farben und Hintergrund-Sync"
+ },
+ "dark": {
+  "title": "Auch im Dunkeln\n*klar.*",
+  "body": "Hell, dunkel und dynamische Farben.",
+  "alt": "Die App-Liste und App-Details im dunklen Design"
+ },
+ "tablet10/apps": {
+  "title": "Platz für\n*die ganze Liste.*",
+  "body": "Links die Apps, rechts die Details.",
+  "alt": "Die App-Liste neben den Details einer App auf einem Tablet"
+ },
+ "tablet10/dark": {
+  "title": "Auch im Dunkeln\n*klar.*",
+  "body": "Hell, dunkel und dynamische Farben.",
+  "alt": "Die App-Liste und App-Details im dunklen Design"
+ },
+ "insights": {
+  "title": "Wo deine Apps\n*heute stehen.*",
+  "body": "Wie viele Apps auf welche\nAndroid-Version zielen.",
+  "alt": "SDK-Statistik: wie viele Apps auf Android 17, 16, 15 und älter zielen"
+ }
+}

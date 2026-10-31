@@ -1,0 +1,42 @@
+{
+ "apps": {
+  "title": "El SDK de destino\n*de cada app.*",
+  "body": "Mira qué apps se mantienen al día\ncon Android y cuáles se quedan atrás.",
+  "alt": "La lista de apps, cada una con su SDK de destino y versión de Android"
+ },
+ "logs": {
+  "title": "Entérate cuando\n*cambian las apps.*",
+  "body": "Cada subida de SDK de destino,\nregistrada al momento.",
+  "alt": "Estadísticas de SDK sobre el registro de cambios: Harbor Chat y Clearsky Weather pasan a Android 17"
+ },
+ "details": {
+  "title": "Cada actualización,\n*registrada.*",
+  "body": "Versiones, fechas y SDK\nde cada app.",
+  "alt": "Detalles de Clearsky Weather: SDK de destino y mínimo, y su historial de versiones"
+ },
+ "settings": {
+  "title": "Privada\n*y sin conexión.*",
+  "body": "Sin cuenta, sin red,\nnada sale de tu teléfono.",
+  "alt": "Ajustes: tema claro, oscuro o del sistema, colores y sincronización en segundo plano"
+ },
+ "dark": {
+  "title": "Igual de clara\n*de noche.*",
+  "body": "Claro, oscuro y color dinámico.",
+  "alt": "La lista de apps y los detalles de una app en modo oscuro"
+ },
+ "tablet10/apps": {
+  "title": "Espacio para\n*toda la lista.*",
+  "body": "Las apps a la izquierda, los detalles a la derecha.",
+  "alt": "La lista de apps junto a los detalles de una app en una tableta"
+ },
+ "tablet10/dark": {
+  "title": "Igual de clara\n*de noche.*",
+  "body": "Claro, oscuro y color dinámico.",
+  "alt": "La lista de apps y los detalles de una app en modo oscuro"
+ },
+ "insights": {
+  "title": "Dónde están\n*tus apps hoy.*",
+  "body": "Cuántas apps apuntan\na cada versión de Android.",
+  "alt": "Estadísticas de SDK: cuántas apps apuntan a Android 17, 16, 15 y anteriores"
+ }
+}

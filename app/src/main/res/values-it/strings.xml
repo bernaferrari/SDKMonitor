@@ -123,12 +123,12 @@
 
     <!-- Logs Screen -->
     <string name="change_logs">Cronologia modifiche</string>
-    <string name="loading_change_history">✨ Caricamento cronologia modifiche</string>
+    <string name="loading_change_history">Caricamento cronologia modifiche</string>
     <string name="analyzing_app_ecosystem">Analizzando il tuo ecosistema di app…</string>
     <string name="oops_something_went_wrong">Ops! Qualcosa è andato storto</string>
     <string name="no_changes_yet">Nessuna modifica ancora</string>
     <string name="when_apps_update_description">Quando le app aggiornano le loro versioni SDK target, vedrai una timeline delle modifiche qui.</string>
-    <string name="sdk_monitor_watching">✨ SDK Monitor sta guardando</string>
+    <string name="sdk_monitor_watching">SDK Monitor sta guardando</string>
     <string name="change_timeline">Cronologia modifiche</string>
     <string name="showing">Mostrando</string>
     <string name="activity_overview">Panoramica attività</string>
@@ -221,7 +221,7 @@
     <string name="loading_settings">Caricamento impostazioni…</string>
     <string name="error_loading_settings">Errore nel caricamento delle impostazioni</string>
     <string name="settings_screen_title">Impostazioni</string>
-    <string name="privacy_first">🔒 Privacy Prima di Tutto</string>
+    <string name="privacy_first">Privacy Prima di Tutto</string>
     <string name="privacy_description">Questa app non raccoglie, memorizza o trasmette alcun dato personale. Tutte le informazioni rimangono completamente locali sul tuo dispositivo.</string>
     <string name="sdk_analytics">Analisi SDK</string>
     <string name="apps_lowercase">app</string>

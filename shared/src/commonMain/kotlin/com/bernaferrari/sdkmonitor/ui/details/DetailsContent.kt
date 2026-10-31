@@ -1,7 +1,5 @@
 package com.bernaferrari.sdkmonitor.ui.details
 
-import com.bernaferrari.sdkmonitor.ui.icons.MaterialSymbols
-
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.tween
@@ -10,11 +8,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
@@ -24,11 +20,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -39,17 +35,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.bernaferrari.sdkmonitor.domain.AppDetails
 import com.bernaferrari.sdkmonitor.domain.AppVersion
+import com.bernaferrari.sdkmonitor.ui.components.StatusMessage
+import com.bernaferrari.sdkmonitor.ui.components.StatusTone
 import com.bernaferrari.sdkmonitor.ui.details.components.AppDetailsCard
 import com.bernaferrari.sdkmonitor.ui.details.components.VersionCard
+import com.bernaferrari.sdkmonitor.ui.icons.MaterialSymbols
 import com.bernaferrari.sdkmonitor.ui.platform.sdkStrings
 import com.bernaferrari.sdkmonitor.ui.state.DetailsUiState
 
 private val DetailsBackButtonEasing = CubicBezierEasing(0.25f, 0.1f, 0.25f, 1f)
 
+@OptIn(androidx.compose.material3.ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun DetailsContent(
     uiState: DetailsUiState,
@@ -66,30 +65,19 @@ fun DetailsContent(
             Box(
                 modifier = contentModifier.fillMaxSize(),
                 contentAlignment = Alignment.Center,
-                content = { CircularProgressIndicator() },
+                content = { LoadingIndicator(modifier = Modifier.size(72.dp)) },
             )
         }
 
         is DetailsUiState.Error -> {
-            val errorMessage = uiState.message
-            Column(
-                modifier =
-                    contentModifier
-                        .fillMaxSize()
-                        .padding(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-            ) {
-                Icon(
-                    imageVector = MaterialSymbols.Filled.Warning,
-                    contentDescription = null,
-                    modifier = Modifier.size(48.dp),
-                    tint = MaterialTheme.colorScheme.error,
+            Box(modifier = contentModifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                StatusMessage(
+                    icon = MaterialSymbols.Filled.Warning,
+                    title = s.oopsSomethingWentWrong,
+                    body = uiState.message,
+                    tone = StatusTone.Error,
+                    action = { FilledTonalButton(onClick = onRetry) { Text(s.retry) } },
                 )
-                Spacer(modifier = Modifier.height(12.dp))
-                Text(errorMessage, textAlign = TextAlign.Center)
-                Spacer(modifier = Modifier.height(16.dp))
-                FilledTonalButton(onClick = onRetry) { Text(s.retry) }
             }
         }
 

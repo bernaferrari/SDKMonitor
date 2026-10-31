@@ -89,7 +89,7 @@ class NotificationManager(
             val notificationBuilder =
                 NotificationCompat
                     .Builder(context, CHANNEL_ID_SDK_CHANGES)
-                    .setSmallIcon(R.drawable.ic_target)
+                    .setSmallIcon(R.drawable.ic_notification)
                     .setContentTitle(contentText)
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true)
@@ -141,7 +141,7 @@ class NotificationManager(
             val notification =
                 NotificationCompat
                     .Builder(context, CHANNEL_ID_DEBUG)
-                    .setSmallIcon(R.drawable.ic_target)
+                    .setSmallIcon(R.drawable.ic_notification)
                     .setContentTitle(title)
                     .setContentText(text)
                     .setContentIntent(pendingIntent)

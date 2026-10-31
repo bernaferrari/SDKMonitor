@@ -23,14 +23,13 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.LinearWavyProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -46,11 +45,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusTarget
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.bernaferrari.sdkmonitor.domain.AppFilter
 import com.bernaferrari.sdkmonitor.domain.AppVersion
 import com.bernaferrari.sdkmonitor.domain.SortOption
+import com.bernaferrari.sdkmonitor.ui.components.StatusLoading
+import com.bernaferrari.sdkmonitor.ui.components.StatusMessage
+import com.bernaferrari.sdkmonitor.ui.components.StatusTone
 import com.bernaferrari.sdkmonitor.ui.components.expressiveListItemPosition
 import com.bernaferrari.sdkmonitor.ui.icons.MaterialSymbols
 import com.bernaferrari.sdkmonitor.ui.main.components.FastScroller
@@ -84,7 +85,7 @@ fun MainContent(
 
     Column(modifier = contentModifier.fillMaxSize()) {
         if (isFirstSync && syncProgress in 0f..1f) {
-            LinearProgressIndicator(
+            LinearWavyProgressIndicator(
                 progress = { syncProgress },
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -169,7 +170,7 @@ fun MainContent(
                             imageVector =
                                 when (appFilter) {
                                     AppFilter.ALL_APPS -> MaterialSymbols.Filled.Apps
-                                    AppFilter.USER_APPS -> MaterialSymbols.Filled.Person
+                                    AppFilter.USER_APPS -> MaterialSymbols.Filled.InstallMobile
                                     AppFilter.SYSTEM_APPS -> MaterialSymbols.Filled.Android
                                 },
                             contentDescription = s.appFilter,
@@ -331,19 +332,11 @@ private fun AppSectionHeader(
 
 @Composable
 private fun LoadingBody(isFirstSync: Boolean, syncProgress: Float, strings: com.bernaferrari.sdkmonitor.ui.platform.SdkStrings) {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center,
-    ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            CircularProgressIndicator(modifier = Modifier.size(48.dp), color = MaterialTheme.colorScheme.primary)
-            if (isFirstSync && syncProgress in 0f..1f) {
-                Text(strings.settingUpYourApps, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-                Text(strings.syncing, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                LinearProgressIndicator(progress = { syncProgress }, modifier = Modifier.fillMaxWidth(0.7f).height(8.dp), color = MaterialTheme.colorScheme.primary, trackColor = MaterialTheme.colorScheme.surfaceVariant)
-            } else {
-                Text(strings.loadingApps, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            }
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        if (isFirstSync && syncProgress in 0f..1f) {
+            StatusLoading(title = strings.settingUpYourApps, body = strings.syncing, progress = syncProgress)
+        } else {
+            StatusLoading(title = strings.loadingApps)
         }
     }
 }
@@ -357,14 +350,19 @@ private fun ErrorBody(
     onRetry: () -> Unit,
 ) {
     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Card(modifier = Modifier.padding(24.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer), shape = RoundedCornerShape(16.dp)) {
-            Column(Modifier.padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Icon(MaterialSymbols.Filled.Error, errorLabel, Modifier.size(40.dp), MaterialTheme.colorScheme.onErrorContainer)
-                Text(title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onErrorContainer)
-                Text(message, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onErrorContainer.copy(alpha = 0.8f), textAlign = TextAlign.Center)
-                FilledTonalButton(onClick = onRetry) { Icon(MaterialSymbols.Filled.Refresh, retryLabel, Modifier.size(16.dp)); Spacer(Modifier.width(8.dp)); Text(retryLabel) }
-            }
-        }
+        StatusMessage(
+            icon = MaterialSymbols.Filled.Error,
+            title = title,
+            body = message,
+            tone = StatusTone.Error,
+            action = {
+                FilledTonalButton(onClick = onRetry) {
+                    Icon(MaterialSymbols.Filled.Refresh, contentDescription = null, modifier = Modifier.size(18.dp))
+                    Spacer(Modifier.width(8.dp))
+                    Text(retryLabel)
+                }
+            },
+        )
     }
 }
 
@@ -373,26 +371,7 @@ private fun EmptyBody(
     title: String,
     subtitle: String,
 ) {
-    Column(
-        modifier =
-            Modifier
-                .fillMaxSize()
-                .padding(24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-    ) {
-        Icon(
-            imageVector = MaterialSymbols.Filled.SearchOff,
-            contentDescription = null,
-            modifier = Modifier.size(48.dp),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-        Spacer(modifier = Modifier.height(12.dp))
-        Text(title, fontWeight = FontWeight.SemiBold)
-        Text(
-            subtitle,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center,
-        )
+    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        StatusMessage(icon = MaterialSymbols.Filled.SearchOff, title = title, body = subtitle)
     }
 }

@@ -81,6 +81,11 @@
     <string name="loading_settings">Loading settings…</string>
     <string name="error_loading_settings">Error loading settings</string>
     <string name="appearance">Appearance</string>
+    <string name="color_style">Color style</string>
+    <string name="style_expressive">Expressive</string>
+    <string name="style_vibrant">Vibrant</string>
+    <string name="style_tonal">Tonal</string>
+    <string name="style_cmf">Muted</string>
     <string name="about_section">About</string>
     <string name="learn_more_about_app">Learn more about this app</string>
     <string name="tap_to_configure_sync">Tap to configure automatic updates</string>
@@ -88,7 +93,7 @@
     <string name="enabled_daily">Enabled · daily updates</string>
     <string name="enabled_weekly">Enabled · weekly updates</string>
     <string name="enabled_monthly">Enabled · monthly updates</string>
-    <string name="enabled_every">Enabled · every</string>
+    <string name="enabled_every">Enabled every %1$s %2$s</string>
     <string name="notification_permission_title">Enable notifications</string>
     <string name="notification_permission_body">Allow notifications so SDK Monitor can alert you when an app changes its target SDK.</string>
     <string name="allow_notifications">Allow notifications</string>

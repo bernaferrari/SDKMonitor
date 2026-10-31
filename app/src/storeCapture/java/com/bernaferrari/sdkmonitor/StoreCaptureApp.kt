@@ -1,9 +1,11 @@
 package com.bernaferrari.sdkmonitor
 
 import com.bernaferrari.sdkmonitor.core.AppManager
+import com.bernaferrari.sdkmonitor.domain.ThemePalette
 import com.bernaferrari.sdkmonitor.domain.TrackedApp
 import com.bernaferrari.sdkmonitor.domain.TrackedVersion
 import com.bernaferrari.sdkmonitor.domain.repository.AppsRepository
+import com.bernaferrari.sdkmonitor.domain.repository.PreferencesRepository
 import kotlinx.coroutines.runBlocking
 import org.koin.android.ext.android.get
 import java.io.File
@@ -19,7 +21,16 @@ class StoreCaptureApp : App() {
         AppManager.onlyPackages = history.keys
         val marker = File(filesDir, "storecapture-seeded")
         if (marker.exists()) return
-        runBlocking { seed(get()) }
+        runBlocking {
+            seed(get())
+            // A phone that has been tracking for a year checks daily in the background.
+            get<PreferencesRepository>().run {
+                updateBackgroundSync(true)
+                updateSyncInterval("1d")
+                // The brand's own color (the icon's red), not whatever the emulator's wallpaper suggests.
+                updateThemePalette(ThemePalette.EMBER)
+            }
+        }
         marker.writeText("ok")
     }
 

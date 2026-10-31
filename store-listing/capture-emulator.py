@@ -4,12 +4,14 @@
 runs this tour for every device size and exports. The tour installs the fictional apps of
 fixture-apps.json (code-free APKs, each with a real targetSdk), and the capture build lists only those and
 seeds their earlier versions, so the list, change log and details read like a phone tracked for a year.
+Taps are recorded in en-US/raw/tap-map.json, so other locales replay them in place.
 Run alone: python3 store-listing/capture-emulator.py [--profile phone] [--locale de-DE].
 The emulator plumbing is the studio's capture.py.
 """
 import os
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 listing = Path(__file__).resolve().parent
@@ -53,11 +55,21 @@ with d:
         shot('01-apps')
         tap('Clearsky Weather')
         shot('02-details')
-        if not d.present('Logs'):  # phones open details full screen; tablets show them beside the list
-            d.back()
         tap('Logs', text_only=True)
-        if d.present('Select an app to get started'):  # a wide screen shows details beside the log
+        shot('05-insights')  # the tab opens on SDK analytics
+        tap('Android 16')  # a legend tile opens the apps behind it, in a bottom sheet
+        shot('06-sdk-sheet')
+        d.back()
+        time.sleep(1.5)  # let the sheet finish closing, or the scroll below lands on it
+        if d.width > d.height:  # the landscape tablet shows details beside the log
+            # The log is the narrow left pane; scroll there, not over the empty detail pane.
+            for _ in range(6):
+                if d.present('Harbor Chat'):
+                    break
+                d.swipe(int(d.width * .2), int(d.height * .8), int(d.width * .2), int(d.height * .35))
             tap('Harbor Chat')
+        else:
+            d.scroll(.5)  # then the change log under it
         shot('03-logs')
         tap('Settings', text_only=True)
         shot('04-settings')

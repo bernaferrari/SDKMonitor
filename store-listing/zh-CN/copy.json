@@ -1,0 +1,42 @@
+{
+ "apps": {
+  "title": "每个应用的\n*目标 SDK。*",
+  "body": "看看哪些应用跟上了 Android，\n哪些落后了。",
+  "alt": "应用列表，每个应用都显示目标 SDK 和 Android 版本"
+ },
+ "logs": {
+  "title": "应用一变，\n*你就知道。*",
+  "body": "每次目标 SDK 升级，\n都会立即记录。",
+  "alt": "变更日志上方的 SDK 统计：Harbor Chat 和 Clearsky Weather 升级到 Android 17"
+ },
+ "details": {
+  "title": "每次更新，\n*都有记录。*",
+  "body": "每个应用的版本、日期和 SDK。",
+  "alt": "Clearsky Weather 的详情：目标 SDK、最低 SDK 和版本历史"
+ },
+ "settings": {
+  "title": "私密，\n*离线。*",
+  "body": "无需账号，不联网，\n数据不离开手机。",
+  "alt": "设置：浅色、深色或跟随系统主题，配色和后台同步"
+ },
+ "dark": {
+  "title": "深色模式下\n*一样清晰。*",
+  "body": "浅色、深色和动态配色。",
+  "alt": "深色模式下的应用列表和应用详情"
+ },
+ "tablet10/apps": {
+  "title": "整个列表，\n*一屏看全。*",
+  "body": "左边是应用，右边是详情。",
+  "alt": "平板上应用列表与应用详情并排显示"
+ },
+ "tablet10/dark": {
+  "title": "深色模式下\n*一样清晰。*",
+  "body": "浅色、深色和动态配色。",
+  "alt": "深色模式下的应用列表和应用详情"
+ },
+ "insights": {
+  "title": "你的应用\n*现在怎么样。*",
+  "body": "每个 Android 版本\n有多少应用作为目标。",
+  "alt": "SDK 统计：以 Android 17、16、15 及更早版本为目标的应用数量"
+ }
+}

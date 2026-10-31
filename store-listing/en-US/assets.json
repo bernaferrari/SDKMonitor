@@ -7,7 +7,7 @@
         "slide": 0,
         "width": 1080,
         "height": 1920,
-        "bytes": 219371,
+        "bytes": 190688,
         "sources": [
           "raw/phone/01-apps.png"
         ]
@@ -18,40 +18,51 @@
         "slide": 1,
         "width": 1080,
         "height": 1920,
-        "bytes": 203416,
+        "bytes": 178012,
         "sources": [
           "raw/phone/03-logs.png"
         ]
       },
       {
-        "file": "phone/phone-03-details.jpg",
-        "feature": "details",
+        "file": "phone/phone-03-insights.jpg",
+        "feature": "insights",
         "slide": 2,
         "width": 1080,
         "height": 1920,
-        "bytes": 205384,
+        "bytes": 181051,
+        "sources": [
+          "raw/phone/05-insights.png"
+        ]
+      },
+      {
+        "file": "phone/phone-04-details.jpg",
+        "feature": "details",
+        "slide": 3,
+        "width": 1080,
+        "height": 1920,
+        "bytes": 182797,
         "sources": [
           "raw/phone/02-details.png"
         ]
       },
       {
-        "file": "phone/phone-04-settings.jpg",
+        "file": "phone/phone-05-settings.jpg",
         "feature": "settings",
-        "slide": 3,
+        "slide": 4,
         "width": 1080,
         "height": 1920,
-        "bytes": 191306,
+        "bytes": 175014,
         "sources": [
           "raw/phone/04-settings.png"
         ]
       },
       {
-        "file": "phone/phone-05-dark.jpg",
+        "file": "phone/phone-06-dark.jpg",
         "feature": "dark",
-        "slide": 4,
+        "slide": 5,
         "width": 1080,
         "height": 1920,
-        "bytes": 224037,
+        "bytes": 226079,
         "sources": [
           "raw/phone/11-apps-dark.png",
           "raw/phone/12-details-dark.png"
@@ -65,7 +76,7 @@
         "slide": 0,
         "width": 1200,
         "height": 1920,
-        "bytes": 224666,
+        "bytes": 200903,
         "sources": [
           "raw/tablet7/01-apps.png"
         ]
@@ -76,7 +87,7 @@
         "slide": 1,
         "width": 1200,
         "height": 1920,
-        "bytes": 221115,
+        "bytes": 200711,
         "sources": [
           "raw/tablet7/03-logs.png"
         ]
@@ -87,7 +98,7 @@
         "slide": 2,
         "width": 1200,
         "height": 1920,
-        "bytes": 231915,
+        "bytes": 215101,
         "sources": [
           "raw/tablet7/11-apps-dark.png",
           "raw/tablet7/12-details-dark.png"
@@ -101,7 +112,7 @@
         "slide": 0,
         "width": 1920,
         "height": 1200,
-        "bytes": 211595,
+        "bytes": 176867,
         "sources": [
           "raw/tablet10/02-details.png"
         ]
@@ -112,7 +123,7 @@
         "slide": 1,
         "width": 1920,
         "height": 1200,
-        "bytes": 218023,
+        "bytes": 173815,
         "sources": [
           "raw/tablet10/03-logs.png"
         ]
@@ -123,7 +134,7 @@
         "slide": 2,
         "width": 1920,
         "height": 1200,
-        "bytes": 220096,
+        "bytes": 185811,
         "sources": [
           "raw/tablet10/12-details-dark.png"
         ]
@@ -131,14 +142,25 @@
     ],
     "readme": [
       {
-        "file": "readme/hero.jpg",
-        "feature": "readme-identity",
+        "file": "readme/header.jpg",
+        "feature": "readme-header",
         "slide": 0,
         "width": 2400,
         "height": 1260,
-        "bytes": 307801,
+        "bytes": 247928,
         "sources": [
-          "raw/phone/03-logs.png",
+          "raw/phone/01-apps.png"
+        ]
+      },
+      {
+        "file": "readme/hero.jpg",
+        "feature": "readme-identity",
+        "slide": 1,
+        "width": 2400,
+        "height": 1260,
+        "bytes": 264747,
+        "sources": [
+          "raw/phone/05-insights.png",
           "raw/phone/01-apps.png",
           "raw/phone/02-details.png"
         ]
@@ -146,29 +168,54 @@
       {
         "file": "readme/tools.jpg",
         "feature": "readme-tools",
-        "slide": 1,
+        "slide": 2,
         "width": 2400,
         "height": 1260,
-        "bytes": 296458,
+        "bytes": 285101,
         "sources": [
-          "raw/phone/02-details.png",
+          "raw/phone/05-insights.png",
           "raw/phone/03-logs.png",
-          "raw/phone/04-settings.png"
+          "raw/phone/02-details.png"
+        ]
+      },
+      {
+        "file": "readme/tablet.jpg",
+        "feature": "readme-tablet",
+        "slide": 3,
+        "width": 2400,
+        "height": 1260,
+        "bytes": 255035,
+        "sources": [
+          "raw/tablet10/03-logs.png",
+          "raw/phone/06-sdk-sheet.png"
+        ],
+        "notes": [
+          "copy shrunk to 84%"
         ]
       },
       {
         "file": "readme/big-screen.jpg",
         "feature": "readme-big-screen",
-        "slide": 2,
+        "slide": 4,
         "width": 2400,
         "height": 1260,
-        "bytes": 300333,
+        "bytes": 283393,
         "sources": [
           "raw/tablet10/02-details.png",
           "raw/phone/11-apps-dark.png"
-        ],
-        "notes": [
-          "copy shrunk to 94%"
+        ]
+      }
+    ],
+    "social": [
+      {
+        "file": "social/opengraph-image.png",
+        "feature": "social-card",
+        "slide": 0,
+        "width": 1280,
+        "height": 640,
+        "bytes": 503443,
+        "sources": [
+          "raw/phone/01-apps.png"
         ]
       }
     ]

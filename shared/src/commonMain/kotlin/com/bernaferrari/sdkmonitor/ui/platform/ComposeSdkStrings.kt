@@ -14,6 +14,11 @@ import com.bernaferrari.sdkmonitor.shared.resources.app_information
 import com.bernaferrari.sdkmonitor.shared.resources.app_name
 import com.bernaferrari.sdkmonitor.shared.resources.app_not_found
 import com.bernaferrari.sdkmonitor.shared.resources.appearance
+import com.bernaferrari.sdkmonitor.shared.resources.style_cmf
+import com.bernaferrari.sdkmonitor.shared.resources.style_tonal
+import com.bernaferrari.sdkmonitor.shared.resources.style_vibrant
+import com.bernaferrari.sdkmonitor.shared.resources.style_expressive
+import com.bernaferrari.sdkmonitor.shared.resources.color_style
 import com.bernaferrari.sdkmonitor.shared.resources.apps
 import com.bernaferrari.sdkmonitor.shared.resources.apps_count
 import com.bernaferrari.sdkmonitor.shared.resources.background_sync
@@ -222,6 +227,11 @@ fun rememberComposeSdkStrings(): SdkStrings =
         loadingSettings = stringResource(Res.string.loading_settings),
         errorLoadingSettings = stringResource(Res.string.error_loading_settings),
         appearance = stringResource(Res.string.appearance),
+        colorStyle = stringResource(Res.string.color_style),
+        styleExpressive = stringResource(Res.string.style_expressive),
+        styleVibrant = stringResource(Res.string.style_vibrant),
+        styleTonal = stringResource(Res.string.style_tonal),
+        styleCmf = stringResource(Res.string.style_cmf),
         aboutSection = stringResource(Res.string.about_section),
         learnMoreAboutApp = stringResource(Res.string.learn_more_about_app),
         tapToConfigureSync = stringResource(Res.string.tap_to_configure_sync),

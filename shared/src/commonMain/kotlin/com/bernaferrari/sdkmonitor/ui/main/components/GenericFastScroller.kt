@@ -11,12 +11,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -36,11 +40,13 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.launch
 import kotlin.math.abs
+import kotlin.math.roundToInt
+import kotlinx.coroutines.launch
 
 /**
  * A generic fast scroller that can work with any data type.
@@ -265,7 +271,7 @@ fun <T> GenericFastScroller(
                                 else -> 0.5f
                             }
                         } else {
-                            0.7f
+                            0.9f
                         },
                     animationSpec = spring(),
                     label = "letter_alpha_$index",
@@ -280,7 +286,7 @@ fun <T> GenericFastScroller(
                         style =
                             MaterialTheme.typography.labelSmall.copy(
                                 fontWeight = FontWeight.Bold,
-                                fontSize = if (letter.length > 2) 9.sp else 11.sp, // Smaller font for longer numbers
+                                fontSize = if (letter.length > 2) 10.sp else 12.sp, // Smaller font for longer numbers
                             ),
                         color = MaterialTheme.colorScheme.primary,
                         modifier =
@@ -295,6 +301,32 @@ fun <T> GenericFastScroller(
             }
         }
 
+
+        // The letter under the finger, large, beside the strip (as in QuietGuard), so the jump reads at a glance.
+        if (isInteracting && previousSelectedLetter.isNotEmpty()) {
+            val bubbleSize = 72.dp
+            val bubblePx = with(density) { bubbleSize.toPx() }
+            val insetPx = with(density) { verticalInset.toPx() }
+            val trackPx = with(density) { preferredTrackHeight.toPx() }
+            val bubbleY = (currentDragPosition + insetPx - bubblePx / 2f).coerceIn(0f, (trackPx - bubblePx).coerceAtLeast(0f))
+            Surface(
+                modifier =
+                    Modifier
+                        .align(Alignment.TopStart)
+                        // Wider than the 40dp strip, so it ignores the strip's width (and is then centered on
+                        // it, 16dp to the left); it sits 12dp left of the strip.
+                        .offset { IntOffset(x = (-68).dp.roundToPx(), y = bubbleY.roundToInt()) }
+                        .requiredSize(bubbleSize),
+                color = MaterialTheme.colorScheme.primaryContainer,
+                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                shape = RoundedCornerShape(16.dp),
+                shadowElevation = 6.dp,
+            ) {
+                Box(contentAlignment = Alignment.Center) {
+                    Text(previousSelectedLetter, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+                }
+            }
+        }
     }
 }
 

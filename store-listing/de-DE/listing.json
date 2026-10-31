@@ -1,0 +1,5 @@
+{
+  "title": "SDK Monitor",
+  "shortDescription": "Sieh das Ziel-SDK jeder App und erfahre, wenn eine App es ändert.",
+  "fullDescription": "SDK Monitor zeigt das Ziel-SDK jeder installierten App: die Android-Version, für die sie gebaut ist. Apps mit neuerem Ziel bekommen die neueren Datenschutz- und Sicherheitsfunktionen von Android, Apps, die zurückliegen, nicht.\n\n• Jede installierte App mit ihrem Ziel-SDK, sortier- und durchsuchbar\n• Ein Protokoll jeder Änderung des Ziel-SDK\n• Eine Benachrichtigung, wenn eine App ihr Ziel-SDK ändert\n• Der Versionsverlauf jeder App, Mindest- und Ziel-SDK nebeneinander\n• Hell, dunkel und dynamische Farben, auf Handys, Tablets und Foldables\n• Export als CSV\n\nKein Konto, keine Werbung und kein Netzwerkzugriff: nichts verlässt dein Handy."
+}

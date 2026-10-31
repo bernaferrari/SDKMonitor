@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copy the shared UI asks for (SdkStrings); AndroidSdkPlatform maps each to its field. -->
+<resources>
+    <string name="analytics_empty">Noch keine Statistik</string>
+    <string name="analytics_section">Statistik</string>
+    <string name="app_filter">App-Filter</string>
+    <string name="clear_logs">Protokoll löschen</string>
+    <string name="days">Tage</string>
+    <string name="enabled_daily">Aktiv · tägliche Prüfung</string>
+    <string name="enabled_monthly">Aktiv · monatliche Prüfung</string>
+    <string name="enabled_weekly">Aktiv · wöchentliche Prüfung</string>
+    <string name="failed_to_load_apps">Apps konnten nicht geladen werden</string>
+    <string name="hours">Stunden</string>
+    <string name="interval">Intervall</string>
+    <string name="last_update">Letztes Update</string>
+    <string name="minutes">Minuten</string>
+    <string name="no_analytics_data">Noch keine Statistikdaten</string>
+    <string name="no_analytics_subtitle">Synchronisiere zuerst die Apps, um die Ziel-SDK-Verteilung zu sehen</string>
+    <string name="no_apps_subtitle">Versuche einen anderen Filter oder eine andere Suche</string>
+    <string name="no_logs_subtitle">SDK-Änderungen erscheinen hier, wenn Apps aktualisiert werden</string>
+    <string name="notification_permission_body">Erlaube Benachrichtigungen, damit SDK Monitor dich informiert, wenn eine App ihr Ziel-SDK ändert.</string>
+    <string name="notification_permission_title">Benachrichtigungen aktivieren</string>
+    <string name="notification_warning_body">Öffne die Systemeinstellungen, um Benachrichtigungen für die Hintergrund-Synchronisierung zu aktivieren.</string>
+    <string name="notification_warning_title">Benachrichtigungen deaktiviert</string>
+    <string name="notifications_required">Für die Hintergrund-Synchronisierung sind Benachrichtigungen nötig</string>
+    <string name="package_name">Paket</string>
+    <string name="permissions">Berechtigungen</string>
+    <string name="plural_days">Tage</string>
+    <string name="plural_hours">Stunden</string>
+    <string name="plural_minutes">Minuten</string>
+    <string name="rate_app">Auf GitHub bewerten</string>
+    <string name="refresh">Aktualisieren</string>
+    <string name="search">Suchen</string>
+    <string name="singular_day">Tag</string>
+    <string name="singular_hour">Stunde</string>
+    <string name="singular_minute">Minute</string>
+    <string name="size">Größe</string>
+    <string name="sync_dialog_title">Hintergrund-Synchronisierung</string>
+    <string name="sync_interval">Sync-Intervall</string>
+    <string name="syncing">Apps werden synchronisiert…</string>
+    <string name="system_app">System</string>
+    <string name="tap_to_configure_sync">Tippen, um automatische Prüfungen einzurichten</string>
+    <string name="theme">Design</string>
+    <string name="user_app">Nutzer</string>
+    <string name="version">Version</string>
+    <string name="color_style">Farbstil</string>
+    <string name="style_expressive">Ausdrucksvoll</string>
+    <string name="style_vibrant">Lebhaft</string>
+    <string name="style_tonal">Tonal</string>
+    <string name="style_cmf">Gedämpft</string>
+</resources>

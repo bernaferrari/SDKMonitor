@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.layout.AnimatedPane
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
+import androidx.compose.material3.adaptive.layout.PaneAdaptedValue
 import androidx.compose.material3.adaptive.navigation.NavigableListDetailPaneScaffold
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
@@ -72,8 +73,9 @@ fun AppNavigation(
                     }
                 item(
                     icon = {
+                        // Filled when selected, outlined otherwise, as M3 navigation asks.
                         Icon(
-                            imageVector = item.icon,
+                            imageVector = if (isSelected) item.icon else item.outlinedIcon,
                             contentDescription = null,
                         )
                     },
@@ -265,13 +267,18 @@ private fun SettingsScreenWithListDetail(
 ) {
     val listDetailNavigator = rememberListDetailPaneScaffoldNavigator<String>()
     val scope = rememberCoroutineScope()
+    // Side by side, About fills the detail pane until something else is opened, so it is never blank.
+    val selected = listDetailNavigator.currentDestination?.contentKey
+    val twoPanes = listDetailNavigator.scaffoldValue[ListDetailPaneScaffoldRole.Detail] == PaneAdaptedValue.Expanded &&
+        listDetailNavigator.scaffoldValue[ListDetailPaneScaffoldRole.List] == PaneAdaptedValue.Expanded
+    val showsAbout = selected == "about" || (selected == null && twoPanes)
 
     NavigableListDetailPaneScaffold(
         navigator = listDetailNavigator,
         listPane = {
             AnimatedPane {
                 SettingsScreen(
-                    isAboutSelected = listDetailNavigator.currentDestination?.contentKey == "about",
+                    isAboutSelected = showsAbout,
                     onNavigateToAppDetails = { packageName ->
                         scope.launch {
                             listDetailNavigator.navigateTo(
@@ -305,8 +312,7 @@ private fun SettingsScreenWithListDetail(
                         )
                     }
 
-                    null -> { // Empty - no default content needed
-                    }
+                    null -> AboutScreen(isTabletSize = isTablet())
 
                     else -> {
                         DetailsScreen(
@@ -360,11 +366,12 @@ fun isTablet(): Boolean {
 
 private sealed class BottomNavItem(
     val icon: ImageVector,
+    val outlinedIcon: ImageVector,
     val label: Int,
 ) {
-    data object Main : BottomNavItem(MaterialSymbols.Filled.Apps, R.string.main_title)
+    data object Main : BottomNavItem(MaterialSymbols.Filled.Apps, MaterialSymbols.Outlined.Apps, R.string.main_title)
 
-    data object Logs : BottomNavItem(MaterialSymbols.Filled.History, R.string.logs_title)
+    data object Logs : BottomNavItem(MaterialSymbols.Filled.History, MaterialSymbols.Outlined.History, R.string.logs_title)
 
-    data object Settings : BottomNavItem(MaterialSymbols.Filled.Settings, R.string.settings_title)
+    data object Settings : BottomNavItem(MaterialSymbols.Filled.Settings, MaterialSymbols.Outlined.Settings, R.string.settings_title)
 }

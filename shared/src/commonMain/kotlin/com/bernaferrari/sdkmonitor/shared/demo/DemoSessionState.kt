@@ -3,6 +3,7 @@ package com.bernaferrari.sdkmonitor.shared.demo
 import com.bernaferrari.sdkmonitor.domain.AppFilter
 import com.bernaferrari.sdkmonitor.domain.SortOption
 import com.bernaferrari.sdkmonitor.domain.ThemeMode
+import com.bernaferrari.sdkmonitor.domain.ColorStyle
 import com.bernaferrari.sdkmonitor.domain.ThemePalette
 import com.bernaferrari.sdkmonitor.domain.UserPreferences
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -45,6 +46,10 @@ class DemoSessionState {
 
     fun setThemeMode(mode: ThemeMode) {
         _preferences.update { it.copy(themeMode = mode) }
+    }
+
+    fun setColorStyle(style: ColorStyle) {
+        _preferences.update { it.copy(colorStyle = style) }
     }
 
     fun setThemePalette(palette: ThemePalette) {

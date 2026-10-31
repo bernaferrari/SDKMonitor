@@ -1,0 +1,5 @@
+{
+  "title": "SDK Monitor",
+  "shortDescription": "Voyez le SDK cible de chaque appli et sachez quand une appli le change.",
+  "fullDescription": "SDK Monitor affiche le SDK cible de chaque appli installée : la version d'Android pour laquelle elle est conçue. Les applis qui ciblent une version récente bénéficient des dernières protections de confidentialité et de sécurité d'Android ; celles qui prennent du retard, non.\n\n• Chaque appli installée avec son SDK cible, triable et consultable\n• Un journal de chaque changement de SDK cible\n• Une notification quand une appli change de SDK cible\n• L'historique des versions de chaque appli, SDK minimal et cible côte à côte\n• Clair, sombre et couleurs dynamiques, sur téléphone, tablette et pliable\n• Export CSV\n\nPas de compte, pas de publicité et aucun accès réseau : rien ne quitte votre téléphone."
+}

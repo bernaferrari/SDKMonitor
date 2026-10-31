@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copy the shared UI asks for (SdkStrings); AndroidSdkPlatform maps each to its field. -->
+<resources>
+    <string name="analytics_empty">暂无统计</string>
+    <string name="analytics_section">统计</string>
+    <string name="app_filter">应用筛选</string>
+    <string name="clear_logs">清除日志</string>
+    <string name="days">天</string>
+    <string name="enabled_daily">已开启 · 每天检查</string>
+    <string name="enabled_monthly">已开启 · 每月检查</string>
+    <string name="enabled_weekly">已开启 · 每周检查</string>
+    <string name="failed_to_load_apps">无法加载应用</string>
+    <string name="hours">小时</string>
+    <string name="interval">间隔</string>
+    <string name="last_update">最后更新</string>
+    <string name="minutes">分钟</string>
+    <string name="no_analytics_data">暂无统计数据</string>
+    <string name="no_analytics_subtitle">先同步应用即可查看目标 SDK 分布</string>
+    <string name="no_apps_subtitle">试试其他筛选或搜索</string>
+    <string name="no_logs_subtitle">应用更新后，SDK 变化会显示在这里</string>
+    <string name="notification_permission_body">允许通知后，应用更改目标 SDK 时 SDK Monitor 会提醒你。</string>
+    <string name="notification_permission_title">开启通知</string>
+    <string name="notification_warning_body">打开系统设置，为后台同步开启通知。</string>
+    <string name="notification_warning_title">通知已关闭</string>
+    <string name="notifications_required">后台同步需要通知权限</string>
+    <string name="package_name">包名</string>
+    <string name="permissions">权限</string>
+    <string name="plural_days">天</string>
+    <string name="plural_hours">小时</string>
+    <string name="plural_minutes">分钟</string>
+    <string name="rate_app">在 GitHub 上评分</string>
+    <string name="refresh">刷新</string>
+    <string name="search">搜索</string>
+    <string name="singular_day">天</string>
+    <string name="singular_hour">小时</string>
+    <string name="singular_minute">分钟</string>
+    <string name="size">大小</string>
+    <string name="sync_dialog_title">后台同步</string>
+    <string name="sync_interval">同步间隔</string>
+    <string name="syncing">正在同步应用…</string>
+    <string name="system_app">系统</string>
+    <string name="tap_to_configure_sync">点按以设置自动检查</string>
+    <string name="theme">主题</string>
+    <string name="user_app">用户</string>
+    <string name="version">版本</string>
+    <string name="color_style">配色风格</string>
+    <string name="style_expressive">表现力</string>
+    <string name="style_vibrant">鲜艳</string>
+    <string name="style_tonal">色调</string>
+    <string name="style_cmf">柔和</string>
+</resources>

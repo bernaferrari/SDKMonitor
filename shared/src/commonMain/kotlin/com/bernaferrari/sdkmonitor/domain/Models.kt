@@ -62,6 +62,7 @@ data class UserPreferences(
     val syncInterval: String = "30m",
     val themeMode: ThemeMode = ThemeMode.SYSTEM,
     val themePalette: ThemePalette = ThemePalette.DYNAMIC,
+    val colorStyle: ColorStyle = ColorStyle.TONAL,
 )
 
 data class LogEntry(
@@ -74,6 +75,22 @@ data class LogEntry(
     val newVersion: String,
     val timestamp: Long,
 )
+
+/**
+ * How a seed color spreads into the theme (Material's palette styles), as in the other apps' style pickers:
+ * expressive, vibrant, tonal (the classic Material You look) and muted.
+ */
+enum class ColorStyle {
+    EXPRESSIVE,
+    VIBRANT,
+    TONAL,
+    CMF,
+    ;
+
+    companion object {
+        fun fromToken(token: String?): ColorStyle? = entries.firstOrNull { it.name == token }
+    }
+}
 
 enum class AppFilter {
     ALL_APPS,
@@ -99,10 +116,7 @@ enum class ThemePalette(
     DYNAMIC("dynamic", null),
     EMBER("ember", 0xFFFF2D1F),
     SOLAR("solar", 0xFFFF8A00),
-    CITRINE("citrine", 0xFFC5C500),
     GROVE("grove", 0xFF00C96B),
-    LAGOON("lagoon", 0xFF00CDB0),
-    TIDE("tide", 0xFF00B8D4),
     AZURE("azure", 0xFF1677FF),
     ORCHID("orchid", 0xFF9B51FF),
     BERRY("berry", 0xFFF2387A),
@@ -131,6 +145,7 @@ data class SdkDistribution(
 data class SettingsPreferences(
     val themeMode: ThemeMode = ThemeMode.SYSTEM,
     val themePalette: ThemePalette = ThemePalette.DYNAMIC,
+    val colorStyle: ColorStyle = ColorStyle.TONAL,
     val appFilter: AppFilter = AppFilter.ALL_APPS,
     val backgroundSync: Boolean = false,
     val orderBySdk: Boolean = false,

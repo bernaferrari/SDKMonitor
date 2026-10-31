@@ -1,10 +1,13 @@
+@file:OptIn(ExperimentalAppFunctionsApi::class)
+
 package com.bernaferrari.sdkmonitor.functions
 
 import android.content.Intent
 import androidx.appfunctions.AppFunctionContext
 import androidx.appfunctions.AppFunctionElementNotFoundException
 import androidx.appfunctions.AppFunctionInvalidArgumentException
-import androidx.appfunctions.service.AppFunction
+import androidx.appfunctions.AppFunctionDeclaration
+import androidx.appfunctions.ExperimentalAppFunctionsApi
 import com.bernaferrari.sdkmonitor.MainActivity
 import com.bernaferrari.sdkmonitor.core.AppManager
 import com.bernaferrari.sdkmonitor.domain.AppVersion
@@ -20,7 +23,7 @@ class SdkMonitorFunctions(
     private val appManager: AppManager,
     private val appsRepository: AppsRepository,
 ) {
-    @AppFunction(isDescribedByKDoc = true)
+    @AppFunctionDeclaration(isDescribedByKDoc = true)
     suspend fun getAppTargetSdk(
         appFunctionContext: AppFunctionContext,
         lookupAppParams: LookupAppParams,
@@ -38,7 +41,7 @@ class SdkMonitorFunctions(
             toAppTargetSdk(appVersion)
         }
 
-    @AppFunction(isDescribedByKDoc = true)
+    @AppFunctionDeclaration(isDescribedByKDoc = true)
     suspend fun searchApps(
         appFunctionContext: AppFunctionContext,
         searchAppsParams: SearchAppsParams,
@@ -60,7 +63,7 @@ class SdkMonitorFunctions(
             AppTargetSdkSummary(apps = matches)
         }
 
-    @AppFunction(isDescribedByKDoc = true)
+    @AppFunctionDeclaration(isDescribedByKDoc = true)
     suspend fun listAppsBelowTargetSdk(
         appFunctionContext: AppFunctionContext,
         listAppsBelowTargetSdkParams: ListAppsBelowTargetSdkParams,
@@ -83,7 +86,7 @@ class SdkMonitorFunctions(
             AppTargetSdkSummary(apps = apps)
         }
 
-    @AppFunction(isDescribedByKDoc = true)
+    @AppFunctionDeclaration(isDescribedByKDoc = true)
     suspend fun getRecentSdkChanges(
         appFunctionContext: AppFunctionContext,
         recentSdkChangesParams: RecentSdkChangesParams,
@@ -107,7 +110,7 @@ class SdkMonitorFunctions(
             RecentSdkChangesResult(changes = changes)
         }
 
-    @AppFunction(isDescribedByKDoc = true)
+    @AppFunctionDeclaration(isDescribedByKDoc = true)
     suspend fun getSdkDistribution(
         appFunctionContext: AppFunctionContext,
     ): SdkDistribution =
@@ -130,7 +133,7 @@ class SdkMonitorFunctions(
             )
         }
 
-    @AppFunction(isDescribedByKDoc = true)
+    @AppFunctionDeclaration(isDescribedByKDoc = true)
     suspend fun openAppDetails(
         appFunctionContext: AppFunctionContext,
         openAppDetailsParams: OpenAppDetailsParams,

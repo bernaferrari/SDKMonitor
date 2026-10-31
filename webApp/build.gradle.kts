@@ -22,7 +22,7 @@ kotlin {
                 implementation(project(":sqliteWasmWorker"))
                 implementation(compose.runtime)
                 implementation(compose.foundation)
-                implementation(compose.material3)
+                implementation(libs.compose.material3)
                 implementation(compose.ui)
                 implementation(libs.kotlinx.coroutines.core)
             }

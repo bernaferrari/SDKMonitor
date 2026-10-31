@@ -5,13 +5,15 @@
 
 package com.bernaferrari.sdkmonitor.ui.settings.components
 
-import com.bernaferrari.sdkmonitor.ui.icons.MaterialSymbols
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -22,6 +24,7 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -43,6 +46,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.semantics.Role
@@ -51,8 +55,10 @@ import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import com.bernaferrari.sdkmonitor.domain.ColorStyle
 import com.bernaferrari.sdkmonitor.domain.ThemeMode
 import com.bernaferrari.sdkmonitor.domain.ThemePalette
+import com.bernaferrari.sdkmonitor.ui.icons.MaterialSymbols
 
 @Composable
 fun ThemeAppearanceSelector(
@@ -62,13 +68,26 @@ fun ThemeAppearanceSelector(
     onModeSelected: (ThemeMode) -> Unit,
     onPaletteSelected: (ThemePalette) -> Unit,
     modifier: Modifier = Modifier,
+    selectedStyle: ColorStyle = ColorStyle.TONAL,
+    onStyleSelected: (ColorStyle) -> Unit = {},
 ) {
+    // Connected items, like the app's lists: theme mode, color, then (for the app's own colors) their style.
+    // Round outside, tight where they meet. Wallpaper colors come as Android gives them, so the style row
+    // slides away while they are chosen, the same rule as every app of the family.
+    val item = MaterialTheme.colorScheme.surfaceContainerLow
+    val seed = selectedPalette.seedArgb?.let { Color(it) }
+    val bottom by animateDpAsState(if (seed != null) 6.dp else 24.dp, label = "colorsBottomCorner")
+    val dark = MaterialTheme.colorScheme.surface.luminance() < 0.5f
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(2.dp),
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .background(item, RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp, bottomStart = 6.dp, bottomEnd = 6.dp))
+                    .padding(16.dp),
             horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
         ) {
             ThemeMode.entries.forEachIndexed { index, mode ->
@@ -78,22 +97,29 @@ fun ThemeAppearanceSelector(
                     onCheckedChange = { checked ->
                         if (checked && mode != selectedMode) onModeSelected(mode)
                     },
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.weight(1f).heightIn(min = 48.dp),
                     shapes =
                         when (index) {
                             0 -> ButtonGroupDefaults.connectedLeadingButtonShapes()
                             ThemeMode.entries.lastIndex -> ButtonGroupDefaults.connectedTrailingButtonShapes()
                             else -> ButtonGroupDefaults.connectedMiddleButtonShapes()
                         },
+                    // The family standard (Calcula, WiFi Weakspot, QuietGuard, Wordkeep, Keepout): the chosen
+                    // mode solid in primary with a check, the others raised off the card.
                     colors =
-                        ToggleButtonDefaults.toggleButtonColors(
-                            checkedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                            checkedContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                            containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                        ToggleButtonDefaults.colors(
+                            checkedContainerColor = MaterialTheme.colorScheme.primary,
+                            checkedContentColor = MaterialTheme.colorScheme.onPrimary,
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
                             contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                         ),
                 ) {
-                    Icon(icon, contentDescription = null, modifier = Modifier.size(ToggleButtonDefaults.IconSize))
+                    // Like a segmented button: the chosen mode trades its icon for a check.
+                    Icon(
+                        if (mode == selectedMode) MaterialSymbols.Filled.Check else icon,
+                        contentDescription = null,
+                        modifier = Modifier.size(ToggleButtonDefaults.IconSize),
+                    )
                     Spacer(modifier = Modifier.size(ToggleButtonDefaults.IconSpacing))
                     Text(label, style = MaterialTheme.typography.labelLarge)
                 }
@@ -101,8 +127,14 @@ fun ThemeAppearanceSelector(
         }
 
         FlowRow(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp, vertical = 4.dp),
-            horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .background(item, RoundedCornerShape(topStart = 6.dp, topEnd = 6.dp, bottomStart = bottom, bottomEnd = bottom))
+                    .padding(12.dp),
+            // Wallpaper and six colors in one row on any phone: the 48dp touch targets sit side by side, and their
+            // 40dp swatches leave the gap between them.
+            horizontalArrangement = Arrangement.Center,
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             availablePalettes.forEach { palette ->
@@ -112,6 +144,24 @@ fun ThemeAppearanceSelector(
                     onClick = { onPaletteSelected(palette) },
                 )
             }
+        }
+        // The style row unfolds downward from the colors above it, across its full width, and folds back up.
+        androidx.compose.animation.AnimatedVisibility(
+            visible = seed != null,
+            enter = fadeIn() + expandVertically(expandFrom = Alignment.Top),
+            exit = fadeOut() + shrinkVertically(shrinkTowards = Alignment.Top),
+        ) {
+            ColorStylePicker(
+                selected = selectedStyle,
+                seedColor = seed ?: MaterialTheme.colorScheme.primary,
+                dark = dark,
+                onSelect = onStyleSelected,
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .background(item, RoundedCornerShape(topStart = 6.dp, topEnd = 6.dp, bottomStart = 24.dp, bottomEnd = 24.dp))
+                        .padding(12.dp),
+            )
         }
     }
 }
@@ -208,7 +258,7 @@ private fun ThemeColorItem(
     Box(
         modifier =
             Modifier
-                .size(44.dp)
+                .size(48.dp)
                 .clip(RoundedCornerShape(16.dp))
                 .clickable(
                     interactionSource = interactionSource,
@@ -229,7 +279,7 @@ private fun ThemeColorItem(
         Box(
             modifier =
                 Modifier
-                    .size(36.dp)
+                    .size(40.dp)
                     .rotate(rotation)
                     .clip(RoundedCornerShape(cornerRadius))
                     .background(swatchBrush)
@@ -280,10 +330,7 @@ private fun ThemePalette.displayName(): String =
         ThemePalette.DYNAMIC -> "Wallpaper"
         ThemePalette.EMBER -> "Ember"
         ThemePalette.SOLAR -> "Solar"
-        ThemePalette.CITRINE -> "Citrine"
         ThemePalette.GROVE -> "Grove"
-        ThemePalette.LAGOON -> "Lagoon"
-        ThemePalette.TIDE -> "Tide"
         ThemePalette.AZURE -> "Azure"
         ThemePalette.ORCHID -> "Orchid"
         ThemePalette.BERRY -> "Berry"

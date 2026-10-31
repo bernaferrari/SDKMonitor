@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.bernaferrari.sdkmonitor.domain.AppFilter
 import com.bernaferrari.sdkmonitor.domain.ThemeMode
+import com.bernaferrari.sdkmonitor.domain.ColorStyle
 import com.bernaferrari.sdkmonitor.domain.ThemePalette
 import com.bernaferrari.sdkmonitor.domain.UserPreferences
 import com.bernaferrari.sdkmonitor.domain.repository.PreferencesRepository
@@ -21,6 +22,7 @@ class PreferencesRepositoryImpl(
         companion object {
             private val THEME_MODE_KEY = stringPreferencesKey("theme_mode")
             private val THEME_PALETTE_KEY = stringPreferencesKey("theme_palette")
+            private val COLOR_STYLE_KEY = stringPreferencesKey("color_style")
             private val APP_FILTER_KEY =
                 stringPreferencesKey("app_filter")
             private val BACKGROUND_SYNC_KEY = booleanPreferencesKey("background_sync")
@@ -38,6 +40,7 @@ class PreferencesRepositoryImpl(
                     themePalette =
                         ThemePalette.fromToken(preferences[THEME_PALETTE_KEY])
                             ?: ThemePalette.DYNAMIC,
+                    colorStyle = ColorStyle.fromToken(preferences[COLOR_STYLE_KEY]) ?: ColorStyle.TONAL,
                     appFilter =
                         AppFilter.valueOf(
                             preferences[APP_FILTER_KEY] ?: AppFilter.USER_APPS.name,
@@ -75,6 +78,12 @@ class PreferencesRepositoryImpl(
         override suspend fun updateThemeMode(themeMode: ThemeMode) {
             dataStore.edit { preferences ->
                 preferences[THEME_MODE_KEY] = themeMode.name
+            }
+        }
+
+        override suspend fun updateColorStyle(colorStyle: ColorStyle) {
+            dataStore.edit { preferences ->
+                preferences[COLOR_STYLE_KEY] = colorStyle.name
             }
         }
 

@@ -17,8 +17,10 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 import com.materialkolor.PaletteStyle
 import com.materialkolor.dynamiccolor.ColorSpec
-import com.materialkolor.rememberDynamicMaterialThemeState
+import com.materialkolor.material3.rememberDynamicMaterialThemeState
+import com.bernaferrari.sdkmonitor.domain.ColorStyle
 import com.bernaferrari.sdkmonitor.domain.ThemePalette
+import com.bernaferrari.sdkmonitor.ui.theme.paletteStyle
 
 // private val primary = Color(0xFF1976D2)
 @Composable
@@ -26,23 +28,24 @@ fun SDKMonitorTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = true,
     themePalette: ThemePalette = ThemePalette.DYNAMIC,
+    colorStyle: ColorStyle = ColorStyle.TONAL,
     content: @Composable () -> Unit,
 ) {
+    // Wallpaper colors are used exactly as Android gives them, so the app matches the rest of the phone
+    // (Android has its own style setting for them); the color style shapes the app's own colors.
+    val styledScheme =
+        rememberDynamicMaterialThemeState(
+            seedColor = Color((themePalette.seedArgb ?: ThemePalette.EMBER.seedArgb)!!),
+            style = colorStyle.paletteStyle(),
+            isDark = darkTheme,
+            specVersion = ColorSpec.SpecVersion.SPEC_2025,
+        ).colorScheme
+    val context = LocalContext.current
     val colorScheme =
-        when {
-            dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-                val context = LocalContext.current
-                if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-            }
-
-            else -> {
-                rememberDynamicMaterialThemeState(
-                    seedColor = Color((themePalette.seedArgb ?: ThemePalette.EMBER.seedArgb)!!),
-                    style = PaletteStyle.TonalSpot,
-                    isDark = darkTheme,
-                    specVersion = ColorSpec.SpecVersion.SPEC_2025,
-                ).colorScheme
-            }
+        if (dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+        } else {
+            styledScheme
         }
     val view = LocalView.current
     if (!view.isInEditMode) {

@@ -48,6 +48,7 @@ import com.bernaferrari.sdkmonitor.domain.ThemePalette
 import com.bernaferrari.sdkmonitor.domain.logic.AnalyticsLogic
 import com.bernaferrari.sdkmonitor.domain.logic.formatRelativeTimestamp
 import com.bernaferrari.sdkmonitor.ui.details.DetailsContent
+import com.bernaferrari.sdkmonitor.ui.insights.SdkInsights
 import com.bernaferrari.sdkmonitor.ui.logs.LogsContent
 import com.bernaferrari.sdkmonitor.ui.main.MainContent
 import com.bernaferrari.sdkmonitor.ui.platform.rememberComposeSdkStrings
@@ -90,6 +91,21 @@ fun DemoSdkMonitorApp(
     val (distribution, filteredForSdk) = remember(allApps, prefs.appFilter) {
         AnalyticsLogic.sdkDistribution(allApps, prefs.appFilter)
     }
+    val settingsState =
+        SettingsUiState(
+            isLoading = false,
+            preferences =
+                SettingsPreferences(
+                    themeMode = prefs.themeMode,
+                    themePalette = prefs.themePalette,
+                    colorStyle = prefs.colorStyle,
+                    appFilter = prefs.appFilter,
+                    backgroundSync = prefs.backgroundSync,
+                ),
+            sdkDistribution = distribution,
+            totalApps = filteredForSdk.size,
+            allAppsForSdk = filteredForSdk,
+        )
 
     SdkMonitorTheme(
         themeMode = prefs.themeMode,
@@ -106,7 +122,9 @@ fun DemoSdkMonitorApp(
                             tab = destination.index
                             selectedPackage = null
                         },
-                        icon = { Icon(destination.icon, contentDescription = null) },
+                        icon = {
+                            Icon(if (tab == destination.index) destination.icon else destination.outlinedIcon, contentDescription = null)
+                        },
                         label = { Text(destination.label) },
                     )
                 }
@@ -155,11 +173,17 @@ fun DemoSdkMonitorApp(
                             } else {
                                 LogsUiState.Success(logs, logs.size)
                             },
-                        appFilter = prefs.appFilter,
                         selectedPackageName = selectedPackageName,
                         formatTime = ::demoLogDate,
                         onLogClick = { onAppClick(it.packageName) },
                         onRetry = {},
+                        insights = {
+                            SdkInsights(
+                                state = settingsState,
+                                onAppFilterChange = session::setAppFilter,
+                                onAppClick = onAppClick,
+                            )
+                        },
                     )
                 }
                 else -> DemoListDetailScaffold(
@@ -181,29 +205,16 @@ fun DemoSdkMonitorApp(
                     },
                 ) { selectedPackageName, onAppClick ->
                     SettingsContent(
-                        uiState = SettingsUiState(
-                            isLoading = false,
-                            preferences =
-                                SettingsPreferences(
-                                    themeMode = prefs.themeMode,
-                                    themePalette = prefs.themePalette,
-                                    appFilter = prefs.appFilter,
-                                    backgroundSync = prefs.backgroundSync,
-                                ),
-                            sdkDistribution = distribution,
-                            totalApps = filteredForSdk.size,
-                            allAppsForSdk = filteredForSdk,
-                        ),
+                        uiState = settingsState,
                         appVersionLabel = "SDK Monitor",
                         availableThemePalettes = ThemePalette.entries.filterNot { it == ThemePalette.DYNAMIC },
                         onThemeModeChange = session::setThemeMode,
                         onThemePaletteChange = session::setThemePalette,
-                        onAppFilterChange = session::setAppFilter,
+                        onColorStyleChange = session::setColorStyle,
                         onBackgroundSyncToggle = {},
                         onSetSyncInterval = { _, _ -> },
                         onClearError = {},
                         onNavigateToAbout = { selectedPackage = AboutDestinationKey },
-                        onNavigateToAppDetails = onAppClick,
                         isAboutSelected = selectedPackageName == AboutDestinationKey,
                     )
                 }
@@ -320,10 +331,11 @@ private enum class DemoDestination(
     val index: Int,
     val label: String,
     val icon: ImageVector,
+    val outlinedIcon: ImageVector,
 ) {
-    Apps(0, "Apps", MaterialSymbols.Filled.Apps),
-    Logs(1, "Logs", MaterialSymbols.Filled.History),
-    Settings(2, "Settings", MaterialSymbols.Filled.Settings),
+    Apps(0, "Apps", MaterialSymbols.Filled.Apps, MaterialSymbols.Outlined.Apps),
+    Logs(1, "Logs", MaterialSymbols.Filled.History, MaterialSymbols.Outlined.History),
+    Settings(2, "Settings", MaterialSymbols.Filled.Settings, MaterialSymbols.Outlined.Settings),
 }
 
 private fun detailsFromRoom(allApps: List<AppVersion>, packageName: String): AppDetails? {

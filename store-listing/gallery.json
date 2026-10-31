@@ -13,21 +13,27 @@
       "file": "phone/phone-02-logs.jpg"
     },
     {
+      "feature": "insights",
+      "layout": "hang",
+      "raw": "phone/05-insights.png",
+      "file": "phone/phone-03-insights.jpg"
+    },
+    {
       "feature": "details",
       "layout": "hang",
       "raw": "phone/02-details.png",
-      "file": "phone/phone-03-details.jpg"
+      "file": "phone/phone-04-details.jpg"
     },
     {
       "feature": "settings",
       "layout": "gate-right",
       "raw": "phone/04-settings.png",
-      "file": "phone/phone-04-settings.jpg"
+      "file": "phone/phone-05-settings.jpg"
     },
     {
       "feature": "dark",
       "layout": "duo",
-      "file": "phone/phone-05-dark.jpg",
+      "file": "phone/phone-06-dark.jpg",
       "devices": [
         {
           "raw": "phone/11-apps-dark.png",
@@ -91,13 +97,25 @@
   ],
   "readme": [
     {
+      "feature": "readme-header",
+      "layout": "banner",
+      "file": "readme/header.jpg",
+      "identity": true,
+      "devices": [
+        {
+          "raw": "phone/01-apps.png",
+          "role": "front"
+        }
+      ]
+    },
+    {
       "feature": "readme-identity",
-      "layout": "hero",
+      "layout": "hero branded",
       "file": "readme/hero.jpg",
       "identity": true,
       "devices": [
         {
-          "raw": "phone/03-logs.png",
+          "raw": "phone/05-insights.png",
           "role": "left"
         },
         {
@@ -116,9 +134,9 @@
       "file": "readme/tools.jpg",
       "devices": [
         {
-          "raw": "phone/02-details.png",
+          "raw": "phone/05-insights.png",
           "role": "one",
-          "label": "Every *version*"
+          "label": "Where apps *stand*"
         },
         {
           "raw": "phone/03-logs.png",
@@ -126,9 +144,25 @@
           "label": "Every *change*"
         },
         {
-          "raw": "phone/04-settings.png",
+          "raw": "phone/02-details.png",
           "role": "three",
-          "label": "Fully *offline*"
+          "label": "Every *version*"
+        }
+      ]
+    },
+    {
+      "feature": "readme-tablet",
+      "layout": "spread",
+      "file": "readme/tablet.jpg",
+      "devices": [
+        {
+          "raw": "tablet7/03-logs.png",
+          "role": "slate",
+          "frame": "tablet"
+        },
+        {
+          "raw": "phone/06-sdk-sheet.png",
+          "role": "front"
         }
       ]
     },
@@ -138,12 +172,26 @@
       "file": "readme/big-screen.jpg",
       "devices": [
         {
-          "raw": "tablet10/02-details.png",
+          "raw": "tablet7/01-apps.png",
           "role": "slate",
           "frame": "tablet"
         },
         {
-          "raw": "phone/11-apps-dark.png",
+          "raw": "phone/12-details-dark.png",
+          "role": "front"
+        }
+      ]
+    }
+  ],
+  "social": [
+    {
+      "feature": "social-card",
+      "layout": "banner",
+      "file": "social/opengraph-image.png",
+      "identity": true,
+      "devices": [
+        {
+          "raw": "phone/01-apps.png",
           "role": "front"
         }
       ]

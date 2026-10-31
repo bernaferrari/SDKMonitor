@@ -11,7 +11,9 @@ plugins {
 kotlin {
     android {
         namespace = "com.bernaferrari.sdkmonitor.shared"
-        compileSdk = 37
+        compileSdk {
+            version = release(37) { minorApiLevel = 2 }
+        }
         minSdk = 28
         compilerOptions {
             jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
@@ -34,7 +36,7 @@ kotlin {
             dependencies {
                 implementation(compose.runtime)
                 implementation(compose.foundation)
-                implementation(compose.material3)
+                implementation(libs.compose.material3)
                 implementation(libs.compose.adaptive)
                 implementation(libs.compose.adaptive.layout)
                 implementation(libs.compose.adaptive.navigation)

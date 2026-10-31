@@ -8,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bernaferrari.sdkmonitor.domain.ThemeMode
+import com.bernaferrari.sdkmonitor.domain.ColorStyle
 import com.bernaferrari.sdkmonitor.domain.ThemePalette
 import com.bernaferrari.sdkmonitor.domain.repository.PreferencesRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,6 +26,8 @@ class ThemeViewModel(
         val themeMode: StateFlow<ThemeMode> = _themeMode.asStateFlow()
         private val _themePalette = MutableStateFlow(ThemePalette.DYNAMIC)
         val themePalette: StateFlow<ThemePalette> = _themePalette.asStateFlow()
+        private val _colorStyle = MutableStateFlow(ColorStyle.TONAL)
+        val colorStyle: StateFlow<ColorStyle> = _colorStyle.asStateFlow()
 
         init {
             observeThemePreferences()
@@ -38,6 +41,7 @@ class ThemeViewModel(
                     .collect { preferences ->
                         _themeMode.value = preferences.themeMode
                         _themePalette.value = preferences.themePalette
+                        _colorStyle.value = preferences.colorStyle
                     }
             }
         }
@@ -58,6 +62,12 @@ class ThemeViewModel(
         fun currentThemePalette(): ThemePalette {
             val currentPalette by themePalette.collectAsState()
             return currentPalette
+        }
+
+        @Composable
+        fun currentColorStyle(): ColorStyle {
+            val style by colorStyle.collectAsState()
+            return style
         }
 
         @Composable

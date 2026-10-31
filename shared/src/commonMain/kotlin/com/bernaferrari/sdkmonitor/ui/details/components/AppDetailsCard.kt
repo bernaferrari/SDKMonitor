@@ -1,7 +1,6 @@
 package com.bernaferrari.sdkmonitor.ui.details.components
 
-import com.bernaferrari.sdkmonitor.ui.icons.MaterialSymbols
-
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,22 +13,27 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.bernaferrari.sdkmonitor.domain.AppDetails
 import com.bernaferrari.sdkmonitor.domain.logic.formatFileSize
+import com.bernaferrari.sdkmonitor.ui.components.SdkSeal
+import com.bernaferrari.sdkmonitor.ui.icons.BrandIcons
+import com.bernaferrari.sdkmonitor.ui.icons.MaterialSymbols
 import com.bernaferrari.sdkmonitor.ui.platform.PlatformAppIcon
+import com.bernaferrari.sdkmonitor.ui.platform.apiContainerColor
+import com.bernaferrari.sdkmonitor.ui.platform.apiContentColor
 import com.bernaferrari.sdkmonitor.ui.platform.apiToComposeColor
 import com.bernaferrari.sdkmonitor.ui.platform.apiToVersionName
 import com.bernaferrari.sdkmonitor.ui.platform.sdkStrings
@@ -123,82 +127,67 @@ private fun HeroHeaderSection(appDetails: AppDetails) {
 @Composable
 private fun SDKInfoSection(appDetails: AppDetails) {
     val s = sdkStrings()
-    val targetSdkColor = appDetails.targetSdk.apiToComposeColor()
-
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        Surface(
+        SdkSealTile(
+            level = appDetails.targetSdk,
+            label = s.targetSdk,
+            seal = appDetails.targetSdk.apiToComposeColor(),
+            onSeal = Color.White,
+            content = appDetails.targetSdk.apiContentColor(),
+            container = appDetails.targetSdk.apiContainerColor(),
             modifier = Modifier.weight(1f),
-            shape = RoundedCornerShape(16.dp),
-            color = targetSdkColor.copy(alpha = 0.1f),
-        ) {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-            ) {
-                Text(
-                    text = appDetails.targetSdk.toString(),
-                    style =
-                        MaterialTheme.typography.headlineMedium.copy(
-                            fontWeight = FontWeight.Bold,
-                        ),
-                    color = targetSdkColor,
-                )
-                Text(
-                    text = s.targetSdk,
-                    style =
-                        MaterialTheme.typography.labelMedium.copy(
-                            fontWeight = FontWeight.Medium,
-                        ),
-                    color = targetSdkColor,
-                )
-                Text(
-                    text = appDetails.targetSdk.apiToVersionName(),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = targetSdkColor,
-                    textAlign = TextAlign.Center,
-                    maxLines = 1,
-                )
-            }
-        }
+        )
+        SdkSealTile(
+            level = appDetails.minSdk,
+            label = s.minSdk,
+            seal = MaterialTheme.colorScheme.secondary,
+            onSeal = MaterialTheme.colorScheme.onSecondary,
+            // The minimum is a fact, not a grade: a neutral circle.
+            graded = false,
+            content = MaterialTheme.colorScheme.onSecondaryContainer,
+            container = MaterialTheme.colorScheme.secondaryContainer,
+            modifier = Modifier.weight(1f),
+        )
+    }
+}
 
-        Surface(
-            modifier = Modifier.weight(1f),
-            shape = RoundedCornerShape(16.dp),
-            color = MaterialTheme.colorScheme.secondaryContainer,
-        ) {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-            ) {
-                Text(
-                    text = appDetails.minSdk.toString(),
-                    style =
-                        MaterialTheme.typography.headlineMedium.copy(
-                            fontWeight = FontWeight.Bold,
-                        ),
-                    color = MaterialTheme.colorScheme.secondary,
-                )
-                Text(
-                    text = s.minSdk,
-                    style =
-                        MaterialTheme.typography.labelMedium.copy(
-                            fontWeight = FontWeight.Medium,
-                        ),
-                    color = MaterialTheme.colorScheme.secondary,
-                )
-                Text(
-                    text = appDetails.minSdk.apiToVersionName(),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.secondary,
-                    textAlign = TextAlign.Center,
-                    maxLines = 1,
-                )
-            }
+/** An SDK level in its seal (the target's shape grades it), named under it. */
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+private fun SdkSealTile(
+    level: Int,
+    label: String,
+    seal: Color,
+    onSeal: Color,
+    graded: Boolean = true,
+    content: Color,
+    container: Color,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier.background(container, RoundedCornerShape(24.dp)).padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        SdkSeal(
+            level = level,
+            size = 64.dp,
+            fill = seal,
+            textColor = onSeal,
+            textStyle = MaterialTheme.typography.headlineSmall,
+            graded = graded,
+        )
+        Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            Text(label, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = content)
+            Text(
+                level.apiToVersionName(),
+                style = MaterialTheme.typography.bodyLarge,
+                color = content,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
         }
     }
 }
@@ -244,7 +233,7 @@ private fun ActionButtonsSection(
                 shape = RoundedCornerShape(16.dp),
             ) {
                 Icon(
-                    imageVector = MaterialSymbols.Filled.PlayArrow,
+                    imageVector = BrandIcons.GooglePlay,
                     contentDescription = null,
                     modifier = Modifier.size(18.dp),
                 )

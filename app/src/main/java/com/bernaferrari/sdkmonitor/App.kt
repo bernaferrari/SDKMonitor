@@ -1,7 +1,7 @@
 package com.bernaferrari.sdkmonitor
 
 import android.app.Application
-import androidx.appfunctions.service.AppFunctionConfiguration
+import androidx.appfunctions.AppFunctionConfiguration
 import androidx.work.Configuration
 import com.bernaferrari.sdkmonitor.di.SdkMonitorKoinApp
 import com.bernaferrari.sdkmonitor.functions.SdkMonitorFunctions

@@ -1,16 +1,14 @@
 package com.bernaferrari.sdkmonitor.ui.logs
 
-import com.bernaferrari.sdkmonitor.ui.icons.MaterialSymbols
-
-import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.animation.core.spring
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,54 +16,66 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.LargeFlexibleTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.bernaferrari.sdkmonitor.domain.LogEntry
-import com.bernaferrari.sdkmonitor.domain.AppFilter
-import com.bernaferrari.sdkmonitor.ui.logs.components.LogsCard
+import com.bernaferrari.sdkmonitor.ui.components.StatusLoading
+import com.bernaferrari.sdkmonitor.ui.components.StatusMessage
+import com.bernaferrari.sdkmonitor.ui.components.StatusTone
 import com.bernaferrari.sdkmonitor.ui.components.expressiveListItemPosition
+import com.bernaferrari.sdkmonitor.ui.icons.MaterialSymbols
+import com.bernaferrari.sdkmonitor.ui.logs.components.LogsCard
 import com.bernaferrari.sdkmonitor.ui.platform.sdkStrings
+import com.bernaferrari.sdkmonitor.ui.settings.components.AnalyticsSection
 import com.bernaferrari.sdkmonitor.ui.state.LogsUiState
 import kotlin.time.Clock
 
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun LogsContent(
     uiState: LogsUiState,
-    appFilter: AppFilter = AppFilter.ALL_APPS,
     selectedPackageName: String? = null,
     formatTime: (Long) -> String = { "" },
     onLogClick: (LogEntry) -> Unit,
     onRetry: () -> Unit,
     onRefresh: () -> Unit = {},
     contentModifier: Modifier = Modifier,
+    insights: (@Composable () -> Unit)? = null,
 ) {
     val s = sdkStrings()
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
     Scaffold(
-        modifier = contentModifier,
+        modifier = contentModifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = { Text(s.changeLogs, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.ExtraBold) },
+            LargeFlexibleTopAppBar(
+                title = { Text(s.changeLogs, maxLines = 1, overflow = TextOverflow.Ellipsis, fontWeight = FontWeight.Bold) },
+                scrollBehavior = scrollBehavior,
             )
         },
     ) { paddingValues ->
@@ -80,15 +90,10 @@ fun LogsContent(
                 } else {
                     LazyColumn(
                         modifier = Modifier.fillMaxSize().padding(paddingValues),
-                        contentPadding = androidx.compose.foundation.layout.PaddingValues(vertical = 16.dp),
+                        contentPadding = androidx.compose.foundation.layout.PaddingValues(bottom = 16.dp),
                     ) {
-                        item {
-                            TimelineHeader(
-                                logs = uiState.logs,
-                                appFilter = appFilter,
-                                modifier = Modifier.padding(horizontal = 16.dp),
-                            )
-                        }
+                        if (insights != null) item(key = "insights") { insights() }
+                        item(key = "summary") { ChangeSummary(uiState.logs) }
                         uiState.logs.groupBy { formatTime(it.timestamp) }.forEach { (period, logs) ->
                             item(key = "header_$period") {
                                 LogPeriodHeader(period, logs.size)
@@ -137,13 +142,7 @@ private fun LogPeriodHeader(period: String, count: Int) {
 private fun LoadingState(modifier: Modifier) {
     val s = sdkStrings()
     Box(modifier, contentAlignment = Alignment.Center) {
-        Surface(shape = RoundedCornerShape(28.dp), color = MaterialTheme.colorScheme.surfaceContainer) {
-            Column(Modifier.padding(48.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(24.dp)) {
-                CircularProgressIndicator(modifier = Modifier.size(64.dp), color = MaterialTheme.colorScheme.primary, strokeWidth = 6.dp)
-                Text(s.loadingChangeHistory, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary, textAlign = TextAlign.Center)
-                Text(s.analyzingAppEcosystem, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center)
-            }
-        }
+        StatusLoading(title = s.loadingChangeHistory, body = s.analyzingAppEcosystem)
     }
 }
 
@@ -151,143 +150,90 @@ private fun LoadingState(modifier: Modifier) {
 private fun ErrorState(message: String, modifier: Modifier) {
     val s = sdkStrings()
     Box(modifier, contentAlignment = Alignment.Center) {
-        Card(modifier = Modifier.padding(32.dp), shape = RoundedCornerShape(32.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer), elevation = CardDefaults.cardElevation(20.dp)) {
-            Box(Modifier.fillMaxWidth().background(Brush.radialGradient(listOf(MaterialTheme.colorScheme.error.copy(alpha = 0.05f), MaterialTheme.colorScheme.errorContainer)))) {
-                Column(Modifier.padding(40.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(20.dp)) {
-                    Surface(modifier = Modifier.size(80.dp), shape = RoundedCornerShape(24.dp), color = MaterialTheme.colorScheme.error.copy(alpha = 0.15f)) {
-                        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { Icon(MaterialSymbols.Filled.Warning, null, Modifier.size(40.dp), MaterialTheme.colorScheme.error) }
-                    }
-                    Text(s.oopsSomethingWentWrong, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onErrorContainer, textAlign = TextAlign.Center)
-                    Text(message, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onErrorContainer.copy(alpha = 0.8f), textAlign = TextAlign.Center)
-                }
-            }
-        }
+        StatusMessage(icon = MaterialSymbols.Filled.Warning, title = s.oopsSomethingWentWrong, body = message, tone = StatusTone.Error)
     }
 }
 
 @Composable
 private fun EmptyLogsState(title: String, subtitle: String, modifier: Modifier) {
     Box(modifier, contentAlignment = Alignment.Center) {
-        Column(Modifier.padding(48.dp).fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            Box(Modifier.size(120.dp).background(Brush.radialGradient(listOf(MaterialTheme.colorScheme.primary.copy(alpha = 0.15f), MaterialTheme.colorScheme.primary.copy(alpha = 0.05f), Color.Transparent)), RoundedCornerShape(32.dp)), contentAlignment = Alignment.Center) {
-                Surface(modifier = Modifier.size(80.dp), shape = RoundedCornerShape(24.dp), color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)) {
-                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { Icon(MaterialSymbols.Filled.History, null, Modifier.size(40.dp), MaterialTheme.colorScheme.primary) }
-                }
-            }
-            Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text(title, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
-                Text(subtitle, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center, modifier = Modifier.padding(horizontal = 16.dp))
-            }
-        }
+        StatusMessage(icon = MaterialSymbols.Filled.History, title = title, body = subtitle)
     }
 }
 
+/**
+ * How many changes landed in the past week, month and six months. They nest (the week is part of the month,
+ * the month part of the six months), so one bar shows them: the six months fill it, the month and the week
+ * grow from the left in deeper shades, and a legend gives each count.
+ */
 @Composable
-private fun TimelineHeader(logs: List<LogEntry>, appFilter: AppFilter, modifier: Modifier = Modifier) {
+private fun ChangeSummary(logs: List<LogEntry>) {
     val s = sdkStrings()
-    Surface(
-        modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(24.dp),
-        color = MaterialTheme.colorScheme.surfaceContainer,
-    ) {
-        Column(
-            modifier = Modifier.fillMaxWidth().padding(24.dp),
-            verticalArrangement = Arrangement.spacedBy(20.dp),
-        ) {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Surface(modifier = Modifier.size(56.dp), shape = RoundedCornerShape(16.dp), color = MaterialTheme.colorScheme.surfaceContainerHighest) {
-                    Box(contentAlignment = Alignment.Center) { Icon(MaterialSymbols.Filled.Timeline, contentDescription = null, modifier = Modifier.size(28.dp), tint = MaterialTheme.colorScheme.primary) }
-                }
-                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                    Text(s.changeTimeline, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
-                    Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
-                        Text(s.showing, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        Surface(shape = RoundedCornerShape(8.dp), color = MaterialTheme.colorScheme.surfaceContainerHighest) {
-                            Text(
-                                text = appFilter.displayName(s),
-                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
-                                style = MaterialTheme.typography.labelSmall,
-                                fontWeight = FontWeight.Medium,
-                                color = MaterialTheme.colorScheme.primary,
-                            )
-                        }
+    val now = Clock.System.now().toEpochMilliseconds()
+    val day = 24 * 60 * 60 * 1000L
+    val halfYear = logs.count { now - it.timestamp < 182 * day }
+    val month = logs.count { now - it.timestamp < 30 * day }
+    val week = logs.count { now - it.timestamp < 7 * day }
+    val primary = MaterialTheme.colorScheme.primary
+    val shades = listOf(primary, primary.copy(alpha = 0.55f), primary.copy(alpha = 0.22f))
+    val windows = listOf(s.pastWeek to week, s.pastMonth to month, s.pastSixMonths to halfYear)
+
+    AnalyticsSection(title = s.changeTimeline) {
+        if (halfYear > 0) {
+            NestedBar(
+                fractions = listOf(week, month).map { it.toFloat() / halfYear },
+                colors = shades,
+                gapColor = MaterialTheme.colorScheme.surface,
+                modifier = Modifier.fillMaxWidth().height(20.dp),
+            )
+        }
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            windows.forEachIndexed { index, (label, count) ->
+                Row(modifier = Modifier.weight(1f), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Box(Modifier.padding(top = 6.dp).size(10.dp).background(shades[index], CircleShape))
+                    Column {
+                        Text(
+                            count.toString(),
+                            style = MaterialTheme.typography.headlineSmall,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurface,
+                        )
+                        Text(label, style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 2)
                     }
                 }
             }
-            Box(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .height(1.dp)
-                        .background(
-                            Brush.horizontalGradient(
-                                listOf(
-                                    Color.Transparent,
-                                    MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
-                                    Color.Transparent,
-                                ),
-                            ),
-                        ),
-            )
-            ProgressSection(logs = logs)
         }
     }
 }
 
+/** A rounded bar filled by [colors] last to first: the last spans it all, each earlier one the left [fractions] of it. */
 @Composable
-private fun ProgressSection(logs: List<LogEntry>) {
-    val s = sdkStrings()
-    val now = Clock.System.now().toEpochMilliseconds()
-    val weekMillis = 7 * 24 * 60 * 60 * 1000L
-    val monthMillis = 30 * 24 * 60 * 60 * 1000L
-    val sixMonthsMillis = 6 * monthMillis
-    val total = logs.size
-
-    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        Text(s.activityOverview, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-        ActivityProgress(s.pastWeek, logs.count { now - it.timestamp < weekMillis }, total)
-        ActivityProgress(s.pastMonth, logs.count { now - it.timestamp < monthMillis }, total)
-        ActivityProgress(s.pastSixMonths, logs.count { now - it.timestamp < sixMonthsMillis }, total)
-    }
-}
-
-@Composable
-private fun ActivityProgress(label: String, count: Int, total: Int) {
-    val progress = if (total == 0) 0f else count.toFloat() / total
-    val animatedProgress by animateFloatAsState(
-        targetValue = progress,
-        animationSpec = tween(durationMillis = 1200, easing = FastOutSlowInEasing),
-        label = "activity_progress_$label",
-    )
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
-                Text(label, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Medium)
-                Surface(shape = RoundedCornerShape(12.dp), color = MaterialTheme.colorScheme.surfaceContainerHighest.copy(alpha = 0.8f)) {
-                    Text(count.toString(), modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
-                }
-            }
-            Text("${(progress * 100).toInt()}%", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+private fun NestedBar(
+    fractions: List<Float>,
+    colors: List<Color>,
+    gapColor: Color,
+    modifier: Modifier = Modifier,
+) {
+    var started by remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) { started = true }
+    val grown =
+        fractions.mapIndexed { index, fraction ->
+            animateFloatAsState(
+                targetValue = if (started) fraction else 0f,
+                animationSpec = spring(dampingRatio = Spring.DampingRatioLowBouncy, stiffness = Spring.StiffnessVeryLow),
+                label = "nested_bar_$index",
+            ).value
         }
-        LinearProgressIndicator(
-            progress = { animatedProgress },
-            modifier = Modifier.fillMaxWidth().height(12.dp),
-            color = MaterialTheme.colorScheme.primary,
-            trackColor = MaterialTheme.colorScheme.surfaceContainerHighest,
-        )
+    Canvas(modifier.clip(RoundedCornerShape(50))) {
+        val gap = 3.dp.toPx()
+        val inner = CornerRadius(4.dp.toPx())
+        drawRect(colors.last())
+        // Widest first, so each narrower layer sits on top, set off by a sliver of the surface.
+        for (index in grown.indices.reversed()) {
+            val width = size.width * grown[index]
+            if (width <= 0f) continue
+            drawRect(gapColor, size = Size((width + gap).coerceAtMost(size.width), size.height))
+            drawRoundRect(colors[index], size = Size(width, size.height), cornerRadius = inner)
+        }
     }
 }
-
-private fun AppFilter.displayName(strings: com.bernaferrari.sdkmonitor.ui.platform.SdkStrings): String =
-    when (this) {
-        AppFilter.ALL_APPS -> strings.allApps
-        AppFilter.USER_APPS -> strings.userApps
-        AppFilter.SYSTEM_APPS -> strings.systemApps
-    }

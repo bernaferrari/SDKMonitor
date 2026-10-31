@@ -1,9 +1,5 @@
 package com.bernaferrari.sdkmonitor.ui.settings.components
 
-import androidx.compose.ui.graphics.vector.ImageVector
-
-import com.bernaferrari.sdkmonitor.ui.icons.MaterialSymbols
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -13,8 +9,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -23,10 +19,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -40,11 +37,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.bernaferrari.sdkmonitor.domain.AppFilter
 import com.bernaferrari.sdkmonitor.domain.SdkDistribution
+import com.bernaferrari.sdkmonitor.ui.components.SdkSeal
+import com.bernaferrari.sdkmonitor.ui.components.StatusMessage
+import com.bernaferrari.sdkmonitor.ui.icons.MaterialSymbols
 import com.bernaferrari.sdkmonitor.ui.platform.SdkStrings
 import com.bernaferrari.sdkmonitor.ui.platform.apiToComposeColor
 import com.bernaferrari.sdkmonitor.ui.platform.apiToVersionName
@@ -56,6 +56,7 @@ fun SdkAnalyticsCard(
     totalApps: Int,
     modifier: Modifier = Modifier,
     onSdkClick: (Int) -> Unit = {},
+    action: @Composable () -> Unit = {},
 ) {
     val s = sdkStrings()
     Surface(
@@ -78,22 +79,7 @@ fun SdkAnalyticsCard(
                 horizontalArrangement = Arrangement.spacedBy(14.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Surface(
-                    modifier = Modifier.size(44.dp),
-                    shape = RoundedCornerShape(14.dp),
-                    color = MaterialTheme.colorScheme.surfaceContainerHighest,
-                ) {
-                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Icon(
-                            imageVector = MaterialSymbols.Filled.TrendingUp,
-                            contentDescription = null,
-                            modifier = Modifier.size(28.dp),
-                            tint = MaterialTheme.colorScheme.primary,
-                        )
-                    }
-                }
-
-                Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(5.dp)) {
                     Text(
                         text = s.analytics,
                         style = MaterialTheme.typography.titleLarge,
@@ -117,6 +103,7 @@ fun SdkAnalyticsCard(
                         )
                     }
                 }
+                action()
             }
 
             SdkBarChart(
@@ -264,15 +251,13 @@ private fun SdkLegendItem(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
-            Surface(shape = RoundedCornerShape(8.dp), color = color) {
-                Text(
-                    text = item.sdkVersion.toString(),
-                    modifier = Modifier.padding(horizontal = 9.dp, vertical = 4.dp),
-                    style = MaterialTheme.typography.labelMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White,
-                )
-            }
+            SdkSeal(
+                level = item.sdkVersion,
+                size = 40.dp,
+                fill = color,
+                textColor = Color.White,
+                textStyle = MaterialTheme.typography.labelLarge,
+            )
             Text(
                 text = item.sdkVersion.apiToVersionName(),
                 style = MaterialTheme.typography.labelSmall,
@@ -307,7 +292,9 @@ fun AppFilterSelector(
             onClick = { showFilterMenu = true },
             modifier = Modifier.defaultMinSize(minHeight = 36.dp),
             shape = RoundedCornerShape(10.dp),
-            color = MaterialTheme.colorScheme.surfaceContainerHigh,
+            // The same container as the card's "apps" count, which it filters.
+            color = MaterialTheme.colorScheme.secondaryContainer,
+            contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
         ) {
             Row(
                 modifier = Modifier.padding(horizontal = 9.dp, vertical = 5.dp),
@@ -318,7 +305,6 @@ fun AppFilterSelector(
                     imageVector = currentFilter.icon(),
                     contentDescription = null,
                     modifier = Modifier.size(16.dp),
-                    tint = MaterialTheme.colorScheme.primary,
                 )
                 Text(
                     text = currentFilter.label(s),
@@ -386,7 +372,7 @@ fun AppFilterSelector(
 private fun AppFilter.icon(): ImageVector =
     when (this) {
         AppFilter.ALL_APPS -> MaterialSymbols.Outlined.Apps
-        AppFilter.USER_APPS -> MaterialSymbols.Outlined.Person
+        AppFilter.USER_APPS -> MaterialSymbols.Outlined.InstallMobile
         AppFilter.SYSTEM_APPS -> MaterialSymbols.Filled.Android
     }
 
@@ -397,6 +383,7 @@ private fun AppFilter.label(strings: SdkStrings): String =
         AppFilter.SYSTEM_APPS -> strings.systemApps
     }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun SdkAnalyticsPlaceholder(modifier: Modifier = Modifier) {
     Surface(
@@ -405,7 +392,7 @@ fun SdkAnalyticsPlaceholder(modifier: Modifier = Modifier) {
         color = MaterialTheme.colorScheme.surfaceContainer,
     ) {
         Box(contentAlignment = Alignment.Center) {
-            CircularProgressIndicator()
+            LoadingIndicator()
         }
     }
 }
@@ -418,23 +405,11 @@ fun SdkAnalyticsEmptyState(modifier: Modifier = Modifier) {
         shape = RoundedCornerShape(24.dp),
         color = MaterialTheme.colorScheme.surfaceContainer,
     ) {
-        Column(
-            modifier = Modifier.fillMaxWidth().padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            Icon(
-                MaterialSymbols.Filled.TrendingUp,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            Text(s.noAnalyticsData, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
-            Text(
-                s.noAnalyticsSubtitle,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center,
-            )
-        }
+        StatusMessage(
+            icon = MaterialSymbols.Filled.BarChart,
+            title = s.noAnalyticsData,
+            body = s.noAnalyticsSubtitle,
+            modifier = Modifier.fillMaxWidth(),
+        )
     }
 }

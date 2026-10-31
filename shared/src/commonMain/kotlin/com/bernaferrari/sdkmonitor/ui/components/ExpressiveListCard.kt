@@ -52,6 +52,8 @@ fun ExpressiveListCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     endPadding: Dp = 16.dp,
+    /** The row's tone; inside a sheet (itself a container tone) rows sit a step above it. */
+    containerColor: Color = MaterialTheme.colorScheme.surfaceContainerLow,
     content: @Composable RowScope.() -> Unit,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -69,7 +71,7 @@ fun ExpressiveListCard(
             if (selected) {
                 MaterialTheme.colorScheme.surfaceContainerHigh
             } else {
-                MaterialTheme.colorScheme.surfaceContainerLow
+                containerColor
             }
         }
     val borderColor by

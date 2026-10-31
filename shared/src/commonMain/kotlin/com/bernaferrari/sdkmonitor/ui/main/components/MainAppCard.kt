@@ -85,7 +85,7 @@ fun MainAppCard(
                 if (appVersion.lastUpdateTime.isNotBlank()) {
                     Text(
                         text = appVersion.lastUpdateTime,
-                        style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Medium),
+                        style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }

@@ -19,7 +19,9 @@ koinCompiler {
 }
 
 android {
-    compileSdk = 37
+    compileSdk {
+        version = release(37) { minorApiLevel = 2 }
+    }
 
     signingConfigs {
         register("release") {
@@ -165,7 +167,6 @@ dependencies {
 
     // App Functions (Android system AI integration)
     implementation(libs.androidx.appfunctions)
-    implementation(libs.androidx.appfunctions.service)
     ksp(libs.androidx.appfunctions.compiler)
 
     // Debugging

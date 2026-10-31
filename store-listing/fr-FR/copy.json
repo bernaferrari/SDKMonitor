@@ -1,0 +1,42 @@
+{
+ "apps": {
+  "title": "Le SDK cible\n*de chaque appli.*",
+  "body": "Voyez quelles applis suivent Android\net lesquelles prennent du retard.",
+  "alt": "La liste des applis, chacune avec son SDK cible et sa version d'Android"
+ },
+ "logs": {
+  "title": "Sachez quand\n*les applis changent.*",
+  "body": "Chaque hausse de SDK cible,\nnotée dès qu'elle arrive.",
+  "alt": "Statistiques de SDK au-dessus du journal : Harbor Chat et Clearsky Weather passent à Android 17"
+ },
+ "details": {
+  "title": "Chaque mise à jour,\n*consignée.*",
+  "body": "Versions, dates et SDK\npour chaque appli.",
+  "alt": "Les détails de Clearsky Weather : SDK cible et minimal, et l'historique des versions"
+ },
+ "settings": {
+  "title": "Privée\n*et hors ligne.*",
+  "body": "Pas de compte, pas de réseau,\nrien ne quitte votre téléphone.",
+  "alt": "Paramètres : thème clair, sombre ou système, couleurs et synchronisation en arrière-plan"
+ },
+ "dark": {
+  "title": "Tout aussi claire\n*la nuit.*",
+  "body": "Clair, sombre et couleurs dynamiques.",
+  "alt": "La liste des applis et les détails d'une appli en mode sombre"
+ },
+ "tablet10/apps": {
+  "title": "De la place pour\n*toute la liste.*",
+  "body": "Les applis à gauche, les détails à droite.",
+  "alt": "La liste des applis à côté des détails d'une appli sur une tablette"
+ },
+ "tablet10/dark": {
+  "title": "Tout aussi claire\n*la nuit.*",
+  "body": "Clair, sombre et couleurs dynamiques.",
+  "alt": "La liste des applis et les détails d'une appli en mode sombre"
+ },
+ "insights": {
+  "title": "Où en sont\n*vos applis.*",
+  "body": "Combien d'applis ciblent\nchaque version d'Android.",
+  "alt": "Statistiques de SDK : combien d'applis ciblent Android 17, 16, 15 et plus ancien"
+ }
+}
