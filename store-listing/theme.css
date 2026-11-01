@@ -68,23 +68,25 @@ header p{margin:28px auto 0;font-size:38px;line-height:1.3;font-weight:420;lette
 .readme .panels .stand{left:138px}
 .readme .panels .change{left:930px}
 .readme .panels .version{left:1722px}
-/* Two panels: the tablet's analytics in lavender, the app list in dark mode under a dusk gradient. */
+/* Two panels: the tablet's analytics in lavender, and the app list in light and dark under a dusk gradient. */
 .readme .pair .panel{width:1146px}
 .readme .pair .panel-room{left:36px;background:linear-gradient(160deg,#f4f1ff 8%,#ddd6fb 58%,#a99ae6);color:#231a5c;--accent:#5b45d6}
 .readme .pair .panel-night{left:1218px;background:linear-gradient(170deg,#eef0ff 6%,#c9cff6 50%,#7f8ad8);color:#161b4a;--accent:#3a52d6}
 .readme .pair .room{left:520px;top:440px;width:620px}
-.readme .pair .night{left:1660px;top:440px;width:500px}
-/* Before and after: each pair on a panel like the others (inset 36px, 50px corners), 2019's flat dark frame
-   beside today's white phone, whole, with the year under each. */
-.readme .compare .pair-panel{position:absolute;top:36px;bottom:36px;width:1146px;border-radius:50px;z-index:0}
-.readme .compare .pair-panel.first{left:36px;background:linear-gradient(160deg,#fff6ef 8%,#ffe3d1 58%,#f6b896)}
-.readme .compare .pair-panel.second{left:1218px;background:linear-gradient(170deg,#eef0ff 6%,#c9cff6 55%,#8d97e0)}
-.readme .compare .device{top:110px;width:440px}
+/* After dark: the same list in light, behind, and in dark mode stepping in front of it. */
+.readme .pair .night.light{left:1500px;top:500px;width:420px;z-index:2}
+.readme .pair .night:not(.light){left:1800px;top:420px;width:460px;z-index:3}
+/* Before and after: each pair on a soft, translucent white panel over the wash, 2019's flat dark frame beside
+   today's white phone, whole, with the year under each. */
+.readme .compare .pair-panel{position:absolute;top:60px;bottom:60px;width:1110px;border-radius:56px;background:#ffffff66;border:2px solid #ffffffaa;z-index:0}
+.readme .compare .pair-panel.first{left:60px}
+.readme .compare .pair-panel.second{right:60px}
+.readme .compare .device{top:120px;width:430px}
 .readme .compare .device.before{--bezel:12px;--radius:56px;background:#20242c;box-shadow:0 40px 70px -40px #20242c99}
-.readme .compare .pair1.before{left:140px}
-.readme .compare .pair1.after{left:654px}
-.readme .compare .pair2.before{left:1322px}
-.readme .compare .pair2.after{left:1836px}
+.readme .compare .pair1.before{left:150px}
+.readme .compare .pair1.after{left:640px}
+.readme .compare .pair2.before{left:1330px}
+.readme .compare .pair2.after{left:1820px}
 .readme .compare .device-label{transform:translateY(calc(var(--tallest-device) + 26px));text-align:center;font-size:40px;font-weight:600;letter-spacing:-.01em;color:var(--muted)}
 .readme .compare .device-label em{font-style:normal}
 

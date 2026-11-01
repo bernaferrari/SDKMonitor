@@ -29,7 +29,7 @@
 ## On a tablet, and after dark
 
 <p align="center">
-  <img src="store-listing/en-US/readme/big-screen.jpg" width="100%" alt="Room to look around: SDK analytics on a tablet with a navigation rail. Just as clear after dark: the app list in dark mode on a phone">
+  <img src="store-listing/en-US/readme/big-screen.jpg" width="100%" alt="Room to look around: SDK analytics on a tablet with a navigation rail. Just as clear after dark: the app list in light and in dark mode on phones">
 </p>
 
 ## From 2019 to now
