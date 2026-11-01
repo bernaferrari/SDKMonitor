@@ -265,16 +265,13 @@ private fun AboutHero(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(20.dp),
         ) {
-            // The launcher icon itself: the banded mark on white, in the icon's own squircle.
-            Surface(
-                modifier = Modifier.size(64.dp),
-                shape = RoundedCornerShape(19.dp),
-                color = Color.White,
-            ) {
-                Box(contentAlignment = Alignment.Center) {
-                    Icon(SdkMonitorMark, contentDescription = null, tint = Color.Unspecified, modifier = Modifier.size(width = 44.dp, height = 18.dp))
-                }
-            }
+            // The launcher icon itself, in its own squircle.
+            Icon(
+                SdkMonitorMark,
+                contentDescription = null,
+                tint = Color.Unspecified,
+                modifier = Modifier.size(64.dp).clip(RoundedCornerShape(19.dp)),
+            )
             Column(
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(5.dp),

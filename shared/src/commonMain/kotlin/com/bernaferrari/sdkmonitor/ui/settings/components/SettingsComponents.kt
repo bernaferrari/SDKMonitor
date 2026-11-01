@@ -315,13 +315,13 @@ fun MonitorHero(
     }
 }
 
-/** The app's own mark on white, as on the home screen: the identity row of Settings' About. */
+/** The app's icon, as on the home screen: the identity row of Settings' About. */
 @Composable
 fun AppMarkTile(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier.size(48.dp).background(Color.White, RoundedCornerShape(14.dp)),
-        contentAlignment = Alignment.Center,
-    ) {
-        Icon(SdkMonitorMark, contentDescription = null, tint = Color.Unspecified, modifier = Modifier.size(width = 34.dp, height = 14.dp))
-    }
+    Icon(
+        SdkMonitorMark,
+        contentDescription = null,
+        tint = Color.Unspecified,
+        modifier = modifier.size(48.dp).clip(RoundedCornerShape(14.dp)),
+    )
 }

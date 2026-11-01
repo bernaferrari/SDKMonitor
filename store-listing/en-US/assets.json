@@ -40,7 +40,7 @@
         "slide": 3,
         "width": 1080,
         "height": 1920,
-        "bytes": 181826,
+        "bytes": 181818,
         "sources": [
           "raw/phone/02-details.png"
         ]
@@ -134,7 +134,7 @@
         "slide": 2,
         "width": 1920,
         "height": 1200,
-        "bytes": 100994,
+        "bytes": 101089,
         "sources": [
           "raw/tablet10/12-details-dark.png"
         ]
@@ -158,7 +158,7 @@
         "slide": 1,
         "width": 2400,
         "height": 1260,
-        "bytes": 274257,
+        "bytes": 277783,
         "sources": [
           "raw/phone/05-insights.png",
           "raw/phone/01-apps.png",
@@ -210,7 +210,7 @@
         "slide": 0,
         "width": 1280,
         "height": 640,
-        "bytes": 501561,
+        "bytes": 504903,
         "sources": [
           "raw/phone/01-apps.png"
         ]

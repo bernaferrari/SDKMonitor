@@ -1,3 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 108 108">
-  <rect width="108" height="108" fill="#ffffff"/>
+  <!-- The brand gradient, the icon's red into amber, corner to corner. -->
+  <defs><linearGradient id="warm" x1="0" y1="0" x2="108" y2="108" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e2341f"/><stop offset=".6" stop-color="#f4701b"/><stop offset="1" stop-color="#fbb21a"/></linearGradient></defs>
+  <rect width="108" height="108" fill="url(#warm)"/>
 </svg>
