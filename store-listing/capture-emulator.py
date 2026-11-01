@@ -5,8 +5,8 @@ runs this tour for every device size and exports. The tour installs the fictiona
 fixture-apps.json (code-free APKs, each with a real targetSdk), and the capture build lists only those and
 seeds their earlier versions, so the list, change log and details read like a phone tracked for a year.
 Taps are recorded in en-US/raw/tap-map.json, so other locales replay them in place.
-Run alone: npx screenshot-studio recapture --no-build --no-export [--profile phone] [de-DE].
-The emulator plumbing is the studio's capture.py (on PYTHONPATH while recapture runs the tour).
+Run alone: npx screenshot-studio tour [--profile phone] [--locale de-DE].
+The emulator plumbing is the studio's capture.py.
 """
 import os
 import subprocess

@@ -12,6 +12,7 @@ Built with [Screenshot Studio](https://github.com/bernaferrari/screenshot-studio
 
 ```sh
 npx screenshot-studio recapture                 # build, capture on emulator-5578, export
+npx screenshot-studio tour --profile phone       # the scene tour alone
 npx screenshot-studio studio                    # editor
 npx screenshot-studio export --locale en-US
 npx screenshot-studio check                     # fast check after each edit
