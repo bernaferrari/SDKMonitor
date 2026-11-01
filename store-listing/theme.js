@@ -133,6 +133,14 @@ export default {
     const devices = [...main.querySelectorAll('.device.device-frame-phone:not(.before), .device.device-frame-tablet:not(.before)')];
     if (!devices.length) return;
     const {renderDevice} = await import('./phone3d.js');
-    for (const device of devices) await renderDevice(main, device);
+    for (const device of devices) {
+      const canvas = await renderDevice(main, device);
+      // On a panel card, the device shows only inside its own panel, cut at the panel's rounded edge.
+      const role = [...device.classList].find(c => main.querySelector(`.panel-${c}`));
+      if (!role) continue;
+      const card = main.getBoundingClientRect(), box = main.querySelector(`.panel-${role}`).getBoundingClientRect();
+      const r = getComputedStyle(main.querySelector(`.panel-${role}`)).borderTopLeftRadius;
+      canvas.style.clipPath = `inset(${box.top - card.top}px ${card.right - box.right}px ${card.bottom - box.bottom}px ${box.left - card.left}px round ${r})`;
+    }
   },
 };

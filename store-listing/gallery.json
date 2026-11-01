@@ -159,14 +159,14 @@
       "file": "readme/big-screen.jpg",
       "devices": [
         {
-          "raw": "tablet7/03-logs.png",
+          "raw": "tablet7/05-insights.png",
           "role": "room",
           "frame": "tablet",
           "title": "Room to\n*look around.*",
-          "caption": "A navigation rail and more\nof the log on tablets."
+          "caption": "Analytics and the log,\nside by side with the rail."
         },
         {
-          "raw": "phone/12-details-dark.png",
+          "raw": "phone/11-apps-dark.png",
           "role": "night",
           "title": "Just as clear\n*after dark.*",
           "caption": "Light, dark, and your\nwallpaper's colors."

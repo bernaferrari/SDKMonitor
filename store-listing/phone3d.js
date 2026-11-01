@@ -18,7 +18,7 @@ const roundedRect = (w, h, r) => {
 
 const DEPTH = {phone: 7.2 / 70.5, tablet: 6.1 / 165};
 
-/** Draws `front` (a .device) as a 3D device on a canvas over the card `main`; resolves once it is drawn. */
+/** Draws `front` (a .device) as a 3D device on a canvas over the card `main`; resolves to that canvas once drawn. */
 export async function renderDevice(main, front) {
   const style = getComputedStyle(front);
   // Card size in the frame's own (unzoomed) pixels: the share image zooms the frame, so it is drawn at the
@@ -112,4 +112,5 @@ export async function renderDevice(main, front) {
 
   renderer.render(scene, camera);
   front.style.visibility = 'hidden';
+  return canvas;
 }

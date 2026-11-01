@@ -54,10 +54,10 @@ header p{margin:28px auto 0;font-size:38px;line-height:1.3;font-weight:420;lette
 .readme .hero .left{left:380px;top:430px;width:470px}
 .readme .hero .center{left:940px;top:370px;width:520px}
 .readme .hero .right{left:1550px;top:430px;width:470px}
-/* Panels (README): a tinted panel per device, open at the bottom so its phone runs off the card, with the
-   device's own headline and caption on top. The tints are the app's API-level colors: green for current, blue,
+/* Panels (README): a tinted panel per device, inset 36px on every side like Calcula's, with the device's own
+   headline and caption on top and the device cut at the panel's rounded edge (theme.js). The tints are the app's API-level colors: green for current, blue,
    and the peach of a level behind. */
-.readme .panel{position:absolute;top:36px;bottom:0;width:744px;overflow:hidden;border-radius:50px 50px 0 0;z-index:1}
+.readme .panel{position:absolute;top:36px;bottom:36px;width:744px;overflow:hidden;border-radius:50px;z-index:1}
 .readme .panel-title{margin:66px 70px 0;font-size:100px;line-height:1;font-weight:700;letter-spacing:-.035em;font-variation-settings:'opsz' 144,'ROND' 0}
 .readme .panel-caption{margin:26px 70px 0;font-size:34px;line-height:1.25;font-weight:440;opacity:.8}
 .readme .panel-title em{font-style:normal;background:none;-webkit-text-fill-color:currentColor;color:var(--accent)}
@@ -68,23 +68,23 @@ header p{margin:28px auto 0;font-size:38px;line-height:1.3;font-weight:420;lette
 .readme .panels .stand{left:138px}
 .readme .panels .change{left:930px}
 .readme .panels .version{left:1722px}
-/* Two panels: the tablet in a light one, the phone in dark mode in a dark one. */
+/* Two panels: the tablet's analytics in lavender, the app list in dark mode under a dusk gradient. */
 .readme .pair .panel{width:1146px}
 .readme .pair .panel-room{left:36px;background:linear-gradient(160deg,#f4f1ff 8%,#ddd6fb 58%,#a99ae6);color:#231a5c;--accent:#5b45d6}
-.readme .pair .panel-night{left:1218px;background:linear-gradient(160deg,#2b2f4a 8%,#1d2036 60%,#121424);color:#f1f2fb;--accent:#9fb0ff}
-.readme .pair .room{left:560px;top:430px;width:600px}
-.readme .pair .night{left:1700px;top:430px;width:470px}
-/* Before and after: each pair on a soft panel, 2019's flat dark frame beside today's white phone, whole, with
-   the year under each. */
-.readme .compare .pair-panel{position:absolute;top:60px;bottom:60px;width:1110px;border-radius:56px;background:#ffffff66;border:2px solid #ffffffaa;z-index:0}
-.readme .compare .pair-panel.first{left:60px}
-.readme .compare .pair-panel.second{right:60px}
-.readme .compare .device{top:120px;width:430px}
+.readme .pair .panel-night{left:1218px;background:linear-gradient(170deg,#eef0ff 6%,#c9cff6 50%,#7f8ad8);color:#161b4a;--accent:#3a52d6}
+.readme .pair .room{left:520px;top:440px;width:620px}
+.readme .pair .night{left:1660px;top:440px;width:500px}
+/* Before and after: each pair on a panel like the others (inset 36px, 50px corners), 2019's flat dark frame
+   beside today's white phone, whole, with the year under each. */
+.readme .compare .pair-panel{position:absolute;top:36px;bottom:36px;width:1146px;border-radius:50px;z-index:0}
+.readme .compare .pair-panel.first{left:36px;background:linear-gradient(160deg,#fff6ef 8%,#ffe3d1 58%,#f6b896)}
+.readme .compare .pair-panel.second{left:1218px;background:linear-gradient(170deg,#eef0ff 6%,#c9cff6 55%,#8d97e0)}
+.readme .compare .device{top:110px;width:440px}
 .readme .compare .device.before{--bezel:12px;--radius:56px;background:#20242c;box-shadow:0 40px 70px -40px #20242c99}
-.readme .compare .pair1.before{left:150px}
-.readme .compare .pair1.after{left:640px}
-.readme .compare .pair2.before{left:1330px}
-.readme .compare .pair2.after{left:1820px}
+.readme .compare .pair1.before{left:140px}
+.readme .compare .pair1.after{left:654px}
+.readme .compare .pair2.before{left:1322px}
+.readme .compare .pair2.after{left:1836px}
 .readme .compare .device-label{transform:translateY(calc(var(--tallest-device) + 26px));text-align:center;font-size:40px;font-weight:600;letter-spacing:-.01em;color:var(--muted)}
 .readme .compare .device-label em{font-style:normal}
 
