@@ -1,28 +1,26 @@
 """Capture SDK Monitor's store screens on the capture emulator (needs adb, Node and Pillow).
 
-`node store-listing/studio/recapture.cjs` builds and installs the capture build (studio.json → capture),
+`npx screenshot-studio recapture` builds and installs the capture build (studio.json → capture),
 runs this tour for every device size and exports. The tour installs the fictional apps of
 fixture-apps.json (code-free APKs, each with a real targetSdk), and the capture build lists only those and
 seeds their earlier versions, so the list, change log and details read like a phone tracked for a year.
 Taps are recorded in en-US/raw/tap-map.json, so other locales replay them in place.
-Run alone: python3 store-listing/capture-emulator.py [--profile phone] [--locale de-DE].
-The emulator plumbing is the studio's capture.py.
+Run alone: npx screenshot-studio recapture --no-build --no-export [--profile phone] [de-DE].
+The emulator plumbing is the studio's capture.py (on PYTHONPATH while recapture runs the tour).
 """
 import os
 import subprocess
-import sys
 import time
 from pathlib import Path
 
+from capture import Device, parser
+
 listing = Path(__file__).resolve().parent
-sys.path.insert(0, str(listing / 'studio'))
-from capture import Device, parser  # noqa: E402
 
 args = parser(__doc__).parse_args()
 d = Device(args, 'com.bernaferrari.sdkmonitor.storecapture', 'com.bernaferrari.sdkmonitor.MainActivity')
-fixtures = ['node', str(listing / 'studio/fixture-apps.cjs'), str(listing / 'fixture-apps.json')]
-# Playwright draws the fixture icons; the studio master's copy serves when the app has none.
-env = {'PLAYWRIGHT_MODULE': str(Path.home() / 'Documents/screenshot-studio/node_modules/playwright'), **os.environ}
+# recapture sets SCREENSHOT_STUDIO (and PLAYWRIGHT_MODULE, which draws the fixture icons).
+fixtures = ['node', os.environ['SCREENSHOT_STUDIO'], 'fixtures', str(listing / 'fixture-apps.json')]
 
 
 def tap(label, wait=2.2, text_only=False):
@@ -48,7 +46,7 @@ def shot(name):
 
 
 with d:
-    subprocess.run([*fixtures, '--install', d.serial], check=True, env=env)
+    subprocess.run([*fixtures, '--install', d.serial], check=True)
     for profile in d.profiles():
         d.night(False)
         launch()
@@ -81,4 +79,4 @@ with d:
         shot('11-apps-dark')
         tap('Atlas Bank')
         shot('12-details-dark')
-    subprocess.run([*fixtures, '--uninstall', d.serial], check=False, env=env)
+    subprocess.run([*fixtures, '--uninstall', d.serial], check=False)
