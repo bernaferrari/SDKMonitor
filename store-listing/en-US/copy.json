@@ -41,22 +41,16 @@
   },
   "readme-tools": {
     "title": "",
-    "alt": "SDK analytics by Android version, the change log of target SDK bumps, and an app's details with its version history"
+    "alt": "Where apps stand: SDK analytics by Android version. Every change, kept: the log of target SDK bumps. Every version: an app's details and history"
   },
   "readme-big-screen": {
-    "title": "Phone or\n*tablet.*",
-    "body": "Light or dark, at any size.",
-    "alt": "The app list on a tablet, and an app's details in dark mode on a phone"
+    "title": "",
+    "alt": "The change log on a tablet, and an app's details in dark mode on a phone"
   },
   "insights": {
     "title": "Where your apps\n*stand today.*",
     "body": "How many apps target\neach Android version.",
     "alt": "SDK analytics: how many apps target Android 17, 16, 15 and older"
-  },
-  "readme-tablet": {
-    "title": "Every change,\n*at a glance.*",
-    "body": "Where apps stand and what changed, on a tablet.",
-    "alt": "SDK analytics and the change log on a tablet, and a phone showing the apps that target Android 16"
   },
   "social-card": {
     "title": "SDK Monitor",
@@ -67,5 +61,9 @@
     "title": "SDK Monitor",
     "tagline": "See which apps *keep up with Android.*",
     "alt": "SDK Monitor: see which apps keep up with Android, beside the app list with every app's target SDK"
+  },
+  "readme-compare": {
+    "title": "",
+    "alt": "SDK Monitor in 2019 beside today: the app list, and an app's details"
   }
 }

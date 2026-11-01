@@ -18,23 +18,27 @@
 ## Where your apps stand
 
 <p align="center">
-  <img src="store-listing/en-US/readme/tools.jpg" width="100%" alt="SDK analytics by Android version, the change log of target SDK bumps, and an app's details with its version history">
+  <img src="store-listing/en-US/readme/tools.jpg" width="100%" alt="Where apps stand: SDK analytics by Android version. Every change, kept: the log of target SDK bumps. Every version: an app's details and history">
 </p>
 
-- **Every app at a glance.** Searchable, sorted by name or target SDK, each app marked with its level. Its shape says how current it is: a green sun for the latest Android, down to a red triangle for apps far behind.
-- **Analytics.** How many of your apps target each Android version, for your own apps, system apps or both. Tap a level to see the apps behind it.
-- **Every change, kept.** When an app updates and moves its target SDK, SDK Monitor logs it, so you can see who keeps up and who falls behind over weeks and months.
-- **Each app's story.** Target and minimum SDK, version, size, and a history of every version you have had.
+- **Every app at a glance.** Searchable, sorted by name or target SDK, each app marked with its level. The shape says how current it is: a green sun for the latest Android, down to a red triangle for apps far behind.
+- **Where apps stand.** How many of your apps target each Android version, for your own apps, system apps or both. Tap a level to see the apps behind it.
+- **Every change, kept.** When an update moves an app's target SDK, SDK Monitor logs it, so you see who keeps up and who falls behind, week by week.
+- **Every version.** Target and minimum SDK, version and size, and a history of every version you have had.
 
-## On a tablet
+## On a tablet, and after dark
 
 <p align="center">
-  <img src="store-listing/en-US/readme/tablet.jpg" width="100%" alt="SDK analytics and the change log on a tablet, and a phone showing the apps that target Android 16">
+  <img src="store-listing/en-US/readme/big-screen.jpg" width="100%" alt="The change log on a tablet with a navigation rail, and an app's details in dark mode on a phone">
 </p>
 
+## From 2019 to now
+
 <p align="center">
-  <img src="store-listing/en-US/readme/big-screen.jpg" width="100%" alt="The app list on a tablet, and an app's details in dark mode on a phone">
+  <img src="store-listing/en-US/readme/before-after.jpg" width="100%" alt="SDK Monitor in 2019 beside today: the app list, and an app's details">
 </p>
+
+SDK Monitor first shipped in 2018. Every screen has since been rebuilt with Kotlin Multiplatform, Compose and Material 3 Expressive, and the app's ideas got sharper: the level now has a shape as well as a color, the change log has analytics on top, and the same screens run on a tablet and on the web.
 
 ## Private by design
 

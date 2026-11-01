@@ -130,55 +130,73 @@
     },
     {
       "feature": "readme-tools",
-      "layout": "trio",
+      "layout": "panels",
       "file": "readme/tools.jpg",
       "devices": [
         {
           "raw": "phone/05-insights.png",
-          "role": "one",
-          "label": "Where apps *stand*"
+          "role": "stand",
+          "title": "Where apps\n*stand.*",
+          "caption": "How many of your apps target\neach Android version."
         },
         {
           "raw": "phone/03-logs.png",
-          "role": "two",
-          "label": "Every *change*"
+          "role": "change",
+          "title": "Every change,\n*kept.*",
+          "caption": "Each target SDK bump,\nlogged as it happens."
         },
         {
           "raw": "phone/02-details.png",
-          "role": "three",
-          "label": "Every *version*"
-        }
-      ]
-    },
-    {
-      "feature": "readme-tablet",
-      "layout": "spread",
-      "file": "readme/tablet.jpg",
-      "devices": [
-        {
-          "raw": "tablet7/03-logs.png",
-          "role": "slate",
-          "frame": "tablet"
-        },
-        {
-          "raw": "phone/06-sdk-sheet.png",
-          "role": "front"
+          "role": "version",
+          "title": "Every\n*version.*",
+          "caption": "An app's history,\nfrom install to today."
         }
       ]
     },
     {
       "feature": "readme-big-screen",
-      "layout": "spread",
+      "layout": "panels pair",
       "file": "readme/big-screen.jpg",
       "devices": [
         {
-          "raw": "tablet7/01-apps.png",
-          "role": "slate",
-          "frame": "tablet"
+          "raw": "tablet7/03-logs.png",
+          "role": "room",
+          "frame": "tablet",
+          "title": "Room to\n*look around.*",
+          "caption": "A navigation rail and more\nof the log on tablets."
         },
         {
           "raw": "phone/12-details-dark.png",
-          "role": "front"
+          "role": "night",
+          "title": "Just as clear\n*after dark.*",
+          "caption": "Light, dark, and your\nwallpaper's colors."
+        }
+      ]
+    },
+    {
+      "feature": "readme-compare",
+      "layout": "compare",
+      "file": "readme/before-after.jpg",
+      "devices": [
+        {
+          "raw": "compare/2019-apps.png",
+          "role": "before pair1",
+          "label": "2019"
+        },
+        {
+          "raw": "phone/01-apps.png",
+          "role": "after pair1",
+          "label": "*Today*"
+        },
+        {
+          "raw": "compare/2019-details.png",
+          "role": "before pair2",
+          "label": "2019"
+        },
+        {
+          "raw": "phone/02-details.png",
+          "role": "after pair2",
+          "label": "*Today*"
         }
       ]
     }

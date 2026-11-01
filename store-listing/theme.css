@@ -54,18 +54,39 @@ header p{margin:28px auto 0;font-size:38px;line-height:1.3;font-weight:420;lette
 .readme .hero .left{left:380px;top:430px;width:470px}
 .readme .hero .center{left:940px;top:370px;width:520px}
 .readme .hero .right{left:1550px;top:430px;width:470px}
-/* Trio: three phones under short captions; the stream runs between them. */
-.readme .trio .device{width:580px;top:210px}
-.readme .trio .one{left:170px}
-.readme .trio .two{left:910px}
-.readme .trio .three{left:1650px}
-.readme .trio .device-label{transform:translateY(calc(-100% - 24px));font-weight:560;letter-spacing:-.01em;color:var(--ink)}
-/* Spread: the headline on the left, then a 7-inch tablet and a phone side by side, both whole. */
-.readme .spread header{left:110px;top:200px;bottom:auto;width:640px;display:block}
-.readme .spread h1{font-size:104px}
-.readme .spread header p{font-size:38px}
-.readme .spread .slate{left:900px;top:125px;width:640px}
-.readme .spread .front{left:1640px;top:330px;width:380px}
+/* Panels (README): a tinted panel per device, open at the bottom so its phone runs off the card, with the
+   device's own headline and caption on top. The tints are the app's API-level colors: green for current, blue,
+   and the peach of a level behind. */
+.readme .panel{position:absolute;top:36px;bottom:0;width:744px;overflow:hidden;border-radius:50px 50px 0 0;z-index:1}
+.readme .panel-title{margin:66px 70px 0;font-size:100px;line-height:1;font-weight:700;letter-spacing:-.035em;font-variation-settings:'opsz' 144,'ROND' 0}
+.readme .panel-caption{margin:26px 70px 0;font-size:34px;line-height:1.25;font-weight:440;opacity:.8}
+.readme .panel-title em{font-style:normal;background:none;-webkit-text-fill-color:currentColor;color:var(--accent)}
+.readme .panel-stand{left:36px;background:linear-gradient(160deg,#effaf3 8%,#cdeedc 58%,#8fd3b2);color:#0f3b2b;--accent:#0f8a5c}
+.readme .panel-change{left:828px;background:linear-gradient(160deg,#eef3ff 8%,#d0ddff 58%,#93b0f0);color:#14275e;--accent:#3a52d6}
+.readme .panel-version{left:1620px;background:linear-gradient(160deg,#fff4ec 8%,#ffdcc7 58%,#f3a87f);color:#4a1d0c;--accent:#d9471b}
+.readme .panels .device{top:450px;width:540px}
+.readme .panels .stand{left:138px}
+.readme .panels .change{left:930px}
+.readme .panels .version{left:1722px}
+/* Two panels: the tablet in a light one, the phone in dark mode in a dark one. */
+.readme .pair .panel{width:1146px}
+.readme .pair .panel-room{left:36px;background:linear-gradient(160deg,#f4f1ff 8%,#ddd6fb 58%,#a99ae6);color:#231a5c;--accent:#5b45d6}
+.readme .pair .panel-night{left:1218px;background:linear-gradient(160deg,#2b2f4a 8%,#1d2036 60%,#121424);color:#f1f2fb;--accent:#9fb0ff}
+.readme .pair .room{left:560px;top:430px;width:600px}
+.readme .pair .night{left:1700px;top:430px;width:470px}
+/* Before and after: each pair on a soft panel, 2019's flat dark frame beside today's white phone, whole, with
+   the year under each. */
+.readme .compare .pair-panel{position:absolute;top:60px;bottom:60px;width:1110px;border-radius:56px;background:#ffffff66;border:2px solid #ffffffaa;z-index:0}
+.readme .compare .pair-panel.first{left:60px}
+.readme .compare .pair-panel.second{right:60px}
+.readme .compare .device{top:120px;width:430px}
+.readme .compare .device.before{--bezel:12px;--radius:56px;background:#20242c;box-shadow:0 40px 70px -40px #20242c99}
+.readme .compare .pair1.before{left:150px}
+.readme .compare .pair1.after{left:640px}
+.readme .compare .pair2.before{left:1330px}
+.readme .compare .pair2.after{left:1820px}
+.readme .compare .device-label{transform:translateY(calc(var(--tallest-device) + 26px));text-align:center;font-size:40px;font-weight:600;letter-spacing:-.01em;color:var(--muted)}
+.readme .compare .device-label em{font-style:normal}
 
 /* Share image (1280 x 640, the web demo's og:image): the name card on the left, the app list on the right,
    running off the bottom. Rebuilt from the latest capture by export, like every other card. */
@@ -103,5 +124,5 @@ header p{margin:28px auto 0;font-size:38px;line-height:1.3;font-weight:420;lette
 /* The highlight: the highlighted words in indigo against the navy, the complement of the peach wash and an echo
    of the sky on the right, apart from the app's warm screens; taglines and captions do the same. */
 h1 em,.identity small em,.device-label em{font-style:normal;background:none;color:#3a52d6;-webkit-text-fill-color:#3a52d6}
-.tablet10 header,.readme .spread header{text-align:left}
-.tablet10 header p,.readme .spread header p{margin-left:0}
+.tablet10 header{text-align:left}
+.tablet10 header p{margin-left:0}

@@ -108,15 +108,29 @@ export default {
   art,
   continuous: true,
 
-  compose({main}) {
-    // A card without a headline (the README trio, under its own section heading) has no copy.
+  compose({main, slide}) {
+    // A card without a headline (the README panels, under their own section heading) has no copy.
     const header = main.querySelector('header');
     if (header && !header.querySelector('h1')?.textContent.trim()) header.remove();
+    // Before and after (README): a soft panel behind each pair.
+    if (/\bcompare\b/.test(slide.layout || '')) main.insertAdjacentHTML('beforeend', '<div class="pair-panel first"></div><div class="pair-panel second"></div>');
+    // Panels (README): a tinted panel per device, holding that device's own headline and caption.
+    if (/\bpanels\b/.test(slide.layout || '')) {
+      const esc = t => t.replace(/[&<>]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;'})[c]);
+      const lines = t => t.split(/(\*[^*]+\*)/).filter(Boolean)
+        .map(part => part.startsWith('*') ? `<em>${esc(part.slice(1, -1))}</em>` : esc(part)).join('').replace(/\n/g, '<br>');
+      for (const spec of slide.devices || []) {
+        if (!spec.title) continue;
+        main.insertAdjacentHTML('beforeend', `<section class="panel panel-${spec.role.split(/\s+/)[0]}">` +
+          `<div class="panel-title">${lines(spec.title)}</div><div class="panel-caption">${lines(spec.caption || '')}</div></section>`);
+      }
+    }
   },
 
   // After the studio has sized every frame: each device is drawn as a real 3D device (phone3d.js).
   async layout({main}) {
-    const devices = [...main.querySelectorAll('.device.device-frame-phone, .device.device-frame-tablet')];
+    // A "before" device (a 2019 capture) keeps its plain, flat frame.
+    const devices = [...main.querySelectorAll('.device.device-frame-phone:not(.before), .device.device-frame-tablet:not(.before)')];
     if (!devices.length) return;
     const {renderDevice} = await import('./phone3d.js');
     for (const device of devices) await renderDevice(main, device);
