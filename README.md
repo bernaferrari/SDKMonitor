@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="https://f-droid.org/packages/com.bernaferrari.sdkmonitor/"><img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" height="80" alt="Get it on F-Droid"></a>
-  <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://app/%7B%22id%22%3A%22com.bernaferrari.sdkmonitor%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2Fbernaferrari%2FSDKMonitor%22%2C%22author%22%3A%22bernaferrari%22%2C%22name%22%3A%22SDK%20Monitor%22%7D"><img src="docs/obtainium-badge.png" height="80" alt="Get it on Obtainium"></a>
+  <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://app/%7B%22id%22%3A%22com.bernaferrari.sdkmonitor%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2Fbernaferrari%2FSDKMonitor%22%2C%22author%22%3A%22bernaferrari%22%2C%22name%22%3A%22SDK%20Monitor%22%7D"><img src="assets/obtainium-badge.png" height="80" alt="Get it on Obtainium"></a>
 </p>
 
 <p align="center">
