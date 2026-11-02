@@ -8,7 +8,7 @@ Built with [Screenshot Studio](https://github.com/bernaferrari/screenshot-studio
 | Words per language | `<locale>/copy.json`, `<locale>/listing.json` |
 | Look | `theme.css`, `theme.js` |
 | Canvas and capture sizes | `profiles.json` |
-| Scene tour | `capture-emulator.py` (build and runs: `studio.json` → `capture`) |
+| Scene tour | `capture.tour.mjs` (build and runs: `studio.json` → `capture`) |
 
 ```sh
 npx screenshot-studio recapture                 # build, capture on emulator-5578, export
