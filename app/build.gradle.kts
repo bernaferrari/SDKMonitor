@@ -114,13 +114,11 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.startup)
 
-    // Compose BOM - manages all compose library versions
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.compose.ui)
-    implementation(libs.androidx.compose.ui.graphics)
-    implementation(libs.androidx.compose.ui.tooling.preview)
-    implementation(libs.androidx.compose.material3)
-    implementation(libs.androidx.compose.material3.window.size)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.ui.graphics)
+    implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.compose.material3)
+    implementation(libs.compose.material3.window.size)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.lifecycle.runtime.compose)
@@ -130,7 +128,7 @@ dependencies {
     implementation(libs.androidx.navigation3.ui)
     implementation(libs.androidx.lifecycle.viewmodel.navigation3)
     implementation(libs.kotlinx.serialization.core)
-    implementation(libs.androidx.material3.adaptive.navigation3)
+    implementation(libs.compose.adaptive.navigation3)
 
     // Coil for image loading
     implementation(libs.coil.compose)
@@ -143,11 +141,10 @@ dependencies {
     implementation(libs.koin.androidx.workmanager)
     implementation(libs.koin.annotations)
 
-    implementation(libs.androidx.material3.adaptive)
-    implementation(libs.androidx.material3.adaptive.layout)
-    implementation(libs.androidx.material3.adaptive)
-    implementation(libs.androidx.material3.adaptive.navigation)
-    implementation(libs.androidx.material3.adaptive.navigation.suite.android)
+    implementation(libs.compose.adaptive)
+    implementation(libs.compose.adaptive.layout)
+    implementation(libs.compose.adaptive.navigation)
+    implementation(libs.compose.adaptive.navigation.suite)
     ksp(libs.kotlin.metadata.jvm)
     annotationProcessor(libs.kotlin.metadata.jvm)
 
@@ -171,11 +168,10 @@ dependencies {
 
     // Debugging
     implementation(libs.nappier)
-    debugImplementation(libs.androidx.compose.ui.tooling)
+    debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.leakcanary)
 
     // Testing
     testImplementation(libs.junit)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    androidTestImplementation(libs.compose.ui.test.junit4)
 }
